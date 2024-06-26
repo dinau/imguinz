@@ -1,0 +1,37 @@
+-I../libs/sdl/SDL2-2.30.3/i686-w64-mingw32/include/SDL2
+-I../libs/sdl/sdl3/32/SDL3-2024-06-02/SDL3/include
+-I../libs/cimplot
+-I../libs/cimplot/implot
+
+-Wno-stringop-overflow
+-DCIMGUI_USE_GLFW
+-DCIMGUI_USE_OPENGL3
+-I../libs/glfw/glfw-3.3.9.bin.WIN32/include
+-I../libs/glfw/glfw-3.3.9.bin.WIN64/include
+-static
+-Wall
+-Wno-unused-function
+-O2
+-Ilibs/cimgui
+-I../libs/imgui
+-I.
+-I../libs/imgui/backends
+-Iutils
+-Iutils/fonticon
+-I../libs/stb
+-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS
+-DIMGUI_DISABLE_OBSOLETE_FUNCTIONS=1
+-DImDrawIdx=unsigned int
+-DIMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS
+-fno-exceptions
+-fno-rtti
+-std=c++11
+
+
+# See
+# clangdで別ディレクトリのヘッダーを指定したい
+#  https://qiita.com/sudo00/items/99d9619de38574830f65
+#
+# Compiledb
+#  https://github.com/nickdiego/compiledb
+#    $ compiledb make

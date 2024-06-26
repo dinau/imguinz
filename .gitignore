@@ -1,0 +1,60 @@
+ImageSaved*
+zig-out/
+.zig-out/
+zig-cache/
+.zig-cache/
+/**/setenv.bat
+/**/.nimcache
+GPATH
+GRTAGS
+GTAGS
+.hg
+.git
+build/
+.build/
+.idea
+.vscode
+__pycache__
+TestCode
+venv
+Test.h
+*.o
+*.exe
+libs/glfw/glfw-3.3.9.bin.WIN32/docs
+libs/glfw/glfw-3.3.9.bin.WIN32/*.md
+libs/glfw/glfw-3.3.9.bin.WIN64/docs
+libs/glfw/glfw-3.3.9.bin.WIN64/*.md
+*.html
+*.js
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
