@@ -87,6 +87,14 @@ ImGui version **1.90.8** (2024/06)
 Image file captured would be saved in current folder.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
+---
+
+|                                        GLFW |
+|:-------------------------------------------:|
+| [zig_glfw_opengl3_implot](examples/zig_glfw_opengl3_implot) |
+
+![alt](img/zig_glfw_opengl3_implot.png)
+
 ## Hiding console window
 
 ---

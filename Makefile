@@ -2,6 +2,7 @@
 EXAMPLE_DIRS := \
 							examples/zig_sdl2_opengl3 \
 							examples/zig_glfw_opengl3 \
+							examples/zig_glfw_opengl3_implot \
 							examples/zig_glfw_opengl3_jp \
 							examples/zig_glfw_opengl3_image_load
 
