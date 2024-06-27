@@ -5,6 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
+    - [zig_glfw_opengl3 / zig_sdl2_opengl3](#zig_glfw_opengl3--zig_sdl2_opengl3)
+    - [zig_glfw_opengl3_jp](#zig_glfw_opengl3_jp)
+    - [zig_glfw_opengl3_image_load](#zig_glfw_opengl3_image_load)
+    - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -14,7 +18,7 @@
 
 # ImGuinZ
 
-This project aims to simply and easily build **Dear ImGui** examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) as first step.
+This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) as first step.
 
 ImGui version **1.90.8** (2024/06)
 
@@ -58,6 +62,8 @@ ImGui version **1.90.8** (2024/06)
 
 ## Examples screen shots 
 
+### zig_glfw_opengl3 / zig_sdl2_opengl3
+
 ---
 
 |                                          GLFW |                                          SDL2 |                                          SDL3 |
@@ -67,6 +73,7 @@ ImGui version **1.90.8** (2024/06)
 
 ![alt](img/zig_glfw_opengl3.png)
 
+### zig_glfw_opengl3_jp
 
 ---
 
@@ -77,6 +84,8 @@ ImGui version **1.90.8** (2024/06)
 ![alt](img/zig_glfw_opengl3_jp.png)
 
 
+### zig_glfw_opengl3_image_load
+
 ---
 
 |                                                                GLFW |
@@ -86,6 +95,8 @@ ImGui version **1.90.8** (2024/06)
 ![alt](img/zig_glfw_opengl3_image_load.png)  
 Image file captured would be saved in current folder.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
+
+### zig_glfw_opengl3_implot
 
 ---
 
