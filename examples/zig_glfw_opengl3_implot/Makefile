@@ -14,6 +14,10 @@ all:
 run: all
 	(cd zig-out/bin; ./$(TARGET).exe)
 
+gen:
+	nim ../utils/genImPlotFuncs.nims > src/zimplot.zig
+
+
 cleanall:
 	rm -fr zig-out
 	rm -fr zig-cache

@@ -156,7 +156,7 @@ pub fn main () !void {
 
   c.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
   // main loop GUI
   //---------------
@@ -201,17 +201,17 @@ pub fn main () !void {
 
       // Save button for capturing window image
       ig.igPushID_Int(0);
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        ig.ImVec4 {.x = 0.7, .y = 0.7, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, ig.ImVec4 {.x = 0.8, .y = 0.8, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  ig.ImVec4 {.x = 0.9, .y = 0.9, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text,          ig.ImVec4 {.x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        .{.x = 0.7, .y = 0.7, .z = 0.0, .w = 1.0});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, .{.x = 0.8, .y = 0.8, .z = 0.0, .w = 1.0});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  .{.x = 0.9, .y = 0.9, .z = 0.0, .w = 1.0});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text,          .{.x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0});
 
       // Image save button
       const imageExt = ImgFormatTbl[cbItemIndex].ext;
       var svNameBuf:[std.fs.MAX_PATH_BYTES]u8 = undefined;
       var     svBuf:[std.fs.MAX_PATH_BYTES]u8 = undefined;
       const slsName = try std.fmt.bufPrint(&svNameBuf, "{s}_{}{s}", .{SaveImageName, counter, imageExt});
-      if (ig.igButton("Save Image", sz)) {
+      if (ig.igButton("Save Image", .{.x = 0, .y = 0})) {
         const wkSize = ig.igGetMainViewport().*.WorkSize;
         const sx:c_int =  @intFromFloat(wkSize.x);
         const sy:c_int =  @intFromFloat(wkSize.y);
@@ -232,7 +232,7 @@ pub fn main () !void {
       if (ig.igBeginCombo("##", ImgFormatTbl[cbItemIndex].kind, 0)) {
         for (0..ImgFormatTbl.len) |n| {
           var is_selected = (cbItemIndex == n);
-          if (ig.igSelectable_BoolPtr(ImgFormatTbl[n].kind, &is_selected, 0, sz)) {
+          if (ig.igSelectable_BoolPtr(ImgFormatTbl[n].kind, &is_selected, 0, .{.x = 0, .y = 0})) {
             if (is_selected) {
               ig.igSetItemDefaultFocus();
             }
@@ -257,7 +257,7 @@ pub fn main () !void {
           ++ " " ++ c.ICON_FA_SCISSORS
           ++ " " ++ c.ICON_FA_SCREWDRIVER_WRENCH
           ++ " " ++ c.ICON_FA_BLOG);
-    }
+    } // end main window
 
     //---------------------
     // Show another window
@@ -266,7 +266,7 @@ pub fn main () !void {
       _ = ig.igBegin ("Another Window", &showAnotherWindow, 0);
       defer ig.igEnd ();
       ig.igText ("Hello from another window!");
-      if (ig.igButton ("Close Me", sz)) showAnotherWindow = false;
+      if (ig.igButton ("Close Me", .{.x = 0, .y = 0})) showAnotherWindow = false;
     }
 
     // Show image load window

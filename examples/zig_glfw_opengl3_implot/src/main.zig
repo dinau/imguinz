@@ -1,5 +1,6 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
+const ip = @import ("zimplot.zig");
 
 pub const ig = @cImport ({
   @cInclude ("GLFW/glfw3.h");
@@ -126,7 +127,7 @@ pub fn main () !void {
 
   c.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
   // main loop GUI
   //---------------
@@ -173,7 +174,7 @@ pub fn main () !void {
       _ = ig.igSliderFloat ("Float", &fval, 0.0, 1.0, "%.3f", 0);
       _ = ig.igColorEdit3 ("Clear color", &clearColor, 0);
 
-      if (ig.igButton ("Button", sz)) counter += 1;
+      if (ig.igButton ("Button", .{.x = 0, .y = 0} )) counter += 1;
       ig.igSameLine (0, -1.0);
       ig.igText ("Counter = %d", counter);
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
@@ -199,11 +200,12 @@ pub fn main () !void {
       _ = ig.igBegin ("Another Window", &showAnotherWindow, 0);
       defer ig.igEnd ();
       ig.igText ("Hello from another window!");
-      if (ig.igButton ("Close Me", sz)) showAnotherWindow = false;
+      if (ig.igButton ("Close Me", .{.x = 0, .y = 0} )) showAnotherWindow = false;
     }
 
     if (showImPlotTestWindow){
       try imPlotWindow(&showImPlotTestWindow);
+      try imPlotWindow2(&showImPlotTestWindow);
     }
 
     //-----------
@@ -255,9 +257,36 @@ fn imPlotWindow(fshow: *bool) !void {
   }
   if (ig.igBegin("Plot Window", fshow, 0)) {
     defer ig.igEnd();
+    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
+      defer ig.ImPlot_EndPlot();
+      try ip.PlotBars(  "My Bar Plot"  ,&bar_data ,bar_data.len);
+      try ip.PlotLineXY("My Line Plot" ,&x_data ,&y_data ,x_data.len);
+    }
+  }
+}
+
+//---------------
+// imPlotWindow2
+//---------------
+fn imPlotWindow2(fshow: *bool) !void {
+  if (fImPlotWindowInit){
+    fImPlotWindowInit = false;
+    var prng = std.rand.DefaultPrng.init(blk: {
+        var seed: u64 = undefined;
+        try std.posix.getrandom(std.mem.asBytes(&seed));
+        break :blk seed;
+    });
+    const rand = prng.random();
+    for(0..numx)|i|{
+      bar_data[i] =  rand.intRangeAtMost(i32,0,numx * numx);
+      x_data[i] =  @intCast(i);
+      y_data[i] =  @intCast(i * i);
+    }
+  }
+  if (ig.igBegin("Plot Window2", fshow, 0)) {
+    defer ig.igEnd();
     //
-    const sz  = ig.ImVec2 {.x = 0, .y = 0};
-    if (ig.ImPlot_BeginPlot("My Plot", sz, 0)) {
+    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
       defer ig.ImPlot_EndPlot();
       //
       ig.ImPlot_PlotBars_S32PtrInt("My Bar Plot"
@@ -269,9 +298,9 @@ fn imPlotWindow(fshow: *bool) !void {
                               ,0    // offset
                               ,@sizeOf(ig.ImS32)); // stride
       ig.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot"
-                              , &x_data
-                              , &y_data
-                              , x_data.len
+                              ,&x_data
+                              ,&y_data
+                              ,x_data.len
                               ,0    // ImPlotFlags
                               ,0    // offset
                               ,@sizeOf(ig.ImS32)); // stride
