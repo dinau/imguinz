@@ -1,7 +1,6 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
-const ip = @import ("zimplot.zig");
-const demo = @import ("imPlotDemo.zig");
+const demo = @import ("indexDemo.zig");
 
 pub const ig = @cImport ({
   @cInclude ("GLFW/glfw3.h");
@@ -123,8 +122,8 @@ pub fn main () !void {
   //------------------------
   // Select Dear ImGui style
   //------------------------
-  ig.igStyleColorsClassic (null);
-  //ig.igStyleColorsDark (null);
+  //ig.igStyleColorsClassic (null);
+  ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
   c.setupFonts(); // Setup CJK fonts and Icon fonts
@@ -206,9 +205,7 @@ pub fn main () !void {
     }
 
     if (showImPlotTestWindow){
-      try imPlotWindow(&showImPlotTestWindow);
-      try imPlotWindow2(&showImPlotTestWindow);
-      try imPlotWindow3();
+      try imPlotDemoWindow();
     }
 
     //-----------
@@ -234,86 +231,12 @@ pub fn main () !void {
   } // while end
 } // main end
 
-//--------------
-// imPlotWindow
-//--------------
-//
-fn imPlotWindow(fshow: *bool) !void {
-  const numx = 20;
-  const local = struct {
-    var bar_data:[numx]ig.ImS32 = undefined;
-    var x_data  :[numx]ig.ImS32 = undefined;
-    var y_data  :[numx]ig.ImS32 = undefined;
-    var initReq = true;
-  };
-  if (local.initReq) {
-    local.initReq = false;
-    for(0..numx)|i|{
-      local.bar_data[i] = @mod(c.rand(), numx * numx) ;
-      local.x_data[i] =  @intCast(i);
-      local.y_data[i] =  @intCast(i * i);
-    }
-  }
-  if (ig.igBegin("Plot Window", fshow, 0)) {
+//------------------
+// imPlotDemoWindow
+//-------------------
+fn imPlotDemoWindow() !void {
+  if (ig.igBegin("ImPlot demo: All demos have been written in Zig lang.", null, 0)) {
     defer ig.igEnd();
-    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
-      defer ig.ImPlot_EndPlot();
-      try ip.ImPlot_PlotBars(  "My Bar Plot"  ,&local.bar_data ,local.bar_data.len);
-      try ip.ImPlot_PlotLineXY("My Line Plot" ,&local.x_data ,&local.y_data ,local.x_data.len);
-    }
-  }
-}
-
-//---------------
-// imPlotWindow2
-//---------------
-fn imPlotWindow2(fshow: *bool) !void {
-  const numx = 20;
-  const local = struct {
-    var bar_data:[numx]ig.ImS32 = undefined;
-    var x_data  :[numx]ig.ImS32 = undefined;
-    var y_data  :[numx]ig.ImS32 = undefined;
-    var initReq = true;
-  };
-  if (local.initReq) {
-    local.initReq = false;
-    for(0..numx)|i|{
-      local.bar_data[i] = @mod(c.rand(), numx * numx) ;
-      local.x_data[i] =  @intCast(i);
-      local.y_data[i] =  @intCast(i * i);
-    }
-  }
-  if (ig.igBegin("Plot Window2", fshow, 0)) {
-    defer ig.igEnd();
-    //
-    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
-      defer ig.ImPlot_EndPlot();
-      //
-      ig.ImPlot_PlotBars_S32PtrInt("My Bar Plot"
-                              ,&local.bar_data
-                              ,local.bar_data.len
-                              ,0.67 // bar_size
-                              ,0.0  // shift
-                              ,0    // ImPlotFlags
-                              ,0    // offset
-                              ,@sizeOf(ig.ImS32)); // stride
-      ig.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot"
-                              ,&local.x_data
-                              ,&local.y_data
-                              ,local.x_data.len
-                              ,0    // ImPlotFlags
-                              ,0    // offset
-                              ,@sizeOf(ig.ImS32)); // stride
-    }
-  }
-}
-
-//---------------
-// imPlotWindow3
-//---------------
-fn imPlotWindow3() !void {
-  if (ig.igBegin("Plot Window3", null, 0)) {
-    defer ig.igEnd();
-    try demo.Demo_Tables();
+    try demo.imPlotDemoTabs();
   }
 }

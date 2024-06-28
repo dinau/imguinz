@@ -9,6 +9,9 @@
     - [zig_glfw_opengl3_jp](#zig_glfw_opengl3_jp)
     - [zig_glfw_opengl3_image_load](#zig_glfw_opengl3_image_load)
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
+  - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
+    - [SubPlots/Tables.zig](#subplotstableszig)
+    - [Plots/Heatmaps.zig](#plotsheatmapszig)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -18,7 +21,7 @@
 
 # ImGuinZ
 
-This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) as first step.
+This project aims to simply and easily build [Dear ImGui](https://githubcom/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
 
 ImGui version **1.90.8** (2024/06)
 
@@ -27,7 +30,7 @@ ImGui version **1.90.8** (2024/06)
 ---
 
 - Windows10 OS
-- Use **Zig: 0.12.0** (zig cc: clang version 17.0.6)
+- Use **Zig: 0.12.0** 
 - **Zig 0.13.0 ?** (Compiling is ok so far)
 - MSys/MinGW basic commands (make, rm, cp ...)
 
@@ -55,9 +58,7 @@ ImGui version **1.90.8** (2024/06)
    or 
 
    ```sh
-   zig build --release=fast
-   cd zig-out/bin
-   zig_glfw_opengl3.exe
+   zig build --release=fast run
    ```
 
 ## Examples screen shots 
@@ -105,6 +106,31 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 | [zig_glfw_opengl3_implot](examples/zig_glfw_opengl3_implot) |
 
 ![alt](img/zig_glfw_opengl3_implot.png)
+
+## ImPlot Demo written in Zig lang.
+
+---
+
+Now work in progress.
+
+
+### Build and run
+
+```sh
+pwd
+imPlotDemo
+make run   # or zig build --release=fast run
+```
+
+
+### [SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
+
+![alt](examples/imPlotDemo/img/Tables.png)
+
+### [Plots/Heatmaps.zig](examples/imPlotDemo/src/plots/Heatmaps.zig)
+
+![alt](examples/imPlotDemo/img/Heatmaps.png)
+
 
 ## Hiding console window
 

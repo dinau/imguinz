@@ -89,7 +89,7 @@ let hina1 =  """
   _ = &tsize;
   switch (typ) {
     f32           => ig.ImPlot_Plot$1_FloatPtrInt  ($3),
-    f64           => ig.ImPlot_Plot$1_DoublePtrInt ($3),
+    f64           => ig.ImPlot_Plot$1_doublePtrInt ($3),
     i8            => ig.ImPlot_Plot$1_S8PtrInt     ($3),
     u8            => ig.ImPlot_Plot$1_U8PtrInt     ($3),
     i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrInt    ($3),
@@ -108,7 +108,7 @@ let hina2 =  """
   _ = &tsize;
   switch (typ) {
     f32           => ig.ImPlot_Plot$1_FloatPtrFloatPtr   ($3),
-    f64           => ig.ImPlot_Plot$1_DoublePtrDoublePtr ($3),
+    f64           => ig.ImPlot_Plot$1_doublePtrdoublePtr ($3),
     i8            => ig.ImPlot_Plot$1_S8PtrS8Ptr         ($3),
     u8            => ig.ImPlot_Plot$1_U8PtrU8Ptr         ($3),
     i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrS16Ptr       ($3),
@@ -133,19 +133,19 @@ echo header
 for fnInfo in db:
   for iPat in fnInfo.patns:
     echo "//----------------------"
-    echo "// Plot$1$2()" % [fnInfo.name, iPat.postfix]
+    echo "// ImPlot_Plot$1$2()" % [fnInfo.name, iPat.postfix]
     echo "//----------------------"
     var splitedFullArgs = iPat.fullArgs.split(",")
     var sArgs = ""
     for i in 0..<iPat.shortArgsNum:
       sArgs &= splitedFullArgs[i] & ","
-    echo "pub fn Plot$1$2($3) !void {" % [fnInfo.name, iPat.postfix, sArgs[0..<sArgs.len - 1]]
+    echo "pub fn ImPlot_Plot$1$2($3) !void {" % [fnInfo.name, iPat.postfix, sArgs[0..<sArgs.len - 1]]
     echo hinas[iPat.hina] % [fnInfo.name, iPat.postfix, iPat.shortArgsInner, splitedFullArgs[1].split(":")[0].strip]
     #
     echo "//----------------------"
-    echo "// Plot$1$2Ex()" % [fnInfo.name, iPat.postfix]
+    echo "// ImPlot_Plot$1$2Ex()" % [fnInfo.name, iPat.postfix]
     echo "//----------------------"
-    echo "pub fn Plot$1$2Ex($3) !void {" % [fnInfo.name, iPat.postfix, iPat.fullArgs]
+    echo "pub fn ImPlot_Plot$1$2Ex($3) !void {" % [fnInfo.name, iPat.postfix, iPat.fullArgs]
     sArgs = ""
     for arg in  iPat.fullArgs.split(","):
       sArgs &= arg.split(":")[0] & ", "
