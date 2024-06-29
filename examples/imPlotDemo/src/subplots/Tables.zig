@@ -39,9 +39,9 @@ pub fn Demo_Tables() !void {
         ig.ImPlot_PushColormap_PlotColormap(ig.ImPlotColormap_Cool);
         for (0..10) |row| {
             ig.igTableNextRow(0, 0);
-            c.srand(row);
+            c.srand(@as(c_uint,@intCast(row)));
             for (0..dtSize) |i| {
-                st.data[i] = @as(f32, @floatFromInt(@mod(c.rand(), dtSize))) / 10.0;
+                st.data[i] = utils.RandomRange(0.0, 10.0);
             }
             _ = ig.igTableSetColumnIndex(0);
             ig.igText("EMG %d", row);
