@@ -1,7 +1,6 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
 const ip = @import ("zimplot.zig");
-const demo = @import ("imPlotDemo.zig");
 
 pub const ig = @cImport ({
   @cInclude ("GLFW/glfw3.h");
@@ -208,7 +207,6 @@ pub fn main () !void {
     if (showImPlotTestWindow){
       try imPlotWindow(&showImPlotTestWindow);
       try imPlotWindow2(&showImPlotTestWindow);
-      try imPlotWindow3();
     }
 
     //-----------
@@ -305,15 +303,5 @@ fn imPlotWindow2(fshow: *bool) !void {
                               ,0    // offset
                               ,@sizeOf(ig.ImS32)); // stride
     }
-  }
-}
-
-//---------------
-// imPlotWindow3
-//---------------
-fn imPlotWindow3() !void {
-  if (ig.igBegin("Plot Window3", null, 0)) {
-    defer ig.igEnd();
-    try demo.Demo_Tables();
   }
 }

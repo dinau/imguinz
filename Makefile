@@ -1,5 +1,6 @@
 # All example are built at a time.
 EXAMPLE_DIRS := \
+							examples/imPlotDemo \
 							examples/zig_sdl2_opengl3 \
 							examples/zig_glfw_opengl3 \
 							examples/zig_glfw_opengl3_implot \
