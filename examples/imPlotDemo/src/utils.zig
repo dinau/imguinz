@@ -14,6 +14,7 @@ pub const ig = @cImport ({
 const ip = @import("zimplot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
+pub const IMPLOT_AUTO_COL =  ig.ImVec4{.x = 0, .y = 0, .z = 0, .w = -1};
 
 const Allocator = std.mem.Allocator;
 const ArenaAllocator = std.heap.ArenaAllocator;

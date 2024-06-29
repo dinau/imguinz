@@ -11,10 +11,11 @@
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
-    - [Axes/LogScale.zig](#axeslogscalezig)
-    - [SubPlots/Tables.zig](#subplotstableszig)
+    - [Plots/LinePlots.zig](#plotslineplotszig)
     - [Plots/Heatmaps.zig](#plotsheatmapszig)
     - [Plots/Images.zig](#plotsimageszig)
+    - [Axes/LogScale.zig](#axeslogscalezig)
+    - [SubPlots/Tables.zig](#subplotstableszig)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -125,17 +126,11 @@ imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
-### Axes/LogScale.zig
+### Plots/LinePlots.zig
 
-[Axes/LogScale.zig](examples/imPlotDemo/src/axes/LogScale.zig)
+[Plots/LinePlots.zig](examples/imPlotDemo/src/plots/LinePlots.zig)
 
-![alt](examples/imPlotDemo/img/LogScale.png)
-
-### SubPlots/Tables.zig
-
-[SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
-
-![alt](examples/imPlotDemo/img/Tables.png)
+![alt](examples/imPlotDemo/img/LinePlots.png)
 
 ### Plots/Heatmaps.zig
 
@@ -148,6 +143,19 @@ make run   # or zig build --release=fast run
 [Plots/Images.zig](examples/imPlotDemo/src/plots/Images.zig)
 
 ![alt](examples/imPlotDemo/img/Images.png)
+
+### Axes/LogScale.zig
+
+[Axes/LogScale.zig](examples/imPlotDemo/src/axes/LogScale.zig)
+
+![alt](examples/imPlotDemo/img/LogScale.png)
+
+### SubPlots/Tables.zig
+
+[SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
+
+![alt](examples/imPlotDemo/img/Tables.png)
+
 
 
 ## Hiding console window

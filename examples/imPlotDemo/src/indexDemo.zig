@@ -1,4 +1,5 @@
 const subplots_tables = @import ("subplots/Tables.zig");
+const plots_lineplots = @import ("plots/LinePlots.zig");
 const plots_heatmaps  = @import ("plots/Heatmaps.zig");
 const plots_images    = @import ("plots/Images.zig");
 const axes_logscale   = @import ("axes/LogScale.zig");
@@ -12,7 +13,7 @@ pub fn imPlotDemoTabs() !void {
     defer ig.igEndTabBar();
     if (ig.igBeginTabItem("Plots", null, 0)) {
         defer ig.igEndTabItem();
-    //  DemoHeader("Line Plots", Demo_LinePlots);
+        try  DemoHeader("Line Plots", plots_lineplots.Demo_LinePlots);
     //  DemoHeader("Filled Line Plots", Demo_FilledLinePlots);
     //  DemoHeader("Shaded Plots##", Demo_ShadedPlots);
     //  DemoHeader("Scatter Plots", Demo_ScatterPlots);
