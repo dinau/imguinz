@@ -1,10 +1,11 @@
 const subplots_tables = @import ("subplots/Tables.zig");
 const plots_heatmaps  = @import ("plots/Heatmaps.zig");
+const plots_images    = @import ("plots/Images.zig");
+const axes_logscale   = @import ("axes/LogScale.zig");
+
 pub const ig = @cImport ({
   @cInclude ("cimgui.h");
-  //@cInclude ("cimplot.h");
 });
-//const ip = @import ("zimplot.zig");
 
 pub fn imPlotDemoTabs() !void {
   if (ig.igBeginTabBar("ImPlotDemoTabs", 0)) {
@@ -28,7 +29,7 @@ pub fn imPlotDemoTabs() !void {
     //  DemoHeader("Histogram", Demo_Histogram);
     //  DemoHeader("Histogram 2D", Demo_Histogram2D);
     //  DemoHeader("Digital Plots", Demo_DigitalPlots);
-    //  DemoHeader("Images", Demo_Images);
+        try DemoHeader("Images", plots_images.Demo_Images);
     //  DemoHeader("Markers and Text", Demo_MarkersAndText);
     //  DemoHeader("NaN Values", Demo_NaNValues);
     }
@@ -39,8 +40,9 @@ pub fn imPlotDemoTabs() !void {
     //  DemoHeader("Axis Linking", Demo_SubplotAxisLinking);
       try DemoHeader("Tables", subplots_tables.Demo_Tables);
     }
-    //     if (ig.igBeginTabItem("Axes")) {
-    //         DemoHeader("Log Scale", Demo_LogScale);
+    if (ig.igBeginTabItem("Axes", null, 0)) {
+      defer ig.igEndTabItem();
+      try DemoHeader("Log Scale", axes_logscale.Demo_LogScale);
     //         DemoHeader("Symmetric Log Scale", Demo_SymmetricLogScale);
     //         DemoHeader("Time Scale", Demo_TimeScale);
     //         DemoHeader("Custom Scale", Demo_CustomScale);
@@ -50,8 +52,7 @@ pub fn imPlotDemoTabs() !void {
     //         DemoHeader("Axis Constraints", Demo_AxisConstraints);
     //         DemoHeader("Equal Axes", Demo_EqualAxes);
     //         DemoHeader("Auto-Fitting Data", Demo_AutoFittingData);
-    //         ig.igEndTabItem();
-    //     }
+    }
     //     if (ig.igBeginTabItem("Tools")) {
     //         DemoHeader("Offset and Stride", Demo_OffsetAndStride);
     //         DemoHeader("Drag Points", Demo_DragPoints);

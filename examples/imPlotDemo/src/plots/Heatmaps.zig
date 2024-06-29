@@ -1,5 +1,3 @@
-const std = @import("std");
-const ip = @import("../zimplot.zig");
 const utils = @import("../utils.zig");
 
 pub const c = @cImport({

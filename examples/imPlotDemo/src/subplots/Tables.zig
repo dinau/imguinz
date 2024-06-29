@@ -1,4 +1,3 @@
-const std = @import("std");
 const utils = @import("../utils.zig");
 
 pub const c = @cImport({
