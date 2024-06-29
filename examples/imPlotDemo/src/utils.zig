@@ -97,7 +97,7 @@ pub const ImVec4 = struct {
 };
 
 // Helper function to get random Gaussian number.
-fn RandomGauss() f64 {
+pub fn RandomGauss() f64 {
     var V1: f64 = 0;
     var V2: f64 = 0;
     var S: f64 = 0;
@@ -107,40 +107,45 @@ fn RandomGauss() f64 {
         var U1: f64 = 0;
         var U2: f64 = 0;
         while (true) {
-            U1 = std.rand.default.random.f64();
-            U2 = std.rand.default.random.f64();
+            U1 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
+            U2 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
             V1 = 2 * U1 - 1;
             V2 = 2 * U2 - 1;
             S = V1 * V1 + V2 * V2;
             if (S >= 1 or S == 0) continue;
             break;
         }
-        X = V1 * math.sqrt(-2 * math.log(S) / S);
+        X = V1 * math.sqrt(-2 * math.log(f64, math.e, S) / S);
     } else {
-        X = V2 * math.sqrt(-2 * math.log(S) / S);
+        X = V2 * math.sqrt(-2 * math.log(f64, math.e, S) / S);
     }
     phase = 1 - phase;
     return X;
 }
 
 // Represents normal distribution.
-pub const NormalDistribution = struct {
-    data: [*c]f64,
+pub fn NormalDistribution(data:[*]f64, mean:f64, sd:f64, N:usize) void {
+  for (0..N) |i| {
+    data[i] = RandomGauss() * sd + mean;
+  }
+}
 
-    pub fn init(allocator: *Allocator, mean: f64, sd: f64, N: usize) !NormalDistribution {
-        const self = NormalDistribution{
-            .data = try allocator.alloc(f64, N),
-        };
-        for (self.data) |*item| {
-            item.* = RandomGauss() * sd + mean;
-        }
-        return self;
-    }
-
-    pub fn deinit(self: *NormalDistribution, allocator: *Allocator) void {
-        allocator.free(self.data);
-    }
-};
+// TODO
+//pub const NormalDistribution = struct {
+//    data: [*c]f64,
+//    pub fn init(allocator: Allocator, mean: f64, sd: f64, N: usize) !NormalDistribution {
+//        const self = NormalDistribution{
+//            .data = try allocator.alloc(f64, N),
+//        };
+//        for (self.data) |*item| {
+//            item.* = RandomGauss() * sd + mean;
+//        }
+//        return self;
+//    }
+//    pub fn deinit(self: *NormalDistribution, allocator: *Allocator) void {
+//        allocator.free(self.data);
+//    }
+//};
 
 // Represents a scrolling buffer.
 pub const ScrollingBuffer = struct {

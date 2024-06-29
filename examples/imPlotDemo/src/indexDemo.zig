@@ -1,8 +1,10 @@
-const subplots_tables = @import ("subplots/Tables.zig");
-const plots_lineplots = @import ("plots/LinePlots.zig");
-const plots_heatmaps  = @import ("plots/Heatmaps.zig");
-const plots_images    = @import ("plots/Images.zig");
-const axes_logscale   = @import ("axes/LogScale.zig");
+const subplots_tables   = @import ("subplots/Tables.zig");
+const plots_lineplots   = @import ("plots/LinePlots.zig");
+const plots_histogram2d = @import ("plots/Histogram2D.zig");
+const plots_bargroups   = @import ("plots/BarGroups.zig");
+const plots_heatmaps    = @import ("plots/Heatmaps.zig");
+const plots_images      = @import ("plots/Images.zig");
+const axes_logscale     = @import ("axes/LogScale.zig");
 
 pub const ig = @cImport ({
   @cInclude ("cimgui.h");
@@ -20,7 +22,7 @@ pub fn imPlotDemoTabs() !void {
     //  DemoHeader("Realtime Plots", Demo_RealtimePlots);
     //  DemoHeader("Stairstep Plots", Demo_StairstepPlots);
     //  DemoHeader("Bar Plots", Demo_BarPlots);
-    //  DemoHeader("Bar Groups", Demo_BarGroups);
+        try DemoHeader("Bar Groups", plots_bargroups.Demo_BarGroups);
     //  DemoHeader("Bar Stacks", Demo_BarStacks);
     //  DemoHeader("Error Bars", Demo_ErrorBars);
     //  DemoHeader("Stem Plots##", Demo_StemPlots);
@@ -28,7 +30,7 @@ pub fn imPlotDemoTabs() !void {
     //  DemoHeader("Pie Charts", Demo_PieCharts);
         try  DemoHeader("Heatmaps", plots_heatmaps.Demo_Heatmaps);
     //  DemoHeader("Histogram", Demo_Histogram);
-    //  DemoHeader("Histogram 2D", Demo_Histogram2D);
+        try  DemoHeader("Histogram 2D", plots_histogram2d.Demo_Histogram2D);
     //  DemoHeader("Digital Plots", Demo_DigitalPlots);
         try DemoHeader("Images", plots_images.Demo_Images);
     //  DemoHeader("Markers and Text", Demo_MarkersAndText);

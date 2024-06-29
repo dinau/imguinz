@@ -25,7 +25,7 @@ pub fn ImPlot_PlotLineXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !vo
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.PlotLineXY_Argument;}
+    else =>  {return error.ImPlot_PlotLineXY_Argument;}
   }
 }
 
@@ -47,7 +47,7 @@ pub fn ImPlot_PlotLineXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int, f
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.PlotLineXY_Argument;}
+    else =>  {return error.ImPlot_PlotLineXY_Argument;}
   }
 }
 
@@ -69,7 +69,7 @@ pub fn ImPlot_PlotLineScale(label:anytype, values:anytype, count:c_int) !void {
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.PlotLineScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineScale_Argument;}
   }
 }
 
@@ -91,7 +91,7 @@ pub fn ImPlot_PlotLineScaleEx(label:anytype, values:anytype, count:c_int, xscale
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.PlotLineScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineScale_Argument;}
   }
 }
 
@@ -113,7 +113,7 @@ pub fn ImPlot_PlotLineXYScale(label:anytype, xs:anytype, ys:anytype, count:c_int
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.PlotLineXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineXYScale_Argument;}
   }
 }
 
@@ -135,7 +135,7 @@ pub fn ImPlot_PlotLineXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_i
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.PlotLineXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineXYScale_Argument;}
   }
 }
 
@@ -157,7 +157,7 @@ pub fn ImPlot_PlotScatterXY(label:anytype, xs:anytype, ys:anytype, count:c_int) 
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.PlotScatterXY_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXY_Argument;}
   }
 }
 
@@ -179,7 +179,7 @@ pub fn ImPlot_PlotScatterXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.PlotScatterXY_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXY_Argument;}
   }
 }
 
@@ -201,7 +201,7 @@ pub fn ImPlot_PlotScatterXYScale(label:anytype, xs:anytype, ys:anytype, count:c_
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.PlotScatterXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXYScale_Argument;}
   }
 }
 
@@ -223,7 +223,7 @@ pub fn ImPlot_PlotScatterXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.PlotScatterXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXYScale_Argument;}
   }
 }
 
@@ -245,7 +245,7 @@ pub fn ImPlot_PlotStairsXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.PlotStairsXY_Argument;}
+    else =>  {return error.ImPlot_PlotStairsXY_Argument;}
   }
 }
 
@@ -267,7 +267,7 @@ pub fn ImPlot_PlotStairsXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int,
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.PlotStairsXY_Argument;}
+    else =>  {return error.ImPlot_PlotStairsXY_Argument;}
   }
 }
 
@@ -289,7 +289,7 @@ pub fn ImPlot_PlotStairsScale(label:anytype, values:anytype, count:c_int) !void 
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrInt    (label, values, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.PlotStairsScale_Argument;}
+    else =>  {return error.ImPlot_PlotStairsScale_Argument;}
   }
 }
 
@@ -311,7 +311,7 @@ pub fn ImPlot_PlotStairsScaleEx(label:anytype, values:anytype, count:c_int, xsca
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.PlotStairsScale_Argument;}
+    else =>  {return error.ImPlot_PlotStairsScale_Argument;}
   }
 }
 
@@ -333,7 +333,7 @@ pub fn ImPlot_PlotShadedXyy(label:anytype, xs:anytype, ys:anytype, ys2:anytype, 
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    else =>  {return error.PlotShadedXyy_Argument;}
+    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
   }
 }
 
@@ -355,7 +355,7 @@ pub fn ImPlot_PlotShadedXyyEx(label:anytype, xs:anytype, ys:anytype, ys2:anytype
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    else =>  {return error.PlotShadedXyy_Argument;}
+    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
   }
 }
 
@@ -377,7 +377,7 @@ pub fn ImPlot_PlotShadedRefScale(label:anytype, values:anytype, count:c_int) !vo
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.PlotShadedRefScale_Argument;}
+    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
   }
 }
 
@@ -399,7 +399,7 @@ pub fn ImPlot_PlotShadedRefScaleEx(label:anytype, values:anytype, count:c_int, y
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.PlotShadedRefScale_Argument;}
+    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
   }
 }
 
@@ -421,7 +421,7 @@ pub fn ImPlot_PlotShadedXyRef(label:anytype, xs:anytype, ys:anytype, count:c_int
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    else =>  {return error.PlotShadedXyRef_Argument;}
+    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
   }
 }
 
@@ -443,7 +443,7 @@ pub fn ImPlot_PlotShadedXyRefEx(label:anytype, xs:anytype, ys:anytype, count:c_i
     u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    else =>  {return error.PlotShadedXyRef_Argument;}
+    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
   }
 }
 
@@ -465,7 +465,7 @@ pub fn ImPlot_PlotBars(label:anytype, values:anytype, count:c_int) !void {
     u32, ig.ImU32 => ig.ImPlot_PlotBars_U32PtrInt    (label, values, count, 0.67, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotBars_S64PtrInt    (label, values, count, 0.67, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotBars_U64PtrInt    (label, values, count, 0.67, 0, 0, 0, tsize),
-    else =>  {return error.PlotBars_Argument;}
+    else =>  {return error.ImPlot_PlotBars_Argument;}
   }
 }
 
@@ -487,7 +487,7 @@ pub fn ImPlot_PlotBarsEx(label:anytype, values:anytype, count:c_int, bar_size:f6
     u32, ig.ImU32 => ig.ImPlot_PlotBars_U32PtrInt    (label,  values,  count,  bar_size,  shift,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotBars_S64PtrInt    (label,  values,  count,  bar_size,  shift,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotBars_U64PtrInt    (label,  values,  count,  bar_size,  shift,  flags,  offset,  stride),
-    else =>  {return error.PlotBars_Argument;}
+    else =>  {return error.ImPlot_PlotBars_Argument;}
   }
 }
 
@@ -509,7 +509,7 @@ pub fn ImPlot_PlotBarsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !vo
     u32, ig.ImU32 => ig.ImPlot_PlotBars_U32PtrU32Ptr       (label, xs, ys, count, 0.67, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotBars_S64PtrS64Ptr       (label, xs, ys, count, 0.67, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotBars_U64PtrU64Ptr       (label, xs, ys, count, 0.67, 0, 0, tsize),
-    else =>  {return error.PlotBarsXy_Argument;}
+    else =>  {return error.ImPlot_PlotBarsXy_Argument;}
   }
 }
 
@@ -531,7 +531,95 @@ pub fn ImPlot_PlotBarsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, b
     u32, ig.ImU32 => ig.ImPlot_PlotBars_U32PtrU32Ptr       (label,  xs,  ys,  count,  bar_size,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotBars_S64PtrS64Ptr       (label,  xs,  ys,  count,  bar_size,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotBars_U64PtrU64Ptr       (label,  xs,  ys,  count,  bar_size,  flags,  offset,  stride),
-    else =>  {return error.PlotBarsXy_Argument;}
+    else =>  {return error.ImPlot_PlotBarsXy_Argument;}
   }
+}
+
+//----------------------
+// ImPlot_PlotBarGroups()
+//----------------------
+pub fn ImPlot_PlotBarGroups(label_ids:anytype,values:anytype,item_count:c_int,group_count:c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+    f32           => ig.ImPlot_PlotBarGroups_FloatPtr  (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    f64           => ig.ImPlot_PlotBarGroups_doublePtr (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    i8            => ig.ImPlot_PlotBarGroups_S8Ptr     (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    u8            => ig.ImPlot_PlotBarGroups_U8Ptr     (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    i16, ig.ImS16 => ig.ImPlot_PlotBarGroups_S16Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    u16, ig.ImU16 => ig.ImPlot_PlotBarGroups_U16Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    i32, ig.ImS32 => ig.ImPlot_PlotBarGroups_S32Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    u32, ig.ImU32 => ig.ImPlot_PlotBarGroups_U32Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    i64, ig.ImS64 => ig.ImPlot_PlotBarGroups_S64Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    u64, ig.ImU64 => ig.ImPlot_PlotBarGroups_U64Ptr    (label_ids, values, item_count, group_count, 0.67, 0, 0),
+    else =>  {return error.ImPlot_PlotBarGroups_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotBarGroupsEx()
+//----------------------
+pub fn ImPlot_PlotBarGroupsEx(label_ids:anytype,values:anytype,item_count:c_int,group_count:c_int,group_size:f64,shift:f64,flags:c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+    f32           => ig.ImPlot_PlotBarGroups_FloatPtr  (label_ids, values, item_count, group_count, group_size, shift, flags),
+    f64           => ig.ImPlot_PlotBarGroups_doublePtr (label_ids, values, item_count, group_count, group_size, shift, flags),
+    i8            => ig.ImPlot_PlotBarGroups_S8Ptr     (label_ids, values, item_count, group_count, group_size, shift, flags),
+    u8            => ig.ImPlot_PlotBarGroups_U8Ptr     (label_ids, values, item_count, group_count, group_size, shift, flags),
+    i16, ig.ImS16 => ig.ImPlot_PlotBarGroups_S16Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    u16, ig.ImU16 => ig.ImPlot_PlotBarGroups_U16Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    i32, ig.ImS32 => ig.ImPlot_PlotBarGroups_S32Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    u32, ig.ImU32 => ig.ImPlot_PlotBarGroups_U32Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    i64, ig.ImS64 => ig.ImPlot_PlotBarGroups_S64Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    u64, ig.ImU64 => ig.ImPlot_PlotBarGroups_U64Ptr    (label_ids, values, item_count, group_count, group_size, shift, flags),
+    else =>  {return error.ImPlot_PlotBarGroups_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotHistogram2D()
+//----------------------
+pub fn ImPlot_PlotHistogram2D(label_id:anytype, xs:anytype, ys:anytype,count:c_int) !f64 {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  return switch (typ) {
+    f32           => ig.ImPlot_PlotHistogram2D_FloatPtr  (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    f64           => ig.ImPlot_PlotHistogram2D_doublePtr (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i8            => ig.ImPlot_PlotHistogram2D_S8Ptr     (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u8            => ig.ImPlot_PlotHistogram2D_U8Ptr     (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i16, ig.ImS16 => ig.ImPlot_PlotHistogram2D_S16Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u16, ig.ImU16 => ig.ImPlot_PlotHistogram2D_U16Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i32, ig.ImS32 => ig.ImPlot_PlotHistogram2D_S32Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u32, ig.ImU32 => ig.ImPlot_PlotHistogram2D_U32Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i64, ig.ImS64 => ig.ImPlot_PlotHistogram2D_S64Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u64, ig.ImU64 => ig.ImPlot_PlotHistogram2D_U64Ptr    (label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    else =>  {return error.ImPlot_PlotHistogram2D_Argument;}
+  };
+}
+
+//----------------------
+// ImPlot_PlotHistogram2DEx()
+//----------------------
+pub fn ImPlot_PlotHistogram2DEx(label_id:anytype, xs:anytype, ys:anytype,count:c_int, x_bins:c_int, y_bins:c_int ,range:ig.ImPlotRect , flags:ig.ImPlotHistogramFlags ) !f64 {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  return switch (typ) {
+    f32           => ig.ImPlot_PlotHistogram2D_FloatPtr  (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    f64           => ig.ImPlot_PlotHistogram2D_doublePtr (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    i8            => ig.ImPlot_PlotHistogram2D_S8Ptr     (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    u8            => ig.ImPlot_PlotHistogram2D_U8Ptr     (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    i16, ig.ImS16 => ig.ImPlot_PlotHistogram2D_S16Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    u16, ig.ImU16 => ig.ImPlot_PlotHistogram2D_U16Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    i32, ig.ImS32 => ig.ImPlot_PlotHistogram2D_S32Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    u32, ig.ImU32 => ig.ImPlot_PlotHistogram2D_U32Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    i64, ig.ImS64 => ig.ImPlot_PlotHistogram2D_S64Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    u64, ig.ImU64 => ig.ImPlot_PlotHistogram2D_U64Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
+    else =>  {return error.ImPlot_PlotHistogram2D_Argument;}
+  };
 }
 

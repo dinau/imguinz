@@ -11,11 +11,15 @@
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
-    - [Plots/LinePlots.zig](#plotslineplotszig)
-    - [Plots/Heatmaps.zig](#plotsheatmapszig)
-    - [Plots/Images.zig](#plotsimageszig)
-    - [Axes/LogScale.zig](#axeslogscalezig)
-    - [SubPlots/Tables.zig](#subplotstableszig)
+    - [Plots](#plots)
+      - [LinePlots](#lineplots)
+      - [BarGroups](#bargroups)
+      - [Heatmaps](#heatmaps)
+      - [Histogram2D](#histogram2d)
+      - [Images](#images)
+    - [Axes](#axes)
+      - [LogScale](#logscale)
+      - [Tables](#tables)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -126,37 +130,51 @@ imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
-### Plots/LinePlots.zig
+### Plots
+
+#### LinePlots
 
 [Plots/LinePlots.zig](examples/imPlotDemo/src/plots/LinePlots.zig)
 
 ![alt](examples/imPlotDemo/img/LinePlots.png)
 
-### Plots/Heatmaps.zig
+#### BarGroups
+
+[Plots/BarGroups.zig](examples/imPlotDemo/src/plots/BarGroups.zig)
+
+![alt](examples/imPlotDemo/img/BarGroups.png)
+
+#### Heatmaps
 
 [Plots/Heatmaps.zig](examples/imPlotDemo/src/plots/Heatmaps.zig)
 
 ![alt](examples/imPlotDemo/img/Heatmaps.png)
 
-### Plots/Images.zig
+#### Histogram2D
+
+[Plots/Histogram2D.zig](examples/imPlotDemo/src/plots/Histogram2D.zig)
+
+![alt](examples/imPlotDemo/img/Histogram2D.png)
+
+#### Images
 
 [Plots/Images.zig](examples/imPlotDemo/src/plots/Images.zig)
 
 ![alt](examples/imPlotDemo/img/Images.png)
 
-### Axes/LogScale.zig
+### Axes
+
+#### LogScale
 
 [Axes/LogScale.zig](examples/imPlotDemo/src/axes/LogScale.zig)
 
 ![alt](examples/imPlotDemo/img/LogScale.png)
 
-### SubPlots/Tables.zig
+#### Tables
 
 [SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
 
 ![alt](examples/imPlotDemo/img/Tables.png)
-
-
 
 ## Hiding console window
 
