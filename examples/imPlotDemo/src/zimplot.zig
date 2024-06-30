@@ -8,9 +8,9 @@ pub const ig = @cImport ({
 
 
 //----------------------
-// ImPlot_PlotLineXY()
+// ImPlot_PlotLineXy()
 //----------------------
-pub fn ImPlot_PlotLineXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+pub fn ImPlot_PlotLineXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -25,14 +25,14 @@ pub fn ImPlot_PlotLineXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !vo
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotLineXY_Argument;}
+    else =>  {return error.ImPlot_PlotLineXy_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotLineXYEx()
+// ImPlot_PlotLineXyEx()
 //----------------------
-pub fn ImPlot_PlotLineXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
+pub fn ImPlot_PlotLineXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -47,7 +47,7 @@ pub fn ImPlot_PlotLineXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int, f
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotLineXY_Argument;}
+    else =>  {return error.ImPlot_PlotLineXy_Argument;}
   }
 }
 
@@ -96,9 +96,9 @@ pub fn ImPlot_PlotLineScaleEx(label:anytype, values:anytype, count:c_int, xscale
 }
 
 //----------------------
-// ImPlot_PlotLineXYScale()
+// ImPlot_PlotLineXyScale()
 //----------------------
-pub fn ImPlot_PlotLineXYScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+pub fn ImPlot_PlotLineXyScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -113,14 +113,14 @@ pub fn ImPlot_PlotLineXYScale(label:anytype, xs:anytype, ys:anytype, count:c_int
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotLineXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineXyScale_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotLineXYScaleEx()
+// ImPlot_PlotLineXyScaleEx()
 //----------------------
-pub fn ImPlot_PlotLineXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
+pub fn ImPlot_PlotLineXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -135,14 +135,14 @@ pub fn ImPlot_PlotLineXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_i
     u32, ig.ImU32 => ig.ImPlot_PlotLine_U32PtrU32Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotLine_S64PtrS64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotLine_U64PtrU64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotLineXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotLineXyScale_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotScatterXY()
+// ImPlot_PlotScatterXy()
 //----------------------
-pub fn ImPlot_PlotScatterXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+pub fn ImPlot_PlotScatterXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -157,14 +157,14 @@ pub fn ImPlot_PlotScatterXY(label:anytype, xs:anytype, ys:anytype, count:c_int) 
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotScatterXY_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXy_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotScatterXYEx()
+// ImPlot_PlotScatterXyEx()
 //----------------------
-pub fn ImPlot_PlotScatterXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
+pub fn ImPlot_PlotScatterXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -179,14 +179,14 @@ pub fn ImPlot_PlotScatterXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotScatterXY_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXy_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotScatterXYScale()
+// ImPlot_PlotScatterXyScale()
 //----------------------
-pub fn ImPlot_PlotScatterXYScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+pub fn ImPlot_PlotScatterXyScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -201,14 +201,14 @@ pub fn ImPlot_PlotScatterXYScale(label:anytype, xs:anytype, ys:anytype, count:c_
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label, xs, ys, count, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotScatterXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXyScale_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotScatterXYScaleEx()
+// ImPlot_PlotScatterXyScaleEx()
 //----------------------
-pub fn ImPlot_PlotScatterXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
+pub fn ImPlot_PlotScatterXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -223,14 +223,14 @@ pub fn ImPlot_PlotScatterXYScaleEx(label:anytype, xs:anytype, ys:anytype, count:
     u32, ig.ImU32 => ig.ImPlot_PlotScatter_U32PtrU32Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotScatter_S64PtrS64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotScatter_U64PtrU64Ptr       (label,  xs,  ys,  count,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotScatterXYScale_Argument;}
+    else =>  {return error.ImPlot_PlotScatterXyScale_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotStairsXY()
+// ImPlot_PlotStairsXy()
 //----------------------
-pub fn ImPlot_PlotStairsXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+pub fn ImPlot_PlotStairsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -245,14 +245,14 @@ pub fn ImPlot_PlotStairsXY(label:anytype, xs:anytype, ys:anytype, count:c_int) !
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, tsize),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, tsize),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotStairsXY_Argument;}
+    else =>  {return error.ImPlot_PlotStairsXy_Argument;}
   }
 }
 
 //----------------------
-// ImPlot_PlotStairsXYEx()
+// ImPlot_PlotStairsXyEx()
 //----------------------
-pub fn ImPlot_PlotStairsXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
+pub fn ImPlot_PlotStairsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
@@ -267,7 +267,7 @@ pub fn ImPlot_PlotStairsXYEx(label:anytype, xs:anytype, ys:anytype, count:c_int,
     u32, ig.ImU32 => ig.ImPlot_PlotStairs_U32PtrU32Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrS64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrU64Ptr       (label,  xs,  ys,  count,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotStairsXY_Argument;}
+    else =>  {return error.ImPlot_PlotStairsXy_Argument;}
   }
 }
 
@@ -312,138 +312,6 @@ pub fn ImPlot_PlotStairsScaleEx(label:anytype, values:anytype, count:c_int, xsca
     i64, ig.ImS64 => ig.ImPlot_PlotStairs_S64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     u64, ig.ImU64 => ig.ImPlot_PlotStairs_U64PtrInt    (label,  values,  count,  xscale,  xstart,  flags,  offset,  stride),
     else =>  {return error.ImPlot_PlotStairsScale_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedXyy()
-//----------------------
-pub fn ImPlot_PlotShadedXyy(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int) !void {
-  const typ =  @TypeOf(xs[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label, xs, ys, ys2, count, 0, 0, tsize),
-    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label, xs, ys, ys2, count, 0, 0, tsize),
-    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label, xs, ys, ys2, count, 0, 0, tsize),
-    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label, xs, ys, ys2, count, 0, 0, tsize),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label, xs, ys, ys2, count, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedXyyEx()
-//----------------------
-pub fn ImPlot_PlotShadedXyyEx(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
-  const typ =  @TypeOf(xs[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedRefScale()
-//----------------------
-pub fn ImPlot_PlotShadedRefScale(label:anytype, values:anytype, count:c_int) !void {
-  const typ =  @TypeOf(values[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrInt  (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    f64           => ig.ImPlot_PlotShaded_doublePtrInt (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    i8            => ig.ImPlot_PlotShaded_S8PtrInt     (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    u8            => ig.ImPlot_PlotShaded_U8PtrInt     (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedRefScaleEx()
-//----------------------
-pub fn ImPlot_PlotShadedRefScaleEx(label:anytype, values:anytype, count:c_int, yref:f64, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
-  const typ =  @TypeOf(values[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrInt  (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    f64           => ig.ImPlot_PlotShaded_doublePtrInt (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    i8            => ig.ImPlot_PlotShaded_S8PtrInt     (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    u8            => ig.ImPlot_PlotShaded_U8PtrInt     (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedXyRef()
-//----------------------
-pub fn ImPlot_PlotShadedXyRef(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
-  const typ =  @TypeOf(xs[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label, xs, ys, count, 0, 0, 0, tsize),
-    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label, xs, ys, count, 0, 0, 0, tsize),
-    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label, xs, ys, count, 0, 0, 0, tsize),
-    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label, xs, ys, count, 0, 0, 0, tsize),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
-    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
-  }
-}
-
-//----------------------
-// ImPlot_PlotShadedXyRefEx()
-//----------------------
-pub fn ImPlot_PlotShadedXyRefEx(label:anytype, xs:anytype, ys:anytype, count:c_int, yref:f64, flags:c_int, offset:c_int, stride: c_int) !void {
-  const typ =  @TypeOf(xs[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-  switch (typ) {
-    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
-    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
   }
 }
 
@@ -621,5 +489,225 @@ pub fn ImPlot_PlotHistogram2DEx(label_id:anytype, xs:anytype, ys:anytype,count:c
     u64, ig.ImU64 => ig.ImPlot_PlotHistogram2D_U64Ptr    (label_id,  xs,  ys, count,  x_bins,  y_bins, range,  flags),
     else =>  {return error.ImPlot_PlotHistogram2D_Argument;}
   };
+}
+
+//----------------------
+// ImPlot_PlotShadedXyy()
+//----------------------
+pub fn ImPlot_PlotShadedXyy(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtrFloatPtr    (label, xs, ys, ys2, count, 0, 0, tsize),
+    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtrdoublePtr (label, xs, ys, ys2, count, 0, 0, tsize),
+    i8            => ig.ImPlot_PlotShaded_S8PtrS8PtrS8Ptr             (label, xs, ys, ys2, count, 0, 0, tsize),
+    u8            => ig.ImPlot_PlotShaded_U8PtrU8PtrU8Ptr             (label, xs, ys, ys2, count, 0, 0, tsize),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16PtrS16Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16PtrU16Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32PtrS32Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32PtrU32Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64PtrS64Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64PtrU64Ptr          (label, xs, ys, ys2, count, 0, 0, tsize),
+    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotShadedXyyEx()
+//----------------------
+pub fn ImPlot_PlotShadedXyyEx(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtrFloatPtr    (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtrdoublePtr (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    i8            => ig.ImPlot_PlotShaded_S8PtrS8PtrS8Ptr             (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    u8            => ig.ImPlot_PlotShaded_U8PtrU8PtrU8Ptr             (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16PtrS16Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16PtrU16Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32PtrS32Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32PtrU32Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64PtrS64Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64PtrU64Ptr          (label,  xs,  ys,  ys2,  count,  flags,  offset,  stride),
+    else =>  {return error.ImPlot_PlotShadedXyy_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotShadedRefScale()
+//----------------------
+pub fn ImPlot_PlotShadedRefScale(label:anytype, values:anytype, count:c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrInt  (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    f64           => ig.ImPlot_PlotShaded_doublePtrInt (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    i8            => ig.ImPlot_PlotShaded_S8PtrInt     (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    u8            => ig.ImPlot_PlotShaded_U8PtrInt     (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label, values, count, 0, 1.0, 0, 0, 0, tsize),
+    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotShadedRefScaleEx()
+//----------------------
+pub fn ImPlot_PlotShadedRefScaleEx(label:anytype, values:anytype, count:c_int, yref:f64, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrInt  (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    f64           => ig.ImPlot_PlotShaded_doublePtrInt (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    i8            => ig.ImPlot_PlotShaded_S8PtrInt     (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    u8            => ig.ImPlot_PlotShaded_U8PtrInt     (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrInt    (label,  values,  count,  yref,  xscale,  xstart,  flags,  offset,  stride),
+    else =>  {return error.ImPlot_PlotShadedRefScale_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotShadedXyRef()
+//----------------------
+pub fn ImPlot_PlotShadedXyRef(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label, xs, ys, count, 0, 0, 0, tsize),
+    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label, xs, ys, count, 0, 0, 0, tsize),
+    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label, xs, ys, count, 0, 0, 0, tsize),
+    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label, xs, ys, count, 0, 0, 0, tsize),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label, xs, ys, count, 0, 0, 0, tsize),
+    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotShadedXyRefEx()
+//----------------------
+pub fn ImPlot_PlotShadedXyRefEx(label:anytype, xs:anytype, ys:anytype, count:c_int, yref:f64, flags:c_int, offset:c_int, stride: c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotShaded_FloatPtrFloatPtr   (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    f64           => ig.ImPlot_PlotShaded_doublePtrdoublePtr (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    i8            => ig.ImPlot_PlotShaded_S8PtrS8Ptr         (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    u8            => ig.ImPlot_PlotShaded_U8PtrU8Ptr         (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    i16, ig.ImS16 => ig.ImPlot_PlotShaded_S16PtrS16Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    u16, ig.ImU16 => ig.ImPlot_PlotShaded_U16PtrU16Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    i32, ig.ImS32 => ig.ImPlot_PlotShaded_S32PtrS32Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    u32, ig.ImU32 => ig.ImPlot_PlotShaded_U32PtrU32Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    i64, ig.ImS64 => ig.ImPlot_PlotShaded_S64PtrS64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    u64, ig.ImU64 => ig.ImPlot_PlotShaded_U64PtrU64Ptr       (label,  xs,  ys,  count,  yref,  flags,  offset,  stride),
+    else =>  {return error.ImPlot_PlotShadedXyRef_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotPieChart()
+//----------------------
+pub fn ImPlot_PlotPieChart(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotPieChart_FloatPtrStr  (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    f64           => ig.ImPlot_PlotPieChart_doublePtrStr (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    i8            => ig.ImPlot_PlotPieChart_S8PtrStr     (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    u8            => ig.ImPlot_PlotPieChart_U8PtrStr     (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    i16, ig.ImS16 => ig.ImPlot_PlotPieChart_S16PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    u16, ig.ImU16 => ig.ImPlot_PlotPieChart_U16PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    i32, ig.ImS32 => ig.ImPlot_PlotPieChart_S32PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    u32, ig.ImU32 => ig.ImPlot_PlotPieChart_U32PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    i64, ig.ImS64 => ig.ImPlot_PlotPieChart_S64PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    u64, ig.ImU64 => ig.ImPlot_PlotPieChart_U64PtrStr    (label_ids, values, count, x, y, radius, "%.1f", 90, 0),
+    else =>  {return error.ImPlot_PlotPieChart_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotPieChartEx()
+//----------------------
+pub fn ImPlot_PlotPieChartEx(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,label_fmt:anytype,angle0:f64,flags:c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotPieChart_FloatPtrStr  (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    f64           => ig.ImPlot_PlotPieChart_doublePtrStr (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    i8            => ig.ImPlot_PlotPieChart_S8PtrStr     (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    u8            => ig.ImPlot_PlotPieChart_U8PtrStr     (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    i16, ig.ImS16 => ig.ImPlot_PlotPieChart_S16PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    u16, ig.ImU16 => ig.ImPlot_PlotPieChart_U16PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    i32, ig.ImS32 => ig.ImPlot_PlotPieChart_S32PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    u32, ig.ImU32 => ig.ImPlot_PlotPieChart_U32PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    i64, ig.ImS64 => ig.ImPlot_PlotPieChart_S64PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    u64, ig.ImU64 => ig.ImPlot_PlotPieChart_U64PtrStr    (label_ids, values,  count, x, y, radius, label_fmt, angle0, flags),
+    else =>  {return error.ImPlot_PlotPieChart_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotPieChartFmt()
+//----------------------
+pub fn ImPlot_PlotPieChartFmt(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ig.ImPlotFormatter ) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotPieChart_FloatPtrPlotFormatter  (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    f64           => ig.ImPlot_PlotPieChart_doublePtrPlotFormatter (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    i8            => ig.ImPlot_PlotPieChart_S8PtrPlotFormatter     (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    u8            => ig.ImPlot_PlotPieChart_U8PtrPlotFormatter     (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    i16, ig.ImS16 => ig.ImPlot_PlotPieChart_S16PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    u16, ig.ImU16 => ig.ImPlot_PlotPieChart_U16PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    i32, ig.ImS32 => ig.ImPlot_PlotPieChart_S32PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    u32, ig.ImU32 => ig.ImPlot_PlotPieChart_U32PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    i64, ig.ImS64 => ig.ImPlot_PlotPieChart_S64PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    u64, ig.ImU64 => ig.ImPlot_PlotPieChart_U64PtrPlotFormatter    (label_ids, values, count, x, y, radius, fmt, null, 90, 0),
+    else =>  {return error.ImPlot_PlotPieChartFmt_Argument;}
+  }
+}
+
+//----------------------
+// ImPlot_PlotPieChartFmtEx()
+//----------------------
+pub fn ImPlot_PlotPieChartFmtEx(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ig.ImPlotFormatter ,fmt_data:anytype, angle0:f64,flags:c_int) !void {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  switch (typ) {
+    f32           => ig.ImPlot_PlotPieChart_FloatPtrPlotFormatter  (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    f64           => ig.ImPlot_PlotPieChart_doublePtrPlotFormatter (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    i8            => ig.ImPlot_PlotPieChart_S8PtrPlotFormatter     (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    u8            => ig.ImPlot_PlotPieChart_U8PtrPlotFormatter     (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    i16, ig.ImS16 => ig.ImPlot_PlotPieChart_S16PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    u16, ig.ImU16 => ig.ImPlot_PlotPieChart_U16PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    i32, ig.ImS32 => ig.ImPlot_PlotPieChart_S32PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    u32, ig.ImU32 => ig.ImPlot_PlotPieChart_U32PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    i64, ig.ImS64 => ig.ImPlot_PlotPieChart_S64PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    u64, ig.ImU64 => ig.ImPlot_PlotPieChart_U64PtrPlotFormatter    (label_ids, values,  count, x, y, radius, fmt, fmt_data,  angle0, flags),
+    else =>  {return error.ImPlot_PlotPieChartFmt_Argument;}
+  }
 }
 

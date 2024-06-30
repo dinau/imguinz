@@ -11,15 +11,18 @@
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
-    - [Plots](#plots)
-      - [LinePlots](#lineplots)
+    - [Plots Tab](#plots-tab)
+      - [LinePlots (Dynamic)](#lineplots-dynamic)
       - [BarGroups](#bargroups)
+      - [BarStacks](#barstacks)
+      - [PieCharts](#piecharts)
       - [Heatmaps](#heatmaps)
       - [Histogram2D](#histogram2d)
       - [Images](#images)
-    - [Axes](#axes)
+    - [Axes Tab](#axes-tab)
       - [LogScale](#logscale)
-      - [Tables](#tables)
+    - [Subplots Tab](#subplots-tab)
+      - [Tables (Dynamic)](#tables-dynamic)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -37,7 +40,7 @@ ImGui version **1.90.8** (2024/06)
 
 ---
 
-- Windows10 OS
+- Windows10 OS or later
 - Use **Zig: 0.12.0** 
 - **Zig 0.13.0 ?** (Compiling is ok so far)
 - MSys/MinGW basic commands (make, rm, cp ...)
@@ -102,7 +105,7 @@ ImGui version **1.90.8** (2024/06)
 | [zig_glfw_opengl3_image_load](examples/zig_glfw_opengl3_image_load) |
 
 ![alt](img/zig_glfw_opengl3_image_load.png)  
-Image file captured would be saved in current folder.  
+Image file captured would be saved in the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ### zig_glfw_opengl3_implot
@@ -130,9 +133,11 @@ imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
-### Plots
+### Plots Tab
 
-#### LinePlots
+---
+
+#### LinePlots (Dynamic)
 
 [Plots/LinePlots.zig](examples/imPlotDemo/src/plots/LinePlots.zig)
 
@@ -143,6 +148,18 @@ make run   # or zig build --release=fast run
 [Plots/BarGroups.zig](examples/imPlotDemo/src/plots/BarGroups.zig)
 
 ![alt](examples/imPlotDemo/img/BarGroups.png)
+
+#### BarStacks
+
+[Plots/BarStacks.zig](examples/imPlotDemo/src/plots/BarStacks.zig)
+
+![alt](examples/imPlotDemo/img/BarStacks.png)
+
+#### PieCharts
+
+[Plots/PieCharts.zig](examples/imPlotDemo/src/plots/PieCharts.zig)
+
+![alt](examples/imPlotDemo/img/PieCharts.png)
 
 #### Heatmaps
 
@@ -162,7 +179,9 @@ make run   # or zig build --release=fast run
 
 ![alt](examples/imPlotDemo/img/Images.png)
 
-### Axes
+### Axes Tab
+
+---
 
 #### LogScale
 
@@ -170,7 +189,11 @@ make run   # or zig build --release=fast run
 
 ![alt](examples/imPlotDemo/img/LogScale.png)
 
-#### Tables
+### Subplots Tab
+
+---
+
+#### Tables (Dynamic)
 
 [SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
 

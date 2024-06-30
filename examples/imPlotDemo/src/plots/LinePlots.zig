@@ -8,7 +8,7 @@ pub const ig = @cImport({
     @cInclude("cimplot.h");
 });
 
-pub fn Demo_LinePlots() !void {
+pub fn demo_LinePlots() !void {
     const st = struct {
         var xs1: [1001]f32 = undefined;
         var ys1: [1001]f32 = undefined;
@@ -27,9 +27,9 @@ pub fn Demo_LinePlots() !void {
     }
     if (ig.ImPlot_BeginPlot("Line Plots", .{ .x = -1, .y = 0 }, 0)) {
         ig.ImPlot_SetupAxes("x", "y", 0, 0);
-        try ip.ImPlot_PlotLineXY("f(x)", &st.xs1, &st.ys1, 1001);
+        try ip.ImPlot_PlotLineXy("f(x)", &st.xs1, &st.ys1, 1001);
         ig.ImPlot_SetNextMarkerStyle(ig.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
-        try ip.ImPlot_PlotLineXYEx("g(x)", &st.xs2, &st.ys2, 20, ig.ImPlotLineFlags_Segments, 0, @sizeOf(@TypeOf(st.xs2[0])));
+        try ip.ImPlot_PlotLineXyEx("g(x)", &st.xs2, &st.ys2, 20, ig.ImPlotLineFlags_Segments, 0, @sizeOf(@TypeOf(st.xs2[0])));
         ig.ImPlot_EndPlot();
     }
 }

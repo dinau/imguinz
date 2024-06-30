@@ -5,7 +5,7 @@ pub const ig = @cImport({
     @cInclude("loadImage.h");
 });
 
-pub fn Demo_Images() !void {
+pub fn demo_Images() !void {
     const ImageName = "himeji-400.jpg";
     const st = struct {
         var bmin = ig.ImPlotPoint{ .x = 0, .y = 0 };

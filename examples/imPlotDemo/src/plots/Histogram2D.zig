@@ -7,7 +7,7 @@ pub const ig = @cImport({
     @cInclude("cimplot.h");
 });
 
-pub fn Demo_Histogram2D() !void {
+pub fn demo_Histogram2D() !void {
     const Num = 100000;
     const st = struct {
         var count: c_int = 50000;

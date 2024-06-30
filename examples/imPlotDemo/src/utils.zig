@@ -79,8 +79,8 @@ pub fn RandomRange(min: f32, max: f32) f32 {
 }
 
 // Returns a random color.
-pub fn RandomColor() ImVec4 {
-    return ImVec4{
+pub fn RandomColor() ig.ImVec4 {
+    return ig.ImVec4{
         .x = RandomRange(0.0, 1.0),
         .y = RandomRange(0.0, 1.0),
         .z = RandomRange(0.0, 1.0),
@@ -89,12 +89,12 @@ pub fn RandomColor() ImVec4 {
 }
 
 // Represents a 4-component vector with float coordinates.
-pub const ImVec4 = struct {
-    x: f32,
-    y: f32,
-    z: f32,
-    w: f32,
-};
+//pub const ImVec4 = struct {
+//    x: f32,
+//    y: f32,
+//    z: f32,
+//    w: f32,
+//};
 
 // Helper function to get random Gaussian number.
 pub fn RandomGauss() f64 {
@@ -231,7 +231,7 @@ pub const HugeTimeData = struct {
 //-------------
 // Sparkline()
 //-------------
-//pub fn Sparkline(id: []const u8, values: []const f32, count: i32, min_v: f32, max_v: f32, offset: i32, col: ImVec4, size: ig.ImVec2) void {
+//pub fn Sparkline(id: []const u8, values: []const f32, count: i32, min_v: f32, max_v: f32, offset: i32, col: ig.ImVec4, size: ig.ImVec2) void {
 //    // Implement sparkline plotting
 //}
 pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: ig.ImVec4, size: ig.ImVec2) void {

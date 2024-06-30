@@ -9,11 +9,10 @@ pub const ig = @cImport({
     @cInclude("cimplot.h");
 });
 
-
 //---------------
-// Demo_Tables()
+// demo_Tables()
 //---------------
-pub fn Demo_Tables() !void {
+pub fn demo_Tables() !void {
     const st = struct {
         var anim = true;
         var offset: usize = 0;

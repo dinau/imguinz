@@ -9,7 +9,7 @@ pub const ig = @cImport({
     @cInclude("cimplot.h");
 });
 
-pub fn Demo_Heatmaps() !void {
+pub fn demo_Heatmaps() !void {
     const st = struct {
         var values1 = [_][7]f32{ [_]f32{ 0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0 },
                                  [_]f32{ 2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0 },

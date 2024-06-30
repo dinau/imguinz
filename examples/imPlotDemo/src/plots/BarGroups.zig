@@ -5,7 +5,7 @@ pub const ig = @cImport({
     @cInclude("cimplot.h");
 });
 
-pub fn Demo_BarGroups() !void {
+pub fn demo_BarGroups() !void {
     const st = struct {
         var data = [30]ig.ImS8{
             83, 67, 23, 89, 83, 78, 91, 82, 85, 90,  // midterm

@@ -8,9 +8,9 @@ pub const ig = @cImport({
 });
 
 //---------------
-// Demo_LogScale()
+// demo_LogScale()
 //---------------
-pub fn Demo_LogScale() !void {
+pub fn demo_LogScale() !void {
     var xs: [1001]f64 = undefined;
     var ys1: [1001]f64 = undefined;
     var ys2: [1001]f64 = undefined;
@@ -24,10 +24,10 @@ pub fn Demo_LogScale() !void {
     if (ig.ImPlot_BeginPlot("Log Plot", .{ .x = -1, .y = 0 }, 0)) {
         ig.ImPlot_SetupAxisScale_PlotScale(ig.ImAxis_X1, ig.ImPlotScale_Log10);
         ig.ImPlot_SetupAxesLimits(0.1, 100, 0, 10, ig.ImPlotCond_Once);
-        try ip.ImPlot_PlotLineXY("f(x) = x",        &xs, &xs,  1001);
-        try ip.ImPlot_PlotLineXY("f(x) = sin(x)+1", &xs, &ys1, 1001);
-        try ip.ImPlot_PlotLineXY("f(x) = log(x)",   &xs, &ys2, 1001);
-        try ip.ImPlot_PlotLineXY("f(x) = 10^x",     &xs, &ys3, 21);
+        try ip.ImPlot_PlotLineXy("f(x) = x",        &xs, &xs,  1001);
+        try ip.ImPlot_PlotLineXy("f(x) = sin(x)+1", &xs, &ys1, 1001);
+        try ip.ImPlot_PlotLineXy("f(x) = log(x)",   &xs, &ys2, 1001);
+        try ip.ImPlot_PlotLineXy("f(x) = 10^x",     &xs, &ys3, 21);
         ig.ImPlot_EndPlot();
     }
 }
