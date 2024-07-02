@@ -23,6 +23,8 @@
       - [LogScale](#logscale)
     - [Subplots Tab](#subplots-tab)
       - [Tables (Dynamic)](#tables-dynamic)
+    - [Tools Tab](#tools-tab)
+      - [DragRects](#dragrects)
   - [Hiding console window](#hiding-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
@@ -198,6 +200,17 @@ make run   # or zig build --release=fast run
 [SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
 
 ![alt](examples/imPlotDemo/img/Tables.png)
+
+### Tools Tab
+
+---
+
+#### DragRects 
+
+[Tools/DragRects.zig](examples/imPlotDemo/src/tools/DragRects.zig)
+
+![alt](examples/imPlotDemo/img/DragRects.png)
+
 
 ## Hiding console window
 

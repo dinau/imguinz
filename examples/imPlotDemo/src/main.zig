@@ -235,7 +235,7 @@ pub fn main () !void {
 // imPlotDemoWindow
 //-------------------
 fn imPlotDemoWindow() !void {
-  if (ig.igBegin("ImPlot demo: All demos have been written in Zig lang.", null, 0)) {
+  if (ig.igBegin(c.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig lang.", null, 0)) {
     defer ig.igEnd();
     try demo.imPlotDemoTabs();
   }

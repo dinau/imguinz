@@ -41,18 +41,17 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    var sBuf: [2048]u8 = undefined;
     const Glfw_Base = "../../libs/glfw/glfw-3.3.9.bin.WIN";
     var sArc = "64";
     if(builtin.cpu.arch == .x86){
       sArc = "32";
     }
-    const glfw_path = std.fmt.bufPrint(&sBuf, "{s}{s}", .{Glfw_Base,sArc}) catch unreachable;
+    const glfw_path = b.fmt("{s}{s}", .{Glfw_Base, sArc});
     //-----------------------
     // For ImGui/CImGui Libs
     //-----------------------
     //---------------
-    // Include paths
+    // [lib] --- Include paths
     //---------------
     lib.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
     // ImGui/CImGui
@@ -93,6 +92,7 @@ pub fn build(b: *std.Build) void {
         "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
       },
       .flags = &.{
+        "-O2",
       },
     });
 
@@ -128,6 +128,7 @@ pub fn build(b: *std.Build) void {
         "../utils/utils.c",
       },
       .flags = &.{
+        "-O2",
       },
     });
     //------
