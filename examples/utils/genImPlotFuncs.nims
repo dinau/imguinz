@@ -97,6 +97,15 @@ let patHistg2D  = TPat(postfix: ""
                      ,hina: 3
                      ,retVal: "f64"
                      )
+let patHistg  = TPat(postfix: ""
+                     ,fullArgs: "label_id:anytype, values:anytype, count:c_int, bins:c_int, bar_scale:f64 ,range:ig.ImPlotRange , flags:ig.ImPlotHistogramFlags "
+                     ,shortArgsNum: 3
+                     ,shortArgsInner: "label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
+                     ,hina: 3
+                     ,retVal: "f64"
+                     )
+#IMPLOT_TMP double PlotHistogram(const char* label_id, const T* values, int count, int bins=ImPlotBin_Sturges, double bar_scale=1.0, ImPlotRange range=ImPlotRange(), ImPlotHistogramFlags flags=0);
+#CIMGUI_API double ImPlot_PlotHistogram_U8Ptr(const char* label_id,const ImU8* values,int count,int bins,double bar_scale,ImPlotRange range,ImPlotHistogramFlags flags);
 let patPieChart  = TPat(postfix: ""
                      ,fullArgs: "label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,label_fmt:anytype,angle0:f64,flags:c_int"
                      ,shortArgsNum: 6
@@ -215,7 +224,9 @@ let hina3 =  """
   }$6
 }
 """
-let hina4 = ""
+let hina4 = """
+
+"""
 let hina5 = ""
 let hina6 = """
   const typ =  @TypeOf($4[0]);
@@ -282,6 +293,7 @@ var db = @[TFunc(name: "Line"        ,patns: @[patXy,       patScale, patXyScale
           ,TFunc(name: "Bars"        ,patns: @[patBars,     patBarsXy])
           ,TFunc(name: "BarGroups"   ,patns: @[patBarGroups])
           ,TFunc(name: "Histogram2D" ,patns: @[patHistg2D])
+          ,TFunc(name: "Histogram"   ,patns: @[patHistg])
           ,TFunc(name: "Shaded"      ,patns: @[patXyy,      patRefScale, patXyRef])
           ,TFunc(name: "PieChart"    ,patns: @[patPieChart, patPieChartFmt])
          ]
@@ -289,9 +301,9 @@ var db = @[TFunc(name: "Line"        ,patns: @[patXy,       patScale, patXyScale
 echo header
 for fnInfo in mitems(db):
   for iPat in mitems(fnInfo.patns):
-    echo "//----------------------"
+    echo "//-------------------------------"
     echo "// ImPlot_Plot$1$2()" % [fnInfo.name, iPat.postfix]
-    echo "//----------------------"
+    echo "//-------------------------------"
     var splitedFullArgs = iPat.fullArgs.split(",")
     var sArgs = ""
     for i in 0..<iPat.shortArgsNum:
@@ -314,9 +326,9 @@ for fnInfo in mitems(db):
                            , END   # $6
                            ]
     #
-    echo "//----------------------"
+    echo "//-------------------------------"
     echo "// ImPlot_Plot$1$2Ex()" % [fnInfo.name, iPat.postfix]
-    echo "//----------------------"
+    echo "//-------------------------------"
     echo "pub fn ImPlot_Plot$1$2Ex($3) !$4 {" % [fnInfo.name   # $1
                                                   ,iPat.postfix  # $2
                                                   ,iPat.fullArgs # $3

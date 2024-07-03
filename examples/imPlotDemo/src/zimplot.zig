@@ -7,9 +7,9 @@ pub const ig = @cImport ({
 });
 
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineXy()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -29,9 +29,9 @@ pub fn ImPlot_PlotLineXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !vo
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineXyEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -51,9 +51,9 @@ pub fn ImPlot_PlotLineXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, f
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineScale()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineScale(label:anytype, values:anytype, count:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -73,9 +73,9 @@ pub fn ImPlot_PlotLineScale(label:anytype, values:anytype, count:c_int) !void {
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineScaleEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineScaleEx(label:anytype, values:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -95,9 +95,9 @@ pub fn ImPlot_PlotLineScaleEx(label:anytype, values:anytype, count:c_int, xscale
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineXyScale()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineXyScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -117,9 +117,9 @@ pub fn ImPlot_PlotLineXyScale(label:anytype, xs:anytype, ys:anytype, count:c_int
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotLineXyScaleEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotLineXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -139,9 +139,9 @@ pub fn ImPlot_PlotLineXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_i
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotScatterXy()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotScatterXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -161,9 +161,9 @@ pub fn ImPlot_PlotScatterXy(label:anytype, xs:anytype, ys:anytype, count:c_int) 
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotScatterXyEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotScatterXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -183,9 +183,9 @@ pub fn ImPlot_PlotScatterXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotScatterXyScale()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotScatterXyScale(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -205,9 +205,9 @@ pub fn ImPlot_PlotScatterXyScale(label:anytype, xs:anytype, ys:anytype, count:c_
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotScatterXyScaleEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotScatterXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -227,9 +227,9 @@ pub fn ImPlot_PlotScatterXyScaleEx(label:anytype, xs:anytype, ys:anytype, count:
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotStairsXy()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotStairsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -249,9 +249,9 @@ pub fn ImPlot_PlotStairsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotStairsXyEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotStairsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -271,9 +271,9 @@ pub fn ImPlot_PlotStairsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int,
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotStairsScale()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotStairsScale(label:anytype, values:anytype, count:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -293,9 +293,9 @@ pub fn ImPlot_PlotStairsScale(label:anytype, values:anytype, count:c_int) !void 
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotStairsScaleEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotStairsScaleEx(label:anytype, values:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -315,9 +315,9 @@ pub fn ImPlot_PlotStairsScaleEx(label:anytype, values:anytype, count:c_int, xsca
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBars()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBars(label:anytype, values:anytype, count:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -337,9 +337,9 @@ pub fn ImPlot_PlotBars(label:anytype, values:anytype, count:c_int) !void {
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBarsEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBarsEx(label:anytype, values:anytype, count:c_int, bar_size:f64, shift:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -359,9 +359,9 @@ pub fn ImPlot_PlotBarsEx(label:anytype, values:anytype, count:c_int, bar_size:f6
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBarsXy()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBarsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -381,9 +381,9 @@ pub fn ImPlot_PlotBarsXy(label:anytype, xs:anytype, ys:anytype, count:c_int) !vo
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBarsXyEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBarsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, bar_size:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -403,9 +403,9 @@ pub fn ImPlot_PlotBarsXyEx(label:anytype, xs:anytype, ys:anytype, count:c_int, b
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBarGroups()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBarGroups(label_ids:anytype,values:anytype,item_count:c_int,group_count:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -425,9 +425,9 @@ pub fn ImPlot_PlotBarGroups(label_ids:anytype,values:anytype,item_count:c_int,gr
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotBarGroupsEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotBarGroupsEx(label_ids:anytype,values:anytype,item_count:c_int,group_count:c_int,group_size:f64,shift:f64,flags:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -447,9 +447,9 @@ pub fn ImPlot_PlotBarGroupsEx(label_ids:anytype,values:anytype,item_count:c_int,
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotHistogram2D()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotHistogram2D(label_id:anytype, xs:anytype, ys:anytype,count:c_int) !f64 {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -469,9 +469,9 @@ pub fn ImPlot_PlotHistogram2D(label_id:anytype, xs:anytype, ys:anytype,count:c_i
   };
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotHistogram2DEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotHistogram2DEx(label_id:anytype, xs:anytype, ys:anytype,count:c_int, x_bins:c_int, y_bins:c_int ,range:ig.ImPlotRect , flags:ig.ImPlotHistogramFlags ) !f64 {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -491,9 +491,53 @@ pub fn ImPlot_PlotHistogram2DEx(label_id:anytype, xs:anytype, ys:anytype,count:c
   };
 }
 
-//----------------------
+//-------------------------------
+// ImPlot_PlotHistogram()
+//-------------------------------
+pub fn ImPlot_PlotHistogram(label_id:anytype, values:anytype, count:c_int) !f64 {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  return switch (typ) {
+    f32           => ig.ImPlot_PlotHistogram_FloatPtr  (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    f64           => ig.ImPlot_PlotHistogram_doublePtr (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i8            => ig.ImPlot_PlotHistogram_S8Ptr     (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u8            => ig.ImPlot_PlotHistogram_U8Ptr     (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i16, ig.ImS16 => ig.ImPlot_PlotHistogram_S16Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u16, ig.ImU16 => ig.ImPlot_PlotHistogram_U16Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i32, ig.ImS32 => ig.ImPlot_PlotHistogram_S32Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u32, ig.ImU32 => ig.ImPlot_PlotHistogram_U32Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    i64, ig.ImS64 => ig.ImPlot_PlotHistogram_S64Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    u64, ig.ImU64 => ig.ImPlot_PlotHistogram_U64Ptr    (label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0),
+    else =>  {return error.ImPlot_PlotHistogram_Argument;}
+  };
+}
+
+//-------------------------------
+// ImPlot_PlotHistogramEx()
+//-------------------------------
+pub fn ImPlot_PlotHistogramEx(label_id:anytype, values:anytype, count:c_int, bins:c_int, bar_scale:f64 ,range:ig.ImPlotRange , flags:ig.ImPlotHistogramFlags ) !f64 {
+  const typ =  @TypeOf(values[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+  return switch (typ) {
+    f32           => ig.ImPlot_PlotHistogram_FloatPtr  (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    f64           => ig.ImPlot_PlotHistogram_doublePtr (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    i8            => ig.ImPlot_PlotHistogram_S8Ptr     (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    u8            => ig.ImPlot_PlotHistogram_U8Ptr     (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    i16, ig.ImS16 => ig.ImPlot_PlotHistogram_S16Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    u16, ig.ImU16 => ig.ImPlot_PlotHistogram_U16Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    i32, ig.ImS32 => ig.ImPlot_PlotHistogram_S32Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    u32, ig.ImU32 => ig.ImPlot_PlotHistogram_U32Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    i64, ig.ImS64 => ig.ImPlot_PlotHistogram_S64Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    u64, ig.ImU64 => ig.ImPlot_PlotHistogram_U64Ptr    (label_id,  values,  count,  bins,  bar_scale, range,  flags),
+    else =>  {return error.ImPlot_PlotHistogram_Argument;}
+  };
+}
+
+//-------------------------------
 // ImPlot_PlotShadedXyy()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedXyy(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -513,9 +557,9 @@ pub fn ImPlot_PlotShadedXyy(label:anytype, xs:anytype, ys:anytype, ys2:anytype, 
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotShadedXyyEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedXyyEx(label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -535,9 +579,9 @@ pub fn ImPlot_PlotShadedXyyEx(label:anytype, xs:anytype, ys:anytype, ys2:anytype
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotShadedRefScale()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedRefScale(label:anytype, values:anytype, count:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -557,9 +601,9 @@ pub fn ImPlot_PlotShadedRefScale(label:anytype, values:anytype, count:c_int) !vo
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotShadedRefScaleEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedRefScaleEx(label:anytype, values:anytype, count:c_int, yref:f64, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -579,9 +623,9 @@ pub fn ImPlot_PlotShadedRefScaleEx(label:anytype, values:anytype, count:c_int, y
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotShadedXyRef()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedXyRef(label:anytype, xs:anytype, ys:anytype, count:c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -601,9 +645,9 @@ pub fn ImPlot_PlotShadedXyRef(label:anytype, xs:anytype, ys:anytype, count:c_int
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotShadedXyRefEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotShadedXyRefEx(label:anytype, xs:anytype, ys:anytype, count:c_int, yref:f64, flags:c_int, offset:c_int, stride: c_int) !void {
   const typ =  @TypeOf(xs[0]);
   const tsize = @sizeOf(typ);
@@ -623,9 +667,9 @@ pub fn ImPlot_PlotShadedXyRefEx(label:anytype, xs:anytype, ys:anytype, count:c_i
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotPieChart()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotPieChart(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -645,9 +689,9 @@ pub fn ImPlot_PlotPieChart(label_ids:anytype,values:anytype, count:c_int,x:f64,y
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotPieChartEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotPieChartEx(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,label_fmt:anytype,angle0:f64,flags:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -667,9 +711,9 @@ pub fn ImPlot_PlotPieChartEx(label_ids:anytype,values:anytype, count:c_int,x:f64
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotPieChartFmt()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotPieChartFmt(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ig.ImPlotFormatter ) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
@@ -689,9 +733,9 @@ pub fn ImPlot_PlotPieChartFmt(label_ids:anytype,values:anytype, count:c_int,x:f6
   }
 }
 
-//----------------------
+//-------------------------------
 // ImPlot_PlotPieChartFmtEx()
-//----------------------
+//-------------------------------
 pub fn ImPlot_PlotPieChartFmtEx(label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ig.ImPlotFormatter ,fmt_data:anytype, angle0:f64,flags:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);

@@ -104,6 +104,7 @@ pub fn build(b: *std.Build) void {
     exe.root_module.addCMacro("CIMGUI_USE_SDL2", "");
     exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
     exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+    exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
     //---------------
     // Sources C/C++
     //---------------
