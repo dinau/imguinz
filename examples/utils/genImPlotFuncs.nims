@@ -7,7 +7,7 @@ let header = """
 // 2024/06 by dinau
 //
 const std = @import("std");
-pub const ig = @cImport ({
+pub const ip = @cImport ({
   @cInclude ("cimplot.h");
 });
 
@@ -91,16 +91,16 @@ let patBarGroups  = TPat(postfix: ""
                      ,retVal: ""
                      )
 let patHistg2D  = TPat(postfix: ""
-                     ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype,count:c_int, x_bins:c_int, y_bins:c_int ,range:ig.ImPlotRect , flags:ig.ImPlotHistogramFlags "
+                     ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype,count:c_int, x_bins:c_int, y_bins:c_int ,range:ip.ImPlotRect , flags:ip.ImPlotHistogramFlags "
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label_id, xs, ys,count, ig.ImPlotBin_Sturges, ig.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
+                     ,shortArgsInner: "label_id, xs, ys,count, ip.ImPlotBin_Sturges, ip.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
                      ,hina: 3
                      ,retVal: "f64"
                      )
 let patHistg  = TPat(postfix: ""
-                     ,fullArgs: "label_id:anytype, values:anytype, count:c_int, bins:c_int, bar_scale:f64 ,range:ig.ImPlotRange , flags:ig.ImPlotHistogramFlags "
+                     ,fullArgs: "label_id:anytype, values:anytype, count:c_int, bins:c_int, bar_scale:f64 ,range:ip.ImPlotRange , flags:ip.ImPlotHistogramFlags "
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label_id, values, count, ig.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
+                     ,shortArgsInner: "label_id, values, count, ip.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
                      ,hina: 3
                      ,retVal: "f64"
                      )
@@ -114,7 +114,7 @@ let patPieChart  = TPat(postfix: ""
                      ,retVal: ""
                      )
 let patPieChartFmt  = TPat(postfix: "Fmt"
-                     ,fullArgs: "label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ig.ImPlotFormatter ,fmt_data:anytype, angle0:f64,flags:c_int"
+                     ,fullArgs: "label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ip.ImPlotFormatter ,fmt_data:anytype, angle0:f64,flags:c_int"
                      ,shortArgsNum: 7
                      ,shortArgsInner: "label_ids, values, count, x, y, radius, fmt, null, 90, 0"
                      ,hina: 8
@@ -172,16 +172,16 @@ let hina1 =  """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtrInt  ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtrInt ($3),
-    i8            => ig.ImPlot_Plot$1_S8PtrInt     ($3),
-    u8            => ig.ImPlot_Plot$1_U8PtrInt     ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrInt    ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16PtrInt    ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32PtrInt    ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32PtrInt    ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64PtrInt    ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64PtrInt    ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtrInt  ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtrInt ($3),
+    i8            => ip.ImPlot_Plot$1_S8PtrInt     ($3),
+    u8            => ip.ImPlot_Plot$1_U8PtrInt     ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16PtrInt    ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16PtrInt    ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32PtrInt    ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32PtrInt    ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64PtrInt    ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64PtrInt    ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }
 }
@@ -191,16 +191,16 @@ let hina2 =  """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtrFloatPtr   ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtrdoublePtr ($3),
-    i8            => ig.ImPlot_Plot$1_S8PtrS8Ptr         ($3),
-    u8            => ig.ImPlot_Plot$1_U8PtrU8Ptr         ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrS16Ptr       ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16PtrU16Ptr       ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32PtrS32Ptr       ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32PtrU32Ptr       ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64PtrS64Ptr       ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64PtrU64Ptr       ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtrFloatPtr   ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtrdoublePtr ($3),
+    i8            => ip.ImPlot_Plot$1_S8PtrS8Ptr         ($3),
+    u8            => ip.ImPlot_Plot$1_U8PtrU8Ptr         ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16PtrS16Ptr       ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16PtrU16Ptr       ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32PtrS32Ptr       ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32PtrU32Ptr       ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64PtrS64Ptr       ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64PtrU64Ptr       ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }
 }
@@ -210,16 +210,16 @@ let hina3 =  """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   $5 switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtr  ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtr ($3),
-    i8            => ig.ImPlot_Plot$1_S8Ptr     ($3),
-    u8            => ig.ImPlot_Plot$1_U8Ptr     ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16Ptr    ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16Ptr    ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32Ptr    ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32Ptr    ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64Ptr    ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64Ptr    ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtr  ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtr ($3),
+    i8            => ip.ImPlot_Plot$1_S8Ptr     ($3),
+    u8            => ip.ImPlot_Plot$1_U8Ptr     ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16Ptr    ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16Ptr    ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32Ptr    ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32Ptr    ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64Ptr    ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64Ptr    ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }$6
 }
@@ -233,16 +233,16 @@ let hina6 = """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   $5 switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtrFloatPtrFloatPtr    ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtrdoublePtrdoublePtr ($3),
-    i8            => ig.ImPlot_Plot$1_S8PtrS8PtrS8Ptr             ($3),
-    u8            => ig.ImPlot_Plot$1_U8PtrU8PtrU8Ptr             ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrS16PtrS16Ptr          ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16PtrU16PtrU16Ptr          ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32PtrS32PtrS32Ptr          ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32PtrU32PtrU32Ptr          ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64PtrS64PtrS64Ptr          ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64PtrU64PtrU64Ptr          ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtrFloatPtrFloatPtr    ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtrdoublePtrdoublePtr ($3),
+    i8            => ip.ImPlot_Plot$1_S8PtrS8PtrS8Ptr             ($3),
+    u8            => ip.ImPlot_Plot$1_U8PtrU8PtrU8Ptr             ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16PtrS16PtrS16Ptr          ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16PtrU16PtrU16Ptr          ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32PtrS32PtrS32Ptr          ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32PtrU32PtrU32Ptr          ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64PtrS64PtrS64Ptr          ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64PtrU64PtrU64Ptr          ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }$6
 }
@@ -253,16 +253,16 @@ let hina7 =  """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtrStr  ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtrStr ($3),
-    i8            => ig.ImPlot_Plot$1_S8PtrStr     ($3),
-    u8            => ig.ImPlot_Plot$1_U8PtrStr     ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrStr    ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16PtrStr    ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32PtrStr    ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32PtrStr    ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64PtrStr    ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64PtrStr    ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtrStr  ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtrStr ($3),
+    i8            => ip.ImPlot_Plot$1_S8PtrStr     ($3),
+    u8            => ip.ImPlot_Plot$1_U8PtrStr     ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16PtrStr    ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16PtrStr    ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32PtrStr    ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32PtrStr    ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64PtrStr    ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64PtrStr    ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }
 }
@@ -272,16 +272,16 @@ let hina8 =  """
   const tsize = @sizeOf(typ);
   _ = &tsize;
   switch (typ) {
-    f32           => ig.ImPlot_Plot$1_FloatPtrPlotFormatter  ($3),
-    f64           => ig.ImPlot_Plot$1_doublePtrPlotFormatter ($3),
-    i8            => ig.ImPlot_Plot$1_S8PtrPlotFormatter     ($3),
-    u8            => ig.ImPlot_Plot$1_U8PtrPlotFormatter     ($3),
-    i16, ig.ImS16 => ig.ImPlot_Plot$1_S16PtrPlotFormatter    ($3),
-    u16, ig.ImU16 => ig.ImPlot_Plot$1_U16PtrPlotFormatter    ($3),
-    i32, ig.ImS32 => ig.ImPlot_Plot$1_S32PtrPlotFormatter    ($3),
-    u32, ig.ImU32 => ig.ImPlot_Plot$1_U32PtrPlotFormatter    ($3),
-    i64, ig.ImS64 => ig.ImPlot_Plot$1_S64PtrPlotFormatter    ($3),
-    u64, ig.ImU64 => ig.ImPlot_Plot$1_U64PtrPlotFormatter    ($3),
+    f32           => ip.ImPlot_Plot$1_FloatPtrPlotFormatter  ($3),
+    f64           => ip.ImPlot_Plot$1_doublePtrPlotFormatter ($3),
+    i8            => ip.ImPlot_Plot$1_S8PtrPlotFormatter     ($3),
+    u8            => ip.ImPlot_Plot$1_U8PtrPlotFormatter     ($3),
+    i16, ip.ImS16 => ip.ImPlot_Plot$1_S16PtrPlotFormatter    ($3),
+    u16, ip.ImU16 => ip.ImPlot_Plot$1_U16PtrPlotFormatter    ($3),
+    i32, ip.ImS32 => ip.ImPlot_Plot$1_S32PtrPlotFormatter    ($3),
+    u32, ip.ImU32 => ip.ImPlot_Plot$1_U32PtrPlotFormatter    ($3),
+    i64, ip.ImS64 => ip.ImPlot_Plot$1_S64PtrPlotFormatter    ($3),
+    u64, ip.ImU64 => ip.ImPlot_Plot$1_U64PtrPlotFormatter    ($3),
     else =>  {return error.ImPlot_Plot$1$2_Argument;}
   }
 }

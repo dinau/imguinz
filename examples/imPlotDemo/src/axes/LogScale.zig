@@ -1,11 +1,8 @@
 const std = @import("std");
 const math = @import("std").math;
-const ip = @import("../zimplot.zig");
+const ig = @import("../imgui.zig");
+const ip = @import("../implot.zig");
 
-pub const ig = @cImport({
-    @cInclude("cimgui.h");
-    @cInclude("cimplot.h");
-});
 
 //---------------
 // demo_LogScale()
@@ -21,13 +18,13 @@ pub fn demo_LogScale() !void {
         ys2[i] = math.log(f64, math.e, xs[i]);
         ys3[i] = math.pow(f64, 10.0, xs[i]);
     }
-    if (ig.ImPlot_BeginPlot("Log Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ig.ImPlot_SetupAxisScale_PlotScale(ig.ImAxis_X1, ig.ImPlotScale_Log10);
-        ig.ImPlot_SetupAxesLimits(0.1, 100, 0, 10, ig.ImPlotCond_Once);
+    if (ip.ImPlot_BeginPlot("Log Plot", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_Log10);
+        ip.ImPlot_SetupAxesLimits(0.1, 100, 0, 10, ip.ImPlotCond_Once);
         try ip.ImPlot_PlotLineXy("f(x) = x",        &xs, &xs,  1001);
         try ip.ImPlot_PlotLineXy("f(x) = sin(x)+1", &xs, &ys1, 1001);
         try ip.ImPlot_PlotLineXy("f(x) = log(x)",   &xs, &ys2, 1001);
         try ip.ImPlot_PlotLineXy("f(x) = 10^x",     &xs, &ys3, 21);
-        ig.ImPlot_EndPlot();
+        ip.ImPlot_EndPlot();
     }
 }

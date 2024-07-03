@@ -1,12 +1,8 @@
 const std = @import("std");
 const math = @import("std").math;
-const ip = @import("../zimplot.zig");
+const ig = @import("../imgui.zig");
+const ip = @import("../implot.zig");
 const utils = @import("../utils.zig");
-
-pub const ig = @cImport({
-    @cInclude("cimgui.h");
-    @cInclude("cimplot.h");
-});
 
 pub const c = @cImport({
     @cInclude("stdlib.h");
@@ -35,14 +31,14 @@ pub fn demo_ShadedPlots() !void {
     };
     _ = ig.igDragFloat("Alpha", &st.alpha, 0.01, 0, 1, "%.3f", 0);
 
-    if (ig.ImPlot_BeginPlot("Shaded Plots", .{ .x = -1, .y = 0 }, 0)) {
-        ig.ImPlot_PushStyleVar_Float(ig.ImPlotStyleVar_FillAlpha, st.alpha);
+    if (ip.ImPlot_BeginPlot("Shaded Plots", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, st.alpha);
         try ip.ImPlot_PlotShadedXyy("Uncertain Data", &xs, &ys1, &ys2, MAX_N);
         try ip.ImPlot_PlotLineXy("Uncertain Data",    &xs, &ys,  MAX_N);
         try ip.ImPlot_PlotShadedXyy("Overlapping",    &xs, &ys3, &ys4, MAX_N);
         try ip.ImPlot_PlotLineXy("Overlapping",       &xs, &ys3, MAX_N);
         try ip.ImPlot_PlotLineXy("Overlapping",       &xs, &ys4, MAX_N);
-        ig.ImPlot_PopStyleVar(1);
-        ig.ImPlot_EndPlot();
+        ip.ImPlot_PopStyleVar(1);
+        ip.ImPlot_EndPlot();
     }
 }

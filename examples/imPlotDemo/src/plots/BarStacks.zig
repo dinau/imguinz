@@ -1,21 +1,17 @@
 const std = @import("std");
 const math = @import("std").math;
-const ip = @import("../zimplot.zig");
+const ig = @import("../imgui.zig");
+const ip = @import("../implot.zig");
 const utils = @import("../utils.zig");
-
-pub const ig = @cImport({
-    @cInclude("cimgui.h");
-    @cInclude("cimplot.h");
-});
 
 pub fn demo_BarStacks() !void {
     const st = struct {
-       var  Liars:ig.ImPlotColormap = -1;
+       var  Liars:ip.ImPlotColormap = -1;
        var diverging = true;
     };
     if (st.Liars == -1) {
          const Liars_Data = [6]ig.ImU32{ 4282515870, 4282609140, 4287357182, 4294630301, 4294945280, 4294921472 };
-         st.Liars = ig.ImPlot_AddColormap_U32Ptr("Liars", &Liars_Data, 6, true);
+         st.Liars = ip.ImPlot_AddColormap_U32Ptr("Liars", &Liars_Data, 6, true);
     }
 
     _ = ig.igCheckbox("Diverging",&st.diverging);
@@ -41,18 +37,18 @@ pub fn demo_BarStacks() !void {
                              1,8,6,8,23,10,12,15,15,20,14,15,22,20,19,25,15,18,24,21};                        // True
     const labels_div = [_][*c]const u8{"Pants on Fire","False","Mostly False","Mostly False","False","Pants on Fire","Half True","Mostly True","True"};
 
-    ig.ImPlot_PushColormap_PlotColormap(st.Liars);
-    if (ig.ImPlot_BeginPlot("PolitiFact: Who Lies More?",.{.x=-1, .y=400},ig.ImPlotFlags_NoMouseText)) {
-        ig.ImPlot_SetupLegend(ig.ImPlotLocation_South, ig.ImPlotLegendFlags_Outside | ig.ImPlotLegendFlags_Horizontal);
-        ig.ImPlot_SetupAxes(null,null,ig.ImPlotAxisFlags_AutoFit | ig.ImPlotAxisFlags_NoDecorations,ig.ImPlotAxisFlags_AutoFit |  ig.ImPlotAxisFlags_Invert);
-        ig.ImPlot_SetupAxisTicks_double(ig.ImAxis_Y1,0,19,20, &politicians,false);
+    ip.ImPlot_PushColormap_PlotColormap(st.Liars);
+    if (ip.ImPlot_BeginPlot("PolitiFact: Who Lies More?",.{.x=-1, .y=400},ip.ImPlotFlags_NoMouseText)) {
+        ip.ImPlot_SetupLegend(ip.ImPlotLocation_South, ip.ImPlotLegendFlags_Outside | ip.ImPlotLegendFlags_Horizontal);
+        ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_AutoFit |  ip.ImPlotAxisFlags_Invert);
+        ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1,0,19,20, &politicians,false);
         if (st.diverging){
-            try ip.ImPlot_PlotBarGroupsEx(&labels_div,&data_div,9,20,0.75,0,ig.ImPlotBarGroupsFlags_Stacked | ig.ImPlotBarGroupsFlags_Horizontal);
+            try ip.ImPlot_PlotBarGroupsEx(&labels_div,&data_div,9,20,0.75,0,ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal);
         }
         else{
-         try ip.ImPlot_PlotBarGroupsEx(&labels_reg,&data_reg,6,20,0.75,0,ig.ImPlotBarGroupsFlags_Stacked | ig.ImPlotBarGroupsFlags_Horizontal);
+         try ip.ImPlot_PlotBarGroupsEx(&labels_reg,&data_reg,6,20,0.75,0,ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal);
         }
-        ig.ImPlot_EndPlot();
+        ip.ImPlot_EndPlot();
     }
-    ig.ImPlot_PopColormap(1);
+    ip.ImPlot_PopColormap(1);
 }

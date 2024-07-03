@@ -1,9 +1,6 @@
 const std = @import("std");
-
-pub const ig = @cImport({
-    @cInclude("cimgui.h");
-    @cInclude("cimplot.h");
-});
+const ig = @import("../imgui.zig");
+const ip = @import("../implot.zig");
 
 pub fn demo_Help() !void {
     ig.igText("ABOUT THIS DEMO:");
@@ -36,5 +33,5 @@ pub fn demo_Help() !void {
     ig.igUnindent(0);
     ig.igSeparator();
     ig.igText("USER GUIDE:");
-    ig.ImPlot_ShowUserGuide();
+    ip.ImPlot_ShowUserGuide();
 }

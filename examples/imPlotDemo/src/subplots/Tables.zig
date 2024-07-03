@@ -1,12 +1,9 @@
+const ig = @import("../imgui.zig");
+const ip = @import("../implot.zig");
 const utils = @import("../utils.zig");
 
 pub const c = @cImport({
     @cInclude("stdlib.h");
-});
-
-pub const ig = @cImport({
-    @cInclude("cimgui.h");
-    @cInclude("cimplot.h");
 });
 
 //---------------
@@ -34,7 +31,7 @@ pub fn demo_Tables() !void {
         ig.igTableSetupColumn("Voltage", ig.ImGuiTableColumnFlags_WidthFixed, 75.0, 0);
         ig.igTableSetupColumn("EMG Signal", ig.ImGuiTableColumnFlags_WidthFixed, 0, 0);
         ig.igTableHeadersRow();
-        ig.ImPlot_PushColormap_PlotColormap(ig.ImPlotColormap_Cool);
+        ip.ImPlot_PushColormap_PlotColormap(ip.ImPlotColormap_Cool);
         for (0..10) |row| {
             ig.igTableNextRow(0, 0);
             c.srand(@as(c_uint,@intCast(row)));
@@ -48,11 +45,14 @@ pub fn demo_Tables() !void {
             _ = ig.igTableSetColumnIndex(2);
             ig.igPushID_Int(@intCast(row));
             var vec4: ig.ImVec4 = undefined;
-            ig.ImPlot_GetColormapColor(&vec4, @intCast(row), utils.IMPLOT_AUTO);
-            utils.Sparkline("##spark", &st.data, dtSize, 0, 11.0, @intCast(st.offset), vec4, .{ .x = -1, .y = 35 });
+            ip.ImPlot_GetColormapColor(@ptrCast(&vec4), @intCast(row), utils.IMPLOT_AUTO);
+            // TODO
+            utils.Sparkline("##spark", &st.data, dtSize, 0, 11.0, @intCast(st.offset)
+              , .{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w }
+              , .{ .x = -1, .y = 35 });
             ig.igPopID();
         }
-        ig.ImPlot_PopColormap(1);
+        ip.ImPlot_PopColormap(1);
         ig.igEndTable();
     }
 }

@@ -1,15 +1,7 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
-
-pub const ig = @cImport ({
-  @cInclude ("GLFW/glfw3.h");
-  @cInclude ("cimgui.h");
-  @cInclude ("cimgui_impl.h");
-});
-pub const c = @cImport ({
-  @cInclude ("setupFonts.h");
-  @cInclude ("IconsFontAwesome6.h");
-});
+const ig = @import ("imgui.zig");
+const fonts = @import("fonts.zig");
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
 
@@ -116,7 +108,7 @@ pub fn main () !void {
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
-  c.setupFonts(); // Setup CJK fonts and Icon fonts
+  fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
   const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
@@ -139,15 +131,15 @@ pub fn main () !void {
     //------------------
     // Show main window
     //------------------
-    if ( ig.igBegin (c.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
+    if ( ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
       defer ig.igEnd ();
-      ig.igText (c.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glfwGetVersionString());
-      ig.igText (c.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glGetString(ig.GL_VERSION));
-      ig.igText (c.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
       ig.igText (ig.igGetVersion());
-      ig.igText (c.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
 
       ig.igSpacing();
@@ -166,18 +158,18 @@ pub fn main () !void {
       ig.igText ("カウンタ = %d", counter);
       ig.igText ("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
       // Show icon fonts
-      ig.igSeparatorText(c.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
-      ig.igText(c.ICON_FA_TRASH_CAN  ++ " ゴミ箱");
+      ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
+      ig.igText(fonts.ICON_FA_TRASH_CAN  ++ " ゴミ箱");
 
       ig.igSpacing();
-      ig.igText(c.ICON_FA_MAGNIFYING_GLASS_PLUS
-          ++ " " ++ c.ICON_FA_POWER_OFF
-          ++ " " ++ c.ICON_FA_MICROPHONE
-          ++ " " ++ c.ICON_FA_MICROCHIP
-          ++ " " ++ c.ICON_FA_VOLUME_HIGH
-          ++ " " ++ c.ICON_FA_SCISSORS
-          ++ " " ++ c.ICON_FA_SCREWDRIVER_WRENCH
-          ++ " " ++ c.ICON_FA_BLOG);
+      ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS_PLUS
+          ++ " " ++ fonts.ICON_FA_POWER_OFF
+          ++ " " ++ fonts.ICON_FA_MICROPHONE
+          ++ " " ++ fonts.ICON_FA_MICROCHIP
+          ++ " " ++ fonts.ICON_FA_VOLUME_HIGH
+          ++ " " ++ fonts.ICON_FA_SCISSORS
+          ++ " " ++ fonts.ICON_FA_SCREWDRIVER_WRENCH
+          ++ " " ++ fonts.ICON_FA_BLOG);
     } // end main window
 
     //---------------------

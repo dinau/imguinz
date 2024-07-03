@@ -234,7 +234,7 @@ pub const HugeTimeData = struct {
 //pub fn Sparkline(id: []const u8, values: []const f32, count: i32, min_v: f32, max_v: f32, offset: i32, col: ig.ImVec4, size: ig.ImVec2) void {
 //    // Implement sparkline plotting
 //}
-pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: ig.ImVec4, size: ig.ImVec2) void {
+pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: anytype, size: ig.ImVec2) void {
     ig.ImPlot_PushStyleVar_Vec2(ig.ImPlotStyleVar_PlotPadding, .{ .x = 0, .y = 0 });
     if (ig.ImPlot_BeginPlot(id, size, ig.ImPlotFlags_CanvasOnly)) {
         ig.ImPlot_SetupAxes(null, null, ig.ImPlotAxisFlags_NoDecorations, ig.ImPlotAxisFlags_NoDecorations);

@@ -1,17 +1,11 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
-const ip = @import ("zimplot.zig");
+const ig = @import ("imgui.zig");
+const ip = @import ("implot.zig");
+const fonts = @import("fonts.zig");
 
-pub const ig = @cImport ({
-  @cInclude ("GLFW/glfw3.h");
-  @cInclude ("cimgui.h");
-  @cInclude ("cimgui_impl.h");
-  @cInclude ("cimplot.h");
-});
 pub const c = @cImport ({
   @cInclude ("stdlib.h");
-  @cInclude ("setupFonts.h");
-  @cInclude ("IconsFontAwesome6.h");
 });
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
@@ -84,8 +78,8 @@ pub fn main () !void {
   defer ig.igDestroyContext (null);
 
   // setup ImPlot
-  const imPlotContext = ig.ImPlot_CreateContext();
-  defer  ig.ImPlot_DestroyContext(imPlotContext);
+  const imPlotContext = ip.ImPlot_CreateContext();
+  defer  ip.ImPlot_DestroyContext(imPlotContext);
 
   const pio = ig.igGetIO ();
   pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -126,7 +120,7 @@ pub fn main () !void {
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
-  c.setupFonts(); // Setup CJK fonts and Icon fonts
+  fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
   //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
@@ -146,21 +140,21 @@ pub fn main () !void {
       ig.igShowDemoWindow (&showDemoWindow);
     }
     if (showImPlotDemoWindow) {
-      ig.ImPlot_ShowDemoWindow (&showImPlotDemoWindow);
+      ip.ImPlot_ShowDemoWindow (&showImPlotDemoWindow);
     }
 
     //------------------
     // Show main window
     //------------------
-    if ( ig.igBegin (c.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
+    if ( ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
       defer ig.igEnd ();
-      ig.igText (c.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glfwGetVersionString());
-      ig.igText (c.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glGetString(ig.GL_VERSION));
-      ig.igText (c.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
       ig.igText (ig.igGetVersion());
-      ig.igText (c.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
+      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
 
       ig.igSpacing();
@@ -180,18 +174,18 @@ pub fn main () !void {
       ig.igText ("Counter = %d", counter);
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
       // Show icon fonts
-      ig.igSeparatorText(c.ICON_FA_WRENCH ++ " Icon font test ");
-      ig.igText(c.ICON_FA_TRASH_CAN  ++ " Trash");
+      ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " Icon font test ");
+      ig.igText(fonts.ICON_FA_TRASH_CAN  ++ " Trash");
 
       ig.igSpacing();
-      ig.igText(c.ICON_FA_MAGNIFYING_GLASS_PLUS
-          ++ " " ++ c.ICON_FA_POWER_OFF
-          ++ " " ++ c.ICON_FA_MICROPHONE
-          ++ " " ++ c.ICON_FA_MICROCHIP
-          ++ " " ++ c.ICON_FA_VOLUME_HIGH
-          ++ " " ++ c.ICON_FA_SCISSORS
-          ++ " " ++ c.ICON_FA_SCREWDRIVER_WRENCH
-          ++ " " ++ c.ICON_FA_BLOG);
+      ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS_PLUS
+          ++ " " ++ fonts.ICON_FA_POWER_OFF
+          ++ " " ++ fonts.ICON_FA_MICROPHONE
+          ++ " " ++ fonts.ICON_FA_MICROCHIP
+          ++ " " ++ fonts.ICON_FA_VOLUME_HIGH
+          ++ " " ++ fonts.ICON_FA_SCISSORS
+          ++ " " ++ fonts.ICON_FA_SCREWDRIVER_WRENCH
+          ++ " " ++ fonts.ICON_FA_BLOG);
     } // end main window
 
     //---------------------
@@ -254,10 +248,10 @@ fn imPlotWindow(fshow: *bool) !void {
   }
   if (ig.igBegin("Plot Window", fshow, 0)) {
     defer ig.igEnd();
-    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
-      defer ig.ImPlot_EndPlot();
+    if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
+      defer ip.ImPlot_EndPlot();
       try ip.ImPlot_PlotBars(  "My Bar Plot"  ,&local.bar_data ,local.bar_data.len);
-      try ip.ImPlot_PlotLineXY("My Line Plot" ,&local.x_data ,&local.y_data ,local.x_data.len);
+      try ip.ImPlot_PlotLineXy("My Line Plot" ,&local.x_data ,&local.y_data ,local.x_data.len);
     }
   }
 }
@@ -284,10 +278,10 @@ fn imPlotWindow2(fshow: *bool) !void {
   if (ig.igBegin("Plot Window2", fshow, 0)) {
     defer ig.igEnd();
     //
-    if (ig.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
-      defer ig.ImPlot_EndPlot();
+    if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
+      defer ip.ImPlot_EndPlot();
       //
-      ig.ImPlot_PlotBars_S32PtrInt("My Bar Plot"
+      ip.ImPlot_PlotBars_S32PtrInt("My Bar Plot"
                               ,&local.bar_data
                               ,local.bar_data.len
                               ,0.67 // bar_size
@@ -295,7 +289,7 @@ fn imPlotWindow2(fshow: *bool) !void {
                               ,0    // ImPlotFlags
                               ,0    // offset
                               ,@sizeOf(ig.ImS32)); // stride
-      ig.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot"
+      ip.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot"
                               ,&local.x_data
                               ,&local.y_data
                               ,local.x_data.len
