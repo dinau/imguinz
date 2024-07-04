@@ -18,11 +18,11 @@ pub fn imPlotDemoTabs() !void {
         if (ig.igBeginTabItem(fonts.ICON_FA_CHART_LINE ++ " Plots", null, 0)) {
             defer ig.igEndTabItem();
             try demoHeader("Line Plots  " ++ fonts.ICON_FA_CHART_LINE, demo_LinePlots);
-            //  demoHeader("Filled Line Plots", demo_FilledLinePlots);
+            try demoHeader("Filled Line Plots", demo_FilledLinePlots);
             try demoHeader("Shaded Plots##", demo_ShadedPlots);
-            //  demoHeader("Scatter Plots", demo_ScatterPlots);
+            try demoHeader("Scatter Plots", demo_ScatterPlots);
             //  demoHeader("Realtime Plots", demo_RealtimePlots);
-            //  demoHeader("Stairstep Plots", demo_StairstepPlots);
+            try  demoHeader("Stairstep Plots", demo_StairstepPlots);
             //  demoHeader("Bar Plots", demo_BarPlots);
             try demoHeader("Bar Groups", demo_BarGroups);
             try demoHeader("Bar Stacks " ++ fonts.ICON_FA_CHART_BAR, demo_BarStacks);
@@ -545,7 +545,7 @@ pub fn demo_LinePlots() !void {
         ip.ImPlot_SetupAxes("x", "y", 0, 0);
         try ip.ImPlot_PlotLineXy("f(x)", &st.xs1, &st.ys1, 1001);
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
-        try ip.ImPlot_PlotLineXyEx("g(x)", &st.xs2, &st.ys2, 20, ip.ImPlotLineFlags_Segments, 0, @sizeOf(@TypeOf(st.xs2[0])));
+        try ip.ImPlot_PlotLineXyEx("g(x)", &st.xs2, &st.ys2, 20, ip.ImPlotLineFlags_Segments, 0, utils.stride((st.xs2[0])));
         ip.ImPlot_EndPlot();
     }
 }
@@ -585,7 +585,78 @@ pub fn demo_PieCharts() !void {
     ip.ImPlot_PopColormap(1);
 }
 
+//----------------------
+// demo_FilledLinePlots
+//----------------------
+pub fn demo_FilledLinePlots() !void {
+    var xs1:[101]f64 = undefined;
+    var ys1:[101]f64 = undefined;
+    var ys2:[101]f64 = undefined;
+    var ys3:[101]f64 = undefined;
+    c.srand(0);
+    for (0..101)|i| {
+        xs1[i] = @floatFromInt(i);
+        ys1[i] = utils.RandomRange(400.0,450.0);
+        ys2[i] = utils.RandomRange(275.0,350.0);
+        ys3[i] = utils.RandomRange(150.0,225.0);
+    }
+    const st = struct {
+      var show_lines = true;
+      var show_fills = true;
+      var fill_ref:f32 = 0;
+      var shade_mode:c_int = 0;
+    };
+    const  flags:ip.ImPlotShadedFlags = 0;
+    _ = ig.igCheckbox("Lines",&st.show_lines); ig.igSameLine(0, -1.0);
+    _ = ig.igCheckbox("Fills",&st.show_fills);
+    if (st.show_fills) {
+        ig.igSameLine(0, -1.0);
+        if (ig.igRadioButton_Bool("To -INF",st.shade_mode == 0))
+            st.shade_mode = 0;
+        ig.igSameLine(0, -1.0);
+        if (ig.igRadioButton_Bool("To +INF",st.shade_mode == 1))
+            st.shade_mode = 1;
+        ig.igSameLine(0, -1.0);
+        if (ig.igRadioButton_Bool("To Ref",st.shade_mode == 2))
+            st.shade_mode = 2;
+        if (st.shade_mode == 2) {
+            ig.igSameLine(0, -1.0);
+            ig.igSetNextItemWidth(100);
+            _= ig.igDragFloat("##Ref",&st.fill_ref, 1, -100, 500, "%.3f", 0);
+        }
+    }
 
+    if (ip.ImPlot_BeginPlot("Stock Prices", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxes("Days","Price", 0, 0);
+        ip.ImPlot_SetupAxesLimits(0,100,0,500, ip.ImPlotCond_Once);
+        if (st.show_fills) {
+            ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
+            try ip.ImPlot_PlotShadedXyRefEx("Stock 1", &xs1, &ys1, 101,
+                                  if (st.shade_mode == 0 ) -utils.INFINITY_f32
+                                  else (if (st.shade_mode == 1 ) utils.INFINITY_f32 else st.fill_ref)
+                                , flags, 0, utils.stride(xs1[0]));
+            try ip.ImPlot_PlotShadedXyRefEx("Stock 2", &xs1, &ys2, 101,
+                                  if (st.shade_mode == 0 ) -utils.INFINITY_f32
+                                  else (if (st.shade_mode == 1 ) utils.INFINITY_f32 else st.fill_ref)
+                                , flags, 0, utils.stride(xs1[0]));
+            try ip.ImPlot_PlotShadedXyRefEx("Stock 3", &xs1, &ys3, 101,
+                                  if (st.shade_mode == 0 ) -utils.INFINITY_f32
+                                  else (if (st.shade_mode == 1 ) utils.INFINITY_f32 else st.fill_ref)
+                                , flags, 0, utils.stride(xs1[0]));
+            ip.ImPlot_PopStyleVar(1);
+        }
+        if (st.show_lines) {
+            try ip.ImPlot_PlotLineXy("Stock 1", &xs1, &ys1, 101);
+            try ip.ImPlot_PlotLineXy("Stock 2", &xs1, &ys2, 101);
+            try ip.ImPlot_PlotLineXy("Stock 3", &xs1, &ys3, 101);
+        }
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//--------------------
+// demo_ShadedPlots()
+//--------------------
 pub fn demo_ShadedPlots() !void {
     const MAX_N = 1001;
     var xs: [MAX_N]f32 = undefined;
@@ -621,7 +692,73 @@ pub fn demo_ShadedPlots() !void {
     }
 }
 
+//---------------------
+// demo_ScatterPlots()
+//---------------------
+pub fn demo_ScatterPlots() !void {
+    c.srand(0);
+    var xs1:[100]f32 = undefined;
+    var ys1:[100]f32 = undefined;
+    for (0..100)|i| {
+        xs1[i] = @as(f32,@floatFromInt(i)) * 0.01;
+        ys1[i] = xs1[i] + 0.1 *  @as(f32,@floatFromInt(c.rand())) / @as(f32,@floatFromInt(c.RAND_MAX));
+    }
+    var xs2:[50]f32 = undefined;
+    var ys2:[50]f32 = undefined;
+    for (0..50)|i| {
+        xs2[i] = 0.25 + 0.2 * @as(f32,@floatFromInt(c.rand())) / @as(f32,@floatFromInt(c.RAND_MAX));
+        ys2[i] = 0.75 + 0.2 * @as(f32,@floatFromInt(c.rand())) / @as(f32,@floatFromInt(c.RAND_MAX));
+    }
 
+    if (ip.ImPlot_BeginPlot("Scatter Plot", .{ .x = -1, .y = 0 }, 0)) {
+        try ip.ImPlot_PlotScatterXy("Data 1", &xs1, &ys1, 100);
+        ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
+        var vec4: ig.ImVec4 = undefined;
+        // TODO
+        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 1, utils.IMPLOT_AUTO);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, 6
+                                   , .{.x = vec4.x, .y = vec4.y , .z = vec4.z, .w = vec4.w}
+                                   , utils.IMPLOT_AUTO
+                                   , .{.x = vec4.x, .y = vec4.y , .z = vec4.z, .w = vec4.w});
+        try ip.ImPlot_PlotScatterXy("Data 2", &xs2, &ys2, 50);
+        ip.ImPlot_PopStyleVar(1);
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//-----------------------
+// demo_StairstepPlots()
+//-----------------------
+pub fn demo_StairstepPlots() !void {
+    var ys1:[21]f32 = undefined;
+    var ys2:[21]f32 = undefined;
+    for (0..21)|i| {
+        ys1[i] = 0.75 + 0.2 * math.sin(10 * @as(f32,@floatFromInt(i)) * 0.05);
+        ys2[i] = 0.25 + 0.2 * math.sin(10 * @as(f32,@floatFromInt(i)) * 0.05);
+    }
+    const st = struct {
+      var flags:ip.ImPlotStairsFlags  = 0;
+    };
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotStairsFlags" , &st.flags, ip.ImPlotStairsFlags_Shaded);
+    if (ip.ImPlot_BeginPlot("Stairstep Plot", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxes("x","f(x)", 0, 0);
+        ip.ImPlot_SetupAxesLimits(0,1,0,1, ip.ImPlotCond_Once);
+
+        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_Line, .{.x = 0.5,.y = 0.5,.z = 0.5, .w = 1.0});
+        try ip.ImPlot_PlotLineEx("##1",&ys1,21,0.05, 0, 0, 0, utils.stride(ys1[0]));
+        try ip.ImPlot_PlotLineEx("##2",&ys2,21,0.05, 0, 0, 0, utils.stride(ys2[0]));
+        ip.ImPlot_PopStyleColor(1);
+
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextFillStyle(utils.IMPLOT_AUTO_COL, 0.25);
+        try ip.ImPlot_PlotStairsEx("Post Step (default)", &ys1, 21, 0.05, 0, st.flags, 0, utils.stride(ys1[0]));
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextFillStyle(utils.IMPLOT_AUTO_COL, 0.25);
+        try ip.ImPlot_PlotStairsEx("Pre Step", &ys2, 21, 0.05, 0, st.flags | ip.ImPlotStairsFlags_PreStep, 0, utils.stride(ys1[0]));
+
+        ip.ImPlot_EndPlot();
+    }
+}
 //---------------
 // demo_Tables()
 //---------------

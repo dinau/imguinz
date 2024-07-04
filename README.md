@@ -241,7 +241,7 @@ https://github.com/JBetz/build-sdl3-win32
 
 | Language             | Project                                                                                                                                         |
 | -------------------: | :----------------------------------------------------------------:                                                                              |
-| **Nim**              | [Imguin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
+| **Nim**              | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
 | **Lua**              | [LuaJITImGui](https://github.com/dinau/luajitimgui)                                                                                             |
 | **Python**           | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 | **Zig**, C lang.     | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
