@@ -668,6 +668,50 @@ pub fn ImPlot_PlotErrorBarsNegEx(label_id:anytype, xs:anytype, ys:anytype, neg:a
   }
   
 //-------------------------------
+// ImPlot_PlotStemsXy()
+//-------------------------------
+pub fn ImPlot_PlotStemsXy(label_id:anytype, xs:anytype, ys:anytype, count:c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id, xs, ys, count, 0, 0, 0, tsize),
+      else =>  {return error.ImPlot_PlotStemsXy_Argument;}
+    }
+  }
+  
+//-------------------------------
+// ImPlot_PlotStemsXyEx()
+//-------------------------------
+pub fn ImPlot_PlotStemsXyEx(label_id:anytype, xs:anytype, ys:anytype, count:c_int, ref:f64, flags:c_int, offset:c_int, stride:c_int) !void {
+  const typ =  @TypeOf(xs[0]);
+  const tsize = @sizeOf(typ);
+  _ = &tsize;
+   switch (typ) {
+     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id,  xs,  ys,  count,  ref,  flags,  offset,  stride),
+      else =>  {return error.ImPlot_PlotStemsXy_Argument;}
+    }
+  }
+  
+//-------------------------------
 // ImPlot_PlotStems()
 //-------------------------------
 pub fn ImPlot_PlotStems(label_id:anytype, values:anytype, count:c_int) !void {
@@ -675,16 +719,16 @@ pub fn ImPlot_PlotStems(label_id:anytype, values:anytype, count:c_int) !void {
   const tsize = @sizeOf(typ);
   _ = &tsize;
    switch (typ) {
-     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id, values, count, 0, 0, 0, tsize),
-     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id, values, count, 0, 0, 0, tsize),
-     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id, values, count, 0, 0, 0, tsize),
-     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id, values, count, 0, 0, 0, tsize),
+     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
+     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
       else =>  {return error.ImPlot_PlotStems_Argument;}
     }
   }
@@ -692,66 +736,22 @@ pub fn ImPlot_PlotStems(label_id:anytype, values:anytype, count:c_int) !void {
 //-------------------------------
 // ImPlot_PlotStemsEx()
 //-------------------------------
-pub fn ImPlot_PlotStemsEx(label_id:anytype, values:anytype, count:c_int, ref:f64, flags:c_int, offset:c_int, stride:c_int) !void {
+pub fn ImPlot_PlotStemsEx(label_id:anytype, values:anytype, count:c_int, ref:f64, scale:f64, start:f64, flags:c_int, offset:c_int, stride:c_int) !void {
   const typ =  @TypeOf(values[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
    switch (typ) {
-     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
-     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id,  values,  count,  ref,  flags,  offset,  stride),
+     f32           => ip.ImPlot_PlotStems_FloatPtrFloatPtr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     f64           => ip.ImPlot_PlotStems_doublePtrdoublePtr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     i8            => ip.ImPlot_PlotStems_S8PtrS8Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     u8            => ip.ImPlot_PlotStems_U8PtrU8Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrS16Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrU16Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrS32Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrU32Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrS64Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
+     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrU64Ptr          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
       else =>  {return error.ImPlot_PlotStems_Argument;}
-    }
-  }
-  
-//-------------------------------
-// ImPlot_PlotStemsScale()
-//-------------------------------
-pub fn ImPlot_PlotStemsScale(label_id:anytype, values:anytype, count:c_int) !void {
-  const typ =  @TypeOf(values[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-   switch (typ) {
-     f32           => ip.ImPlot_PlotStems_FloatPtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     f64           => ip.ImPlot_PlotStems_doublePtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     i8            => ip.ImPlot_PlotStems_S8PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     u8            => ip.ImPlot_PlotStems_U8PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrInt          (label_id, values, count, 0, 1, 0, 0, 0, tsize),
-      else =>  {return error.ImPlot_PlotStemsScale_Argument;}
-    }
-  }
-  
-//-------------------------------
-// ImPlot_PlotStemsScaleEx()
-//-------------------------------
-pub fn ImPlot_PlotStemsScaleEx(label_id:anytype, values:anytype, count:c_int, ref:f64, scale:f64, start:f64, flags:c_int, offset:c_int, stride:c_int) !void {
-  const typ =  @TypeOf(values[0]);
-  const tsize = @sizeOf(typ);
-  _ = &tsize;
-   switch (typ) {
-     f32           => ip.ImPlot_PlotStems_FloatPtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     f64           => ip.ImPlot_PlotStems_doublePtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     i8            => ip.ImPlot_PlotStems_S8PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     u8            => ip.ImPlot_PlotStems_U8PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     i16, ip.ImS16 => ip.ImPlot_PlotStems_S16PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     u16, ip.ImU16 => ip.ImPlot_PlotStems_U16PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     i32, ip.ImS32 => ip.ImPlot_PlotStems_S32PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     u32, ip.ImU32 => ip.ImPlot_PlotStems_U32PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     i64, ip.ImS64 => ip.ImPlot_PlotStems_S64PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-     u64, ip.ImU64 => ip.ImPlot_PlotStems_U64PtrInt          (label_id,  values,  count,  ref,  scale,  start,  flags,  offset,  stride),
-      else =>  {return error.ImPlot_PlotStemsScale_Argument;}
     }
   }
   

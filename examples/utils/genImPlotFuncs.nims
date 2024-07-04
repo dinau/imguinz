@@ -44,17 +44,27 @@ let patDigital     =  TPat(postfix: ""
                      ,retVal: ""
                      )
 let patStems       =  TPat(postfix: ""
-                     ,fullArgs: "label_id:anytype, values:anytype, count:c_int, ref:f64, flags:c_int, offset:c_int, stride:c_int"
-                     ,shortArgsNum: 3
-                     ,shortArgsInner: "label_id, values, count, 0, 0, 0, tsize"
-                     ,hina: hina2
-                     ,retVal: ""
-                     )
-let patStemsScale   =  TPat(postfix: "Scale"
                      ,fullArgs: "label_id:anytype, values:anytype, count:c_int, ref:f64, scale:f64, start:f64, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 3
                      ,shortArgsInner: "label_id, values, count, 0, 1, 0, 0, 0, tsize"
-                     ,hina: hina1
+                     ,hina: hina2
+                     ,retVal: ""
+                     )
+#ImPlot_PlotStems_U64PtrU64Ptr(
+#  const char* label_id
+#  ,const ImU64* xs
+#  ,const ImU64* ys
+#  ,int count
+#  ,double ref
+#  ,ImPlotStemsFlags flags
+#  ,int offset
+#  ,int stride);
+
+let patStemsXy   =  TPat(postfix: "Xy"
+                     ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype, count:c_int, ref:f64, flags:c_int, offset:c_int, stride:c_int"
+                     ,shortArgsNum: 4
+                     ,shortArgsInner: "label_id, xs, ys, count, 0, 0, 0, tsize"
+                     ,hina: hina2
                      ,retVal: ""
                      )
 let patErr          = TPat(postfix: ""
@@ -244,7 +254,7 @@ var db = @[
           ,TFunc(name: "Bars"        ,patns: @[patBars,     patBarsXy])
           ,TFunc(name: "BarGroups"   ,patns: @[patBarGroups])
           ,TFunc(name: "ErrorBars"   ,patns: @[patErr,      patErrNeg])
-          ,TFunc(name: "Stems"       ,patns: @[patStems,    patStemsScale])
+          ,TFunc(name: "Stems"       ,patns: @[patStemsXy,    patStems])
           ,TFunc(name: "InfLines"    ,patns: @[patInfLines])
           ,TFunc(name: "PieChart"    ,patns: @[patPieChart, patPieChartFmt])
           ,TFunc(name: "Heatmapt"    ,patns: @[patHeatmap])

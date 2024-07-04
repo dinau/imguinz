@@ -22,20 +22,20 @@ pub fn imPlotDemoTabs() !void {
             try demoHeader("Shaded Plots##", demo_ShadedPlots);
             try demoHeader("Scatter Plots", demo_ScatterPlots);
             //  demoHeader("Realtime Plots", demo_RealtimePlots);
-            try  demoHeader("Stairstep Plots", demo_StairstepPlots);
-            //  demoHeader("Bar Plots", demo_BarPlots);
+            try demoHeader("Stairstep Plots", demo_StairstepPlots);
+            try demoHeader("Bar Plots", demo_BarPlots);
             try demoHeader("Bar Groups", demo_BarGroups);
             try demoHeader("Bar Stacks " ++ fonts.ICON_FA_CHART_BAR, demo_BarStacks);
-            //  demoHeader("Error Bars", demo_ErrorBars);
-            //  demoHeader("Stem Plots##", demo_StemPlots);
-            //  demoHeader("Infinite Lines", demo_InfiniteLines);
+            try demoHeader("Error Bars", demo_ErrorBars); // TODO
+            try  demoHeader("Stem Plots##", demo_StemPlots);
+            try  demoHeader("Infinite Lines", demo_InfiniteLines);
             try demoHeader("Pie Charts " ++ fonts.ICON_FA_CHART_PIE, demo_PieCharts);
             try demoHeader("Heatmaps", demo_Heatmaps);
             try demoHeader("Histogram", demo_Histogram);
             try demoHeader("Histogram 2D", demo_Histogram2D);
             //  demoHeader("Digital Plots", demo_DigitalPlots);
             try demoHeader("Images", demo_Images);
-            //  demoHeader("Markers and Text", demo_MarkersAndText);
+            try  demoHeader("Markers and Text", demo_MarkersAndText);
             //  demoHeader("NaN Values", demo_NaNValues);
         }
         if (ig.igBeginTabItem(fonts.ICON_FA_CHART_AREA ++ " Subplots", null, 0)) {
@@ -182,6 +182,21 @@ pub fn demo_Help() !void {
     ip.ImPlot_ShowUserGuide();
 }
 
+//-----------------
+// demo_BarPlots()
+//-----------------
+pub fn demo_BarPlots() !void {
+    const data = [10]ig.ImS8{1,2,3,4,5,6,7,8,9,10};
+    if (ip.ImPlot_BeginPlot("Bar Plot", .{ .x = -1, .y = 0 }, 0)) {
+        try ip.ImPlot_PlotBarsEx("Vertical",  &data,10,0.7,1, 0, 0, utils.stride(data[0]));
+        try ip.ImPlot_PlotBarsEx("Horizontal",&data,10,0.4,1,ip.ImPlotBarsFlags_Horizontal, 0, utils.stride(data[0]));
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//-----------------
+// demo_BarGroups()
+//-----------------
 pub fn demo_BarGroups() !void {
     const st = struct {
         var data = [30]ig.ImS8{
@@ -523,7 +538,55 @@ pub fn demo_Images() !void {
     }
 }
 
+//-----------------------
+// demo_MarkersAndText()
+//-----------------------
+pub fn demo_MarkersAndText() !void {
+    const st = struct {
+      // TODO
+      var mk_size:f32 = 4; //ip.ImPlot_GetStyle().*.MarkerSize;
+      var mk_weight:f32 = 1; //ip.ImPlot_GetStyle().*.MarkerWeight;
+    };
+    _ = ig.igDragFloat("Marker Size"  , &st.mk_size,0.1,2.0,10.0  ,"%.2f px", 0);
+    _ = ig.igDragFloat("Marker Weight", &st.mk_weight,0.05,0.5,3.0,"%.2f px", 0);
 
+    if (ip.ImPlot_BeginPlot("##MarkerStyles", .{.x=-1, .y=0}, ip.ImPlotFlags_CanvasOnly)) {
+        ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
+        ip.ImPlot_SetupAxesLimits(0, 10, 0, 12, ip.ImPlotCond_Once);
+        var  xs = [2]ig.ImS8{1,4};
+        var  ys = [2]ig.ImS8{10,11};
+        // filled markers
+        for (0..@intCast(ip.ImPlotMarker_COUNT))|m| {
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, utils.IMPLOT_AUTO_COL, st.mk_weight, utils.IMPLOT_AUTO_COL);
+            try ip.ImPlot_PlotLineXy("##Filled", &xs, &ys, 2);
+            ig.igPopID();
+            ys[0] -= 1; ys[1]  -= 1;
+        }
+        xs[0] = 6; xs[1] = 9; ys[0] = 10; ys[1] = 11;
+
+        // open markers
+        for (0..ip.ImPlotMarker_COUNT)|m| {
+            ig.igPushID_Int(@intCast(m));
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x=0, .y=0, .z=0, .w=0}, st.mk_weight, utils.IMPLOT_AUTO_COL);
+            try ip.ImPlot_PlotLineXy("##Open", &xs, &ys, 2);
+            ig.igPopID();
+            ys[0] -= 1; ys[1]  -= 1;
+        }
+
+        ip.ImPlot_PlotText("Filled Markers", 2.5, 6.0, .{.x = 0, .y = 0}, 0);
+        ip.ImPlot_PlotText("Open Markers",   7.5, 6.0, .{.x = 0, .y = 0}, 0);
+
+        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_InlayText, .{.x = 1, .y = 0, .z = 1,.w = 1});
+        ip.ImPlot_PlotText("Vertical Text", 5.0, 6.0, .{.x=0, .y=0}, ip.ImPlotTextFlags_Vertical);
+        ip.ImPlot_PopStyleColor(1);
+
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//------------------
+// demo_LinePlots()
+//------------------
 pub fn demo_LinePlots() !void {
     const st = struct {
         var xs1: [1001]f32 = undefined;
@@ -550,6 +613,79 @@ pub fn demo_LinePlots() !void {
     }
 }
 
+//------------------
+// demo_ErrorBars()
+//------------------
+pub fn demo_ErrorBars() !void {
+    const xs   = [5]f32{1,2,3,4,5};
+    const bar  = [5]f32{1,2,5,3,4};
+    const lin1 = [5]f32{8,8,9,7,8};
+    const lin2 = [5]f32{6,7,6,9,6};
+    const err1 = [5]f32{0.2, 0.4, 0.2, 0.6, 0.4};
+    const err2 = [5]f32{0.4, 0.2, 0.4, 0.8, 0.6};
+    const err3 = [5]f32{0.09, 0.14, 0.09, 0.12, 0.16};
+    const err4 = [5]f32{0.02, 0.08, 0.15, 0.05, 0.2};
+
+    if (ip.ImPlot_BeginPlot("##ErrorBars", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxesLimits(0, 6, 0, 10, ip.ImPlotCond_Once);
+        try ip.ImPlot_PlotBarsXyEx( "Bar", &xs, &bar, 5, 0.5,1, 0, utils.stride(xs[0]));
+        try ip.ImPlot_PlotErrorBars("Bar", &xs, &bar, &err1, 5);
+        // TODO
+        var vec4: ig.ImVec4 = undefined;
+        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 1, utils.IMPLOT_AUTO);
+        ip.ImPlot_SetNextErrorBarStyle(.{.x = vec4.x, .y = vec4.y , .z = vec4.z, .w = vec4.w}, 0, utils.IMPLOT_AUTO);
+        try ip.ImPlot_PlotErrorBarsNeg("Line", &xs, &lin1, &err1, &err2, 5);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        try ip.ImPlot_PlotLineXy(      "Line", &xs, &lin1, 5);
+        // TODO
+        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 2, utils.IMPLOT_AUTO);
+        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_ErrorBar, .{.x = vec4.x, .y = vec4.y , .z = vec4.z, .w = vec4.w} );
+        try ip.ImPlot_PlotErrorBars(     "Scatter", &xs, &lin2, &err2, 5);
+        try ip.ImPlot_PlotErrorBarsNegEx("Scatter", &xs, &lin2, &err3, &err4, 5, ip.ImPlotErrorBarsFlags_Horizontal, 0, utils.stride(xs[0]));
+        ip.ImPlot_PopStyleColor(1);
+        try ip.ImPlot_PlotScatterXy("Scatter", &xs, &lin2, 5);
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//-----------------
+// demo_StemPlots()
+//-----------------
+pub fn demo_StemPlots() !void {
+    var xs :[51]f64 = undefined;
+    var ys1:[51]f64 = undefined;
+    var ys2:[51]f64 = undefined;
+    for (0..51)|i| {
+        xs[i] = @as(f64,@floatFromInt(i)) * 0.02;
+        ys1[i] = 1.0 + 0.5 * math.sin(25*xs[i])*math.cos(2*xs[i]);
+        ys2[i] = 0.5 + 0.25  * math.sin(10*xs[i]) * math.sin(xs[i]);
+    }
+    if (ip.ImPlot_BeginPlot("Stem Plots", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1,0,1.0, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y1,0,1.6, ip.ImPlotCond_Once);
+        try ip.ImPlot_PlotStemsXy("Stems 1", &xs, &ys1, 51);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        try ip.ImPlot_PlotStemsXy("Stems 2", &xs, &ys2, 51);
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//----------------------
+// demo_InfiniteLines()
+//----------------------
+pub fn demo_InfiniteLines() !void {
+    const vals = [_]f64{0.25, 0.5, 0.75};
+    if (ip.ImPlot_BeginPlot("##Infinite", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoInitialFit,ip.ImPlotAxisFlags_NoInitialFit);
+        _ = try ip.ImPlot_PlotInfLines("Vertical",    &vals,3);
+        _ = try ip.ImPlot_PlotInfLinesEx("Horizontal",&vals,3,ip.ImPlotInfLinesFlags_Horizontal,0,utils.stride(vals[0]));
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//----------------
+// demo_PieCharts
+// ---------------
 pub fn demo_PieCharts() !void {
     const labels1 = [_][*c] const u8{"Frogs","Hogs","Dogs","Logs"};
 
