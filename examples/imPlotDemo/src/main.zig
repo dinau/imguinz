@@ -3,7 +3,7 @@ const builtin = @import ("builtin");
 const ig = @import ("imgui.zig");
 const ip = @import ("implot.zig");
 const fonts = @import ("fonts.zig");
-const demo = @import ("indexDemo.zig");
+const demo = @import ("demoAll.zig");
 
 pub const c = @cImport ({
   @cInclude ("stdlib.h");

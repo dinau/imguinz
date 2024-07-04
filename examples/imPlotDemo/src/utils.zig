@@ -1,5 +1,3 @@
-// implot.zig
-
 const std = @import("std");
 const math = @import("std").math;
 
@@ -14,7 +12,7 @@ pub const ig = @cImport ({
 const ip = @import("zimplot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
-pub const IMPLOT_AUTO_COL =  ig.ImVec4{.x = 0, .y = 0, .z = 0, .w = -1};
+pub const IMPLOT_AUTO_COL =  .{.x = 0, .y = 0, .z = 0, .w = -1};
 
 const Allocator = std.mem.Allocator;
 const ArenaAllocator = std.heap.ArenaAllocator;
@@ -257,9 +255,6 @@ pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: 
 //
 //// Demo Functions
 //
-//pub fn Demo_Help() void {
-//    // Implement help demo
-//}
 //
 //pub fn ButtonSelector(label: []const u8, b: *ImGuiMouseButton) void {
 //    // Implement button selector
@@ -273,42 +268,3 @@ pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: 
 //    // Implement input mapping
 //}
 //
-//pub fn ShowInputMapping() void {
-//    // Implement input mapping display
-//}
-//
-//pub fn Demo_Arrays() void {
-//    // Implement demo for arrays
-//}
-//
-//pub fn Demo_Annotations() void {
-//    // Implement demo for annotations
-//}
-//
-//pub fn Demo_Markers() void {
-//    // Implement demo for markers
-//}
-//
-//pub fn Demo_Legends() void {
-//    // Implement demo for legends
-//}
-//
-//pub fn Demo_ChildWindows() void {
-//    // Implement demo for child windows
-//}
-//
-//pub fn Demo_DragAndDrop() void {
-//    // Implement demo for drag and drop
-//}
-//
-//pub fn Demo_Tables() void {
-//    // Implement demo for tables
-//}
-//
-//pub fn Demo_Querying() void {
-//    // Implement demo for querying
-//}
-//
-//pub fn Demo_Plots() void {
-//    // Implement demo for plots
-//}
