@@ -36,7 +36,7 @@
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
 
-ImGui version **1.90.8** (2024/06)
+ImGui version **1.90.9doc** (2024/07)
 
 ## Prerequisites
 
