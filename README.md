@@ -11,6 +11,7 @@
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
+    - [ImPlot demo source in Zig](#implot-demo-source-in-zig)
     - [Plots Tab](#plots-tab)
       - [LinePlots (Dynamic)](#lineplots-dynamic)
       - [BarGroups](#bargroups)
@@ -36,7 +37,7 @@
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
 
-ImGui version **1.90.9doc** (2024/07)
+ImGui/CimGui version **1.90.9dock** (2024/07)
 
 ## Prerequisites
 
@@ -135,49 +136,41 @@ imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
+### ImPlot demo source in Zig
+
+---
+
+[demoAll.zig](examples/imPlotDemo/src/demoAll.zig)
+
 ### Plots Tab
 
 ---
 
 #### LinePlots (Dynamic)
 
-[Plots/LinePlots.zig](examples/imPlotDemo/src/plots/LinePlots.zig)
-
 ![alt](examples/imPlotDemo/img/LinePlots.png)
 
 #### BarGroups
-
-[Plots/BarGroups.zig](examples/imPlotDemo/src/plots/BarGroups.zig)
 
 ![alt](examples/imPlotDemo/img/BarGroups.png)
 
 #### BarStacks
 
-[Plots/BarStacks.zig](examples/imPlotDemo/src/plots/BarStacks.zig)
-
 ![alt](examples/imPlotDemo/img/BarStacks.png)
 
 #### PieCharts
-
-[Plots/PieCharts.zig](examples/imPlotDemo/src/plots/PieCharts.zig)
 
 ![alt](examples/imPlotDemo/img/PieCharts.png)
 
 #### Heatmaps
 
-[Plots/Heatmaps.zig](examples/imPlotDemo/src/plots/Heatmaps.zig)
-
 ![alt](examples/imPlotDemo/img/Heatmaps.png)
 
 #### Histogram2D
 
-[Plots/Histogram2D.zig](examples/imPlotDemo/src/plots/Histogram2D.zig)
-
 ![alt](examples/imPlotDemo/img/Histogram2D.png)
 
 #### Images
-
-[Plots/Images.zig](examples/imPlotDemo/src/plots/Images.zig)
 
 ![alt](examples/imPlotDemo/img/Images.png)
 
@@ -187,8 +180,6 @@ make run   # or zig build --release=fast run
 
 #### LogScale
 
-[Axes/LogScale.zig](examples/imPlotDemo/src/axes/LogScale.zig)
-
 ![alt](examples/imPlotDemo/img/LogScale.png)
 
 ### Subplots Tab
@@ -197,8 +188,6 @@ make run   # or zig build --release=fast run
 
 #### Tables (Dynamic)
 
-[SubPlots/Tables.zig](examples/imPlotDemo/src/subplots/Tables.zig)
-
 ![alt](examples/imPlotDemo/img/Tables.png)
 
 ### Tools Tab
@@ -206,8 +195,6 @@ make run   # or zig build --release=fast run
 ---
 
 #### DragRects 
-
-[Tools/DragRects.zig](examples/imPlotDemo/src/tools/DragRects.zig)
 
 ![alt](examples/imPlotDemo/img/DragRects.png)
 
@@ -241,9 +228,7 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-- clang version 18.1.6
-- gcc.exe (Rev2, Built by MSYS2 project) 13.2.0
-- git version 2.41.0.windows.3
+- git version 2.45.2.windows.1
 - make: GNU Make 4.3
 - Python 3.12.3
 - zig: 0.12.0 (zig cc: clang version 17.0.6)
