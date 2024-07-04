@@ -37,7 +37,7 @@
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
 
-ImGui version **1.90.8** (2024/06)
+ImGui/CimGui version **1.90.9dock** (2024/07)
 
 ## Prerequisites
 
@@ -228,9 +228,7 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-- clang version 18.1.6
-- gcc.exe (Rev2, Built by MSYS2 project) 13.2.0
-- git version 2.41.0.windows.3
+- git version 2.45.2.windows.1
 - make: GNU Make 4.3
 - Python 3.12.3
 - zig: 0.12.0 (zig cc: clang version 17.0.6)
