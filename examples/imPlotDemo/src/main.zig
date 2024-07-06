@@ -16,7 +16,7 @@ fn glfw_error_callback (err: c_int, description: [*c] const u8) callconv (.C) vo
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
-const MainWinWidth :i32 = 1100;
+const MainWinWidth :i32 = 1200;
 const MainWinHeight:i32 = 800;
 
 //--------

@@ -1,3 +1,6 @@
+//
+// 2024/07: Converted to Zig lang. from C++ by dinau
+//
 const std = @import("std");
 const math = @import("std").math;
 //
@@ -11,7 +14,9 @@ pub const c = @cImport({
     @cInclude("stdlib.h");
 });
 
-
+//----------------
+// imPlotDemoTabs
+//----------------
 pub fn imPlotDemoTabs() !void {
     if (ig.igBeginTabBar("ImPlotDemoTabs", 0)) {
         defer ig.igEndTabBar();
@@ -36,11 +41,11 @@ pub fn imPlotDemoTabs() !void {
             //  demoHeader("Digital Plots", demo_DigitalPlots);
             try demoHeader("Images", demo_Images);
             try  demoHeader("Markers and Text", demo_MarkersAndText);
-            //  demoHeader("NaN Values", demo_NaNValues);
+            try  demoHeader("NaN Values", demo_NaNValues);
         }
         if (ig.igBeginTabItem(fonts.ICON_FA_CHART_AREA ++ " Subplots", null, 0)) {
             defer ig.igEndTabItem();
-            //  demoHeader("Sizing", demo_SubplotsSizing);
+            try demoHeader("Sizing", demo_SubplotsSizing);
             //  demoHeader("Item Sharing", demo_SubplotItemSharing);
             //  demoHeader("Axis Linking", demo_SubplotAxisLinking);
             try demoHeader("Tables", demo_Tables);
@@ -48,7 +53,7 @@ pub fn imPlotDemoTabs() !void {
         if (ig.igBeginTabItem(fonts.ICON_FA_CHART_COLUMN ++ " Axes", null, 0)) {
             defer ig.igEndTabItem();
             try demoHeader("Log Scale", demo_LogScale);
-            //         demoHeader("Symmetric Log Scale", demo_SymmetricLogScale);
+            try demoHeader("Symmetric Log Scale", demo_SymmetricLogScale);
             //         demoHeader("Time Scale", demo_TimeScale);
             //         demoHeader("Custom Scale", demo_CustomScale);
             //         demoHeader("Multiple Axes", demo_MultipleAxes);
@@ -96,6 +101,55 @@ fn demoHeader(label: anytype, demo: anytype) !void {
     }
 }
 
+//-----------------------
+// demo_SubplotsSizing()
+//-----------------------
+pub fn demo_SubplotsSizing() !void {
+  if(false){
+    const st = struct {
+      var flags = ip.ImPlotSubplotFlags_ShareItems | ip.ImPlotSubplotFlags_NoLegend;
+      var rows:c_int  = 3;
+      var cols:c_int  = 3;
+      var rratios = [_]f32{5,1,1,1,1,1};
+      var cratios = [_]f32{5,1,1,1,1,1};
+    };
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_NoResize", &st.flags, ip.ImPlotSubplotFlags_NoResize);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_NoTitle",  &st.flags, ip.ImPlotSubplotFlags_NoTitle);
+
+    _ = ig.igSliderInt("Rows",&st.rows,1,5, "%d", 0);
+    _ = ig.igSliderInt("Cols",&st.cols,1,5, "%d", 0);
+    if ( (st.rows < 1) or (st.cols < 1)) {
+        ig.igTextColored(.{.x=1, .y=0, .z=0, .w=1}, "Nice try, but the number of rows and columns must be greater than 0!");
+        return;
+    }
+    _ = ig.igDragScalarN("Row Ratios",ig.ImGuiDataType_Float,&st.rratios,st.rows,0.01,null,null,null,0);
+    _ = ig.igDragScalarN("Col Ratios",ig.ImGuiDataType_Float,&st.cratios,st.cols,0.01,null,null,null,0);
+    if (ip.ImPlot_BeginSubplots("My Subplots", st.rows, st.cols, .{.x=-1, .y=400}, st.flags, &st.rratios, &st.cratios)) {
+        var id:c_int = 0;
+        for (0..@intCast((st.rows * st.cols)))|i| {
+            if (ip.ImPlot_BeginPlot("", .{.x = 0, .y = 0}, ip.ImPlotFlags_NoLegend)) {
+                ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_NoDecorations);
+                 var fi = 0.01 * (@as(f32,@floatFromInt(i)) + 1);
+                if (st.rows*st.cols > 1) {
+                    // TODO
+                    var vec4 :ig.ImVec4 = undefined;
+                    ip.ImPlot_SampleColormap(@ptrCast(&vec4), @as(f32,@floatFromInt(i)) / @as(f32,@floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
+                    ip.ImPlot_SetNextLineStyle(.{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w}
+                                               , utils.IMPLOT_AUTO);
+                }
+                //var label:[16]u8 = undefined;
+                //const slLabel = try std.fmt.bufPrint(&label, "data{}", id);
+                id += 1;
+                //ip.ImPlot_PlotLineG(slLabel.ptr, utils.SineWave, &fi,1000, 0);
+                ip.ImPlot_PlotLineG("mmmm", utils.SineWave, &fi,1000, 0);
+                ip.ImPlot_EndPlot();
+            }
+        }
+        ip.ImPlot_EndSubplots();
+    }
+  }
+}
+
 //---------------
 // demo_LogScale()
 //---------------
@@ -121,7 +175,29 @@ pub fn demo_LogScale() !void {
     }
 }
 
+//-----------------
+// demo_LogScale()
+//-----------------
+pub fn demo_SymmetricLogScale() !void {
+    var  xs:[1001]f64 = undefined;
+    var  ys1:[1001]f64 = undefined;
+    var  ys2:[1001]f64 = undefined;
+    for (0..1001)|i| {
+        xs[i]  = @as(f64,@floatFromInt(i)) * 0.1 - 50;
+        ys1[i] = math.sin(xs[i]);
+        ys2[i] = @as(f64,@floatFromInt(i)) * 0.002 - 1;
+    }
+    if (ip.ImPlot_BeginPlot("SymLog Plot", .{.x=-1, .y=0} ,0)) {
+        ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_SymLog);
+        try ip.ImPlot_PlotLineXy("f(x) = a*x+b"       ,&xs, &ys2,1001);
+        try ip.ImPlot_PlotLineXy("f(x) = math.sin(x)" ,&xs, &ys1,1001);
+        ip.ImPlot_EndPlot();
+    }
+}
 
+//-----------------
+// demo_Config()
+//-----------------
 pub fn demo_Config() !void {
     ig.igShowFontSelector("Font");
     _ = ig.igShowStyleSelector("ImGui Style");
@@ -580,6 +656,34 @@ pub fn demo_MarkersAndText() !void {
         ip.ImPlot_PlotText("Vertical Text", 5.0, 6.0, .{.x=0, .y=0}, ip.ImPlotTextFlags_Vertical);
         ip.ImPlot_PopStyleColor(1);
 
+        ip.ImPlot_EndPlot();
+    }
+}
+
+//------------------
+// demo_NaNValues()
+//------------------
+pub fn demo_NaNValues() !void {
+    const st = struct {
+      var  include_nan = true;
+      var  flags:ip.ImPlotLineFlags = 0;
+    };
+
+    var data1 = [5]f32{0.0,0.25,0.5,0.75,1.0};
+    var data2 = [5]f32{0.0,0.25,0.5,0.75,1.0};
+
+    if (st.include_nan){
+        data1[2] = utils.NaN_f32;
+    }
+
+    _ = ig.igCheckbox("Include NaN",&st.include_nan);
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("Skip NaN", &st.flags, ip.ImPlotLineFlags_SkipNaN);
+
+    if (ip.ImPlot_BeginPlot("##NaNValues", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        try ip.ImPlot_PlotLineXyEx("line", &data1, &data2, 5, st.flags, 0, utils.stride(data1[0]));
+        try ip.ImPlot_PlotBars("bars", &data1, 5);
         ip.ImPlot_EndPlot();
     }
 }

@@ -33,7 +33,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# ImGuinZ x
+# ImGuinZ 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
 

@@ -5,16 +5,15 @@ pub const c = @cImport ({
   @cInclude ("stdlib.h");
 });
 
-pub const ig = @cImport ({
-  @cInclude ("cimgui.h");
-  @cInclude ("cimplot.h");
-});
-const ip = @import("zimplot.zig");
+const ig = @import ("imgui.zig");
+const ip = @import("implot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
 pub const IMPLOT_AUTO_COL =  .{.x = 0, .y = 0, .z = 0, .w = -1};
 pub const INFINITY_f32 = std.math.inf(f32);
 pub const INFINITY_f64 = std.math.inf(f64);
+pub const NaN_f32      = std.math.nan(f32);
+pub const NaN_f64      = std.math.nan(f64);
 pub fn stride(value:anytype) c_int {
   return @sizeOf(@TypeOf(value));
 }
@@ -46,21 +45,32 @@ pub const WaveData = struct {
     }
 };
 
-pub fn SineWave(idx: u32, wave_data: *WaveData) ImPlotPoint {
-    const t = idx;
-    return ImPlotPoint{
-        .x = wave_data.x + t,
-        .y = wave_data.amp * math.sin(wave_data.freq * (wave_data.x + t) + wave_data.offset),
-    };
+pub fn SineWave(data: ?*anyopaque, idx: c_int, point: [*c]ip.ImPlotPoint ) callconv(.C) ?*anyopaque  {
+    const v1:*f32 = @as(*f32,@alignCast(data.?));
+    const fval =  v1.*;
+    const fidx =  @as(f32,@floatFromInt(idx));
+    point.x = fval;
+    point.y = math.sin(fval * fidx );
+    return point;
+}
+// Nim: ///type ImPlotPointGetter* = proc (data: pointer; idx: cint; point: ptr ImPlotPoint): pointer {.cdecl.}
+// C++: typedef ImPlotPoint (*ImPlotGetter)      (            int idx, void* user_data);
+//  void PlotLineG       (const char* label_id, ImPlotGetter getter,      void* data, int count, ImPlotLineFlags flags=0);
+// C:   typedef void *      (*ImPlotPoint_getter)(void* data, int idx, ImPlotPoint *point);
+//  void ImPlot_PlotLineG(const char* label_id, ImPlotPoint_getter getter,void* data, int count, ImPlotLineFlags flags);//custom generation
+//
+pub fn SinewaveGetter(i:c_int,  data:*anyopaque) ImPlotPoint {
+    const f = (@as(f32,@ptrCast(data))).*;
+    return ImPlotPoint(i,math.sin(f * i));
 }
 
-pub fn SawWave(idx: u32, wave_data: *WaveData) ImPlotPoint {
-    const t = idx;
-    return ImPlotPoint{
-        .x = wave_data.x + t,
-        .y = wave_data.amp * 2.0 * (wave_data.freq * (wave_data.x + t) - math.floor(0.5 + wave_data.freq * (wave_data.x + t))),
-    };
-}
+//pub fn SawWave(data: *anyopaque, idx: u32, point: ip.ImPlotPoint) *anyopaque {
+//    const t = idx;
+//    return ImPlotPoint{
+//        .x = wave_data.x + t,
+//        .y = wave_data.amp * 2.0 * (wave_data.freq * (wave_data.x + t) - math.floor(0.5 + wave_data.freq * (wave_data.x + t))),
+//    };
+//}
 
 pub fn Spiral(idx: u32, wave_data: *WaveData) ImPlotPoint {
     const t = idx;
@@ -238,16 +248,16 @@ pub const HugeTimeData = struct {
 //    // Implement sparkline plotting
 //}
 pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: anytype, size: ig.ImVec2) void {
-    ig.ImPlot_PushStyleVar_Vec2(ig.ImPlotStyleVar_PlotPadding, .{ .x = 0, .y = 0 });
-    if (ig.ImPlot_BeginPlot(id, size, ig.ImPlotFlags_CanvasOnly)) {
-        ig.ImPlot_SetupAxes(null, null, ig.ImPlotAxisFlags_NoDecorations, ig.ImPlotAxisFlags_NoDecorations);
-        ig.ImPlot_SetupAxesLimits(0, @floatFromInt(count - 1), min_v, max_v, ig.ImGuiCond_Always);
-        ig.ImPlot_SetNextLineStyle(col, IMPLOT_AUTO);
-        ig.ImPlot_SetNextFillStyle(col, 0.25);
-        try ip.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ig.ImPlotLineFlags_Shaded, offset, stride(values[0]));
-        ig.ImPlot_EndPlot();
+    ip.ImPlot_PushStyleVar_Vec2(ip.ImPlotStyleVar_PlotPadding, .{ .x = 0, .y = 0 });
+    if (ip.ImPlot_BeginPlot(id, .{.x=size.x,.y=size.y}, ip.ImPlotFlags_CanvasOnly)) {
+        ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
+        ip.ImPlot_SetupAxesLimits(0, @floatFromInt(count - 1), min_v, max_v, ig.ImGuiCond_Always);
+        ip.ImPlot_SetNextLineStyle(col, IMPLOT_AUTO);
+        ip.ImPlot_SetNextFillStyle(col, 0.25);
+        try ip.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
+        ip.ImPlot_EndPlot();
     }
-    ig.ImPlot_PopStyleVar(1);
+    ip.ImPlot_PopStyleVar(1);
 }
 //
 //pub fn PlotCandlestick(label_id: []const u8, xs: []const f64, opens: []const f64, closes: []const f64, lows: []const f64, highs: []const f64, count: i32, tooltip: bool = true, width_percent: f32 = 0.25, bullCol: ImVec4 = ImVec4{.x = 0, .y = 1, .z = 0, .w = 1}, bearCol: ImVec4 = ImVec4{.x = 1, .y = 0, .z = 0, .w = 1}) void {
