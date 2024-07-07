@@ -67,7 +67,7 @@ pub fn imPlotDemoTabs() !void {
         if (ig.igBeginTabItem("Tools", null, 0)) {
             defer ig.igEndTabItem();
             try demoHeader("Offset and Stride", demo_OffsetAndStride);
-            //         demoHeader("Drag Points", demo_DragPoints);
+            try demoHeader("Drag Points", demo_DragPoints);
             //         demoHeader("Drag Lines", demo_DragLines);
             try demoHeader("Drag Rects", demo_DragRects);
             //         demoHeader("Querying", demo_Querying);
@@ -577,6 +577,59 @@ fn demo_OffsetAndStride() !void {
         ip.ImPlot_PopColormap(1);
     }
     //st.offset += 1; // uncomment for animation!
+}
+
+//-------------------
+// demo_DragPoints()
+//-------------------
+fn demo_DragPoints() !void {
+    ig.igBulletText("Click and drag each point.");
+    const st = struct {
+      var flags = ip.ImPlotDragToolFlags_None;
+      var clicked = [_]bool{false, false, false, false};
+      var hovered = [_]bool{false, false, false, false};
+      var held    = [_]bool{false, false, false, false};
+      var P =  [_]ip.ImPlotPoint{ip.ImPlotPoint{.x = 0.05,.y = 0.05}
+                                ,ip.ImPlotPoint{.x = 0.2, .y = 0.4}
+                                ,ip.ImPlotPoint{.x = 0.8, .y = 0.6}
+                                ,ip.ImPlotPoint{.x = 0.95,.y = 0.95}};
+    };
+    _ = ig.igCheckboxFlags_IntPtr("NoCursors", &st.flags, ip.ImPlotDragToolFlags_NoCursors); ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("NoFit",     &st.flags, ip.ImPlotDragToolFlags_NoFit); ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("NoInput",   &st.flags, ip.ImPlotDragToolFlags_NoInputs);
+    const ax_flags = ip.ImPlotAxisFlags_NoTickLabels | ip.ImPlotAxisFlags_NoTickMarks;
+    if (ip.ImPlot_BeginPlot("##Bezier",.{.x=-1, .y=0},ip.ImPlotFlags_CanvasOnly)) {
+        ip.ImPlot_SetupAxes(null,null,ax_flags,ax_flags);
+        ip.ImPlot_SetupAxesLimits(0,1,0,1, ip.ImPlotCond_Once);
+
+        _ = ip.ImPlot_DragPoint(0, &st.P[0].x, &st.P[0].y, .{.x=0, .y=0.9, .z=0, .w=1}, 4, st.flags, &st.clicked[0], &st.hovered[0], &st.held[0]);
+        _ = ip.ImPlot_DragPoint(1, &st.P[1].x, &st.P[1].y, .{.x=1, .y=0.5, .z=1, .w=1}, 4, st.flags, &st.clicked[1], &st.hovered[1], &st.held[1]);
+        _ = ip.ImPlot_DragPoint(2, &st.P[2].x, &st.P[2].y, .{.x=0, .y=0.5, .z=1, .w=1}, 4, st.flags, &st.clicked[2], &st.hovered[2], &st.held[2]);
+        _ = ip.ImPlot_DragPoint(3, &st.P[3].x, &st.P[3].y, .{.x=0, .y=0.9, .z=0, .w=1}, 4, st.flags, &st.clicked[3], &st.hovered[3], &st.held[3]);
+
+        var B : [100]ip.ImPlotPoint = undefined ;
+        for (0..100)|i| {
+            const  t  = @as(f64,@floatFromInt(i)) / 99.0;
+            const  u  = 1 - t;
+            const  w1 = u * u * u;
+            const  w2 = 3 * u * u * t;
+            const  w3 = 3 * u * t * t;
+            const  w4 = t * t * t;
+            B[i] = ip.ImPlotPoint{.x = w1 * st.P[0].x + w2 * st.P[1].x + w3 * st.P[2].x + w4 * st.P[3].x
+                                , .y = w1 * st.P[0].y + w2 * st.P[1].y + w3 * st.P[2].y + w4 * st.P[3].y};
+        }
+
+        ip.ImPlot_SetNextLineStyle(.{.x=1, .y=0.5, .z=1, .w=1}, if (st.hovered[1] or st.held[1]) 2.0 else 1.0);
+        // TODO
+        //try ip.ImPlot_PlotLineXyEx("##h1",&st.P[0].x, &st.P[0].y, 2, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.5, .z=1, .w=1}, if (st.hovered[2] or st.held[2]) 2.0 else 1.0);
+        // TODO
+        //try ip.ImPlot_PlotLineXyEx("##h2",&st.P[2].x, &st.P[2].y, 2, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.9, .z=0, .w=1}, if (st.hovered[0] or st.held[0] or st.hovered[3] or st.held[3])  3.0 else 2.0);
+        // TODO
+        //try ip.ImPlot_PlotLineXyEx("##bez",&B[0].x, &B[0].y, 100, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ip.ImPlot_EndPlot();
+    }
 }
 
 //-----------------
