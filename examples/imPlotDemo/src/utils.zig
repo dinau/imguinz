@@ -46,38 +46,27 @@ pub const WaveData = struct {
 };
 
 pub fn SineWave(data: ?*anyopaque, idx: c_int, point: [*c]ip.ImPlotPoint ) callconv(.C) ?*anyopaque  {
-    const v1:*f32 = @as(*f32,@alignCast(data.?));
-    const fval =  v1.*;
+    const fdata = @as([*c]f32,@ptrCast(@alignCast(data.?))).*;
     const fidx =  @as(f32,@floatFromInt(idx));
-    point.x = fval;
-    point.y = math.sin(fval * fidx );
-    return point;
-}
-// Nim: ///type ImPlotPointGetter* = proc (data: pointer; idx: cint; point: ptr ImPlotPoint): pointer {.cdecl.}
-// C++: typedef ImPlotPoint (*ImPlotGetter)      (            int idx, void* user_data);
-//  void PlotLineG       (const char* label_id, ImPlotGetter getter,      void* data, int count, ImPlotLineFlags flags=0);
-// C:   typedef void *      (*ImPlotPoint_getter)(void* data, int idx, ImPlotPoint *point);
-//  void ImPlot_PlotLineG(const char* label_id, ImPlotPoint_getter getter,void* data, int count, ImPlotLineFlags flags);//custom generation
-//
-pub fn SinewaveGetter(i:c_int,  data:*anyopaque) ImPlotPoint {
-    const f = (@as(f32,@ptrCast(data))).*;
-    return ImPlotPoint(i,math.sin(f * i));
+    point.*.x = fidx;
+    point.*.y = math.sin(fdata * fidx );
+    return @as(?*anyopaque, @ptrCast(point));
 }
 
-//pub fn SawWave(data: *anyopaque, idx: u32, point: ip.ImPlotPoint) *anyopaque {
-//    const t = idx;
-//    return ImPlotPoint{
-//        .x = wave_data.x + t,
-//        .y = wave_data.amp * 2.0 * (wave_data.freq * (wave_data.x + t) - math.floor(0.5 + wave_data.freq * (wave_data.x + t))),
-//    };
-//}
+pub fn SawWave(data: *?anyopaque, idx: u32, point: [*c]ip.ImPlotPoint) callconv(.C) ?*anyopaque {
+    const wd = @as([*c]WaveData,@ptrCast(@alignCast(data.?))).*;
+    const t = @as(f64,@floatFromInt(idx));
+    point.*.x = wd.x + t;
+    point.*.y = wd.amp * 2.0 * (wd.freq * (wd.x + t) - math.floor(0.5 + wd.freq * (wd.x + t)));
+    return @as(?*anyopaque, @ptrCast(point));
+}
 
-pub fn Spiral(idx: u32, wave_data: *WaveData) ImPlotPoint {
-    const t = idx;
-    return ImPlotPoint{
-        .x = wave_data.x + t,
-        .y = wave_data.amp * t,
-    };
+pub fn Spiral(data: *?anyopaque, idx: u32, point: [*c]ip.ImPlotPoint) callconv(.C) ?*anyopaque {
+    const wd = @as([*c]WaveData,@ptrCast(@alignCast(data.?))).*;
+    const t = @as(f64,@floatFromInt(idx));
+    point.*.x = wd.x + t;
+    point.*.y = wd.amp * t;
+    return @as(?*anyopaque, @ptrCast(point));
 }
 
 // Represents a point with double precision for plotting.
@@ -100,14 +89,6 @@ pub fn RandomColor() ig.ImVec4 {
         .w = 1.0,
     };
 }
-
-// Represents a 4-component vector with float coordinates.
-//pub const ImVec4 = struct {
-//    x: f32,
-//    y: f32,
-//    z: f32,
-//    w: f32,
-//};
 
 // Helper function to get random Gaussian number.
 pub fn RandomGauss() f64 {
@@ -239,14 +220,9 @@ pub const HugeTimeData = struct {
     }
 };
 
-// Plot utilities
-
 //-------------
 // Sparkline()
 //-------------
-//pub fn Sparkline(id: []const u8, values: []const f32, count: i32, min_v: f32, max_v: f32, offset: i32, col: ig.ImVec4, size: ig.ImVec2) void {
-//    // Implement sparkline plotting
-//}
 pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: anytype, size: ig.ImVec2) void {
     ip.ImPlot_PushStyleVar_Vec2(ip.ImPlotStyleVar_PlotPadding, .{ .x = 0, .y = 0 });
     if (ip.ImPlot_BeginPlot(id, .{.x=size.x,.y=size.y}, ip.ImPlotFlags_CanvasOnly)) {
@@ -259,27 +235,3 @@ pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: 
     }
     ip.ImPlot_PopStyleVar(1);
 }
-//
-//pub fn PlotCandlestick(label_id: []const u8, xs: []const f64, opens: []const f64, closes: []const f64, lows: []const f64, highs: []const f64, count: i32, tooltip: bool = true, width_percent: f32 = 0.25, bullCol: ImVec4 = ImVec4{.x = 0, .y = 1, .z = 0, .w = 1}, bearCol: ImVec4 = ImVec4{.x = 1, .y = 0, .z = 0, .w = 1}) void {
-//    // Implement candlestick plotting
-//}
-//
-//pub fn StyleSeaborn() void {
-//    // Implement seaborn style customization
-//}
-//
-//// Demo Functions
-//
-//
-//pub fn ButtonSelector(label: []const u8, b: *ImGuiMouseButton) void {
-//    // Implement button selector
-//}
-//
-//pub fn ModSelector(label: []const u8, k: *i32) void {
-//    // Implement modifier selector
-//}
-//
-//pub fn InputMapping(label: []const u8, b: ?*ImGuiMouseButton, k: ?*i32) void {
-//    // Implement input mapping
-//}
-//

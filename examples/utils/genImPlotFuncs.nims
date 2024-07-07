@@ -43,11 +43,22 @@ let patDigital     =  TPat(postfix: ""
                      ,hina: hina3
                      ,retVal: ""
                      )
+#CIMGUI_API void ImPlot_PlotStems_S16PtrInt(
+# const char* label_id
+# ,const ImS16* values
+# ,int count
+
+# ,double ref
+# ,double scale
+# ,double start
+# ,ImPlotStemsFlags flags
+# ,int offset
+# ,int stride);
 let patStems       =  TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, values:anytype, count:c_int, ref:f64, scale:f64, start:f64, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 3
                      ,shortArgsInner: "label_id, values, count, 0, 1, 0, 0, 0, tsize"
-                     ,hina: hina2
+                     ,hina: hina1
                      ,retVal: ""
                      )
 #ImPlot_PlotStems_U64PtrU64Ptr(
