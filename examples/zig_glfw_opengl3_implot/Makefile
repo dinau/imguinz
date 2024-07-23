@@ -15,7 +15,7 @@ run: all
 	(cd zig-out/bin; ./$(TARGET).exe)
 
 gen:
-	nim ../utils/genImPlotFuncs.nims > src/zimplot.zig
+	nim ../utils/genImPlotFuncs.nims
 
 
 cleanall:

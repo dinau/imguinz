@@ -16,7 +16,7 @@ run: all
 	@-cp zig-out/bin/imgui.ini .
 
 gen:
-	nim ../utils/genImPlotFuncs.nims > src/zimplot.zig
+	nim ../utils/genImPlotFuncs.nims
 
 INCS +=	-I../../libs/cimplot/implot/ -I../../libs/cimgui/imgui/
 INCS += -I"C:/Program Files/Windows Kits/10/Include/10.0.19041.0/ucrt"
