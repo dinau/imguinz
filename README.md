@@ -9,6 +9,7 @@
     - [zig_glfw_opengl3_jp](#zig_glfw_opengl3_jp)
     - [zig_glfw_opengl3_image_load](#zig_glfw_opengl3_image_load)
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
+  - [TODO](#todo)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
     - [ImPlot demo source in Zig](#implot-demo-source-in-zig)
@@ -35,9 +36,20 @@
 
 # ImGuinZ 
 
-This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) examples with **Zig language** using [CImGui](https://github.com/cimgui/cimgui) / [CImPlot](https://github.com/cimgui/cimplot)  as first step.
+This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
+[(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
+examples with less external dependencies.
 
 ImGui/CimGui version **1.90.9dock** (2024/07)
+
+- Features 
+   - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.
+   - Included GLFW 3.3.9 static library
+   - Included SDL2/SDL3 libraries
+   - Inlcuded STB libraries (only stb_image)
+   - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
+   - Enabled Input method \(IME\) with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
+
 
 ## Prerequisites
 
@@ -121,6 +133,12 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ![alt](img/zig_glfw_opengl3_implot.png)
 
+## TODO
+
+---
+
+SDL3 example : Work in progress.
+
 ## ImPlot Demo written in Zig lang.
 
 ---
@@ -132,7 +150,7 @@ Now work in progress.
 
 ```sh
 pwd
-imPlotDemo
+examples/imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
@@ -228,10 +246,10 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-- git version 2.45.2.windows.1
-- make: GNU Make 4.3
+- Git version 2.45.2.windows.1
+- Make: GNU Make 4.4.1
 - Python 3.12.3
-- zig: 0.12.0 (zig cc: clang version 17.0.6)
+- Zig: 0.12.0 (zig cc: clang version 17.0.6)
 - SDL2 ver.2.30.3
 - SDL3 2024-06-02
 
