@@ -44,7 +44,7 @@ pub fn main () !void {
   ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, 3);
   ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MINOR, 3);
   //
-  ig.glfwWindowHint(ig.GLFW_RESIZABLE, ig.GLFW_TRUE); // Resizabe window
+  ig.glfwWindowHint(ig.GLFW_RESIZABLE, ig.GLFW_TRUE); // Resizable window
   ig.glfwWindowHint(ig.GLFW_VISIBLE, ig.GLFW_FALSE);  // Needs this if OpenGL is not initialized !.
 
   //---------------------------------------------

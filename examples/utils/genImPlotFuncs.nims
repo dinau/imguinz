@@ -40,7 +40,7 @@ type
     postfix:string
     fullArgs:string
     shortArgsNum:int
-    shortArgsInner:string
+    defaultArgs:string
     hina: string
     retVal: string
 
@@ -61,14 +61,14 @@ const hina9 = "{nType}Ptr{nType}PtrInt"
 const patDigital     =  TPat(postfix: ""
                      ,fullArgs: "label_id: anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner:"label_id, xs, ys, count, 0, 0, tsize"
+                     ,defaultArgs:"0, 0, tsize"
                      ,hina: hina3
                      ,retVal: ""
                      )
 const patStems       =  TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, values:anytype, count:c_int, ref:f64, scale:f64, start:f64, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label_id, values, count, 0, 1, 0, 0, 0, tsize"
+                     ,defaultArgs: "0, 1, 0, 0, 0, tsize"
                      ,hina: hina1
                      ,retVal: ""
                      )
@@ -76,98 +76,85 @@ const patStems       =  TPat(postfix: ""
 const patStemsXy   =  TPat(postfix: "Xy"
                      ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype, count:c_int, ref:f64, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label_id, xs, ys, count, 0, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, 0, tsize"
                      ,hina: hina2
                      ,retVal: ""
                      )
 const patErr          = TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype, err:anytype, count:c_int, flags:c_int, offse:c_int, stride:c_int"
                      ,shortArgsNum: 5
-                     ,shortArgsInner: "label_id, xs, ys, err, count, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, tsize"
                      ,hina: hina4
                      ,retVal: ""
                      )
 const patErrNeg       = TPat(postfix: "Neg"
                      ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype, neg:anytype, pos: anytype, count:c_int, flags:c_int, offse:c_int, stride:c_int"
                      ,shortArgsNum: 6
-                     ,shortArgsInner: "label_id, xs, ys, neg, pos,count, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, tsize"
                      ,hina: hina5
                      ,retVal: ""
                      )
 const patHeatmap      = TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, values:anytype, rows:c_int, cols:c_int, scale_min:f64, scale_max:f64, label_fmt:anytype, bound_min:ip.ImPlotPoint, bouns_max:ip.ImPlotPoint, flags:c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label_id, values, rows, cols, 0, 0, \"%.1f\", .{.x=0,.y=0}, .{.x=1,.y=1}, 0"
+                     ,defaultArgs: "0, 0, \"%.1f\", .{.x=0,.y=0}, .{.x=1,.y=1}, 0"
                      ,hina: hina3
                      ,retVal: ""
                      )
 
-const typeCaseTbl = [ "f32          "
-                   ,"f64          "
-                   ,"i8           "
-                   ,"u8           "
-                   ,"i16, ip.ImS16"
-                   ,"u16, ip.ImU16"
-                   ,"i32, ip.ImS32"
-                   ,"u32, ip.ImU32"
-                   ,"i64, ip.ImS64"
-                   ,"u64, ip.ImU64"
-                ]
-
-
 const patXy      = TPat(postfix: "Xy"
                      ,fullArgs: "label:anytype, xs:anytype, ys:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int" # Ex
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label, xs, ys, count, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, tsize"
                      ,hina: hina2
                      ,retVal: ""
                      )
 const patScale   = TPat(postfix: ""
                      ,fullArgs: "label:anytype, values:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label, values, count, 1.0, 0, 0, 0, tsize"
+                     ,defaultArgs: "1.0, 0, 0, 0, tsize"
                      ,hina: hina1
                      ,retVal: ""
                      )
 const patXyScale = TPat(postfix: "XyScale"
                      ,fullArgs: "label:anytype, xs:anytype, ys:anytype, count:c_int, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label, xs, ys, count, 1.0, 0, 0, 0, tsize"
+                     ,defaultArgs: "1.0, 0, 0, 0, tsize"
                      ,hina: hina2
                      ,retVal: ""
                      )
 const patXyRef   = TPat(postfix: "XyRef"
                      ,fullArgs: "label:anytype, xs:anytype, ys:anytype, count:c_int, yref:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label, xs, ys, count, 0, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, 0, tsize"
                      ,hina: hina9
                      ,retVal: ""
                      )
 const patXyy     = TPat(postfix: "Xyy"
                      ,fullArgs: "label:anytype, xs:anytype, ys:anytype, ys2:anytype, count:c_int, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 5
-                     ,shortArgsInner: "label, xs, ys, ys2, count, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, tsize"
                      ,hina: hina6
                      ,retVal: ""
                      )
 const patRefScale = TPat(postfix: "RefScale"
                      ,fullArgs: "label:anytype, values:anytype, count:c_int, yref:f64, xscale:f64, xstart:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label, values, count, 0, 1.0, 0, 0, 0, tsize"
+                     ,defaultArgs: "0, 1.0, 0, 0, 0, tsize"
                      ,hina: hina1
                      ,retVal: ""
                      )
 const patBars    = TPat(postfix: ""
                      ,fullArgs: "label:anytype, values:anytype, count:c_int, bar_size:f64, shift:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label, values, count, 0.67, 0, 0, 0, tsize"
+                     ,defaultArgs: "0.67, 0, 0, 0, tsize"
                      ,hina: hina1
                      ,retVal: ""
                      )
 const patBarsXy  = TPat(postfix: "Xy"
                      ,fullArgs: "label:anytype, xs:anytype, ys:anytype, count:c_int, bar_size:f64, flags:c_int, offset:c_int, stride: c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label, xs, ys, count, 0.67, 0, 0, tsize"
+                     ,defaultArgs: "0.67, 0, 0, tsize"
                      ,hina: hina2
                      ,retVal: ""
                      )
@@ -175,48 +162,59 @@ const patBarsXy  = TPat(postfix: "Xy"
 const patBarGroups  = TPat(postfix: ""
                      ,fullArgs: "label_ids:anytype,values:anytype,item_count:c_int,group_count:c_int,group_size:f64,shift:f64,flags:c_int"
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label_ids, values, item_count, group_count, 0.67, 0, 0"
+                     ,defaultArgs: "0.67, 0, 0"
                      ,hina: hina3
                      ,retVal: ""
                      )
 const patHistg2D  = TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, xs:anytype, ys:anytype,count:c_int, x_bins:c_int, y_bins:c_int ,range:ip.ImPlotRect , flags:ip.ImPlotHistogramFlags "
                      ,shortArgsNum: 4
-                     ,shortArgsInner: "label_id, xs, ys,count, ip.ImPlotBin_Sturges, ip.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
+                     ,defaultArgs: "ip.ImPlotBin_Sturges, ip.ImPlotBin_Sturges, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
                      ,hina: hina3
                      ,retVal: "f64"
                      )
 const patHistg  = TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, values:anytype, count:c_int, bins:c_int, bar_scale:f64 ,range:ip.ImPlotRange , flags:ip.ImPlotHistogramFlags "
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label_id, values, count, ip.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
+                     ,defaultArgs: "ip.ImPlotBin_Sturges, 1.0, .{.X = .{.Min = 0, .Max = 0}, .Y = .{.Min = 0, .Max = 0}}, 0"
                      ,hina: hina3
                      ,retVal: "f64"
                      )
 const patPieChart  = TPat(postfix: ""
                      ,fullArgs: "label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,label_fmt:anytype,angle0:f64,flags:c_int"
                      ,shortArgsNum: 6
-                     ,shortArgsInner: "label_ids, values, count, x, y, radius, \"%.1f\", 90, 0"
+                     ,defaultArgs: "\"%.1f\", 90, 0"
                      ,hina: hina7
                      ,retVal: ""
                      )
 const patPieChartFmt  = TPat(postfix: "Fmt"
                      ,fullArgs: "label_ids:anytype,values:anytype, count:c_int,x:f64,y:f64,radius:f64,fmt:ip.ImPlotFormatter ,fmt_data:anytype, angle0:f64,flags:c_int"
                      ,shortArgsNum: 7
-                     ,shortArgsInner: "label_ids, values, count, x, y, radius, fmt, null, 90, 0"
+                     ,defaultArgs: "null, 90, 0"
                      ,hina: hina8
                      ,retVal: ""
                      )
 const patInfLines  = TPat(postfix: ""
                      ,fullArgs: "label_id:anytype, values:anytype, count:c_int, flags:c_int, offset:c_int, stride:c_int"
                      ,shortArgsNum: 3
-                     ,shortArgsInner: "label_id, values, count, 0, 0, tsize"
+                     ,defaultArgs: "0, 0, tsize"
                      ,hina: hina3
                      ,retVal: ""
                      )
 
-var db = @[
-           TFunc(name: "Line"        ,patns: @[patXy,       patScale, patXyScale])
+const typeCaseTbl = [ "f32          "
+                     ,"f64          "
+                     ,"i8           "
+                     ,"u8           "
+                     ,"i16, ip.ImS16"
+                     ,"u16, ip.ImU16"
+                     ,"i32, ip.ImS32"
+                     ,"u32, ip.ImU32"
+                     ,"i64, ip.ImS64"
+                     ,"u64, ip.ImU64"
+                    ]
+
+var db = @[TFunc(name: "Line"        ,patns: @[patXy,       patScale, patXyScale])
           ,TFunc(name: "Scatter"     ,patns: @[patXy,       patXyScale])
           ,TFunc(name: "Stairs"      ,patns: @[patXy,       patScale])
           ,TFunc(name: "Shaded"      ,patns: @[patXyy,      patRefScale, patXyRef])
@@ -289,9 +287,13 @@ proc genFuncs(): string =
         RET = "return"
         END = ";"
       result.add "\n"
+      var shortArgs = ""
+      for arg in iPat.fullArgs.split(',', iPat.shortArgsNum - 1):
+        shortArgs &= arg.split(':')[0] & ", "
+
       result.add genHina(iPat.hina) % [fnInfo.name  # $1
                              , iPat.postfix # $2
-                             , iPat.shortArgsInner # $3
+                             , shortArgs & iPat.defaultArgs # $3
                              , splitedFullArgs[1].split(":")[0].strip # $4
                              , RET   # $5
                              , END   # $6
@@ -317,9 +319,6 @@ proc genFuncs(): string =
                             , RET   # $5
                             , END   # $6
                             ]
-proc addMnualFuncs() =
-  echo readfile(projectDir() & "/" & "funcsAtHand.zig")
-
 #--------
 # main
 #--------

@@ -23,8 +23,11 @@ gen:
 
 #
 define def_make
+	@echo ======
+	@echo Enter: $(1)
+	@echo ======
 	@$(MAKE) -C  $(1) $(2)
 
 endef
 
-#MAKEFLAGS += --no-print-directory
+MAKEFLAGS += --no-print-directory

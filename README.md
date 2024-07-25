@@ -38,7 +38,7 @@
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
-examples with less external dependencies.
+examples in Zig language with less external dependencies.
 
 ImGui/CimGui version **1.90.9dock** (2024/07)
 
@@ -48,7 +48,7 @@ ImGui/CimGui version **1.90.9dock** (2024/07)
    - Included SDL2/SDL3 libraries
    - Inlcuded STB libraries (only stb_image)
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
-   - Enabled Input method \(IME\) with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
+   - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
 
 
 ## Prerequisites
@@ -154,7 +154,7 @@ examples/imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
-### ImPlot demo source in Zig
+### ImPlot demo source in Zig lang.
 
 ---
 
