@@ -265,17 +265,11 @@ pub fn main () !void {
       // Load image
       const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
       ig.igSetNextWindowSize(size, ig.ImGuiCond_Always);
-
-      const shortVersion = false;
-      if (shortVersion) {
-        ig.igImage(@ptrFromInt(textureId), size);
-      } else { // Long version
-        const uv0        = ig.ImVec2 {.x = 0, .y = 0};
-        const uv1        = ig.ImVec2 {.x = 1, .y = 1};
-        const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
-        const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
-        ig.igImage(@ptrFromInt(textureId), size, uv0, uv1, tint_col, border_col);
-      }
+      const uv0        = ig.ImVec2 {.x = 0, .y = 0};
+      const uv1        = ig.ImVec2 {.x = 1, .y = 1};
+      const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
+      const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
+      ig.igImage(@ptrFromInt(textureId), size, uv0, uv1, tint_col, border_col);
     }
 
     //-----------
@@ -300,7 +294,6 @@ pub fn main () !void {
     ig.glfwSwapBuffers(window);
   } // while end
 } // main end
-
 
 //--------------
 // setTooltip()

@@ -102,9 +102,9 @@ fn demoHeader(label: anytype, demo: anytype) !void {
     }
 }
 
-//-----------------------
-// demo_SubplotsSizing()
-//-----------------------
+//---------------------
+// demo_SubplotsSizing
+//---------------------
 fn demo_SubplotsSizing() !void {
     const st = struct {
       var flags = ip.ImPlotSubplotFlags_ShareItems | ip.ImPlotSubplotFlags_NoLegend;
@@ -134,8 +134,8 @@ fn demo_SubplotsSizing() !void {
                     var vec4 :ig.ImVec4 = undefined;
                     ip.ImPlot_SampleColormap(@ptrCast(&vec4), @as(f32,@floatFromInt(i)) / @as(f32,@floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
                     // TODO
-                    ip.ImPlot_SetNextLineStyle(.{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w}
-                                               , utils.IMPLOT_AUTO);
+                    ip.ImPlot_SetNextLineStyle(.{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w} , utils.IMPLOT_AUTO);
+                    //ip.ImPlot_SetNextLineStyle(vec4, utils.IMPLOT_AUTO);
                 }
                 var label:[16]u8 = undefined;
                 const slLabel = try std.fmt.bufPrint(&label, "data{}", .{id});
@@ -148,9 +148,9 @@ fn demo_SubplotsSizing() !void {
     }
 }
 
-//---------------------------
-// demo_SubplotItemSharing()
-//---------------------------
+//-------------------------
+// demo_SubplotItemSharing
+//-------------------------
 fn demo_SubplotItemSharing() !void {
     const st = struct {
       var id = [_]i32{0,1,2,3,4,5};
@@ -199,9 +199,9 @@ fn demo_SubplotItemSharing() !void {
     }
 }
 
-//---------------------------
-// demo_SubplotAxisLinking()
-//---------------------------
+//-------------------------
+// demo_SubplotAxisLinking
+//-------------------------
 fn demo_SubplotAxisLinking() !void {
   const st = struct {
     var flags = ip.ImPlotSubplotFlags_LinkRows | ip.ImPlotSubplotFlags_LinkCols;
@@ -227,7 +227,7 @@ fn demo_SubplotAxisLinking() !void {
 }
 
 //---------------
-// demo_LogScale()
+// demo_LogScale
 //---------------
 fn demo_LogScale() !void {
     var xs: [1001]f64 = undefined;
@@ -251,9 +251,9 @@ fn demo_LogScale() !void {
     }
 }
 
-//-----------------
-// demo_LogScale()
-//-----------------
+//---------------
+// demo_LogScale
+//---------------
 fn demo_SymmetricLogScale() !void {
     var  xs:[1001]f64 = undefined;
     var  ys1:[1001]f64 = undefined;
@@ -281,9 +281,9 @@ fn TransformInverse_Sqrt(v:f64, data: ?*anyopaque) callconv(.C) f64  {
   return v * v;
 }
 
-//--------------------
-// demo_CustomScale()
-//--------------------
+//------------------
+// demo_CustomScale
+//------------------
 fn demo_CustomScale() !void {
     var v:[100]f32 = undefined;
     for (0..100)|i| {
@@ -299,9 +299,9 @@ fn demo_CustomScale() !void {
     }
 }
 
-//------------------------------
-// demo_MultipleAxes()
-//------------------------------
+//-------------------
+// demo_MultipleAxes
+//-------------------
 fn demo_MultipleAxes() !void {
     var xs: [1001]f32 = undefined;
     var xs2:[1001]f32 = undefined;
@@ -364,6 +364,9 @@ fn demo_MultipleAxes() !void {
     }
 }
 
+//------------------
+// MetricsFormatter
+//------------------
 fn MetricFormatter(value:f64, buff:[*c]u8, size:i32, data:?*anyopaque) callconv(.C) c_int {
     _ = &size;
     const unit = @as([*c]u8,@ptrCast(@alignCast(data.?)));
@@ -380,9 +383,9 @@ fn MetricFormatter(value:f64, buff:[*c]u8, size:i32, data:?*anyopaque) callconv(
     return c.snprintf(buff ,@intCast(size), "%g %s%s", value / v[6], p[6], unit);
 }
 
-//-------------------
-// demo_TickLabels()
-//-------------------
+//-----------------
+// demo_TickLabels
+//-----------------
 fn demo_TickLabels() !void {
     const st = struct {
       var  custom_fmt    = true;
@@ -423,9 +426,9 @@ fn demo_TickLabels() !void {
     }
 }
 
-//-------------------
-// demo_LinkedAxes()
-//-------------------
+//-----------------
+// demo_LinkedAxes
+//-----------------
 fn demo_LinkedAxes() !void {
     const st = struct {
       var lims: ip.ImPlotRect = .{ .X = .{ .Min = 0, .Max = 1 }, .Y = .{ .Min = 0, .Max = 1 } };
@@ -456,9 +459,9 @@ fn demo_LinkedAxes() !void {
     }
 }
 
-//------------------------
-// demo_AxisConstraints()
-//------------------------
+//----------------------
+// demo_AxisConstraints
+//----------------------
 fn demo_AxisConstraints() !void {
     const st = struct {
     var constraints = [4]f32{-10,10,1,20};
@@ -478,9 +481,9 @@ fn demo_AxisConstraints() !void {
     }
 }
 
-//------------------
-// demo_EqualAxes()
-//------------------
+//----------------
+// demo_EqualAxes
+//----------------
 fn demo_EqualAxes() !void {
     ig.igBulletText("Equal constraint applies to axis pairs (e.g ip.ImAxis_X1/Y1, ip.ImAxis_X2/Y2)");
     var xs1:[360]f64 = undefined;
@@ -501,9 +504,9 @@ fn demo_EqualAxes() !void {
     }
 }
 
-//------------------------
-// demo_autoFittingData()
-//------------------------
+//----------------------
+// demo_autoFittingData
+//----------------------
 fn demo_AutoFittingData() !void {
     ig.igBulletText("The Y-axis has been configured to auto-fit to only the data visible in X-axis range.");
     ig.igBulletText("Zoom and pan the X-axis. Disable Stems to see a difference in fit.");
@@ -534,9 +537,9 @@ fn demo_AutoFittingData() !void {
     }
 }
 
-//------------------------
-// demo_OffsetAndStride()
-//------------------------
+//----------------------
+// demo_OffsetAndStride
+//----------------------
 fn demo_OffsetAndStride() !void {
     const k_circles    = 11;
     const k_points_per = 50;
@@ -579,9 +582,9 @@ fn demo_OffsetAndStride() !void {
     //st.offset += 1; // uncomment for animation!
 }
 
-//-------------------
-// demo_DragPoints()
-//-------------------
+//-----------------
+// demo_DragPoints
+//-----------------
 fn demo_DragPoints() !void {
     ig.igBulletText("Click and drag each point.");
     const st = struct {
@@ -632,9 +635,9 @@ fn demo_DragPoints() !void {
     }
 }
 
-//-----------------
-// demo_Config()
-//-----------------
+//-------------
+// demo_Config
+//-------------
 fn demo_Config() !void {
     ig.igShowFontSelector("Font");
     _ = ig.igShowStyleSelector("ImGui Style");
@@ -661,6 +664,9 @@ fn demo_Config() !void {
     }
 }
 
+//-----------
+// demo_Help
+//-----------
 fn demo_Help() !void {
     ig.igText("ABOUT THIS DEMO:");
     ig.igBulletText("Sections below are demonstrating many aspects of the library.");
@@ -695,9 +701,9 @@ fn demo_Help() !void {
     ip.ImPlot_ShowUserGuide();
 }
 
-//-----------------
-// demo_BarPlots()
-//-----------------
+//---------------
+// demo_BarPlots
+//---------------
 fn demo_BarPlots() !void {
     const data = [10]ig.ImS8{1,2,3,4,5,6,7,8,9,10};
     if (ip.ImPlot_BeginPlot("Bar Plot", .{ .x = -1, .y = 0 }, 0)) {
@@ -707,9 +713,9 @@ fn demo_BarPlots() !void {
     }
 }
 
-//-----------------
-// demo_BarGroups()
-//-----------------
+//----------------
+// demo_BarGroups
+//----------------
 fn demo_BarGroups() !void {
     const st = struct {
         var data = [30]ig.ImS8{
@@ -749,6 +755,9 @@ fn demo_BarGroups() !void {
     }
 }
 
+//----------------
+// demo_BarStacks
+//----------------
 fn demo_BarStacks() !void {
     const st = struct {
        var  Liars:ip.ImPlotColormap = -1;
@@ -798,7 +807,9 @@ fn demo_BarStacks() !void {
     ip.ImPlot_PopColormap(1);
 }
 
-
+//---------------
+// demo_Heatmaps
+//---------------
 fn demo_Heatmaps() !void {
     const st = struct {
         var values1 = [_][7]f32{ [_]f32{ 0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0 },
@@ -866,7 +877,9 @@ fn demo_Heatmaps() !void {
     ip.ImPlot_PopColormap(1);
 }
 
-
+//----------------
+// demo_Histogram
+//----------------
 fn demo_Histogram() !void {
     const Num = 10000;
     const rmax: f32 = 13;
@@ -960,6 +973,9 @@ fn demo_Histogram() !void {
     }
 }
 
+//------------------
+// demo_Histogram2D
+//------------------
 fn demo_Histogram2D() !void {
     const Num = 100000;
     const st = struct {
@@ -1006,6 +1022,9 @@ fn demo_Histogram2D() !void {
     ip.ImPlot_PopColormap(1);
 }
 
+//-------------
+// demo_Images
+//-------------
 fn demo_Images() !void {
     const ImageName = "himeji-400.jpg";
     const st = struct {
@@ -1051,9 +1070,9 @@ fn demo_Images() !void {
     }
 }
 
-//-----------------------
-// demo_MarkersAndText()
-//-----------------------
+//---------------------
+// demo_MarkersAndText
+//---------------------
 fn demo_MarkersAndText() !void {
     const st = struct {
       // TODO
@@ -1097,9 +1116,9 @@ fn demo_MarkersAndText() !void {
     }
 }
 
-//------------------
-// demo_NaNValues()
-//------------------
+//----------------
+// demo_NaNValues
+//----------------
 fn demo_NaNValues() !void {
     const st = struct {
       var  include_nan = true;
@@ -1136,13 +1155,11 @@ fn demo_LinePlots() !void {
         var ys2: [20]f64 = undefined;
     };
     for (0..1001) |i| {
-        const k: i32 = @intCast(i);
-        st.xs1[i] = @as(f32, @floatFromInt(k)) * 0.001;
+        st.xs1[i] = @as(f32, @floatFromInt(i)) * 0.001;
         st.ys1[i] = 0.5 + 0.5 * math.sin(50 * (st.xs1[i] + @as(f32, @floatCast(ig.igGetTime())) / 10));
     }
     for (0..20) |i| {
-        const k: i32 = @intCast(i);
-        st.xs2[i] = @as(f64, @floatFromInt(k)) * 1 / 19.0;
+        st.xs2[i] = @as(f64, @floatFromInt(i)) * 1 / 19.0;
         st.ys2[i] = st.xs2[i] * st.xs2[i];
     }
     if (ip.ImPlot_BeginPlot("Line Plots", .{ .x = -1, .y = 0 }, 0)) {
@@ -1331,9 +1348,9 @@ fn demo_FilledLinePlots() !void {
     }
 }
 
-//--------------------
-// demo_ShadedPlots()
-//--------------------
+//------------------
+// demo_ShadedPlots
+//------------------
 fn demo_ShadedPlots() !void {
     const MAX_N = 1001;
     var xs: [MAX_N]f32 = undefined;
@@ -1345,7 +1362,7 @@ fn demo_ShadedPlots() !void {
 
     c.srand(0);
     for (0..MAX_N) |i| {
-        xs[i] = @as(f32, @floatFromInt(@as(i32, @intCast(i)))) * 0.001;
+        xs[i] = @as(f32, @floatFromInt(i)) * 0.001;
         ys[i] = 0.25 + 0.25 * math.sin(25 * xs[i]) * math.sin(5 * xs[i]) + utils.RandomRange(-0.01, 0.01);
         ys1[i] = ys[i] + utils.RandomRange(0.1, 0.12);
         ys2[i] = ys[i] - utils.RandomRange(0.1, 0.12);
@@ -1369,9 +1386,9 @@ fn demo_ShadedPlots() !void {
     }
 }
 
-//---------------------
-// demo_ScatterPlots()
-//---------------------
+//-------------------
+// demo_ScatterPlots
+//-------------------
 fn demo_ScatterPlots() !void {
     c.srand(0);
     var xs1:[100]f32 = undefined;
@@ -1390,6 +1407,7 @@ fn demo_ScatterPlots() !void {
     if (ip.ImPlot_BeginPlot("Scatter Plot", .{ .x = -1, .y = 0 }, 0)) {
         try ip.ImPlot_PlotScatterXy("Data 1", &xs1, &ys1, 100);
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
+
         var vec4: ig.ImVec4 = undefined;
         ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 1, utils.IMPLOT_AUTO);
         // TODO
@@ -1403,9 +1421,9 @@ fn demo_ScatterPlots() !void {
     }
 }
 
-//-----------------------
-// demo_StairstepPlots()
-//-----------------------
+//---------------------
+// demo_StairstepPlots
+//---------------------
 fn demo_StairstepPlots() !void {
     var ys1:[21]f32 = undefined;
     var ys2:[21]f32 = undefined;
@@ -1436,9 +1454,10 @@ fn demo_StairstepPlots() !void {
         ip.ImPlot_EndPlot();
     }
 }
-//---------------
-// demo_Tables()
-//---------------
+
+//-------------
+// demo_Tables
+//-------------
 fn demo_Tables() !void {
     const st = struct {
         var anim = true;
@@ -1487,7 +1506,9 @@ fn demo_Tables() !void {
     }
 }
 
-
+//----------------
+// demo_DragRects
+//----------------
 fn demo_DragRects() !void {
     var x_data: [512]f32 = undefined;
     var y_data1: [512]f32 = undefined;

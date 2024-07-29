@@ -12,7 +12,7 @@
   - [TODO](#todo)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
-    - [ImPlot demo source in Zig](#implot-demo-source-in-zig)
+    - [ImPlot demo source in Zig lang.](#implot-demo-source-in-zig-lang)
     - [Plots Tab](#plots-tab)
       - [LinePlots (Dynamic)](#lineplots-dynamic)
       - [BarGroups](#bargroups)

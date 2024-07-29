@@ -2,7 +2,7 @@
 // 2024/06 by dinau
 //
 const std = @import("std");
-pub const ip = @cImport({
+const ip = @cImport({
     @cInclude("cimplot.h");
 });
 

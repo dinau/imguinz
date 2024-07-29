@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <strings.h>
 
+#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include "cimgui.h"
 #include "utils.h"
 #include "setupFonts.h"

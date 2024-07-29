@@ -110,7 +110,7 @@ pub fn main () !void {
 
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
   // main loop GUI
   //---------------
@@ -153,7 +153,7 @@ pub fn main () !void {
       _ = ig.igSliderFloat ("Float", &fval, 0.0, 1.0, "%.3f", 0);
       _ = ig.igColorEdit3 ("Clear color", &clearColor, 0);
 
-      if (ig.igButton ("Button", .{.x = 0, .y = 0} )) counter += 1;
+      if (ig.igButton ("Button", DefaultButtonSize)) counter += 1;
       ig.igSameLine (0, -1.0);
       ig.igText ("Counter = %d", counter);
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
@@ -179,7 +179,7 @@ pub fn main () !void {
       _ = ig.igBegin ("Another Window", &showAnotherWindow, 0);
       defer ig.igEnd ();
       ig.igText ("Hello from another window!");
-      if (ig.igButton ("Close Me", .{.x = 0, .y = 0})) showAnotherWindow = false;
+      if (ig.igButton ("Close Me", DefaultButtonSize)) showAnotherWindow = false;
     }
 
     //-----------

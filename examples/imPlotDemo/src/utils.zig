@@ -1,7 +1,7 @@
 const std = @import("std");
 const math = @import("std").math;
 
-pub const c = @cImport ({
+const c = @cImport ({
   @cInclude ("stdlib.h");
 });
 
