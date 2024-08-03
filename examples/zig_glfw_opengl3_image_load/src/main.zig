@@ -76,21 +76,35 @@ pub fn main () !void {
 
   ig.glfwMakeContextCurrent(window);
 
+  //---------------------
+  // Load title bar icon
+  //---------------------
+  const TitleBarIconName = "z.png";
+  //--------------
+  // Get exe path
+  //--------------
+  // Refered to:
+  //  https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
+  var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+  defer _ = gpa.deinit();
+  const allocator = gpa.allocator();
+  const exe_path = try std.fs.selfExePathAlloc(allocator);
+  defer allocator.free(exe_path);
+  const opt_exe_dir = std.fs.path.dirname(exe_path);
+  if (opt_exe_dir) |exe_dir| {
+    var paths = [_][]const u8{ exe_dir, TitleBarIconName };
+    const icon_path = try std.fs.path.join(allocator, &paths);
+    defer allocator.free(icon_path);
+    // Load icon
+    ig.LoadTitleBarIcon(window, icon_path.ptr);
+  }
+
   //-------------------------------
   // Visible/Show main window here
   //-------------------------------
   ig.glfwShowWindow(window);
 
   ig.glfwSwapInterval(1);  // Enable VSync --- Lower CPU load
-                           //
-  // Load title bar icon
-  const IconName = "icon_qr_my_github_red.png";
-  const pIconData = ig.LoadTitleBarIcon(window, IconName);
-  defer {
-    if (pIconData != 0) {
-      ig.stbi_image_free(pIconData);  // free memory for icon
-    }
-  }
 
   // Setup Dear ImGui context
   if (ig.igCreateContext (null) == null){

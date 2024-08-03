@@ -38,6 +38,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    // Load Icon
+    exe.addWin32ResourceFile(.{ .file = .{ .path = "src/res/res.rc" } });
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
@@ -51,7 +53,7 @@ pub fn build(b: *std.Build) void {
     // For ImGui/CImGui Libs
     //-----------------------
     //---------------
-    // Include paths
+    // [imlibs] --- Include paths
     //---------------
     imlibs.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
     // ImGui/CImGui
@@ -158,7 +160,7 @@ pub fn build(b: *std.Build) void {
     //
     imlibs.linkLibC();
     imlibs.linkLibCpp();
-    //exe.subsystem = .Windows;  // Hide console window
+    exe.subsystem = .Windows;  // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
@@ -168,6 +170,8 @@ pub fn build(b: *std.Build) void {
     const resBin =   [_][]const u8{ "imgui.ini"};
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
+    const resIcon = "src/res/z.png";
+
     inline for(resBin)|file|{
       const res = b.addInstallFile(b.path(file),"bin/" ++ file);
       b.getInstallStep().dependOn(&res.step);
@@ -176,6 +180,8 @@ pub fn build(b: *std.Build) void {
       const res = b.addInstallFile(b.path("../utils/" ++ file),"utils/" ++ file);
       b.getInstallStep().dependOn(&res.step);
     }
+    const res = b.addInstallFile(b.path(resIcon),"bin/z.png");
+    b.getInstallStep().dependOn(&res.step);
     //
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish

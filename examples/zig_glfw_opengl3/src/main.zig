@@ -5,8 +5,7 @@ const fonts = @import("fonts.zig");
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
 
-fn glfw_error_callback (err: c_int, description: [*c] const u8) callconv (.C) void
-{
+fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
@@ -58,6 +57,29 @@ pub fn main () !void {
   defer ig.glfwDestroyWindow (window);
 
   ig.glfwMakeContextCurrent(window);
+
+  //---------------------
+  // Load title bar icon
+  //---------------------
+  const TitleBarIconName = "z.png";
+  //--------------
+  // Get exe path
+  //--------------
+  // Refered to:
+  //  https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
+  var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+  defer _ = gpa.deinit();
+  const allocator = gpa.allocator();
+  const exe_path = try std.fs.selfExePathAlloc(allocator);
+  defer allocator.free(exe_path);
+  const opt_exe_dir = std.fs.path.dirname(exe_path);
+  if (opt_exe_dir) |exe_dir| {
+    var paths = [_][]const u8{ exe_dir, TitleBarIconName };
+    const icon_path = try std.fs.path.join(allocator, &paths);
+    defer allocator.free(icon_path);
+    // Load icon
+    ig.LoadTitleBarIcon(window, icon_path.ptr);
+  }
 
   //-------------------------------
   // Visible/Show main window here

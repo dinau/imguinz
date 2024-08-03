@@ -242,24 +242,23 @@ proc transType(sType:string) : string =
 # getHina
 #---------
 proc genHina(hina:string): string =
-  var ret  = """
+  result  = """
   const typ =  @TypeOf($4[0]);
   const tsize = @sizeOf(typ);
   _ = &tsize;
   $5 switch (typ) {
 """
   for sCase in typeCaseTbl:
-    ret.add "     " & sCase
-    ret.add " => ip.ImPlot_Plot$1_"
+    result.add "     " & sCase
+    result.add " => ip.ImPlot_Plot$1_"
     let nType = sCase.split(' ')[0].strip(chars={','}) # get one of 'case type'
-    ret.add hina.replace("{nType}",transType(nType))
-    ret.add "          ($3),\n"
-  ret.add """
+    result.add hina.replace("{nType}",transType(nType))
+    result.add "          ($3),\n"
+  result.add """
       else =>  {return error.ImPlot_Plot$1$2_Argument;}
     }$6
   }
   """
-  return ret
 
 #----------
 # genFuncs

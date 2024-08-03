@@ -5,8 +5,7 @@ const fonts = @import("fonts.zig");
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
 
-fn glfw_error_callback (err: c_int, description: [*c] const u8) callconv (.C) void
-{
+fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
@@ -59,6 +58,29 @@ pub fn main () !void {
 
   ig.glfwMakeContextCurrent(window);
 
+  //---------------------
+  // Load title bar icon
+  //---------------------
+  const TitleBarIconName = "z.png";
+  //--------------
+  // Get exe path
+  //--------------
+  // Refered to:
+  //  https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
+  var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+  defer _ = gpa.deinit();
+  const allocator = gpa.allocator();
+  const exe_path = try std.fs.selfExePathAlloc(allocator);
+  defer allocator.free(exe_path);
+  const opt_exe_dir = std.fs.path.dirname(exe_path);
+  if (opt_exe_dir) |exe_dir| {
+    var paths = [_][]const u8{ exe_dir, TitleBarIconName };
+    const icon_path = try std.fs.path.join(allocator, &paths);
+    defer allocator.free(icon_path);
+    // Load icon
+    ig.LoadTitleBarIcon(window, icon_path.ptr);
+  }
+
   //-------------------------------
   // Visible/Show main window here
   //-------------------------------
@@ -110,7 +132,7 @@ pub fn main () !void {
 
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
   // main loop GUI
   //---------------
@@ -153,7 +175,7 @@ pub fn main () !void {
       _ = ig.igSliderFloat ("浮動小数", &fval, 0.0, 1.0, "%.3f", 0);
       _ = ig.igColorEdit3 ("背景色 変更", &clearColor, 0);
 
-      if (ig.igButton ("Button", sz)) counter += 1;
+      if (ig.igButton ("Button", DefaultButtonSize)) counter += 1;
       ig.igSameLine (0, -1.0);
       ig.igText ("カウンタ = %d", counter);
       ig.igText ("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
@@ -179,7 +201,7 @@ pub fn main () !void {
       _ = ig.igBegin ("Another Window", &showAnotherWindow, 0);
       defer ig.igEnd ();
       ig.igText ("Hello from another window!");
-      if (ig.igButton ("Close Me", sz)) showAnotherWindow = false;
+      if (ig.igButton ("Close Me", DefaultButtonSize)) showAnotherWindow = false;
     }
 
     //-----------

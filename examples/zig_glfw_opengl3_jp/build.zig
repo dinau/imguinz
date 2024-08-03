@@ -18,7 +18,7 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
+    const imlibs = b.addStaticLibrary(.{
         .name = "cimgui",
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(lib);
+    b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "zig_glfw_opengl3_jp",
@@ -38,6 +38,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    // Load Icon
+    exe.addWin32ResourceFile(.{ .file = .{ .path = "src/res/res.rc" } });
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
@@ -51,24 +53,25 @@ pub fn build(b: *std.Build) void {
     // For ImGui/CImGui Libs
     //-----------------------
     //---------------
-    // Include paths
+    // [imlibs] --- Include paths
     //---------------
-    lib.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    imlibs.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
     // ImGui/CImGui
-    lib.addIncludePath(b.path("../../libs/cimgui/imgui"));
-    lib.addIncludePath(b.path("../../libs/imgui/backends"));
-    lib.addIncludePath(b.path("../../libs/cimgui"));
+    imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
+    imlibs.addIncludePath(b.path("../../libs/cimgui"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
     // ImGui
-    lib.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)");
-    lib.root_module.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    lib.root_module.addCMacro("ImDrawIdx", "unsigned int");
+    imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)");
+    imlibs.defineCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
+    imlibs.defineCMacro("ImDrawIdx", "unsigned int");
+    imlibs.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
     //---------------
     // Sources C/C++
     //---------------
-    lib.addCSourceFiles(.{
+    imlibs.addCSourceFiles(.{
       .files = &.{
         // ImGui
         "../../libs/cimgui/imgui/imgui.cpp",
@@ -104,10 +107,11 @@ pub fn build(b: *std.Build) void {
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
-    exe.root_module.addCMacro("CIMGUI_USE_GLFW", "");
-    exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
-    exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
+    exe.defineCMacro("CIMGUI_USE_GLFW", "");
+    exe.defineCMacro("CIMGUI_USE_OPENGL3", "");
+    exe.defineCMacro("ImDrawIdx", "unsigned int");
+    exe.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    exe.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", null);
     //---------------
     // Sources C/C++
     //---------------
@@ -142,11 +146,11 @@ pub fn build(b: *std.Build) void {
     exe.linkLibC();
     exe.linkLibCpp();
     //
-    exe.linkLibrary(lib);
+    exe.linkLibrary(imlibs);
     //
-    lib.linkLibC();
-    lib.linkLibCpp();
-    //exe.subsystem = .Windows;  // Hide console window
+    imlibs.linkLibC();
+    imlibs.linkLibCpp();
+    exe.subsystem = .Windows;  // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
@@ -156,6 +160,8 @@ pub fn build(b: *std.Build) void {
     const resBin =   [_][]const u8{ "imgui.ini"};
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
+    const resIcon = "src/res/z.png";
+
     inline for(resBin)|file|{
       const res = b.addInstallFile(b.path(file),"bin/" ++ file);
       b.getInstallStep().dependOn(&res.step);
@@ -164,6 +170,8 @@ pub fn build(b: *std.Build) void {
       const res = b.addInstallFile(b.path("../utils/" ++ file),"utils/" ++ file);
       b.getInstallStep().dependOn(&res.step);
     }
+    const res = b.addInstallFile(b.path(resIcon),"bin/z.png");
+    b.getInstallStep().dependOn(&res.step);
     //
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish

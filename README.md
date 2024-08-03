@@ -27,7 +27,7 @@
       - [Tables (Dynamic)](#tables-dynamic)
     - [Tools Tab](#tools-tab)
       - [DragRects](#dragrects)
-  - [Hiding console window](#hiding-console-window)
+  - [Show / Hide console window](#show--hide-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
   - [Similar project](#similar-project)
@@ -217,15 +217,17 @@ make run   # or zig build --release=fast run
 ![alt](examples/imPlotDemo/img/DragRects.png)
 
 
-## Hiding console window
+## Show / Hide console window
 
 ---
 
-Open `build.zig` in each example folder and **enable** option line as follows,
+Open `build.zig` in each example folder and   
+Hide console: default,  
+Show console: commet out this line as follows,
 
   ```zig
   ... snip ...
-  exe.subsystem = .Windows;  // Hide console window
+  //exe.subsystem = .Windows;  // Hide console window
   ... snip ...
   ```
 

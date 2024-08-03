@@ -52,17 +52,17 @@ bool LoadTextureFromFile(const char* imageName, GLuint* out_texture, int* out_wi
 /*--------------------
  * LoadTitleBarIcon()
  * ------------------*/
-unsigned char* LoadTitleBarIcon(GLFWwindow* window, const char* iconName) {
+void LoadTitleBarIcon(GLFWwindow* window, const char* iconName) {
   int width, height, channels;
   unsigned char*  pixels = 0;
   if (existsFile(iconName)) {
     pixels = stbi_load(iconName, &width, &height, &channels, 0);
     const GLFWimage img  = {.width = width, .height = height, .pixels = pixels};
     glfwSetWindowIcon(window, 1, &img);
+    stbi_image_free(pixels);
   } else {
     printf("\nNot found: %s", iconName);
     glfwSetWindowIcon(window, 0, NULL);
   }
-  return pixels;
 }
 #endif
