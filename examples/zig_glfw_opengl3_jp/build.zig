@@ -39,7 +39,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     // Load Icon
-    exe.addWin32ResourceFile(.{ .file = .{ .path = "src/res/res.rc" } });
+    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
