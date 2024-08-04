@@ -20,8 +20,8 @@ GRTAGS
 GTAGS
 .hg
 .git
-build/
-.build/
+/**/build/
+/**/.build/
 .idea
 .vscode
 __pycache__

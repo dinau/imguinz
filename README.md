@@ -5,11 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [zig_glfw_opengl3 / zig_sdl2_opengl3](#zig_glfw_opengl3--zig_sdl2_opengl3)
+    - [zig_glfw_opengl3 / zig_sdl2_opengl3 / zig_sdl3_opengl3](#zig_glfw_opengl3--zig_sdl2_opengl3--zig_sdl3_opengl3)
     - [zig_glfw_opengl3_jp](#zig_glfw_opengl3_jp)
     - [zig_glfw_opengl3_image_load](#zig_glfw_opengl3_image_load)
     - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
-  - [TODO](#todo)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
     - [ImPlot demo source in Zig lang.](#implot-demo-source-in-zig-lang)
@@ -90,7 +89,7 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 
 ## Examples screen shots 
 
-### zig_glfw_opengl3 / zig_sdl2_opengl3
+### zig_glfw_opengl3 / zig_sdl2_opengl3 / zig_sdl3_opengl3
 
 ---
 
@@ -133,12 +132,6 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 | [zig_glfw_opengl3_implot](examples/zig_glfw_opengl3_implot) |
 
 ![alt](img/zig_glfw_opengl3_implot.png)
-
-## TODO
-
----
-
-SDL3 example : Work in progress.
 
 ## ImPlot Demo written in Zig lang.
 
@@ -254,7 +247,7 @@ https://github.com/JBetz/build-sdl3-win32
 - Python 3.12.3
 - Zig: 0.12.0 (zig cc: clang version 17.0.6)
 - SDL2 ver.2.30.3
-- SDL3 2024-06-02
+- SDL3 2024-08-04
 
 ## Similar project
 

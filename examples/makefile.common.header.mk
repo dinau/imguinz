@@ -1,4 +1,4 @@
-ifeq ($(OS),WindowsNT)
+ifeq ($(OS),Windows_NT)
 	EXE = .exe
 endif
 
