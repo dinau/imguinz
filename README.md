@@ -43,7 +43,8 @@ examples in Zig language with less external dependencies.
 ImGui/CimGui version **1.91.0dock** (2024/08)
 
 - Features 
-   - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.
+   - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
+      ![alt](img/icon_font.png)
    - Included GLFW 3.3.9 static library
    - Included SDL2/SDL3 libraries
    - Inlcuded STB libraries (only stb_image)
