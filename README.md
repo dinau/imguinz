@@ -58,7 +58,7 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 - Windows10 OS or later
 - Use **Zig: 0.12.0** 
 - **Zig 0.13.0 ?** (Compiling is ok so far)
-- MSys/MinGW basic commands (make, rm, cp ...)
+- MSys/MinGW basic commands (make, rm, cp, strip ...)
 
 ## Build and run
 

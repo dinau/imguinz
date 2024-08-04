@@ -1,8 +1,6 @@
 # Use zig-0.12.0
 # by dinau (2024/06)
 #
-TARGET = $(notdir $(CURDIR))
-ZIG_BIN_DIR = zig-out/bin
 #
 #OPT += --release=fast
 #OPT += --release=small
@@ -11,6 +9,7 @@ ZIG_BIN_DIR = zig-out/bin
 
 all:
 	zig build $(OPT)
+	@-$(AFTER_BUILD_CMD)
 
 .PHONY: run gen cleanall cleanexe trans
 

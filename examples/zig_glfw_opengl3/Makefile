@@ -4,4 +4,7 @@ OPT += --release=fast
 # Fail compilation
 #OPT += --release=safe
 
+include ../makefile.common.header.mk
+
+
 include ../makefile.common.mk

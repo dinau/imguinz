@@ -1,4 +1,5 @@
-# All example are built at a time.
+# All examples will be built at a time.
+#
 EXAMPLE_DIRS := \
 							examples/imPlotDemo \
 							examples/zig_sdl2_opengl3 \
