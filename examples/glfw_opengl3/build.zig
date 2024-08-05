@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "zig_glfw_opengl3",
+        .name = "glfw_opengl3",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,

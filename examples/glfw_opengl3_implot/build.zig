@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "zig_glfw_opengl3_image_load",
+        .name = "glfw_opengl3_implot",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -60,6 +60,9 @@ pub fn build(b: *std.Build) void {
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
     imlibs.addIncludePath(b.path("../../libs/cimgui"));
+    // ImPlot/CImPlot
+    imlibs.addIncludePath(b.path("../../libs/cimplot"));
+    imlibs.addIncludePath(b.path("../../libs/cimplot/implot"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
@@ -81,6 +84,12 @@ pub fn build(b: *std.Build) void {
         "../../libs/cimgui/imgui/imgui_draw.cpp",
         // CImGui
         "../../libs/cimgui/cimgui.cpp",
+        // ImPlot
+        "../../libs/cimplot/implot/implot.cpp",
+        "../../libs/cimplot/implot/implot_demo.cpp",
+        "../../libs/cimplot/implot/implot_items.cpp",
+        // CImPlot
+        "../../libs/cimplot/cimplot.cpp",
         // ImGui GLFW and OpenGL interface
         "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
         "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
@@ -96,14 +105,15 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path,"include"})));
+    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
     exe.addIncludePath(b.path("../../libs/stb"));
     exe.addIncludePath(b.path("../../libs/cimgui/generator/output"));
-    // CImGui
+    // CImGui / CImPlot
     exe.addIncludePath(b.path("../../libs/cimgui"));
+    exe.addIncludePath(b.path("../../libs/cimplot"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
@@ -157,8 +167,7 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"
-                                  , "himeji-400.jpg" };
+    const resBin =   [_][]const u8{ "imgui.ini"};
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";

@@ -5,10 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [zig_glfw_opengl3 / zig_sdl2_opengl3 / zig_sdl3_opengl3](#zig_glfw_opengl3--zig_sdl2_opengl3--zig_sdl3_opengl3)
-    - [zig_glfw_opengl3_jp](#zig_glfw_opengl3_jp)
-    - [zig_glfw_opengl3_image_load](#zig_glfw_opengl3_image_load)
-    - [zig_glfw_opengl3_implot](#zig_glfw_opengl3_implot)
+    - [glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3](#glfw_opengl3--sdl2_opengl3--sdl3_opengl3)
+    - [glfw_opengl3_jp](#glfw_opengl3_jp)
+    - [glfw_opengl3_image_load](#glfw_opengl3_image_load)
+    - [glfw_opengl3_implot](#glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
     - [ImPlot demo source in Zig lang.](#implot-demo-source-in-zig-lang)
@@ -72,7 +72,7 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 1. Go to one of the examples folder,
 
    ```sh
-   cd imguinz/examples/zig_glfw_opengl3
+   cd imguinz/examples/glfw_opengl3
    ```
 
 1. Build and Run 
@@ -89,49 +89,42 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 
 ## Examples screen shots 
 
-### zig_glfw_opengl3 / zig_sdl2_opengl3 / zig_sdl3_opengl3
+### glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3
 
 ---
 
-|                                          GLFW |                                          SDL2 |                                          SDL3 |
-|:---------------------------------------------:|:---------------------------------------------:|:---------------------------------------------:|
-| [zig_glfw_opengl3](examples/zig_glfw_opengl3) | [zig_sdl2_opengl3](examples/zig_sdl2_opengl3) | [zig_sdl3_opengl3](examples/zig_sdl3_opengl3) |
+[glfw_opengl3](examples/glfw_opengl3/src/main.zig) / 
+[sdl2_opengl3](examples/sdl2_opengl3/src/main.zig) / 
+[sdl3_opengl3](examples/sdl3_opengl3/src/main.zig)
 
+![alt](img/glfw_opengl3.png)
 
-![alt](img/zig_glfw_opengl3.png)
-
-### zig_glfw_opengl3_jp
-
----
-
-|                                        GLFW |
-|:-------------------------------------------:|
-| [zig_glfw_opengl3_jp](examples/zig_glfw_opengl3_jp) |
-
-![alt](img/zig_glfw_opengl3_jp.png)
-
-
-### zig_glfw_opengl3_image_load
+### glfw_opengl3_jp
 
 ---
 
-|                                                                GLFW |
-|:-------------------------------------------------------------------:|
-| [zig_glfw_opengl3_image_load](examples/zig_glfw_opengl3_image_load) |
+[glfw_opengl3_jp](examples/glfw_opengl3_jp/src/main.zig)
 
-![alt](img/zig_glfw_opengl3_image_load.png)  
+![alt](img/glfw_opengl3_jp.png)
+
+
+### glfw_opengl3_image_load
+
+---
+
+[glfw_opengl3_image_load](examples/glfw_opengl3_image_load/src/main.zig)
+
+![alt](img/glfw_opengl3_image_load.png)  
 Image file captured would be saved in the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
-### zig_glfw_opengl3_implot
+### glfw_opengl3_implot
 
 ---
 
-|                                        GLFW |
-|:-------------------------------------------:|
-| [zig_glfw_opengl3_implot](examples/zig_glfw_opengl3_implot) |
+[glfw_opengl3_implot](examples/glfw_opengl3_implot/src/main.zig)
 
-![alt](img/zig_glfw_opengl3_implot.png)
+![alt](img/glfw_opengl3_implot.png)
 
 ## ImPlot Demo written in Zig lang.
 
@@ -216,8 +209,8 @@ make run   # or zig build --release=fast run
 ---
 
 Open `build.zig` in each example folder and   
-Hide console: default,  
-Show console: commet out this line as follows,
+Hide console window: Default,  
+Show console window: Commet out this line as follows,
 
   ```zig
   ... snip ...
@@ -225,7 +218,7 @@ Show console: commet out this line as follows,
   ... snip ...
   ```
 
-  and execute `make`.
+  and rebuild example.
 
 ## SDL libraries
 
@@ -244,7 +237,6 @@ https://github.com/JBetz/build-sdl3-win32
 
 - Git version 2.45.2.windows.1
 - Make: GNU Make 4.4.1
-- Python 3.12.3
 - Zig: 0.12.0 (zig cc: clang version 17.0.6)
 - SDL2 ver.2.30.3
 - SDL3 2024-08-04

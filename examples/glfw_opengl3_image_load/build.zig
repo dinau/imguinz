@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "zig_glfw_opengl3_jp",
+        .name = "glfw_opengl3_image_load",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -96,7 +96,7 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path,"include"})));
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
@@ -157,7 +157,8 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"};
+    const resBin =   [_][]const u8{ "imgui.ini"
+                                  , "himeji-400.jpg" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";

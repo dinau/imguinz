@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "zig_glfw_opengl3_implot",
+        .name = "glfw_opengl3_jp",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -60,9 +60,6 @@ pub fn build(b: *std.Build) void {
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
     imlibs.addIncludePath(b.path("../../libs/cimgui"));
-    // ImPlot/CImPlot
-    imlibs.addIncludePath(b.path("../../libs/cimplot"));
-    imlibs.addIncludePath(b.path("../../libs/cimplot/implot"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
@@ -84,12 +81,6 @@ pub fn build(b: *std.Build) void {
         "../../libs/cimgui/imgui/imgui_draw.cpp",
         // CImGui
         "../../libs/cimgui/cimgui.cpp",
-        // ImPlot
-        "../../libs/cimplot/implot/implot.cpp",
-        "../../libs/cimplot/implot/implot_demo.cpp",
-        "../../libs/cimplot/implot/implot_items.cpp",
-        // CImPlot
-        "../../libs/cimplot/cimplot.cpp",
         // ImGui GLFW and OpenGL interface
         "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
         "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
@@ -111,9 +102,8 @@ pub fn build(b: *std.Build) void {
     exe.addIncludePath(b.path("../utils/fonticon"));
     exe.addIncludePath(b.path("../../libs/stb"));
     exe.addIncludePath(b.path("../../libs/cimgui/generator/output"));
-    // CImGui / CImPlot
+    // CImGui
     exe.addIncludePath(b.path("../../libs/cimgui"));
-    exe.addIncludePath(b.path("../../libs/cimplot"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------

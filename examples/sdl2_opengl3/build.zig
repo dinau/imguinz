@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "zig_sdl3_opengl3",
+        .name = "sdl2_opengl3",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -43,17 +43,16 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const sdlBase = "../../libs/sdl/sdl3";
-    var sArc:[]const u8 = "64";
+    const sdl2_Base = "../../libs/sdl/SDL2-2.30.3";
+    var sArc:[]const u8 = "x86_64";
     if(builtin.cpu.arch == .x86){
-      sArc = "32";
+      sArc = "i686";
     }
-    const sdlDate = "2024-08-04";
-    const sdlPath = b.fmt("{s}/{s}/SDL3-{s}/SDL3", .{sdlBase, sArc, sdlDate});
+    const sdl2_path = b.fmt("{s}/{s}-w64-mingw32", .{sdl2_Base,sArc});
     //---------------
     // [imlibs] --- Include paths
     //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{sdlPath, "include"})));
+    imlibs.addIncludePath(b.path(b.pathJoin(&.{sdl2_path, "include/SDL2"})));
     // ImGui/CImGui
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
@@ -79,9 +78,9 @@ pub fn build(b: *std.Build) void {
         "../../libs/cimgui/imgui/imgui_draw.cpp",
         // CImGui
         "../../libs/cimgui/cimgui.cpp",
-        // ImGui SDL3 and OpenGL interface
+        // ImGui SDL2 and OpenGL interface
         "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
-        "../../libs/cimgui/imgui/backends/imgui_impl_sdl3.cpp",
+        "../../libs/cimgui/imgui/backends/imgui_impl_sdl2.cpp",
       },
       .flags = &.{
         "-O2",
@@ -94,18 +93,18 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{sdlPath, "include"})));
+    exe.addIncludePath(b.path(b.pathJoin(&.{sdl2_path, "include/SDL2"})));
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
     exe.addIncludePath(b.path("../../libs/stb"));
     // CImGui
     exe.addIncludePath(b.path("../../libs/cimgui"));
-    exe.addIncludePath(b.path("../../libs/"));
+    exe.addIncludePath(b.path("../../libs/cimgui/generator/output"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
-    exe.defineCMacro("CIMGUI_USE_SDL3", "");
+    exe.defineCMacro("CIMGUI_USE_SDL2", "");
     exe.defineCMacro("CIMGUI_USE_OPENGL3", "");
     exe.defineCMacro("ImDrawIdx", "unsigned int");
     exe.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
@@ -150,14 +149,14 @@ pub fn build(b: *std.Build) void {
     exe.linkSystemLibrary("opengl32");
     exe.linkSystemLibrary("shell32");
     exe.linkSystemLibrary("user32");
-    // sdl3
-    //exe.addLibraryPath(b.path(b.pathJoin(&.{sdlPath, "lib-mingw-64"})));
-    //exe.linkSystemLibrary("SD32");      // For static link
+    // sdl2
+    //exe.addLibraryPath(b.path(b.pathJoin(&.{sdl2_path, "lib-mingw-64"})));
+    //exe.linkSystemLibrary("SDL2");      // For static link
     // Static link
-    exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","SDL3.lib"})));
+    exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2.a"})));
     // Dynamic link
-    //exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3dll.a"})));
-    //exe.linkSystemLibrary("SDL3dll"); // For dynamic link
+    //exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2dll.a"})));
+    //exe.linkSystemLibrary("SDL2dll"); // For dynamic link
     // System
     exe.linkLibC();
     exe.linkLibCpp();
@@ -166,7 +165,7 @@ pub fn build(b: *std.Build) void {
     //
     imlibs.linkLibC();
     imlibs.linkLibCpp();
-    //exe.subsystem = .Windows;  // Hide console window
+    exe.subsystem = .Windows;  // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
@@ -177,7 +176,6 @@ pub fn build(b: *std.Build) void {
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";
-    const resSdlDll = b.pathJoin(&.{sdlPath, "bin", "SDL3.dll"});
 
     inline for(resBin)|file|{
       const res = b.addInstallFile(b.path(file),"bin/" ++ file);
@@ -187,10 +185,8 @@ pub fn build(b: *std.Build) void {
       const res = b.addInstallFile(b.path("../utils/" ++ file),"utils/" ++ file);
       b.getInstallStep().dependOn(&res.step);
     }
-    const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
+    const res = b.addInstallFile(b.path(resIcon),"bin/z.png");
     b.getInstallStep().dependOn(&res.step);
-    const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
-    b.getInstallStep().dependOn(&resSdl.step);
     //
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish

@@ -1,13 +1,13 @@
 # All examples will be built at a time.
 #
 EXAMPLE_DIRS := \
-							examples/zig_sdl3_opengl3 \
+							examples/sdl3_opengl3 \
 							examples/imPlotDemo \
-							examples/zig_sdl2_opengl3 \
-							examples/zig_glfw_opengl3 \
-							examples/zig_glfw_opengl3_implot \
-							examples/zig_glfw_opengl3_jp \
-							examples/zig_glfw_opengl3_image_load
+							examples/sdl2_opengl3 \
+							examples/glfw_opengl3 \
+							examples/glfw_opengl3_implot \
+							examples/glfw_opengl3_jp \
+							examples/glfw_opengl3_image_load
 
 all:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
