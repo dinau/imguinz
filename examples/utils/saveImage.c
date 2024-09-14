@@ -9,7 +9,7 @@
 //#-------------
 //# saveImage()
 //#-------------
-void saveImage(char* fname, GLuint xs, GLuint ys, int imageWidth, int imageHeight, int comp /* = RGB*/, int quality /* = 90*/) {
+void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imageHeight, int comp /* = RGB*/, int quality /* = 90*/) {
   if (!(comp == 3 /*RGB*/)) {
     printf("Error!: Color component numbers must be 3 (RGB) at %s\n", __FILE__);
     return;

@@ -30,6 +30,7 @@
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
   - [Similar project](#similar-project)
+  - [Star History](#star-history)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -56,9 +57,9 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 ---
 
 - Windows10 OS or later
-- Use **Zig: 0.12.0** 
-- **Zig 0.13.0 ?** (Compiling is ok so far)
-- MSys/MinGW basic commands (make, rm, cp, strip ...)
+- Now using [zig-windows-x86_64-0.14.0-dev.1569+b56a667ec.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.1569+b56a667ec.zip)  
+Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
+- MSys2/MinGW basic commands (make, rm, cp, strip ...)
 
 ## Build and run
 
@@ -237,7 +238,7 @@ https://github.com/JBetz/build-sdl3-win32
 
 - Git version 2.45.2.windows.1
 - Make: GNU Make 4.4.1
-- Zig: 0.12.0 (zig cc: clang version 17.0.6)
+- Zig: 0.14.0.dev... (zig cc: clang version 18.1.8)
 - SDL2 ver.2.30.3
 - SDL3 2024-08-04
 
@@ -252,3 +253,7 @@ https://github.com/JBetz/build-sdl3-win32
 | **Python**           | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 | **Zig**, C lang.     | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
 | **Zig**              | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                         |
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=dinau/imguinz&type=Date)](https://star-history.com/#dinau/imguinz&Date)

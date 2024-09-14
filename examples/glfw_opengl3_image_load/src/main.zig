@@ -211,15 +211,15 @@ pub fn main () !void {
 
       // Image save button
       const imageExt = ImgFormatTbl[cbItemIndex].ext;
-      var svNameBuf:[std.fs.MAX_PATH_BYTES]u8 = undefined;
-      var     svBuf:[std.fs.MAX_PATH_BYTES]u8 = undefined;
+      var svNameBuf:[200]u8 = undefined;
+      var     svBuf:[200]u8 = undefined;
       const slsName = try std.fmt.bufPrint(&svNameBuf, "{s}_{}{s}", .{SaveImageName, counter, imageExt});
       if (ig.igButton("Save Image", .{.x = 0, .y = 0})) {
         const wkSize = ig.igGetMainViewport().*.WorkSize;
         const sx:c_int =  @intFromFloat(wkSize.x);
         const sy:c_int =  @intFromFloat(wkSize.y);
-        try stdout.print("{s}, {d}, {d}\n", .{slsName, sx, sy});
-        try bw.flush(); // don't forget to flush!
+        //try stdout.print("{s}, {d}, {d}\n", .{slsName, sx, sy});
+        //try bw.flush(); // don't forget to flush!
         ig.saveImage(slsName.ptr, 0, 0, sx, sy, 3, 90);    // # --- Save Image !
       }
       ig.igPopStyleColor(4);
