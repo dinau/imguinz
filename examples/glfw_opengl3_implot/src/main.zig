@@ -86,10 +86,6 @@ pub fn main() !void {
     ig.LoadTitleBarIcon(window, icon_path.ptr);
   }
 
-    //-------------------------------
-    // Visible/Show main window here
-    //-------------------------------
-    ig.glfwShowWindow(window);
 
     ig.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
 
@@ -134,6 +130,8 @@ pub fn main() !void {
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
     var sTextInuputBuf = [_:0]u8{0} ** 200;
+  var showWindowDelay:i32 = 1;
+  var showWindowReq = true;
 
     //------------------------
     // Select Dear ImGui style
@@ -249,6 +247,20 @@ pub fn main() !void {
             }
         }
         ig.glfwSwapBuffers(window);
+
+    if(showWindowDelay > 0){
+      showWindowDelay -= 1;
+    }else{
+     if(showWindowReq){
+        showWindowReq = false;
+        //-------------------------------
+        // Visible/Show main window here
+        //-------------------------------
+        ig.glfwShowWindow(window);
+     }
+    }
+
+
     } // while end
 } // main end
 

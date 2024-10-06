@@ -41,8 +41,15 @@ pub fn main () !void {
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
-  const window_flags = (ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_ALLOW_HIGHDPI);
-  const window = ig.SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example", ig.SDL_WINDOWPOS_CENTERED, ig.SDL_WINDOWPOS_CENTERED, MainWinWidth, MainWinHeight, window_flags);
+
+  // Initialy main window is hidden.  See: showWindowDelay
+  const window_flags = (ig.SDL_WINDOW_HIDDEN | ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_ALLOW_HIGHDPI);
+
+  const window = ig.SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example"
+                                     ,ig.SDL_WINDOWPOS_CENTERED
+                                     ,ig.SDL_WINDOWPOS_CENTERED
+                                     ,MainWinWidth, MainWinHeight
+                                     ,window_flags);
   if (window == null) {
     try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{ig.SDL_GetError()});
     return error.SDL_CreatWindow;
@@ -92,6 +99,8 @@ pub fn main () !void {
   var clearColor = [_]f32{0.25, 0.55,0.9,1.0};
   // Input text buffer
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
+  var showWindowDelay:i32 = 1; // TODO
+  var showWindowReq = true;    // TODO
 
   fonts.setupFonts();
 
@@ -185,6 +194,15 @@ pub fn main () !void {
     ig.glClear(ig.GL_COLOR_BUFFER_BIT);
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     ig.SDL_GL_SwapWindow(window);
+
+    if(showWindowDelay > 0){
+      showWindowDelay -= 1;
+    }else{
+      if(showWindowReq){
+        showWindowReq = false;
+        ig.SDL_ShowWindow(window);
+      }
+    }
 
   }// while end
 } // main end

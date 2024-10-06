@@ -30,7 +30,7 @@ pub fn main () !void {
   const stdout = bw.writer();
 
   // Setup SDL
-  if (ig.SDL_Init(ig.SDL_INIT_VIDEO | ig.SDL_INIT_TIMER | ig.SDL_INIT_GAMEPAD) != 0) {
+  if (ig.SDL_Init(ig.SDL_INIT_VIDEO | ig.SDL_INIT_GAMEPAD) == false) {
     try stdout.print("Error: {s}\n", .{ig.SDL_GetError()});
     return error.SDL_init;
   }
@@ -51,7 +51,10 @@ pub fn main () !void {
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
+
+  // Initialy main window is hidden.  See: showWindowDelay
   const window_flags = (ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_HIDDEN);
+
   const window = ig.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags);
   if (window == null) {
     try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{ig.SDL_GetError()});
@@ -65,7 +68,6 @@ pub fn main () !void {
 
   _= ig.SDL_GL_MakeCurrent(window, gl_context);
   _= ig.SDL_GL_SetSwapInterval(1);  // Enable vsync
-  _= ig.SDL_ShowWindow(window);
 
   // Setup Dear ImGui context
   if (ig.igCreateContext (null) == null){
@@ -104,6 +106,8 @@ pub fn main () !void {
   var clearColor = [_]f32{0.25, 0.55,0.9,1.0};
   // Input text buffer
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
+  var showWindowDelay:i32 = 1; // TODO
+  var showWindowReq = true;    // TODO
 
   fonts.setupFonts();
 
@@ -112,7 +116,7 @@ pub fn main () !void {
   var done = false;
   while (!done) {
     var event: ig.SDL_Event = undefined;
-    while (1 == ig.SDL_PollEvent(&event)) {
+    while (ig.SDL_PollEvent(&event)) {
       _ = ig.ImGui_ImplSDL3_ProcessEvent(&event);
       if (event.type == ig.SDL_EVENT_QUIT)
         done = true;
@@ -196,5 +200,13 @@ pub fn main () !void {
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     _ = ig.SDL_GL_SwapWindow(window);
 
+    if(showWindowDelay > 0){
+      showWindowDelay -= 1;
+    }else{
+      if(showWindowReq){
+        showWindowReq = false;
+        _ = ig.SDL_ShowWindow(window);
+      }
+    }
   }// while end
 } // main end
