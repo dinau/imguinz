@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const sdl2_Base = "../../libs/sdl/SDL2-2.30.3";
+    const sdl2_Base = "../../libs/sdl/SDL2-2.30.8";
     var sArc:[]const u8 = "x86_64";
     if(builtin.cpu.arch == .x86){
       sArc = "i686";
