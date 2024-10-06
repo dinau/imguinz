@@ -1,4 +1,5 @@
-// Used zig-0.12.0 (2024/06)
+// Used zig-0.14.0-dev (2024/10)
+// Used zig-0.12.0     (2024/06)
 //
 const std = @import("std");
 const builtin = @import("builtin");
@@ -41,15 +42,11 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
     //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
+    // 64bit Winddws OS
     //----------------------------------
-    const sdlBase = "../../libs/sdl/sdl3";
-    var sArc:[]const u8 = "64";
-    if(builtin.cpu.arch == .x86){
-      sArc = "32";
-    }
-    const sdlDate = "2024-08-04";
-    const sdlPath = b.fmt("{s}/{s}/SDL3-{s}/SDL3", .{sdlBase, sArc, sdlDate});
+    const SDL3_VER = "3.1.3";
+    const sdlBase = "../../libs/sdl";
+    const sdlPath = b.fmt("{s}/SDL3-{s}/x86_64-w64-mingw32", .{sdlBase, SDL3_VER});
     //---------------
     // [imlibs] --- Include paths
     //---------------
@@ -154,7 +151,7 @@ pub fn build(b: *std.Build) void {
     //exe.addLibraryPath(b.path(b.pathJoin(&.{sdlPath, "lib-mingw-64"})));
     //exe.linkSystemLibrary("SD32");      // For static link
     // Static link
-    exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","SDL3.lib"})));
+    exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3.a"})));
     // Dynamic link
     //exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3dll.a"})));
     //exe.linkSystemLibrary("SDL3dll"); // For dynamic link
@@ -166,7 +163,7 @@ pub fn build(b: *std.Build) void {
     //
     imlibs.linkLibC();
     imlibs.linkLibCpp();
-    //exe.subsystem = .Windows;  // Hide console window
+    exe.subsystem = .Windows;  // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
@@ -177,7 +174,6 @@ pub fn build(b: *std.Build) void {
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";
-    const resSdlDll = b.pathJoin(&.{sdlPath, "bin", "SDL3.dll"});
 
     inline for(resBin)|file|{
       const res = b.addInstallFile(b.path(file),"bin/" ++ file);
@@ -189,8 +185,11 @@ pub fn build(b: *std.Build) void {
     }
     const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
     b.getInstallStep().dependOn(&res.step);
-    const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
-    b.getInstallStep().dependOn(&resSdl.step);
+    if(false){// Enable if use SDL3.dll with dynamic linking.
+      const resSdlDll = b.pathJoin(&.{sdlPath, "bin", "SDL3.dll"});
+      const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
+      b.getInstallStep().dependOn(&resSdl.step);
+    }
     //
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish
