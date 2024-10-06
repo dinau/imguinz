@@ -40,7 +40,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-ImGui/CimGui version **1.91.0dock** (2024/08)
+ImGui/CimGui version **1.91.3dock** (2024/10)
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -57,7 +57,7 @@ ImGui/CimGui version **1.91.0dock** (2024/08)
 ---
 
 - Windows10 OS or later
-- Now using [zig-windows-x86_64-0.14.0-dev.1569+b56a667ec.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.1569+b56a667ec.zip)  
+- Now using zig-windows-x86_64-0.14.0-dev.1743  
 Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
 - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 
@@ -225,6 +225,9 @@ Show console window: Commet out this line as follows,
 
 ---
 
+- SDL3  
+https://github.com/libsdl-org/SDL/releases
+
 - SDL3  Build-SDL3  
 https://github.com/mmozeiko/build-sdl3/releases  
 https://github.com/mmozeiko/build-sdl3
@@ -236,11 +239,11 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-- Git version 2.45.2.windows.1
 - Make: GNU Make 4.4.1
-- Zig: 0.14.0.dev... (zig cc: clang version 18.1.8)
-- SDL2 ver.2.30.3
-- SDL3 2024-08-04
+- Zig: 0.14.0.dev
+- SDL2 ver.2.30.8
+- SDL3 3.1.3
+- Git version 2.46.0.windows.1
 
 ## Similar project
 
@@ -253,7 +256,3 @@ https://github.com/JBetz/build-sdl3-win32
 | **Python**           | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 | **Zig**, C lang.     | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
 | **Zig**              | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                         |
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=dinau/imguinz&type=Date)](https://star-history.com/#dinau/imguinz&Date)
