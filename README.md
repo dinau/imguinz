@@ -57,6 +57,7 @@ ImGui/CimGui version **1.91.3dock** (2024/10)
 ---
 
 - Windows10 OS or later
+- Linux Mint 22 (Ubuntu/Debian families ?): Work in progress.
 - Now using zig-windows-x86_64-0.14.0-dev.1743  
 Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
 - MSys2/MinGW basic commands (make, rm, cp, strip ...)

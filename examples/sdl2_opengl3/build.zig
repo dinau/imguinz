@@ -1,3 +1,4 @@
+// Used zig-0.14.0-dev (2024/10)
 // Used zig-0.12.0 (2024/06)
 //
 const std = @import("std");
@@ -61,10 +62,15 @@ pub fn build(b: *std.Build) void {
     // Define macro for C/C++ sources
     //--------------------------------
     // ImGui
-    imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)");
     imlibs.defineCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     imlibs.defineCMacro("ImDrawIdx", "unsigned int");
     imlibs.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    switch (builtin.target.os.tag){
+      .windows => imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+      .linux =>   imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+      else => {},
+    }
+
     //---------------
     // Sources C/C++
     //---------------
@@ -126,34 +132,41 @@ pub fn build(b: *std.Build) void {
     //------
     // Libs
     //------
-    exe.linkSystemLibrary("gdi32");
-    exe.linkSystemLibrary("imm32");
-    exe.linkSystemLibrary("advapi32");
-    exe.linkSystemLibrary("comdlg32");
-    exe.linkSystemLibrary("dinput8");
-    exe.linkSystemLibrary("dxerr8");
-    exe.linkSystemLibrary("dxguid");
-    exe.linkSystemLibrary("gdi32");
-    exe.linkSystemLibrary("hid");
-    exe.linkSystemLibrary("kernel32");
-    exe.linkSystemLibrary("ole32");
-    exe.linkSystemLibrary("oleaut32");
-    exe.linkSystemLibrary("setupapi");
-    exe.linkSystemLibrary("shell32");
-    exe.linkSystemLibrary("user32");
-    exe.linkSystemLibrary("uuid");
-    exe.linkSystemLibrary("version");
-    exe.linkSystemLibrary("winmm");
-    exe.linkSystemLibrary("winspool");
-    exe.linkSystemLibrary("ws2_32");
-    exe.linkSystemLibrary("opengl32");
-    exe.linkSystemLibrary("shell32");
-    exe.linkSystemLibrary("user32");
+    if (builtin.target.os.tag == .windows){
+      exe.linkSystemLibrary("gdi32");
+      exe.linkSystemLibrary("imm32");
+      exe.linkSystemLibrary("advapi32");
+      exe.linkSystemLibrary("comdlg32");
+      exe.linkSystemLibrary("dinput8");
+      exe.linkSystemLibrary("dxerr8");
+      exe.linkSystemLibrary("dxguid");
+      exe.linkSystemLibrary("gdi32");
+      exe.linkSystemLibrary("hid");
+      exe.linkSystemLibrary("kernel32");
+      exe.linkSystemLibrary("ole32");
+      exe.linkSystemLibrary("oleaut32");
+      exe.linkSystemLibrary("setupapi");
+      exe.linkSystemLibrary("shell32");
+      exe.linkSystemLibrary("user32");
+      exe.linkSystemLibrary("uuid");
+      exe.linkSystemLibrary("version");
+      exe.linkSystemLibrary("winmm");
+      exe.linkSystemLibrary("winspool");
+      exe.linkSystemLibrary("ws2_32");
+      exe.linkSystemLibrary("opengl32");
+      exe.linkSystemLibrary("shell32");
+      exe.linkSystemLibrary("user32");
+      // Static link
+      exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2.a"})));
+    }else if (builtin.target.os.tag == .linux){
+      exe.linkSystemLibrary("glfw3");
+      exe.linkSystemLibrary("GL");
+      exe.linkSystemLibrary("SDL2");
+    }
+
     // sdl2
     //exe.addLibraryPath(b.path(b.pathJoin(&.{sdl2_path, "lib-mingw-64"})));
     //exe.linkSystemLibrary("SDL2");      // For static link
-    // Static link
-    exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2.a"})));
     // Dynamic link
     //exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2dll.a"})));
     //exe.linkSystemLibrary("SDL2dll"); // For dynamic link

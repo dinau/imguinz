@@ -64,10 +64,15 @@ pub fn build(b: *std.Build) void {
     // Define macro for C/C++ sources
     //--------------------------------
     // ImGui
-    imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)");
     imlibs.defineCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     imlibs.defineCMacro("ImDrawIdx", "unsigned int");
     imlibs.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    switch (builtin.target.os.tag){
+      .windows => imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+      .linux =>   imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+      else => {},
+    }
+
     //---------------
     // Sources C/C++
     //---------------
@@ -129,16 +134,22 @@ pub fn build(b: *std.Build) void {
     //------
     // Libs
     //------
-    exe.linkSystemLibrary("gdi32");
-    exe.linkSystemLibrary("imm32");
-    exe.linkSystemLibrary("opengl32");
-    exe.linkSystemLibrary("user32");
-    exe.linkSystemLibrary("shell32");
+    if (builtin.target.os.tag == .windows){
+      exe.linkSystemLibrary("gdi32");
+      exe.linkSystemLibrary("imm32");
+      exe.linkSystemLibrary("opengl32");
+      exe.linkSystemLibrary("user32");
+      exe.linkSystemLibrary("shell32");
+      // Static link
+      exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3.a"})));
+    }else if (builtin.target.os.tag == .linux){
+      exe.linkSystemLibrary("glfw3");
+      exe.linkSystemLibrary("GL");
+    }
+
     // GLFW
     //exe.addLibraryPath(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-64"})));
     //exe.linkSystemLibrary("glfw3");      // For static link
-    // Static link
-    exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3.a"})));
     // Dynamic link
     //exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3dll.a"})));
     //exe.linkSystemLibrary("glfw3dll"); // For dynamic link
