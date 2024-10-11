@@ -11,18 +11,24 @@
 #define ImGui_GetIO igGetIO
 
 const char* IconFontPath = "../utils/fonticon/fa6/fa-solid-900.ttf";
-const char* JpFontName   = "meiryo.ttc";
 char sBufFontPath[2048];
 
 /*-----------------
- * getFontPath()
+ * getWinFontPath()
  *----------------*/
-char* getFontPath(char* sBuf, int bufSize, const char* fontName) {
+const char* WinJpFontName   = "meiryo.ttc";
+
+char* getWinFontPath(char* sBuf, int bufSize, const char* fontName) {
   char* sWinDir = getenv("windir");
   if (sWinDir == NULL) return NULL;
   snprintf(sBuf, bufSize, "%s\\Fonts\\%s", sWinDir, fontName);
   return sBuf;
 }
+/*-----------------
+ * getLinuxFontPath()
+ *----------------*/
+// For Linux Mint 22 (Ubuntu/Debian family ok ?)
+char* LinuxJpFontName = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"; // ,"Noto Sans CJK",12.0) # Linux Mint
 
 /*------------
  * point2px()
@@ -35,7 +41,7 @@ float point2px(float point) {
 const ImFontConfig config = {.FontDataOwnedByAtlas = true
                              , .FontNo = 0
                              , .OversampleH = 3
-                             , .OversampleV = 1
+                             , .OversampleV = 2
                              , .PixelSnapH = false
                              , .GlyphMaxAdvanceX = FLT_MAX
                              , .RasterizerMultiply = 1.0
@@ -49,12 +55,19 @@ const ImWchar ranges_icon_fonts[]  = {(ImWchar)ICON_MIN_FA, (ImWchar)ICON_MAX_FA
 void setupFonts(void) {
   ImGuiIO* pio = ImGui_GetIO();
   ImFontAtlas_AddFontDefault(pio->Fonts, NULL);
-  ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(10), &config
-                                , ranges_icon_fonts);
-  char* fontPath = getFontPath(sBufFontPath, sizeof(sBufFontPath), JpFontName);
-  if (false == existsFile(fontPath)) {
-    printf("Error!: Not found JpFontPath: [%s] in %s\n", fontPath, __FILE__);
-    return;
+  ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(10), &config , ranges_icon_fonts);
+
+  char* fontPath = getWinFontPath(sBufFontPath, sizeof(sBufFontPath), WinJpFontName);
+  if (existsFile(fontPath)) {
+    // ok
+  }else{
+    fontPath = LinuxJpFontName;
+    if (existsFile(LinuxJpFontName)) {
+      // ok
+    }else{
+      printf("Error!: Not found FontPath: [%s] in %s\n", fontPath, __FILE__);
+      return;
+    }
   }
   printf("Found JpFontPath: [%s]\n",fontPath);
 
