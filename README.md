@@ -57,10 +57,21 @@ ImGui/CimGui version **1.91.3dock** (2024/10)
 ---
 
 - Windows10 OS or later
-- Linux Mint 22 (Ubuntu/Debian families ?): Work in progress.
 - Now using zig-windows-x86_64-0.14.0-dev.1743  
 Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
 - MSys2/MinGW basic commands (make, rm, cp, strip ...)
+- Linux Mint 22 (Ubuntu/Debian families ?): Work in progress.
+
+  ```sh
+  $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
+  ```
+
+  and for glfw3 and sdl2,
+
+  ```sh
+  $ sudo apt install libglfw3 libglfw3-dev
+  $ sudo apt install libsdl2-dev
+  ```
 
 ## Build and run
 

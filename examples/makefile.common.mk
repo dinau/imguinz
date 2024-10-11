@@ -1,6 +1,7 @@
+# Use zig-0.14.0
 # Use zig-0.12.0
 # by dinau (2024/06)
-#
+
 #
 #OPT += --release=fast
 #OPT += --release=small
@@ -14,7 +15,7 @@ all:
 .PHONY: run gen cleanall cleanexe trans
 
 run: all
-	(cd $(ZIG_BIN_DIR); ./$(TARGET).exe)
+	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
 	cp $(ZIG_BIN_DIR)/imgui.ini .
 
 gen:

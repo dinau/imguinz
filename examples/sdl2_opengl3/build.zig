@@ -53,7 +53,16 @@ pub fn build(b: *std.Build) void {
     //---------------
     // [imlibs] --- Include paths
     //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{sdl2_path, "include/SDL2"})));
+    //
+    if (builtin.target.os.tag == .windows){
+      imlibs.addIncludePath(b.path(b.pathJoin(&.{sdl2_path, "include/SDL2"})));
+    }else if (builtin.target.os.tag == .linux){
+      const sdl2_inc_path: std.Build.LazyPath = .{
+        .cwd_relative = "/usr/include/SDL2"
+      };
+      imlibs.addIncludePath(sdl2_inc_path);
+    }
+
     // ImGui/CImGui
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
@@ -161,7 +170,7 @@ pub fn build(b: *std.Build) void {
     }else if (builtin.target.os.tag == .linux){
       exe.linkSystemLibrary("glfw3");
       exe.linkSystemLibrary("GL");
-      exe.linkSystemLibrary("SDL2");
+      exe.linkSystemLibrary("sdl2");
     }
 
     // sdl2
