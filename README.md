@@ -56,11 +56,25 @@ ImGui/CimGui version **1.91.3dock** (2024/10)
 
 ---
 
-- Windows10 OS or later
-- Linux Mint 22 (Ubuntu/Debian families ?): Work in progress.
-- Now using zig-windows-x86_64-0.14.0-dev.1743  
+- Zig version  
+Now using zig-windows-x86_64-0.14.0-dev.1743  
 Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
-- MSys2/MinGW basic commands (make, rm, cp, strip ...)
+- WindowsOS
+   - Windows10 or later
+   - MSys2/MinGW basic commands (make, rm, cp, strip ...)
+- Linux OS  
+Linux Mint 22 (or Ubuntu/Debian families ?)
+
+  ```sh
+  $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
+  ```
+
+  and for glfw3 and sdl2,
+
+  ```sh
+  $ sudo apt install libglfw3 libglfw3-dev
+  $ sudo apt install libsdl2-dev
+  ```
 
 ## Build and run
 
@@ -80,13 +94,7 @@ Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/downlo
 1. Build and Run 
 
    ```sh
-   make run                
-   ```
-
-   or 
-
-   ```sh
-   zig build --release=fast run
+   make run   # or  zig build --release=fast run
    ```
 
 ## Examples screen shots 
@@ -240,11 +248,17 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-- Make: GNU Make 4.4.1
-- Zig: 0.14.0.dev
-- SDL2 ver.2.30.8
-- SDL3 3.1.3
-- Git version 2.46.0.windows.1
+- Windows11 (main)
+   - Zig: 0.14.0.dev
+   - Make: GNU Make 4.4.1
+   - SDL2 ver.2.30.8
+   - SDL3 3.1.3
+   - Git version 2.46.0.windows.1
+- Linux Mint 22 (sub)
+   - Zig: 0.14.0-dev.1831+ce5a5c361
+   - Make: GNU Make 4.3
+   - SDL2 ver.2.30.0
+   - Git version 2.43.0
 
 ## Similar project
 
