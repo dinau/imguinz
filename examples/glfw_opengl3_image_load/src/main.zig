@@ -281,7 +281,7 @@ pub fn main () !void {
       const uv1        = ig.ImVec2 {.x = 1, .y = 1};
       const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
       const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
-      ig.igImage(@ptrFromInt(textureId), size, uv0, uv1, tint_col, border_col);
+      ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
     }
 
     //-----------

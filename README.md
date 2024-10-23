@@ -40,14 +40,14 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-ImGui/CimGui version **1.91.3dock** (2024/10)
+ImGui / CImGui version **1.91.4dock** (2024/10)
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
-   - Included GLFW 3.3.9 static library
-   - Included SDL2/SDL3 libraries
-   - Inlcuded STB libraries (only stb_image)
+   - Included GLFW 3.3.9 static library (for Windows)
+   - Included SDL2/SDL3 libraries (for Windows)
+   - Included STB libraries (only stb_image)
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
 
@@ -56,8 +56,8 @@ ImGui/CimGui version **1.91.3dock** (2024/10)
 
 ---
 
-- Zig version  
-Now using zig-windows-x86_64-0.14.0-dev.1743  
+- Zig version, now using  
+Zig: 0.14.0-dev.1954+2d888a8e6  
 Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
 - WindowsOS
    - Windows10 or later
