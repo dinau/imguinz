@@ -7,6 +7,7 @@
   - [Examples screen shots](#examples-screen-shots)
     - [glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3](#glfw_opengl3--sdl2_opengl3--sdl3_opengl3)
     - [glfw_opengl3_jp](#glfw_opengl3_jp)
+    - [iconFontViewer](#iconfontviewer)
     - [glfw_opengl3_image_load](#glfw_opengl3_image_load)
     - [glfw_opengl3_implot](#glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
@@ -30,11 +31,10 @@
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
   - [Similar project](#similar-project)
-  - [Star History](#star-history)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# ImGuinZ 
+## ImGuinZ 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
@@ -47,23 +47,25 @@ ImGui / CImGui version **1.91.4dock** (2024/10)
       ![alt](img/icon_font.png)
    - Included GLFW 3.3.9 static library (for Windows)
    - Included SDL2/SDL3 libraries (for Windows)
-   - Included STB libraries (only stb_image)
+   - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
 
 
-## Prerequisites
+### Prerequisites
 
 ---
 
-- Zig version, now using  
-Zig: 0.14.0-dev.1954+2d888a8e6  
-Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be ok. (-:) 
+- Zig version
+   1. Zig: 0.14.0-dev.2047+985b13934 OK  
+   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be OK
+   1. zig-0.12.1: or later OK
+
 - WindowsOS
    - Windows10 or later
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 - Linux OS  
-Linux Mint 22 (or Ubuntu/Debian families ?)
+Linux Mint 22 is OK. (or Ubuntu / Debian families ?)
 
   ```sh
   $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
@@ -76,7 +78,7 @@ Linux Mint 22 (or Ubuntu/Debian families ?)
   $ sudo apt install libsdl2-dev
   ```
 
-## Build and run
+### Build and run
 
 ---
 
@@ -97,9 +99,9 @@ Linux Mint 22 (or Ubuntu/Debian families ?)
    make run   # or  zig build --release=fast run
    ```
 
-## Examples screen shots 
+### Examples screen shots 
 
-### glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3
+#### glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3
 
 ---
 
@@ -109,26 +111,34 @@ Linux Mint 22 (or Ubuntu/Debian families ?)
 
 ![alt](img/glfw_opengl3.png)
 
-### glfw_opengl3_jp
+#### glfw_opengl3_jp
 
 ---
 
+Load / Show CJK fonts  
 [glfw_opengl3_jp](examples/glfw_opengl3_jp/src/main.zig)
 
 ![alt](img/glfw_opengl3_jp.png)
 
-
-### glfw_opengl3_image_load
+#### IconFontViewer
 
 ---
 
-[glfw_opengl3_image_load](examples/glfw_opengl3_image_load/src/main.zig)
+[iconFontViewer](examples/iconFontViewer/src/main.zig) with magnifying glass
+
+![alt](img/iconFontViewer.png)
+
+#### glfw_opengl3_image_load
+
+---
+
+[glfw_opengl3_image_load](examples/glfw_opengl3_image_load/src/main.zig) with magnifying glass
 
 ![alt](img/glfw_opengl3_image_load.png)  
 Image file captured would be saved in the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
-### glfw_opengl3_implot
+#### glfw_opengl3_implot
 
 ---
 
@@ -136,14 +146,14 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ![alt](img/glfw_opengl3_implot.png)
 
-## ImPlot Demo written in Zig lang.
+### ImPlot Demo written in Zig lang.
 
 ---
 
 Now work in progress.
 
 
-### Build and run
+#### Build and run
 
 ```sh
 pwd
@@ -151,76 +161,76 @@ examples/imPlotDemo
 make run   # or zig build --release=fast run
 ```
 
-### ImPlot demo source in Zig lang.
+#### ImPlot demo source in Zig lang.
 
 ---
 
 [demoAll.zig](examples/imPlotDemo/src/demoAll.zig)
 
-### Plots Tab
+#### Plots Tab
 
 ---
 
-#### LinePlots (Dynamic)
+##### LinePlots (Dynamic)
 
 ![alt](examples/imPlotDemo/img/LinePlots.png)
 
-#### BarGroups
+##### BarGroups
 
 ![alt](examples/imPlotDemo/img/BarGroups.png)
 
-#### BarStacks
+##### BarStacks
 
 ![alt](examples/imPlotDemo/img/BarStacks.png)
 
-#### PieCharts
+##### PieCharts
 
 ![alt](examples/imPlotDemo/img/PieCharts.png)
 
-#### Heatmaps
+##### Heatmaps
 
 ![alt](examples/imPlotDemo/img/Heatmaps.png)
 
-#### Histogram2D
+##### Histogram2D
 
 ![alt](examples/imPlotDemo/img/Histogram2D.png)
 
-#### Images
+##### Images
 
 ![alt](examples/imPlotDemo/img/Images.png)
 
-### Axes Tab
+#### Axes Tab
 
 ---
 
-#### LogScale
+##### LogScale
 
 ![alt](examples/imPlotDemo/img/LogScale.png)
 
-### Subplots Tab
+#### Subplots Tab
 
 ---
 
-#### Tables (Dynamic)
+##### Tables (Dynamic)
 
 ![alt](examples/imPlotDemo/img/Tables.png)
 
-### Tools Tab
+#### Tools Tab
 
 ---
 
-#### DragRects 
+##### DragRects 
 
 ![alt](examples/imPlotDemo/img/DragRects.png)
 
 
-## Show / Hide console window
+### Show / Hide console window
 
 ---
 
 Open `build.zig` in each example folder and   
 Hide console window: Default,  
-Show console window: Commet out this line as follows,
+Show console window: Comment out this line as follows,
 
   ```zig
   ... snip ...
@@ -230,7 +240,7 @@ Show console window: Commet out this line as follows,
 
   and rebuild example.
 
-## SDL libraries
+### SDL libraries
 
 ---
 
@@ -244,7 +254,7 @@ https://github.com/mmozeiko/build-sdl3
 https://github.com/JBetz/build-sdl3-win32/releases  
 https://github.com/JBetz/build-sdl3-win32
 
-## My tools version
+### My tools version
 
 ---
 
@@ -260,7 +270,7 @@ https://github.com/JBetz/build-sdl3-win32
    - SDL2 ver.2.30.0
    - Git version 2.43.0
 
-## Similar project
+### Similar project
 
 ---
 

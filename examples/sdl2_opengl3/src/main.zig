@@ -30,7 +30,7 @@ pub fn main () !void {
   //-------------------------
   // Decide GL+GLSL versions
   //-------------------------
-  const glsl_version = "#version 130";
+  const glsl_version = "#version 330";
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
   _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -99,8 +99,7 @@ pub fn main () !void {
   var clearColor = [_]f32{0.25, 0.55,0.9,1.0};
   // Input text buffer
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
-  var showWindowDelay:i32 = 1; // TODO
-  var showWindowReq = true;    // TODO
+  var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
   fonts.setupFonts();
 
@@ -195,13 +194,11 @@ pub fn main () !void {
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     ig.SDL_GL_SwapWindow(window);
 
-    if(showWindowDelay > 0){
+    if(showWindowDelay >= 0){
       showWindowDelay -= 1;
-    }else{
-      if(showWindowReq){
-        showWindowReq = false;
-        ig.SDL_ShowWindow(window);
-      }
+    }
+    if(showWindowDelay == 0){ // Visible main window here at start up
+      ig.SDL_ShowWindow(window);
     }
 
   }// while end

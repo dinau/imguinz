@@ -1,7 +1,9 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
+// Filse in src folder
 const ig = @import("imgui.zig");
 const fonts = @import("fonts.zig");
+const utils = @import("utils.zig");
 
 
 const TImgFormat = struct {
@@ -55,7 +57,7 @@ pub fn main () !void {
   //-------------------------
   // Decide GL+GLSL versions
   //-------------------------
-  const glsl_version = "#version 130";
+  const glsl_version = "#version 330";
   ig.glfwWindowHint(ig.GLFW_OPENGL_FORWARD_COMPAT, ig.GLFW_TRUE);
   ig.glfwWindowHint(ig.GLFW_OPENGL_PROFILE, ig.GLFW_OPENGL_CORE_PROFILE);
   ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -136,8 +138,7 @@ pub fn main () !void {
   var clearColor = [_]f32{0.25, 0.55,0.9,1.0};
   // Input text buffer
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
-  var showWindowDelay:i32 = 1;
-  var showWindowReq = true;
+  var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
   //------------------------
   // Select Dear ImGui style
@@ -158,6 +159,10 @@ pub fn main () !void {
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
   //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+
+  var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
+  defer ig.glDeleteTextures(1, &zoomTextureID);
+
   //---------------
   // main loop GUI
   //---------------
@@ -271,17 +276,25 @@ pub fn main () !void {
       if (ig.igButton ("Close Me", .{.x = 0, .y = 0})) showAnotherWindow = false;
     }
 
+    //------------------------
     // Show image load window
+    //------------------------
     if (ig.igBegin("Image load test", null, 0)) {
       defer ig.igEnd();
+      var imageBoxPosTop:ig.ImVec2 = undefined;
+      var imageBoxPosEnd:ig.ImVec2 = undefined;
       // Load image
       const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
-      ig.igSetNextWindowSize(size, ig.ImGuiCond_Always);
       const uv0        = ig.ImVec2 {.x = 0, .y = 0};
       const uv1        = ig.ImVec2 {.x = 1, .y = 1};
       const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
       const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
+      ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
       ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
+      ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.
+      if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
+        utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);
+      }
     }
 
     //-----------
@@ -305,18 +318,12 @@ pub fn main () !void {
     }
     ig.glfwSwapBuffers(window);
 
-    if(showWindowDelay > 0){
+    if(showWindowDelay >= 0){
       showWindowDelay -= 1;
-    }else{
-     if(showWindowReq){
-        showWindowReq = false;
-        //-------------------------------
-        // Visible/Show main window here
-        //-------------------------------
-        ig.glfwShowWindow(window);
-     }
     }
-
+    if(showWindowDelay == 0){ // Visible main window here at start up
+      ig.glfwShowWindow(window);
+    }
 
   } // while end
 } // main end

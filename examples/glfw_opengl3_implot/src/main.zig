@@ -42,7 +42,7 @@ pub fn main() !void {
     //-------------------------
     // Decide GL+GLSL versions
     //-------------------------
-    const glsl_version = "#version 130";
+    const glsl_version = "#version 330";
     ig.glfwWindowHint(ig.GLFW_OPENGL_FORWARD_COMPAT, ig.GLFW_TRUE);
     ig.glfwWindowHint(ig.GLFW_OPENGL_PROFILE, ig.GLFW_OPENGL_CORE_PROFILE);
     ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -130,8 +130,7 @@ pub fn main() !void {
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
     var sTextInuputBuf = [_:0]u8{0} ** 200;
-  var showWindowDelay:i32 = 1;
-  var showWindowReq = true;
+    var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
     //------------------------
     // Select Dear ImGui style
@@ -248,18 +247,12 @@ pub fn main() !void {
         }
         ig.glfwSwapBuffers(window);
 
-    if(showWindowDelay > 0){
-      showWindowDelay -= 1;
-    }else{
-     if(showWindowReq){
-        showWindowReq = false;
-        //-------------------------------
-        // Visible/Show main window here
-        //-------------------------------
-        ig.glfwShowWindow(window);
-     }
-    }
-
+        if(showWindowDelay >= 0){
+          showWindowDelay -= 1;
+        }
+        if(showWindowDelay == 0){ // Visible main window here at start up
+          ig.glfwShowWindow(window);
+        }
 
     } // while end
 } // main end

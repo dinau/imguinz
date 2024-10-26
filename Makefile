@@ -1,6 +1,7 @@
 # All examples will be built at a time.
 #
 EXAMPLE_DIRS := \
+							examples/iconFontViewer \
 							examples/imPlotDemo \
 							examples/glfw_opengl3 \
 							examples/glfw_opengl3_implot \
@@ -13,6 +14,7 @@ ifeq ($(OS),Windows_NT)
 endif
 
 all:
+	zig version
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
 
 .PHONY: test clean gen cleanexe

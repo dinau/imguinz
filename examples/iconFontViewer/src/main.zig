@@ -1,7 +1,10 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
+// src folder files
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
+const ift = @import("iconFontsTblDef.zig");
+const utils = @import("utils.zig");
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
 
@@ -72,6 +75,7 @@ pub fn main () !void {
   const allocator = gpa.allocator();
   const exe_path = try std.fs.selfExePathAlloc(allocator);
   defer allocator.free(exe_path);
+  //
   const opt_exe_dir = std.fs.path.dirname(exe_path);
   if (opt_exe_dir) |exe_dir| {
     var paths = [_][]const u8{ exe_dir, TitleBarIconName };
@@ -80,7 +84,6 @@ pub fn main () !void {
     // Load icon
     ig.LoadTitleBarIcon(window, icon_path.ptr);
   }
-
 
   ig.glfwSwapInterval(1);  // Enable VSync --- Lower CPU load
 
@@ -111,13 +114,9 @@ pub fn main () !void {
   // Global vars
   //-------------
   var showDemoWindow = true;
-  var showAnotherWindow = false;
-  var fval: f32 = 0.0;
-  var counter: i32 = 0;
+  var showIconFontsViewerWindow = true;
   // Back ground color
-  var clearColor = [_]f32{0.25, 0.55,0.9,1.0};
-  // Input text buffer
-  var sTextInuputBuf =  [_:0]u8{0} ** 200;
+  const clearColor = [_]f32{0.25, 0.55,0.9,1.0};
   var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
   //------------------------
@@ -130,6 +129,10 @@ pub fn main () !void {
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
   const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
+
+  var listBoxTextureID: ig.GLuint = 0; //# Must be == 0 at first
+  defer ig.glDeleteTextures(1, &listBoxTextureID);
+
   //---------------
   // main loop GUI
   //---------------
@@ -148,10 +151,10 @@ pub fn main () !void {
     }
 
     //------------------
-    // Show main window
+    // Show info window
     //------------------
-    if ( ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
-      defer ig.igEnd ();
+    if (ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
+      defer ig.igEnd();
       ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glfwGetVersionString());
       ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
@@ -160,46 +163,52 @@ pub fn main () !void {
       ig.igText (ig.igGetVersion());
       ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
+      ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
+    } // end info window
 
-      ig.igSpacing();
-      _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-      ig.igText("入力結果:"); ig.igSameLine(0, -1.0); ig.igText(&sTextInuputBuf);
+    //-----------------------------
+    // Show IconFontsViewer window
+    //------------------------------
+    if (showIconFontsViewerWindow){
+      _ = ig.igBegin("Icon Font Viewer", &showIconFontsViewerWindow, 0);
+      defer ig.igEnd();
+      ig.igSeparatorText(fonts.ICON_FA_FONT_AWESOME ++ " Icon font view: " ++ " icons");
+      //
+      const listBoxWidth = 320;            //# The value must be 2^n
+      const st = struct {                  // Global value
+        var item_current:usize = 0;
+      };
+      ig.igText("No.[%4d]", st.item_current);     ig.igSameLine(0,-1.0);
+      var sBuf = [_:0]u8{0} ** 100;
+      _ = try std.fmt.bufPrint(&sBuf,"{s}",.{ift.iconFontsTbl[st.item_current]});
+      if (ig.igButton(fonts.ICON_FA_COPY ++ " Copy to", DefaultButtonSize)){
+        var it = std.mem.tokenizeAny(u8, &sBuf, " ");
+        _ = it.next().?;
+        ig.igSetClipboardText(it.next().?.ptr);
+      }
+      utils.setTooltip("Clipboard",ig.ImGuiHoveredFlags_DelayNone); //# Show tooltip help
+      //# Show ListBox header
+      ig.igSetNextItemWidth(listBoxWidth);
+      _ = ig.igInputText("##", sBuf[0..], sBuf.len, ig.ImGuiTextFlags_None,null,null);
 
-      ig.igSpacing();
-      _ = ig.igCheckbox ("デモ・ウインドウ", &showDemoWindow);
-      _ = ig.igCheckbox ("その他のウインドウ", &showAnotherWindow);
-
-      _ = ig.igSliderFloat ("浮動小数", &fval, 0.0, 1.0, "%.3f", 0);
-      _ = ig.igColorEdit3 ("背景色 変更", &clearColor, 0);
-
-      if (ig.igButton ("Button", DefaultButtonSize)) counter += 1;
-      ig.igSameLine (0, -1.0);
-      ig.igText ("カウンタ = %d", counter);
-      ig.igText ("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
-      // Show icon fonts
-      ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
-      ig.igText(fonts.ICON_FA_TRASH_CAN  ++ " ゴミ箱");
-
-      ig.igSpacing();
-      ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS_PLUS
-          ++ " " ++ fonts.ICON_FA_POWER_OFF
-          ++ " " ++ fonts.ICON_FA_MICROPHONE
-          ++ " " ++ fonts.ICON_FA_MICROCHIP
-          ++ " " ++ fonts.ICON_FA_VOLUME_HIGH
-          ++ " " ++ fonts.ICON_FA_SCISSORS
-          ++ " " ++ fonts.ICON_FA_SCREWDRIVER_WRENCH
-          ++ " " ++ fonts.ICON_FA_BLOG);
-    } // end main window
-
-    //---------------------
-    // Show another window
-    //---------------------
-    if (showAnotherWindow) {
-      _ = ig.igBegin ("Another Window", &showAnotherWindow, 0);
-      defer ig.igEnd ();
-      ig.igText ("Hello from another window!");
-      if (ig.igButton ("Close Me", DefaultButtonSize)) showAnotherWindow = false;
-    }
+      //# Show ListBox main
+      var listBoxPosTop:ig.ImVec2 = undefined;
+      var listBoxPosEnd:ig.ImVec2 = undefined;
+      ig.igNewLine();
+      ig.igGetCursorScreenPos(&listBoxPosTop); //# Get absolute pos.
+      ig.igSetNextItemWidth(listBoxWidth);
+      _ = ig.igListBox_Str_arr("##"
+                        , @ptrCast(&st.item_current)
+                        , &ift.iconFontsTbl
+                        , ift.iconFontsTbl.len, 34);
+      ig.igGetCursorScreenPos(&listBoxPosEnd); // # Get absolute pos.
+      // # Show magnifying glass (Zooming in Toolchip)
+      if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
+        if( (pio.*.MousePos.x - listBoxPosTop.x ) < 50){
+          utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd );
+        }
+      }
+    } // end IconFontsViewer window
 
     //-----------
     // End procs
@@ -229,5 +238,5 @@ pub fn main () !void {
       ig.glfwShowWindow(window);
     }
 
-  } // while end
-} // main end
+  } // while() end
+} // main() end
