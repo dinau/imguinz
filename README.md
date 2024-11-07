@@ -57,9 +57,10 @@ ImGui / CImGui version **1.91.4dock** (2024/10)
 ---
 
 - Zig version
-   1. Zig: 0.14.0-dev.2047+985b13934 OK  
-   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be OK
-   1. zig-0.12.1: or later OK
+   1. [zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip) OK  
+   1. [zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz) OK  
+   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be OK  
+   1. zig-0.12.1 and zig-0.13.0 are OK
 
 - WindowsOS
    - Windows10 or later
@@ -259,13 +260,11 @@ https://github.com/JBetz/build-sdl3-win32
 ---
 
 - Windows11 (main)
-   - Zig: 0.14.0.dev
    - Make: GNU Make 4.4.1
    - SDL2 ver.2.30.8
    - SDL3 3.1.3
    - Git version 2.46.0.windows.1
 - Linux Mint 22 (sub)
-   - Zig: 0.14.0-dev.1831+ce5a5c361
    - Make: GNU Make 4.3
    - SDL2 ver.2.30.0
    - Git version 2.43.0

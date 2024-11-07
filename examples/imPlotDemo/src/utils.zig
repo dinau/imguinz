@@ -9,7 +9,6 @@ const ig = @import ("imgui.zig");
 const ip = @import("implot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
-pub const IMPLOT_AUTO_COL =  .{.x = 0, .y = 0, .z = 0, .w = -1};
 pub const INFINITY_f32 = std.math.inf(f32);
 pub const INFINITY_f64 = std.math.inf(f64);
 pub const NaN_f32      = std.math.nan(f32);
@@ -223,13 +222,13 @@ pub const HugeTimeData = struct {
 //-------------
 // Sparkline()
 //-------------
-pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: anytype, size: ig.ImVec2) void {
+pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: f32, offset: c_int, col: ig.ImVec4, size: ig.ImVec2) void {
     ip.ImPlot_PushStyleVar_Vec2(ip.ImPlotStyleVar_PlotPadding, .{ .x = 0, .y = 0 });
     if (ip.ImPlot_BeginPlot(id, .{.x=size.x,.y=size.y}, ip.ImPlotFlags_CanvasOnly)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, @floatFromInt(count - 1), min_v, max_v, ig.ImGuiCond_Always);
-        ip.ImPlot_SetNextLineStyle(col, IMPLOT_AUTO);
-        ip.ImPlot_SetNextFillStyle(col, 0.25);
+        ip.ImPlot_SetNextLineStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, IMPLOT_AUTO);
+        ip.ImPlot_SetNextFillStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, 0.25);
         try ip.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
         ip.ImPlot_EndPlot();
     }

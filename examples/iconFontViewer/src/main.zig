@@ -188,7 +188,6 @@ pub fn main () !void {
       }
       utils.setTooltip("Clipboard",ig.ImGuiHoveredFlags_DelayNone); //# Show tooltip help
       //# Show ListBox header
-      ig.igSetNextItemWidth(listBoxWidth);
       _ = ig.igInputText("##", sBuf[0..], sBuf.len, ig.ImGuiTextFlags_None,null,null);
 
       //# Show ListBox main

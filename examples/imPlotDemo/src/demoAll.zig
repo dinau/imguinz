@@ -15,6 +15,8 @@ pub const c = @cImport({
     @cInclude("stdlib.h");
 });
 
+// const IMPLOT_AUTO_COL =  .{.x = 0, .y = 0, .z = 0, .w = -1}; // TODO
+
 //----------------
 // imPlotDemoTabs
 //----------------
@@ -956,7 +958,7 @@ fn demo_Histogram() !void {
 
     if (ip.ImPlot_BeginPlot("##Histograms", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
-        ip.ImPlot_SetNextFillStyle(utils.IMPLOT_AUTO_COL, 0.5);
+        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.5);
         if (st.range) { // TODO
             _ = try ip.ImPlot_PlotHistogramEx("Empirical", &st.dist, 10000, st.bins, 1.0, .{ .Min = st.rmin, .Max = rmax }, st.hist_flags);
         } else {
@@ -1089,7 +1091,7 @@ fn demo_MarkersAndText() !void {
         var  ys = [2]ig.ImS8{10,11};
         // filled markers
         for (0..@intCast(ip.ImPlotMarker_COUNT))|m| {
-            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, utils.IMPLOT_AUTO_COL, st.mk_weight, utils.IMPLOT_AUTO_COL);
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x = 0, .y = 0, .z = 0, .w = -1}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
             try ip.ImPlot_PlotLineXy("##Filled", &xs, &ys, 2);
             ig.igPopID();
             ys[0] -= 1; ys[1]  -= 1;
@@ -1099,7 +1101,7 @@ fn demo_MarkersAndText() !void {
         // open markers
         for (0..ip.ImPlotMarker_COUNT)|m| {
             ig.igPushID_Int(@intCast(m));
-            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x=0, .y=0, .z=0, .w=0}, st.mk_weight, utils.IMPLOT_AUTO_COL);
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x=0, .y=0, .z=0, .w=0}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
             try ip.ImPlot_PlotLineXy("##Open", &xs, &ys, 2);
             ig.igPopID();
             ys[0] -= 1; ys[1]  -= 1;
@@ -1137,7 +1139,7 @@ fn demo_NaNValues() !void {
     _ = ig.igCheckboxFlags_IntPtr("Skip NaN", &st.flags, ip.ImPlotLineFlags_SkipNaN);
 
     if (ip.ImPlot_BeginPlot("##NaNValues", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         try ip.ImPlot_PlotLineXyEx("line", &data1, &data2, 5, st.flags, 0, utils.stride(data1[0]));
         try ip.ImPlot_PlotBars("bars", &data1, 5);
         ip.ImPlot_EndPlot();
@@ -1165,7 +1167,12 @@ fn demo_LinePlots() !void {
     if (ip.ImPlot_BeginPlot("Line Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("x", "y", 0, 0);
         try ip.ImPlot_PlotLineXy("f(x)", &st.xs1, &st.ys1, 1001);
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle
+          , utils.IMPLOT_AUTO
+         , .{.x = 0, .y = 0, .z = 0, .w = -1}
+          , utils.IMPLOT_AUTO
+         , .{.x = 0, .y = 0, .z = 0, .w = -1} //, IMPLOT_AUTO_COL
+          );
         try ip.ImPlot_PlotLineXyEx("g(x)", &st.xs2, &st.ys2, 20, ip.ImPlotLineFlags_Segments, 0, utils.stride((st.xs2[0])));
         ip.ImPlot_EndPlot();
     }
@@ -1193,7 +1200,7 @@ fn demo_ErrorBars() !void {
         // TODO
         ip.ImPlot_SetNextErrorBarStyle(.{.x = vec4.x, .y = vec4.y , .z = vec4.z, .w = vec4.w}, 0, utils.IMPLOT_AUTO);
         try ip.ImPlot_PlotErrorBarsNeg("Line", &xs, &lin1, &err1, &err2, 5);
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         try ip.ImPlot_PlotLineXy(      "Line", &xs, &lin1, 5);
         ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 2, utils.IMPLOT_AUTO);
         // TODO
@@ -1222,7 +1229,7 @@ fn demo_StemPlots() !void {
         ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1,0,1.0, ip.ImPlotCond_Once);
         ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y1,0,1.6, ip.ImPlotCond_Once);
         try ip.ImPlot_PlotStemsXy("Stems 1", &xs, &ys1, 51);
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         try ip.ImPlot_PlotStemsXy("Stems 2", &xs, &ys2, 51);
         ip.ImPlot_EndPlot();
     }
@@ -1444,11 +1451,11 @@ fn demo_StairstepPlots() !void {
         try ip.ImPlot_PlotLineEx("##2",&ys2,21,0.05, 0, 0, 0, utils.stride(ys2[0]));
         ip.ImPlot_PopStyleColor(1);
 
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
-        ip.ImPlot_SetNextFillStyle(utils.IMPLOT_AUTO_COL, 0.25);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
+        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
         try ip.ImPlot_PlotStairsEx("Post Step (default)", &ys1, 21, 0.05, 0, st.flags, 0, utils.stride(ys1[0]));
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL, utils.IMPLOT_AUTO, utils.IMPLOT_AUTO_COL);
-        ip.ImPlot_SetNextFillStyle(utils.IMPLOT_AUTO_COL, 0.25);
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
+        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
         try ip.ImPlot_PlotStairsEx("Pre Step", &ys2, 21, 0.05, 0, st.flags | ip.ImPlotStairsFlags_PreStep, 0, utils.stride(ys1[0]));
 
         ip.ImPlot_EndPlot();
