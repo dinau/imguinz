@@ -27,24 +27,24 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
   //# Specify OpenGL buffer to be read, 'GL_FRONT': Front buffer, 'GL_BACK': Back buffer
   glReadBuffer( GL_BACK );
   //# Read form OpenGL buffer and save to local buffer
-  glReadPixels( (GLint)xs, (GLint)ys,     // # x,y position (left down) at start //0 or getCurrentWidth() - 1
-                (GLsizei)imageWidth, (GLsizei)imageHeight, //# width, height to be read
-                GL_RGBA,                 //# Read type
-                GL_UNSIGNED_BYTE,        //# Save type
-                texBuffer);       //# Pointer to pixel data
+  glReadPixels( (GLint)xs, (GLint)ys,                      // # x,y position (left down) at start //0 or getCurrentWidth() - 1
+                (GLsizei)imageWidth, (GLsizei)imageHeight, // # width, height to be read
+                GL_RGBA,                                   // # Read type
+                GL_UNSIGNED_BYTE,                          // # Save type
+                texBuffer);                                // # Pointer to pixel data
 
-   // # Fix upside-down of image
-    int widthStep = comp * imageWidth;
-    int n = 0;
-    for(int y = 0; y < imageHeight; y++){
-      for(int x = 0; x < imageWidth; x++){
-        dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 4 ] = texBuffer[n + comp - 4]; //# copy R
-        dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 3 ] = texBuffer[n + comp - 3]; //# copy G
-        dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 2 ] = texBuffer[n + comp - 2]; //# copy B
-        dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 1 ] = texBuffer[n + comp - 1]; //# copy A
-        n += comp;
-      }
+  // # Fix upside-down of image
+  int widthStep = comp * imageWidth;
+  int n = 0;
+  for(int y = 0; y < imageHeight; y++){
+    for(int x = 0; x < imageWidth; x++){
+      dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 4 ] = texBuffer[n + comp - 4]; //# copy R
+      dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 3 ] = texBuffer[n + comp - 3]; //# copy G
+      dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 2 ] = texBuffer[n + comp - 2]; //# copy B
+      dataBuffer[ ( imageHeight - y - 1 ) * widthStep + (x * comp) + comp - 1 ] = texBuffer[n + comp - 1]; //# copy A
+      n += comp;
     }
+  }
 
   //# Setup filtering parameters for display
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)GL_LINEAR);
@@ -67,44 +67,41 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
   }
   glBindTexture(GL_TEXTURE_2D, *pTextureID);
 
- // # Load texture
+  // # Load texture
   int err = 0;
   if(loadReq){
     loadReq = false;
     glTexImage2D(GL_TEXTURE_2D          //# target
                  , 0                    //# level
-                 , (GLint)GL_RGBA        //# internal format
-                 , (GLsizei)imageWidth//# widht
-                 , (GLsizei)imageHeight  //# height
+                 , (GLint)GL_RGBA       //# internal format
+                 , (GLsizei)imageWidth  //# widht
+                 , (GLsizei)imageHeight //# height
                  , 0                    //# [Border]: 0: Not have border  1: Have border
                                         //# https://stackoverflow.com/questions/913801/what-does-border-mean-in-the-glteximage2d-function
                  , GL_RGBA              //# format
                  , GL_UNSIGNED_BYTE     //# type
-                 , dataBuffer); //# *pixels
+                 , dataBuffer);         //# *pixels
   }
-   err = glGetError();
-    if(err != 0){
-      puts("Error!: [0x{err:X}]: glTexImage2D()");
-      free(texBuffer);
-      free(dataBuffer);
-      return;
-    }
+  err = glGetError();
+  if(err != 0){
+    puts("Error!: [0x{err:X}]: glTexImage2D()");
+    free(texBuffer);
+    free(dataBuffer);
+    return;
+  }
 
-//  # Update texture
+  //# Update texture
   glTexSubImage2D(GL_TEXTURE_2D          //# target
-                  , 0              //# level
-                  , 0, 0     //# x,y offset
+                  , 0                    //# level
+                  , 0, 0                 //# x,y offset
                   , (GLsizei)imageWidth
                   , (GLsizei)imageHeight
-                  , GL_RGBA              //#, GL_UNSIGNED_INT_8_8_8_8_REV  # is Fast than GL_UNSIGNED_BYTE ?
+                  , GL_RGBA              //# GL_UNSIGNED_INT_8_8_8_8_REV  # is Fast than GL_UNSIGNED_BYTE ?
                   , GL_UNSIGNED_BYTE
                   , dataBuffer);
   err = glGetError();
   if(err != 0){
     puts("Error! [0x{err:X}]: glTexSubImage2D()");
-      free(texBuffer);
-      free(dataBuffer);
-      return;
   }
   free(texBuffer);
   free(dataBuffer);
@@ -114,13 +111,12 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
 // LoadTextureFromFile   Simple helper function to load an image into a OpenGL texture with common settings
 // --------------------
 bool LoadTextureFromFile(const char* imageName, GLuint* out_texture, int* out_width, int* out_height) {
-  unsigned char* image_data = NULL;
   if (!existsFile(imageName)) {
     printf("\nError!: Image file not found  error: %s", imageName);
     return false;
   }
   // Load from file
-  image_data = stbi_load(imageName, out_width, out_height, NULL, 4);
+  uint8_t* image_data = stbi_load(imageName, out_width, out_height, NULL, 4);
   if (image_data == NULL) {
     *out_texture = (GLuint)0;
     printf("\nError!: Image load error:  %s", imageName);
