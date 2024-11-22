@@ -2,6 +2,7 @@ const std = @import ("std");
 const builtin = @import ("builtin");
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
+const utils = @import("utils.zig");
 
 const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
 
@@ -107,6 +108,7 @@ pub fn main () !void {
   _ = ig.ImGui_ImplOpenGL3_Init(glsl_version);
   defer ig.ImGui_ImplOpenGL3_Shutdown ();
 
+
   //-------------
   // Global vars
   //-------------
@@ -127,7 +129,18 @@ pub fn main () !void {
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
+  //------------
+  // Load image
+  //------------
+  const ImageName = "beans-400.jpg";
+  var textureId : ig.GLuint = undefined;
+  var textureWidth: c_int = 0;
+  var textureHeight : c_int = 0;
+  _ = ig.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
+  
+ var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
+  defer ig.glDeleteTextures(1, &zoomTextureID);
 
   const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
   //---------------
@@ -199,6 +212,27 @@ pub fn main () !void {
       defer ig.igEnd ();
       ig.igText ("Hello from another window!");
       if (ig.igButton ("Close Me", DefaultButtonSize)) showAnotherWindow = false;
+    }
+
+    //------------------------
+    // Show image load window
+    //------------------------
+    if (ig.igBegin("Image load test", null, 0)) {
+      defer ig.igEnd();
+      var imageBoxPosTop:ig.ImVec2 = undefined;
+      var imageBoxPosEnd:ig.ImVec2 = undefined;
+      // Load image
+      const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
+      const uv0        = ig.ImVec2 {.x = 0, .y = 0};
+      const uv1        = ig.ImVec2 {.x = 1, .y = 1};
+      const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
+      const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
+      ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
+      ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
+      ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.
+      if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
+        utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);
+      }
     }
 
     //-----------

@@ -5,10 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3](#glfw_opengl3--sdl2_opengl3--sdl3_opengl3)
-    - [glfw_opengl3_jp](#glfw_opengl3_jp)
-    - [iconFontViewer](#iconfontviewer)
-    - [glfw_opengl3_image_load](#glfw_opengl3_image_load)
+    - [Image load](#image-load)
+    - [Showing CJK fonts and text input](#showing-cjk-fonts-and-text-input)
+    - [Icon font viewer](#icon-font-viewer)
+    - [Image load / save](#image-load--save)
     - [glfw_opengl3_implot](#glfw_opengl3_implot)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
@@ -30,7 +30,8 @@
   - [Show / Hide console window](#show--hide-console-window)
   - [SDL libraries](#sdl-libraries)
   - [My tools version](#my-tools-version)
-  - [Similar project](#similar-project)
+    - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
+    - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -57,6 +58,7 @@ ImGui / CImGui version **1.91.4dock** (2024/10)
 ---
 
 - Zig version
+   1. zig-windows-x86_64-0.14.0-dev.2265 is OK (2024/11/21)
    1. [zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip) OK  
    1. [zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz) OK  
    Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be OK  
@@ -102,40 +104,44 @@ Linux Mint 22 is OK. (or Ubuntu / Debian families ?)
 
 ### Examples screen shots 
 
-#### glfw_opengl3 / sdl2_opengl3 / sdl3_opengl3
+#### Image load 
 
 ---
 
-[glfw_opengl3](examples/glfw_opengl3/src/main.zig) / 
-[sdl2_opengl3](examples/sdl2_opengl3/src/main.zig) / 
-[sdl3_opengl3](examples/sdl3_opengl3/src/main.zig)
+Image load and magnifying glass
 
-![alt](img/glfw_opengl3.png)
 
-#### glfw_opengl3_jp
+[glfw_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3/src/main.zig)  
+[sdl2_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/sdl2_opengl3/src/main.zig)  
+[sdl3_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/sdl3_opengl3/src/main.zig)
 
----
+![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
 
-Load / Show CJK fonts  
-[glfw_opengl3_jp](examples/glfw_opengl3_jp/src/main.zig)
-
-![alt](img/glfw_opengl3_jp.png)
-
-#### IconFontViewer
+#### Showing CJK fonts and text input
 
 ---
 
-[iconFontViewer](examples/iconFontViewer/src/main.zig) with magnifying glass
+[glfw_opengl3_jp.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_jp/src/main.zig)
 
-![alt](img/iconFontViewer.png)
+![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_jp.png)
 
-#### glfw_opengl3_image_load
+#### Icon font viewer
 
 ---
 
-[glfw_opengl3_image_load](examples/glfw_opengl3_image_load/src/main.zig) with magnifying glass
+[iconFontViewer.zig](https://github.com/dinau/imguinz/raw/main/examples/iconFontViewer/src/main.zig) and magnifying glass
 
-![alt](img/glfw_opengl3_image_load.png)  
+![alt](https://github.com/dinau/imguinz/raw/main/img/iconFontViewer.png)
+
+#### Image load / save
+
+---
+
+Image load / save and magnifying glass
+
+[glfw_opengl3_image_load.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_image_load/src/main.zig) 
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_image_load.png)  
 Image file captured would be saved in the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
@@ -143,9 +149,9 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ---
 
-[glfw_opengl3_implot](examples/glfw_opengl3_implot/src/main.zig)
+[glfw_opengl3_implot.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_implot/src/main.zig)
 
-![alt](img/glfw_opengl3_implot.png)
+![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_implot.png)
 
 ### ImPlot Demo written in Zig lang.
 
@@ -166,7 +172,7 @@ make run   # or zig build --release=fast run
 
 ---
 
-[demoAll.zig](examples/imPlotDemo/src/demoAll.zig)
+[demoAll.zig](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/src/demoAll.zig)
 
 #### Plots Tab
 
@@ -174,31 +180,30 @@ make run   # or zig build --release=fast run
 
 ##### LinePlots (Dynamic)
 
-![alt](examples/imPlotDemo/img/LinePlots.png)
-
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/LinePlots.png)
 ##### BarGroups
 
-![alt](examples/imPlotDemo/img/BarGroups.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/BarGroups.png)
 
 ##### BarStacks
 
-![alt](examples/imPlotDemo/img/BarStacks.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/BarStacks.png)
 
 ##### PieCharts
 
-![alt](examples/imPlotDemo/img/PieCharts.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/PieCharts.png)
 
 ##### Heatmaps
 
-![alt](examples/imPlotDemo/img/Heatmaps.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Heatmaps.png)
 
 ##### Histogram2D
 
-![alt](examples/imPlotDemo/img/Histogram2D.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Histogram2D.png)
 
 ##### Images
 
-![alt](examples/imPlotDemo/img/Images.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Images.png)
 
 #### Axes Tab
 
@@ -206,7 +211,7 @@ make run   # or zig build --release=fast run
 
 ##### LogScale
 
-![alt](examples/imPlotDemo/img/LogScale.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/LogScale.png)
 
 #### Subplots Tab
 
@@ -214,7 +219,7 @@ make run   # or zig build --release=fast run
 
 ##### Tables (Dynamic)
 
-![alt](examples/imPlotDemo/img/Tables.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Tables.png)
 
 #### Tools Tab
 
@@ -222,7 +227,7 @@ make run   # or zig build --release=fast run
 
 ##### DragRects 
 
-![alt](examples/imPlotDemo/img/DragRects.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/DragRects.png)
 
 
 ### Show / Hide console window
@@ -269,14 +274,27 @@ https://github.com/JBetz/build-sdl3-win32
    - SDL2 ver.2.30.0
    - Git version 2.43.0
 
-### Similar project
+#### Similar project ImGui / CImGui
 
 ---
 
-| Language             | Project                                                                                                                                         |
-| -------------------: | :----------------------------------------------------------------:                                                                              |
-| **Nim**              | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
-| **Lua**              | [LuaJITImGui](https://github.com/dinau/luajitimgui)                                                                                             |
-| **Python**           | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
-| **Zig**, C lang.     | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
-| **Zig**              | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                         |
+| Language             |          | Project                                                                                                                                         |
+| -------------------: | :---:    | :----------------------------------------------------------------:                                                                              |
+| **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
+| **Lua**              | Script   | [LuaJITImGui](https://github.com/dinau/luajitImGui)                                                                                             |
+| **Zig**, C lang.     | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
+| **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                                     |
+| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui)                                                                                               |
+| **Python**           | Script   | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
+
+#### SDL game tutorial Platfromer
+
+---
+
+![ald](https://github.com/dinau/nelua-platformer/raw/main/img/game.png)
+
+| Language             |          | Project                                                            |
+| -------------------: | :---:    | :----------------------------------------------------------------: |
+| **Nim**              | Compiler | [Nim-Platformer](https://github.com/dinau/nim-platformer)          |
+| **LuaJIT**           | Script   | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)    |
+| **Nelua**            | Compiler | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)      |

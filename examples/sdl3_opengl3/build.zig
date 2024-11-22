@@ -181,7 +181,8 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"};
+    const resBin =   [_][]const u8{ "imgui.ini"
+                                  , "sailboat-400.jpg" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";

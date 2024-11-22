@@ -40,5 +40,8 @@ INCS += -I"C:/Program Files/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC
 trans:
 	zig translate-c test.c $(INCS) > test.zig
 
-upx:
+upx: all
 	upx --lzma $(TARGET_EXE)
+
+dupx:
+	upx -d $(TARGET_EXE)
