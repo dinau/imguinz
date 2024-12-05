@@ -4,7 +4,7 @@ const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
 const utils = @import("utils.zig");
 
-const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
+const IMGUI_HAS_DOCK = false;    // Docking feature
 
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
@@ -138,7 +138,7 @@ pub fn main () !void {
   var textureHeight : c_int = 0;
   _ = ig.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
-  
+
  var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
   defer ig.glDeleteTextures(1, &zoomTextureID);
 
@@ -247,10 +247,10 @@ pub fn main () !void {
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     // Docking featrue --- N/A
     if (IMGUI_HAS_DOCK){
-      if (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewPortsEnable) {
+      if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
         const backup_current_window = ig.glfwGetCurrentContext();
         ig.igUpdatePlatformWindows();
-        ig.igRenderPlatformWindowsDefault();
+        ig.igRenderPlatformWindowsDefault(null, null);
         ig.glfwMakeContextCurrent(backup_current_window);
       }
     }

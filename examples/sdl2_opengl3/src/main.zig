@@ -5,7 +5,7 @@ const fonts = @import ("fonts.zig");
 const utils = @import("utils.zig");
 
 
-const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
+const IMGUI_HAS_DOCK = false;    // Docking feature
 
 const MainWinWidth :i32 = 1024;
 const MainWinHeight:i32 = 800;
@@ -218,9 +218,8 @@ pub fn main () !void {
     }
 
     //-----------
-    // End procs
-    //-----------
     // Rendering
+    //-----------
     ig.igRender ();
     ig.glViewport(0, 0, @intFromFloat(pio.*.DisplaySize.x), @intFromFloat(pio.*.DisplaySize.y));
     ig.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);

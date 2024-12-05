@@ -6,7 +6,7 @@
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
     - [Image load](#image-load)
-    - [Showing CJK fonts and text input](#showing-cjk-fonts-and-text-input)
+    - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
     - [Icon font viewer](#icon-font-viewer)
     - [Image load / save](#image-load--save)
     - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -41,7 +41,13 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-ImGui / CImGui version **1.91.4dock** (2024/10)
+- ImGui / CImGui version **1.91.5dock** (2024/12)
+- OS: Windows and Linux
+- Frontends and Backends 
+    
+   |                    | GLFW   | SDL2  | SDL3   |
+   | ---                | :----: | :---- | :----: |
+   | OpenGL3<br>backend | v      | v     | v      |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -57,11 +63,12 @@ ImGui / CImGui version **1.91.4dock** (2024/10)
 
 ---
 
-- Zig version
+- Zig version  
+   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK  
+   1. Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)
    1. zig-windows-x86_64-0.14.0-dev.2265 is OK (2024/11/21)
    1. [zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip) OK  
    1. [zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz) OK  
-   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might be OK  
    1. zig-0.12.1 and zig-0.13.0 are OK
 
 - WindowsOS
@@ -117,7 +124,7 @@ Image load and magnifying glass
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
 
-#### Showing CJK fonts and text input
+#### Showing CJK multi byte fonts and input UTF-8 text 
 
 ---
 
@@ -137,13 +144,13 @@ Image load and magnifying glass
 
 ---
 
-Image load / save and magnifying glass
+Image load / save and magnifying glass.  
+Image file captured would be saved in .the folder `./zig-out/bin`.  
+Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 [glfw_opengl3_image_load.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_image_load/src/main.zig) 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_image_load.png)  
-Image file captured would be saved in the folder `./zig-out/bin`.  
-Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 #### glfw_opengl3_implot
 
@@ -298,3 +305,4 @@ https://github.com/JBetz/build-sdl3-win32
 | **Nim**              | Compiler | [Nim-Platformer](https://github.com/dinau/nim-platformer)          |
 | **LuaJIT**           | Script   | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)    |
 | **Nelua**            | Compiler | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)      |
+| **Zig**              | Compiler | [Zig-Platformer](https://github.com/dinau/zig-platformer) (WIP)    |

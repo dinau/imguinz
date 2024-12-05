@@ -22,7 +22,7 @@ var cbItemIndex:usize = @intFromEnum(enKind.jpg);
 
 // Constants
 const SaveImageName = "ImageSaved";
-const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
+const IMGUI_HAS_DOCK = false;     // Docking feature
 
 fn glfw_error_callback (err: c_int, description: [*c] const u8) callconv (.C) void
 {
@@ -309,10 +309,10 @@ pub fn main () !void {
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     // Docking featrue --- N/A
     if (IMGUI_HAS_DOCK){
-      if (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewPortsEnable) {
+      if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
         const backup_current_window = ig.glfwGetCurrentContext();
         ig.igUpdatePlatformWindows();
-        ig.igRenderPlatformWindowsDefault();
+        ig.igRenderPlatformWindowsDefault(null, null);
         ig.glfwMakeContextCurrent(backup_current_window);
       }
     }

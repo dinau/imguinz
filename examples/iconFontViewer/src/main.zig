@@ -6,7 +6,7 @@ const fonts = @import("fonts.zig");
 const ift = @import("iconFontsTblDef.zig");
 const utils = @import("utils.zig");
 
-const IMGUI_HAS_DOCK = false; // true: Can't compile at this time.
+const IMGUI_HAS_DOCK = false;    // Docking feature
 
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
@@ -75,7 +75,6 @@ pub fn main () !void {
   const allocator = gpa.allocator();
   const exe_path = try std.fs.selfExePathAlloc(allocator);
   defer allocator.free(exe_path);
-  //
   const opt_exe_dir = std.fs.path.dirname(exe_path);
   if (opt_exe_dir) |exe_dir| {
     var paths = [_][]const u8{ exe_dir, TitleBarIconName };
@@ -221,10 +220,10 @@ pub fn main () !void {
     ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
     // Docking featrue --- N/A
     if (IMGUI_HAS_DOCK){
-      if (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewPortsEnable) {
+      if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
         const backup_current_window = ig.glfwGetCurrentContext();
         ig.igUpdatePlatformWindows();
-        ig.igRenderPlatformWindowsDefault();
+        ig.igRenderPlatformWindowsDefault(null, null);
         ig.glfwMakeContextCurrent(backup_current_window);
       }
     }
