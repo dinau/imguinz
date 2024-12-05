@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // 64bit Winddws OS
     //----------------------------------
-    const SDL3_VER = "3.1.3";
+    const SDL3_VER = "3.1.6";
     const sdlBase = "../../libs/sdl";
     const sdlPath = b.fmt("{s}/SDL3-{s}/x86_64-w64-mingw32", .{sdlBase, SDL3_VER});
     //---------------
@@ -154,7 +154,7 @@ pub fn build(b: *std.Build) void {
       exe.linkSystemLibrary("shell32");
       exe.linkSystemLibrary("user32");
       // Static link
-      exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3.a"})));
+      exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3.dll.a"})));
     }else if (builtin.target.os.tag == .linux){
       exe.linkSystemLibrary("glfw3");
       exe.linkSystemLibrary("GL");
@@ -197,7 +197,7 @@ pub fn build(b: *std.Build) void {
     }
     const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
     b.getInstallStep().dependOn(&res.step);
-    if(false){// Enable if use SDL3.dll with dynamic linking.
+    if(true){// Enable if use SDL3.dll with dynamic linking.
       const resSdlDll = b.pathJoin(&.{sdlPath, "bin", "SDL3.dll"});
       const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
       b.getInstallStep().dependOn(&resSdl.step);

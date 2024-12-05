@@ -12,7 +12,7 @@ all:
 	zig build $(OPT)
 	@-$(AFTER_BUILD_CMD)
 
-.PHONY: run gen cleanall cleanexe trans
+.PHONY: run gen cleanall cleanexe trans clean
 
 run: all
 	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
@@ -20,6 +20,8 @@ run: all
 
 gen:
 	nim ../utils/genImPlotFuncs.nims
+
+clean: cleanall
 
 cleanall:
 	@-rm -fr zig-out
