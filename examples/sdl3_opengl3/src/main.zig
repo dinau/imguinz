@@ -141,7 +141,8 @@ pub fn main () !void {
     //------------------
     // Show main window
     //------------------
-    if (ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0)) {
+    {
+      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0);
       defer ig.igEnd ();
       ig.igText (fonts.ICON_FA_COMMENT ++ " SDL3 v"); ig.igSameLine (0, -1.0);
       ig.igText ("[%d],[%s]", ig.SDL_GetVersion(), ig.SDL_GetRevision());
@@ -195,7 +196,8 @@ pub fn main () !void {
     //------------------------
     // Show image load window
     //------------------------
-    if (ig.igBegin("Image load test", null, 0)) {
+    {
+      _ = ig.igBegin("Image load test", null, 0);
       defer ig.igEnd();
       var imageBoxPosTop:ig.ImVec2 = undefined;
       var imageBoxPosEnd:ig.ImVec2 = undefined;

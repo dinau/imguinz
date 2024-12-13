@@ -152,7 +152,8 @@ pub fn main () !void {
     //------------------
     // Show info window
     //------------------
-    if (ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
+    {
+      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
       defer ig.igEnd();
       ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glfwGetVersionString());

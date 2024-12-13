@@ -143,7 +143,8 @@ pub fn main () !void {
     //------------------
     // Show main window
     //------------------
-    if (ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0)) {
+    {
+      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0);
       defer ig.igEnd ();
       var ver:ig.SDL_version = undefined;
       ig.SDL_GetVersion(&ver);
@@ -199,7 +200,8 @@ pub fn main () !void {
     //------------------------
     // Show image load window
     //------------------------
-    if (ig.igBegin("Image load test", null, 0)) {
+    {
+      _ = ig.igBegin("Image load test", null, 0);
       defer ig.igEnd();
       var imageBoxPosTop:ig.ImVec2 = undefined;
       var imageBoxPosEnd:ig.ImVec2 = undefined;

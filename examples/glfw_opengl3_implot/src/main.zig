@@ -166,7 +166,8 @@ pub fn main() !void {
         //------------------
         // Show main window
         //------------------
-        if (ig.igBegin(fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0)) {
+        {
+            _ = ig.igBegin(fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.igEnd();
             ig.igText(fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine(0, -1.0);
             ig.igText(ig.glfwGetVersionString());
@@ -276,7 +277,8 @@ fn imPlotWindow(fshow: *bool) !void {
             st.y_data[i] = @intCast(i * i);
         }
     }
-    if (ig.igBegin("Plot Window", fshow, 0)) {
+    {
+        _ = ig.igBegin("Plot Window", fshow, 0);
         defer ig.igEnd();
         if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
             defer ip.ImPlot_EndPlot();
@@ -306,7 +308,8 @@ fn imPlotWindow2(fshow: *bool) !void {
             st.y_data[i] = @intCast(i * i);
         }
     }
-    if (ig.igBegin("Plot Window2", fshow, 0)) {
+    {
+        _ = ig.igBegin("Plot Window2", fshow, 0);
         defer ig.igEnd();
         if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
             defer ip.ImPlot_EndPlot();
