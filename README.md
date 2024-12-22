@@ -41,7 +41,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.91.5dock** (2024/12)
+- ImGui / CImGui version **1.91.6dock** (2024/12)
 - OS: Windows and Linux
 - Frontends and Backends 
     
@@ -64,12 +64,9 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig version  
-   Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK  
-   1. Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)
-   1. zig-windows-x86_64-0.14.0-dev.2265 is OK (2024/11/21)
-   1. [zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2183+ee9f00d67.zip) OK  
-   1. [zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.2183+ee9f00d67.tar.xz) OK  
-   1. zig-0.12.1 and zig-0.13.0 are OK
+   ~~Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK~~  
+   1. Use Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)  
+    https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2367+aa7d13846.zip
 
 - WindowsOS
    - Windows10 or later
@@ -298,7 +295,7 @@ https://github.com/JBetz/build-sdl3-win32
 
 ---
 
-![ald](https://github.com/dinau/nelua-platformer/raw/main/img/game.png)
+![ald](https://github.com/dinau/nelua-platformer/raw/main/img/platformer-nelua-sdl2.gif)
 
 | Language             |          | Project                                                            |
 | -------------------: | :---:    | :----------------------------------------------------------------: |

@@ -47,3 +47,6 @@ upx: all
 
 dupx:
 	upx -d $(TARGET_EXE)
+
+fmt:
+	zig fmt src/main.zig

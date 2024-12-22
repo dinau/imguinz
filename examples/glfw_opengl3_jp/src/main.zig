@@ -49,7 +49,7 @@ pub fn main () !void {
   //---------------------------------------------
   // Create GLFW window and activate OpenGL libs
   //---------------------------------------------
-  const window = ig.glfwCreateWindow (MainWinWidth, MainWinHeight, "Dear ImGui example", null, null);
+  const window = ig.glfwCreateWindow (MainWinWidth, MainWinHeight, "Dear ImGui 例題", null, null);
   if (window == null) {
       ig.glfwTerminate();
       return error.glfwInitFailure;
@@ -163,7 +163,7 @@ pub fn main () !void {
       ig.igText (builtin.zig_version_string);
 
       ig.igSpacing();
-      _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
+      _ = ig.igInputTextWithHint("テキスト入力", "ここに入力", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
       ig.igText("入力結果:"); ig.igSameLine(0, -1.0); ig.igText(&sTextInuputBuf);
 
       ig.igSpacing();

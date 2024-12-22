@@ -89,9 +89,12 @@ pub fn build(b: *std.Build) void {
         // ImGui GLFW and OpenGL interface
         "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
         "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
+        // Theme Gold
+        "../utils/themeGold.cpp",
       },
       .flags = &.{
         "-O2",
+        "-msse4.2",
       },
     });
 
@@ -126,6 +129,7 @@ pub fn build(b: *std.Build) void {
         "../utils/loadImage.c",
         "../utils/saveImage.c",
         "../utils/utils.c",
+
       },
       .flags = &.{
         "-O2",

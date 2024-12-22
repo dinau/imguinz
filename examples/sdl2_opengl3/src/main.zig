@@ -8,7 +8,7 @@ const utils = @import("utils.zig");
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
 const MainWinWidth :i32 = 1024;
-const MainWinHeight:i32 = 800;
+const MainWinHeight:i32 = 900;
 
 //--------
 // main()
@@ -144,7 +144,7 @@ pub fn main () !void {
     // Show main window
     //------------------
     {
-      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0);
+      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
       defer ig.igEnd ();
       var ver:ig.SDL_version = undefined;
       ig.SDL_GetVersion(&ver);

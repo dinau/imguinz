@@ -11,7 +11,7 @@ fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void 
 }
 
 const MainWinWidth :i32 = 1024;
-const MainWinHeight:i32 = 800;
+const MainWinHeight:i32 = 900;
 
 //--------
 // main()
@@ -125,7 +125,8 @@ pub fn main () !void {
   //------------------------
   // Select Dear ImGui style
   //------------------------
-  ig.igStyleColorsClassic (null);
+  ig.themeGold();
+  //ig.igStyleColorsClassic (null);
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 

@@ -30,7 +30,7 @@ fn glfw_error_callback (err: c_int, description: [*c] const u8) callconv (.C) vo
 }
 
 const MainWinWidth :i32 = 1024;
-const MainWinHeight:i32 = 800;
+const MainWinHeight:i32 = 900;
 
 //--------
 // main()

@@ -44,29 +44,31 @@ const ImWchar ranges_icon_fonts[]  = {(ImWchar)ICON_MIN_FA, (ImWchar)ICON_MAX_FA
  *-------------*/
 void setupFonts(void) {
   ImGuiIO* pio = ImGui_GetIO();
-  ImFontAtlas_AddFontDefault(pio->Fonts, NULL);
   ImFontConfig* config  = ImFontConfig_ImFontConfig();
-  config->MergeMode = true;
-  ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(10), config , ranges_icon_fonts);
-
+  ImFont* font = NULL;
   char* fontPath = getWinFontPath(sBufFontPath, sizeof(sBufFontPath), WinJpFontName);
   if (existsFile(fontPath)) {
-    // ok
+      printf("Found JpFontPath: [%s]\n",fontPath);
+      font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(14.5)
+                                    , config
+                                    , ImFontAtlas_GetGlyphRangesJapanese(pio->Fonts));
   }else{
     fontPath = LinuxJpFontName;
     if (existsFile(LinuxJpFontName)) {
-      // ok
+      font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(14.5)
+                                    , config
+                                    , ImFontAtlas_GetGlyphRangesJapanese(pio->Fonts));
+      printf("Found JpFontPath: [%s]\n",fontPath);
     }else{
       printf("Error!: Not found FontPath: [%s] in %s\n", fontPath, __FILE__);
-      return;
+      printf("Set default font.\n");
+      ImFontAtlas_AddFontDefault(pio->Fonts, NULL);
     }
   }
-  printf("Found JpFontPath: [%s]\n",fontPath);
-
-  ImFont* font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(14)
-                                , config
-                                , ImFontAtlas_GetGlyphRangesJapanese(pio->Fonts));
   if (font == NULL) {
-    printf("Error!: AddFontFromFileTTF():  [%s] \n", fontPath);
+    printf("Error!: Failed! AddFontFromFileTTF():  [%s] \n", fontPath);
   }
+  // Merge IconFont
+  config->MergeMode = true;
+  ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(10), config , ranges_icon_fonts);
 }

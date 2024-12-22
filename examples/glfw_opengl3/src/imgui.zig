@@ -6,4 +6,7 @@ pub usingnamespace @cImport ({
   @cInclude ("loadImage.h");
   @cInclude ("saveImage.h");
   @cInclude ("stb_image.h");
+
+  @cInclude ("themeGold.h");  // Theme Gold
+
 });
