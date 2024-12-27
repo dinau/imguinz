@@ -69,9 +69,10 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig version  
-   ~~Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK~~  
-   1. Use Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)  
-    https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2367+aa7d13846.zip
+   1. OK:  https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2568+42dac40b3.zip  
+   1. OK:  Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)  
+    https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2367+aa7d13846.zip  
+~~Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK~~  
 
 - WindowsOS
    - Windows10 or later

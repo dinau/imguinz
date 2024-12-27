@@ -1,4 +1,4 @@
-name: Windows OS Devel 0.14.0-dev nightly compilation
+name: Windows OS 0.14.0-dev nightly compilation-
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  win_nightly:
 
     runs-on: windows-latest
 

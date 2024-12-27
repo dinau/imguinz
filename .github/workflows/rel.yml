@@ -1,4 +1,4 @@
-name: Windows OS zig-0.13.0 compilation
+name: Windows OS zig-0.13.0 compilation-
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  win_release:
 
     runs-on: windows-latest
 
