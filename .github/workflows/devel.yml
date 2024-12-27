@@ -1,4 +1,4 @@
-name: Zig CI
+name: Devel 0.14.0-dev compilation
 
 on:
   push:
@@ -9,16 +9,16 @@ on:
 jobs:
   build:
 
-    runs-on: windows-2019
+    runs-on: windows-latest
 
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
-    - uses: goto-bus-stop/setup-zig@v2
+    - uses: mlugg/setup-zig@v1
       with:
-        version: 0.13.0
+        version: master
 
     - name: make
       run: make

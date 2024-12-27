@@ -37,6 +37,10 @@
 
 ## ImGuinZ 
 
+![alt](https://github.com/dinau/imguinz/actions/workflows/devel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/rel.yml/badge.svg)
+
+
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.

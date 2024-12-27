@@ -1,0 +1,27 @@
+name: Devel Linux OS(Ubuntu) 0.14.0-dev compilation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - uses: mlugg/setup-zig@v1
+      with:
+        version: master
+    - name: make
+      run: |
+        sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
+        sudo apt install libglfw3 libglfw3-dev
+        sudo apt install libsdl2-dev
+      run: make
