@@ -64,12 +64,12 @@ pub fn build(b: *std.Build) void {
     // Define macro for C/C++ sources
     //--------------------------------
     // ImGui
-    imlibs.defineCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    imlibs.defineCMacro("ImDrawIdx", "unsigned int");
-    imlibs.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    imlibs.root_module.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
+    imlibs.root_module.addCMacro("ImDrawIdx", "unsigned int");
+    imlibs.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
     switch (builtin.target.os.tag){
-      .windows => imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-      .linux =>   imlibs.defineCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+      .windows => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+      .linux =>   imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
       else => {},
     }
 
@@ -112,11 +112,11 @@ pub fn build(b: *std.Build) void {
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
-    exe.defineCMacro("CIMGUI_USE_GLFW", "");
-    exe.defineCMacro("CIMGUI_USE_OPENGL3", "");
-    exe.defineCMacro("ImDrawIdx", "unsigned int");
-    exe.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
-    exe.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", null);
+    exe.root_module.addCMacro("CIMGUI_USE_GLFW", "");
+    exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
+    exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
+    exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     //---------------
     // Sources C/C++
     //---------------

@@ -1,4 +1,4 @@
-name: Devel 0.14.0-dev compilation
+name: Windows OS Devel 0.14.0-dev nightly compilation
 
 on:
   push:
@@ -10,7 +10,6 @@ jobs:
   build:
 
     runs-on: windows-latest
-
 
     steps:
     - uses: actions/checkout@v4

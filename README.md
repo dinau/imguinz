@@ -37,7 +37,8 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/devel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/windows.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/linux.yml/badge.svg)  
 ![alt](https://github.com/dinau/imguinz/actions/workflows/rel.yml/badge.svg)
 
 

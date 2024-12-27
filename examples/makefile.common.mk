@@ -9,6 +9,7 @@
 #OPT += --release=safe
 
 all:
+	zig version
 	zig build $(OPT)
 	@-$(AFTER_BUILD_CMD)
 

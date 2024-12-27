@@ -1,4 +1,4 @@
-name: zig-0.13.0 compilation
+name: Windows OS zig-0.13.0 compilation
 
 on:
   push:
