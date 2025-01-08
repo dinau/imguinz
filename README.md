@@ -37,9 +37,8 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/windows.yml/badge.svg)  
-![alt](https://github.com/dinau/imguinz/actions/workflows/linux.yml/badge.svg)  
-![alt](https://github.com/dinau/imguinz/actions/workflows/rel.yml/badge.svg)
+![alt](https://github.com/dinau/imguinz/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguinz/actions/workflows/rel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/linux.yml/badge.svg)
 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
@@ -68,17 +67,14 @@ examples in Zig language with less external dependencies.
 
 ---
 
-- Zig version  
-   1. OK:  https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2568+42dac40b3.zip  
-   1. OK:  Zig: 0.14.0-dev.2367+aa7d13846 is OK (2024/12)  
-    https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2367+aa7d13846.zip  
-~~Probably [zig-windows-x86_64-0.14.0-dev.xxxx+yyyy...](https://ziglang.org/download/) might all be OK~~  
+- Zig version confirmed  
+   1. Windows: [zig-windows-x86_64-0.14.0-dev.2625](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.2625+23281704d.zip)
+   1. Linux:  [zig-linux-x86_64-0.14.0-dev.2625](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.2625+23281704d.tar.xz)
 
 - WindowsOS
    - Windows10 or later
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
-- Linux OS  
-Linux Mint 22 is OK. (or Ubuntu / Debian families ?)
+- Linux OS (Ubuntu / Debian families)
 
   ```sh
   $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
