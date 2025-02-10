@@ -2,7 +2,6 @@ const std = @import ("std");
 const builtin = @import ("builtin");
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
-const ift = @import("iconFontsTblDef.zig");
 
 //#--------------
 //#--- zoomGlass
@@ -40,6 +39,7 @@ pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, ite
     const uv1 = ig.ImVec2{.x = (region_x + region_sz) / my_tex_w, .y = (region_y + region_sz) / my_tex_h};
     const tint_col =   ig.ImVec4{.x = 1.0,  .y = 1.0,  .z = 1.0,  .w = 1.0}; // # No tint
     const border_col = ig.ImVec4{.x = 0.22, .y = 0.56, .z = 0.22, .w = 1.0}; // # Green
+    ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS ++ "  4 x");
     ig.igImage(pTextureID.*, ig.ImVec2{.x = region_sz * zoom, .y = region_sz * zoom}, uv0, uv1, tint_col, border_col);
   }
 }

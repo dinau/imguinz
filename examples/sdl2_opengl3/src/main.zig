@@ -47,8 +47,8 @@ pub fn main () !void {
   const window_flags = (ig.SDL_WINDOW_HIDDEN | ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_ALLOW_HIGHDPI);
 
   const window = ig.SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example"
-                                     ,ig.SDL_WINDOWPOS_CENTERED
-                                     ,ig.SDL_WINDOWPOS_CENTERED
+                                     ,100
+                                     ,100
                                      ,MainWinWidth, MainWinHeight
                                      ,window_flags);
   if (window == null) {
