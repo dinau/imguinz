@@ -1,9 +1,7 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
-// src folder files
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
-const ift = @import("iconFontsTblDef.zig");
 const utils = @import("utils.zig");
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
@@ -12,8 +10,8 @@ fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void 
   std.debug.print ("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
-const MainWinWidth :i32 = 1200;
-const MainWinHeight:i32 = 800;
+const MainWinWidth :i32 = 1024;
+const MainWinHeight:i32 = 900;
 
 //--------
 // main()
@@ -52,7 +50,7 @@ pub fn main () !void {
   //---------------------------------------------
   // Create GLFW window and activate OpenGL libs
   //---------------------------------------------
-  const window = ig.glfwCreateWindow (MainWinWidth, MainWinHeight, "Dear ImGui example in Zig lang.", null, null);
+  const window = ig.glfwCreateWindow (MainWinWidth, MainWinHeight, "Dear ImGui example", null, null);
   if (window == null) {
       ig.glfwTerminate();
       return error.glfwInitFailure;
@@ -84,6 +82,7 @@ pub fn main () !void {
     ig.LoadTitleBarIcon(window, icon_path.ptr);
   }
 
+
   ig.glfwSwapInterval(1);  // Enable VSync --- Lower CPU load
 
   // Setup Dear ImGui context
@@ -109,32 +108,38 @@ pub fn main () !void {
   _ = ig.ImGui_ImplOpenGL3_Init(glsl_version);
   defer ig.ImGui_ImplOpenGL3_Shutdown ();
 
+
   //-------------
   // Global vars
   //-------------
   var showDemoWindow = true;
-  var showIconFontsViewerWindow = true;
   // Back ground color
   const clearColor = [_]f32{0.25, 0.55,0.9,1.0};
+
+  // Input text buffer
   var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
   //------------------------
   // Select Dear ImGui style
   //------------------------
-  ig.igStyleColorsClassic (null);
+  ig.themeGold();
+  //ig.igStyleColorsClassic (null);
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
+  //------------
+  // Load image
+  //------------
+  const ImageName = "beans-400.jpg";
+  var textureId : ig.GLuint = undefined;
+  var textureWidth: c_int = 0;
+  var textureHeight : c_int = 0;
+  _ = ig.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
+ var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
+  defer ig.glDeleteTextures(1, &zoomTextureID);
 
-  var listBoxTextureID: ig.GLuint = 0; //# Must be == 0 at first
-  defer ig.glDeleteTextures(1, &listBoxTextureID);
-
-  const st = struct {                  // Global value
-    var item_current:usize = 0;
-  };
   //---------------
   // main loop GUI
   //---------------
@@ -152,12 +157,13 @@ pub fn main () !void {
       ig.igShowDemoWindow (&showDemoWindow);
     }
 
+
     //------------------
-    // Show info window
+    // Show main window
     //------------------
     {
       _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
-      defer ig.igEnd();
+      defer ig.igEnd ();
       ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glfwGetVersionString());
       ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
@@ -166,88 +172,47 @@ pub fn main () !void {
       ig.igText (ig.igGetVersion());
       ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
-      ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
-    } // end info window
+    } // end main window
 
-    //-----------------------------
-    // Show IconFontsViewer window
-    //------------------------------
-    if (showIconFontsViewerWindow){
-      _ = ig.igBegin("Icon Font Viewer", &showIconFontsViewerWindow, 0);
-      defer ig.igEnd();
-      ig.igSeparatorText(fonts.ICON_FA_FONT_AWESOME ++ " Icon font view: " ++ " icons");
-      //
-      const listBoxWidth = 340;            //# The value must be 2^n
-      ig.igText("No.[%4d]", st.item_current);     ig.igSameLine(0,-1.0);
-      var sBuf = [_:0]u8{0} ** 100;
-      _ = try std.fmt.bufPrint(&sBuf,"{s}",.{ift.iconFontsTbl[st.item_current]});
-      if (ig.igButton(fonts.ICON_FA_COPY ++ " Copy to", DefaultButtonSize)){
-        var it = std.mem.tokenizeAny(u8, &sBuf, " ");
-        _ = it.next().?;
-        ig.igSetClipboardText(it.next().?.ptr);
-      }
-      utils.setTooltip("Clipboard",ig.ImGuiHoveredFlags_DelayNone); //# Show tooltip help
-      //# Show ListBox header
-      ig.igSetNextItemWidth(listBoxWidth);
-      _ = ig.igInputText("##ipttxt1", sBuf[0..], sBuf.len, ig.ImGuiTextFlags_None, null, null);
-
-      //# Show ListBox main
-      var listBoxPosTop:ig.ImVec2 = undefined;
-      var listBoxPosEnd:ig.ImVec2 = undefined;
-      ig.igNewLine();
-      ig.igGetCursorScreenPos(&listBoxPosTop); //# Get absolute pos.
-      ig.igSetNextItemWidth(listBoxWidth);
-      _ = ig.igListBox_Str_arr("##"
-                        , @ptrCast(&st.item_current)
-                        , &ift.iconFontsTbl
-                        , ift.iconFontsTbl.len, 34);
-      ig.igGetCursorScreenPos(&listBoxPosEnd); // # Get absolute pos.
-      // # Show magnifying glass (Zooming in Toolchip)
-      if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
-        if( (pio.*.MousePos.x - listBoxPosTop.x ) < 50){
-          utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd );
-        }
-      }
-    } // end IconFontsViewer window
-
-    //---------------------
-    // Show icons in Table
-    //---------------------
+    //------------------------
+    // Show CImSpinner window
+    //------------------------
     {
-      _ = ig.igBegin("Icon Font Viewer2", null, 0);
-      defer ig.igEnd();
-      const wsZoom = 2.5;
-      const wsNormal = 1.0;
-      const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
-      const text_base_height = ig.igGetTextLineHeightWithSpacing();
-      const outer_size = ig.ImVec2{.x = 0.0, .y = text_base_height * 8};
-      const col = 10;
-      if (ig.igBeginTable("table_scrolly", col, flags, outer_size, 0)){
-        for ( 0..(1390 / col))|row|{
-          ig.igTableNextRow(0, 0.0);
-          for ( 0..col) |column |{
-            const ix = (row * col) + column;
-            _ = ig.igTableSetColumnIndex(@intCast(column));
-            ig.igSetWindowFontScale(wsZoom);
-            ig.igText("%s", ift.iconFontsTbl2[ix][0]);
-            const iconFontLabel = std.mem.span(ift.iconFontsTbl2[ix][1]);
-            utils.setTooltipEx(iconFontLabel, ig.ImGuiHoveredFlags_DelayNone, ig.ImVec4{.x = 0.0, .y = 1.0, .z = 0.0, .w = 1.0} );
-            ig.igSetWindowFontScale(wsNormal);
-            //
-            ig.igPushID_Int(@intCast(ix));
-            if (ig.igBeginPopupContextItem("Contex Menu", 1)){
-              if (ig.igMenuItem_Bool("Copy to clip board", "" , false, true)){
-                st.item_current = ix;
-                ig.igSetClipboardText(iconFontLabel);
-              }
-              ig.igEndPopup();
-            }
-            ig.igPopID();
-          }
-        }
-      }
-      defer ig.igEndTable();
+      _ = ig.igBegin ("CImSpinner with Zig lang " ++ fonts.ICON_FA_CAT, null, 0);
+      defer ig.igEnd ();
+      const red :ig.ImColor = .{.Value = .{.x = 1.0, .y = 0.0, .z = 0.0, .w = 1.0}};
+      const blue:ig.ImColor = .{.Value = .{.x = 0.0, .y = 0.0, .z = 1.0, .w = 1.0}};
+      //
+      ig.SpinnerDnaDotsEx("DnaDotsV", 16, 2, red, 1.2 , 8, 0.25, true);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerRainbowMix("Rmix", 16, 2, blue, 2);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerAng8("Ang", 16, 2);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerPulsar("Pulsar", 16, 2);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerClock("Clock", 16, 2);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerAtom("atom", 16, 2);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerSwingDots("wheel", 16, 6);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerDotsToBar("tobar", 16, 2, 0.5);
+      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerBarChartRainbow("rainbow", 16, 4, red, 4);
+      ig.igNewLine();
+      ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
+    } // end main window
+
+    //------------------------
+    // Show ImSpinner window
+    //------------------------
+    {
+      _ = ig.igBegin ("ImSpinner demo " ++ fonts.ICON_FA_DOG, null, 0);
+      defer ig.igEnd ();
+      ig.demoSpinners();
     }
+
     //-----------
     // End procs
     //-----------
@@ -268,7 +233,6 @@ pub fn main () !void {
       }
     }
     ig.glfwSwapBuffers(window);
-
     if(showWindowDelay >= 0){
       showWindowDelay -= 1;
     }
@@ -276,5 +240,6 @@ pub fn main () !void {
       ig.glfwShowWindow(window);
     }
 
-  } // while() end
-} // main() end
+
+  } // while end
+} // main end

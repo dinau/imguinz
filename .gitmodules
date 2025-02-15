@@ -4,3 +4,6 @@
 [submodule "libs/cimplot"]
 	path = libs/cimplot
 	url = https://github.com/cimgui/cimplot
+[submodule "libs/cimspinner"]
+	path = libs/cimspinner
+	url = https://github.com/dinau/cimspinner

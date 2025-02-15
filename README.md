@@ -5,8 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [Image load](#image-load)
+    - [ImSpinner](#imspinner)
     - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
+    - [Image load](#image-load)
+    - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text-1)
     - [Icon font viewer](#icon-font-viewer)
     - [Image load / save](#image-load--save)
     - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -67,9 +69,9 @@ examples in Zig language with less external dependencies.
 
 ---
 
-- Zig version confirmed  
-   1. Windows: [zig-windows-x86_64-0.14.0-dev.3091](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.3091+42e48b83b.zip)
-   1. Linux:   [zig-linux-x86_64-0.14.0-dev.3091](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.3091+42e48b83b.tar.xz)
+- Zig version confirmed (2025/02)  
+   1. Windows: [zig-windows-x86_64-0.14.0-dev.3219](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.3219+bffbc918e.zip)
+   1. Linux:   [zig-linux-x86_64-0.14.0-dev.3219](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.3219+bffbc918e.tar.xz)
 
 - WindowsOS
    - Windows10 or later
@@ -109,6 +111,19 @@ examples in Zig language with less external dependencies.
    ```
 
 ### Examples screen shots 
+
+#### [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
+
+---
+
+[glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imspinner/src/main.zig)  
+
+This example can't compile at this moment.
+
+![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
+![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.png)
+
+#### Showing CJK multi byte fonts and input UTF-8 text 
 
 #### Image load 
 

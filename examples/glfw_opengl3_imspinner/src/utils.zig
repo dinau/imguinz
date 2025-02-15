@@ -55,17 +55,3 @@ pub fn setTooltip(str:[]const u8, delay:ig.ImGuiHoveredFlags) void{
     }
   }
 }
-
-//#-----------------
-//#--- setTooltipEx
-//#-----------------
-pub fn setTooltipEx(str:[]const u8, delay:ig.ImGuiHoveredFlags, color:ig.ImVec4) void{
-  if(ig.igIsItemHovered(delay)){
-    if(ig.igBeginTooltip()){
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text, color);
-      ig.igText(str.ptr);
-      ig.igPopStyleColor(1);
-      ig.igEndTooltip();
-    }
-  }
-}

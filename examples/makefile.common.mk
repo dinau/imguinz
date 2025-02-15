@@ -34,11 +34,11 @@ cleanexe:
 
 
 INCS +=	-I../../libs/cimplot/implot/ -I../../libs/cimgui/imgui/
-INCS += -I"C:/Program Files/Windows Kits/10/Include/10.0.19041.0/ucrt"
-INCS += -I"C:/Program Files/Windows Kits/10/Lib/10.0.19041.0/ucrt/x86"
-INCS += -I"C:/Program Files/Windows Kits/10/Lib/10.0.19041.0/um/x86"
-INCS += -I"C:/Program Files/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/Lib/x86"
-INCS += -I"C:/Program Files/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/include"
+#INCS += -I"C:/Program Files/Windows Kits/10/Include/10.0.19041.0/ucrt"
+#INCS += -I"C:/Program Files/Windows Kits/10/Lib/10.0.19041.0/ucrt/x86"
+#INCS += -I"C:/Program Files/Windows Kits/10/Lib/10.0.19041.0/um/x86"
+#INCS += -I"C:/Program Files/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/Lib/x86"
+#INCS += -I"C:/Program Files/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/include"
 
 trans:
 	zig translate-c test.c $(INCS) > test.zig
