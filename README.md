@@ -118,8 +118,6 @@ examples in Zig language with less external dependencies.
 
 [glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
-This example can't compile at this moment.
-
 ![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.png)
 

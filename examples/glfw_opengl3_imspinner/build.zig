@@ -1,3 +1,4 @@
+// zig-0.14.0-dev (2025/02)
 // Used zig-0.12.0 (2024/06)
 //
 const std = @import("std");
@@ -62,7 +63,7 @@ pub fn build(b: *std.Build) void {
     imlibs.addIncludePath(b.path("../../libs/cimgui"));
     // CImSpnner/ImSpinner
     imlibs.addIncludePath(b.path("../../libs/cimspinner"));
-    imlibs.addIncludePath(b.path("../../libs/cimspinner/imspinner"));
+    imlibs.addIncludePath(b.path("../../libs/cimspinner/libs/imspinner"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
@@ -121,7 +122,6 @@ pub fn build(b: *std.Build) void {
     exe.addIncludePath(b.path("../../libs/cimgui"));
     // CImSpinner
     exe.addIncludePath(b.path("../../libs/cimspinner"));
-    exe.addIncludePath(b.path("../../libs/cimspinner/imspinner"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
