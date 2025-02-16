@@ -1,6 +1,7 @@
 # All examples will be built at a time.
 #
 EXAMPLE_DIRS := \
+							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imspinner \
 							examples/iconFontViewer \
 							examples/imPlotDemo \

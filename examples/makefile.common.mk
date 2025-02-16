@@ -18,6 +18,7 @@ all:
 run: all
 	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
 	cp $(ZIG_BIN_DIR)/imgui.ini .
+	cp $(ZIG_BIN_DIR)/$(TARGET).ini .
 
 gen:
 	nim ../utils/genImPlotFuncs.nims

@@ -5,10 +5,10 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [ImSpinner](#imspinner)
-    - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
+    - [ImGui-Knobs](#imgui-knobs)
+    - [ImSpinner / CImSpinner](#imspinner--cimspinner)
     - [Image load](#image-load)
-    - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text-1)
+    - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
     - [Icon font viewer](#icon-font-viewer)
     - [Image load / save](#image-load--save)
     - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -50,7 +50,7 @@ examples in Zig language with less external dependencies.
 - ImGui / CImGui version **1.91.8dock** (2025/02)
 - OS: Windows and Linux
 - Frontends and Backends 
-    
+
    |                    | GLFW   | SDL2  | SDL3   |
    | ---                | :----: | :---- | :----: |
    | OpenGL3<br>backend | v      | v     | v      |
@@ -112,6 +112,15 @@ examples in Zig language with less external dependencies.
 
 ### Examples screen shots 
 
+####  ImGui-Knobs
+
+---
+
+[glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imknobs/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imknobs.png)  
+![alt](img/imknobs.png)
+
 #### [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
 
 ---
@@ -120,8 +129,6 @@ examples in Zig language with less external dependencies.
 
 ![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.png)
-
-#### Showing CJK multi byte fonts and input UTF-8 text 
 
 #### Image load 
 

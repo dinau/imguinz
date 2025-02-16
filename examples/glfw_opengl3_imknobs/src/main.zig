@@ -1,0 +1,108 @@
+const ig = @import ("imgui.zig");
+const fonts = @import("fonts.zig");
+const app = @import("appImGui.zig");
+
+const MainWinWidth :i32 = 1024;
+const MainWinHeight:i32 = 900;
+
+//-----------
+// gui_main()
+//-----------
+pub fn gui_main (window: *app.Window) void {
+  fonts.setupFonts(); // Setup CJK fonts and Icon fonts
+
+  //---------------
+  // main loop GUI
+  //---------------
+  while (ig.glfwWindowShouldClose (window.handle) == 0) {
+    ig.glfwPollEvents ();
+
+    // Start the Dear ImGui frame
+    window.frame();
+
+    //------------------
+    // Show demo window
+    //------------------
+    ig.igShowDemoWindow (null);
+    window.showInfoWindow();
+
+    //---------------------------
+    // Show cimgui-knobs window
+    //---------------------------
+    {
+      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " ImGui knobs in Zig lang. 2025/02", null, 0);
+      defer ig.igEnd ();
+      const st = struct  {
+        var val1:f32 = 0;
+        var val2:f32 = 0;
+        var val3:f32 = 0;
+        var val4:f32 = 0;
+        var val5:i32 = 1;
+        var val6:f32 = 1;
+      };
+      if (ig.IgKnobFloat("Gain", &st.val1, -6.0, 6.0, 0.1, "%.1fdB", ig.IgKnobVariant_Tick, 0, 0, 10, -1, -1)) {
+        window.ini.window.colBGx = (st.val1 + 6) / 12;
+      }
+      ig.igSameLine (0, -1.0);
+      if (ig.IgKnobFloat("Mix", &st.val2, -1.0, 1.0, 0.1, "%.1f", ig.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+        window.ini.window.colBGy = (st.val2 + 1) / 2;
+      }
+      // Double click to reset
+      if (ig.igIsItemActive() and ig.igIsMouseDoubleClicked_Nil(0)) {
+        window.ini.window.colBGy = 0;
+        st.val2 = 0;
+      }
+      ig.igSameLine (0, -1.0);
+
+      // Custom colors
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  .{.x = 255.0, .y = 0,     .z = 0, .w = 0.7});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, .{.x = 255.0, .y = 0,     .z = 0, .w = 1});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        .{.x = 0,     .y = 255.0, .z = 0, .w = 1});
+      // Push/PopStyleColor() for each colors used (namely ImGuiCol_ButtonActive and ImGuiCol_ButtonHovered for primary and ImGuiCol_Framebg for Track)
+      if (ig.IgKnobFloat("Pitch", &st.val3, -6.0, 6.0, 0.1, "%.1f", ig.IgKnobVariant_WiperOnly, 0, 0, 10, -1, -1)) {
+        window.ini.window.colBGz = (st.val3 + 6.0 ) / 12.0;
+      }
+      ig.igPopStyleColor(3);
+      ig.igSameLine (0, -1.0);
+
+      // Custom min/max angle
+      if (ig.IgKnobFloat("Dry", &st.val4, -6.0, 6.0, 0.1, "%.1f", ig.IgKnobVariant_Stepped, 0, 0, 10, 1.570796, 3.141592)) {
+        window.ini.window.colBGx = (st.val4 + 6.0 ) / 12.0;
+      }
+      ig.igSameLine (0, -1.0);
+
+      // Int value
+      if (ig.IgKnobInt("Wet", &st.val5, 1, 10, 0.1, "%i", ig.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+        window.ini.window.colBGy = @as(f32,@floatFromInt(st.val5)) / 10.0;
+      }
+      ig.igSameLine (0, -1.0);
+
+      // Vertical drag only
+      if (ig.IgKnobFloat("Vertical", &st.val6, 0.0, 10.0, 0.1, "%.1f", ig.IgKnobVariant_Space, 0, ig.IgKnobFlags_DragVertical, 10, -1, -1)) {
+        window.ini.window.colBGz = st.val6 / 10.0 ;
+      }
+      ig.igSameLine (0, -1.0);
+
+    } // end knobs window
+
+    //--------
+    // render
+    //--------
+    window.render();
+  } // end while loop
+}
+
+//--------
+// main()
+//--------
+pub fn main () !void {
+  var window =  try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+  defer window.destroyImGui();
+
+  //_ = app.setTheme(app.Theme.light); // Theme: dark, classic, light, microsoft
+
+  //---------------
+  // GUI main proc
+  //---------------
+  gui_main(&window);
+}
