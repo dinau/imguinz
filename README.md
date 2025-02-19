@@ -119,7 +119,6 @@ examples in Zig language with less external dependencies.
 [glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imknobs/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imknobs.png)  
-![alt](img/imknobs.png)
 
 #### [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
 
