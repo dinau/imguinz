@@ -5,7 +5,8 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Examples screen shots](#examples-screen-shots)
-    - [ImGui-Knobs](#imgui-knobs)
+    - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
+    - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
     - [Image load](#image-load)
     - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
@@ -70,8 +71,8 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig version confirmed (2025/02)  
-   1. Windows: [zig-windows-x86_64-0.14.0-dev.3219](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.3219+bffbc918e.zip)
-   1. Linux:   [zig-linux-x86_64-0.14.0-dev.3219](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.3219+bffbc918e.tar.xz)
+   1. Windows: [zig-windows-x86_64-0.14.0-dev.3328](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.3328+b6a1fdd3f.zip)
+   1. Linux:   [zig-linux-x86_64-0.14.0-dev.3328](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.3328+b6a1fdd3f.tar.xz)
 
 - WindowsOS
    - Windows10 or later
@@ -112,11 +113,19 @@ examples in Zig language with less external dependencies.
 
 ### Examples screen shots 
 
-####  ImGui-Knobs
+####  [ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
 
 ---
 
-[glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imknobs/src/main.zig)  
+[glfw_opengl3_imgui_toggle.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_toggle/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imtoggle.png)  
+
+####  [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/cimgui-knobs)
+
+---
+
+[glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imknobs/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imknobs.png)  
 
@@ -124,7 +133,7 @@ examples in Zig language with less external dependencies.
 
 ---
 
-[glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_imspinner/src/main.zig)  
+[glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
 ![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.png)
@@ -136,9 +145,9 @@ examples in Zig language with less external dependencies.
 Image load and magnifying glass
 
 
-[glfw_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3/src/main.zig)  
-[sdl2_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/sdl2_opengl3/src/main.zig)  
-[sdl3_opengl3.zig](https://github.com/dinau/imguinz/raw/main/examples/sdl3_opengl3/src/main.zig)
+[glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig)  
+[sdl2_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl2_opengl3/src/main.zig)  
+[sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
 
@@ -146,7 +155,7 @@ Image load and magnifying glass
 
 ---
 
-[glfw_opengl3_jp.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_jp/src/main.zig)
+[glfw_opengl3_jp.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_jp/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_jp.png)
 
@@ -154,7 +163,7 @@ Image load and magnifying glass
 
 ---
 
-[iconFontViewer.zig](https://github.com/dinau/imguinz/raw/main/examples/iconFontViewer/src/main.zig) and magnifying glass
+[iconFontViewer.zig](https://github.com/dinau/imguinz/blob/main/examples/iconFontViewer/src/main.zig) and magnifying glass
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/iconFontViewer.png)
 
@@ -166,7 +175,7 @@ Image load / save and magnifying glass.
 Image file captured would be saved in .the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
-[glfw_opengl3_image_load.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_image_load/src/main.zig) 
+[glfw_opengl3_image_load.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_image_load/src/main.zig) 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_image_load.png)  
 
@@ -174,7 +183,7 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ---
 
-[glfw_opengl3_implot.zig](https://github.com/dinau/imguinz/raw/main/examples/glfw_opengl3_implot/src/main.zig)
+[glfw_opengl3_implot.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_implot.png)
 
@@ -197,7 +206,7 @@ make run   # or zig build --release=fast run
 
 ---
 
-[demoAll.zig](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/src/demoAll.zig)
+[demoAll.zig](https://github.com/dinau/imguinz/blob/main/examples/imPlotDemo/src/demoAll.zig)
 
 #### Plots Tab
 

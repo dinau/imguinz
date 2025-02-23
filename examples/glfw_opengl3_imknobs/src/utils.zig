@@ -3,9 +3,9 @@ const builtin = @import ("builtin");
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
 
-//#--------------
-//#--- zoomGlass
-//#--------------
+//--------------
+//--- zoomGlass
+//--------------
 pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, itemPosEnd:ig.ImVec2) void {
   //# itemPosTop and itemPosEnd are absolute position in main window.
   if(ig.igBeginItemTooltip()){
@@ -44,9 +44,9 @@ pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, ite
   }
 }
 
-//#---------------
-//#--- setTooltip
-//#---------------
+//---------------
+//--- setTooltip
+//---------------
 pub fn setTooltip(str:[]const u8, delay:ig.ImGuiHoveredFlags) void{
   if(ig.igIsItemHovered(delay)){
     if(ig.igBeginTooltip()){

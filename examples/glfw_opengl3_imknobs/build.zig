@@ -174,7 +174,7 @@ pub fn build(b: *std.Build) void {
     //
     imlibs.linkLibC();
     imlibs.linkLibCpp();
-    //exe.subsystem = .Windows;  // Hide console window
+    exe.subsystem = .Windows;  // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default

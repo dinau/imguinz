@@ -9,4 +9,6 @@ pub usingnamespace @cImport ({
 
   @cInclude ("themeGold.h");  // Theme Gold
 
+  @cInclude ("cimgui_toggle.h"); // CImGui-Togggle
+
 });

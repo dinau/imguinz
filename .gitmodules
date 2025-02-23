@@ -10,3 +10,6 @@
 [submodule "libs/cimgui-knobs"]
 	path = libs/cimgui-knobs
 	url = https://github.com/dinau/cimgui-knobs
+[submodule "libs/cimgui_toggle"]
+	path = libs/cimgui_toggle
+	url = https://github.com/dinau/cimgui_toggle.git

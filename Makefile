@@ -1,6 +1,7 @@
 # All examples will be built at a time.
 #
 EXAMPLE_DIRS := \
+							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imspinner \
 							examples/iconFontViewer \
@@ -35,7 +36,7 @@ gen:
 
 #
 define def_make
-	@echo ==== Enter: $(1)
+	@echo ==== Enter: $(1) ====
 	@$(MAKE) -C  $(1) $(2)
 
 endef

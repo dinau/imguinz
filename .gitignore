@@ -1,3 +1,15 @@
+examples/utils/Makefile
+examples/utils/applib.zig
+examples/utils/build.zigx
+examples/utils/existsFile.zig
+examples/utils/fonts.zig
+examples/utils/imgui.zig
+examples/utils/loadImage.zig
+examples/utils/loadImage.bat
+examples/utils/simple.bat
+examples/utils/simple.zig
+examples/utils/utils.zig
+
 libs/xcimgui-knobs/
 examples_new/
 00/

@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
-        .name = "glfw_opengl3",
+        .name = "glfw_opengl3_imgui_toggle",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -60,6 +60,8 @@ pub fn build(b: *std.Build) void {
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
     imlibs.addIncludePath(b.path("../../libs/cimgui"));
+    // ImGui-Toggle
+    imlibs.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
@@ -91,6 +93,15 @@ pub fn build(b: *std.Build) void {
         "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
         // Theme Gold
         "../utils/themeGold.cpp",
+        // ImGui-Toggle
+        "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle.cpp",
+        "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_presets.cpp",
+        "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_renderer.cpp",
+        "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_palette.cpp",
+        // CImGui-Toggle
+        "../../libs/cimgui_toggle/cimgui_toggle.cpp",
+        "../../libs/cimgui_toggle/cimgui_offset_rect.cpp",
+        "../../libs/cimgui_toggle/cimgui_toggle_presets.cpp",
       },
       .flags = &.{
         "-O2",
@@ -112,6 +123,8 @@ pub fn build(b: *std.Build) void {
     exe.addIncludePath(b.path("../../libs/cimgui/generator/output"));
     // CImGui
     exe.addIncludePath(b.path("../../libs/cimgui"));
+    // CImGui-Toggle
+    exe.addIncludePath(b.path("../../libs/cimgui_toggle"));
     //--------------------------------
     // Define macro for C/C++ sources
     //--------------------------------
