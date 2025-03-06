@@ -27,31 +27,50 @@ pub fn main () !void {
     return error.SDL_init;
   }
   defer ig.SDL_Quit();
+  var glsl_version_buf: [30]u8 = undefined;
+  const versions = [_][2]u16{[_]u16{4, 6},
+                             [_]u16{4, 5},
+                             [_]u16{4, 4},
+                             [_]u16{4, 3},
+                             [_]u16{4, 2},
+                             [_]u16{4, 1},
+                             [_]u16{4, 0},
+                             [_]u16{3, 3}
+                           };
+  var glsl_version: [:0]u8 = undefined;
 
   //-------------------------
   // Decide GL+GLSL versions
   //-------------------------
-  const glsl_version = "#version 330";
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  var window: *ig.SDL_Window = undefined;
+  for (versions)|ver|{
+    //_ = ver;
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, ver[0]);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MINOR_VERSION, ver[1]);
 
-  //_ = ig.SDL_SetHint(ig.SDL_HINT_IME_SHOW_UI, "1");
+    //_ = ig.SDL_SetHint(ig.SDL_HINT_IME_SHOW_UI, "1");
 
-  // Create window with graphics context
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
+    // Create window with graphics context
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
 
-  // Initialy main window is hidden.  See: showWindowDelay
-  const window_flags = (ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_HIDDEN);
+    // Initialy main window is hidden.  See: showWindowDelay
+    const window_flags = (ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_HIDDEN);
 
-  const window = ig.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags);
-  if (window == null) {
+    if(ig.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags))|pointer|{
+      window = pointer;
+      glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
+      try stdout.print("{s} \n", .{glsl_version});
+      break;
+    }
+  }else{
     try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{ig.SDL_GetError()});
     return error.SDL_CreatWindow;
   }
+
   defer ig.SDL_DestroyWindow(window);
 
   _ = ig.SDL_SetWindowPosition(window, ig.SDL_WINDOWPOS_CENTERED, ig.SDL_WINDOWPOS_CENTERED);
@@ -84,7 +103,7 @@ pub fn main () !void {
   // Setup Platform/Renderer backends
   _ = ig.ImGui_ImplSDL3_InitForOpenGL(window, gl_context);
   defer ig.ImGui_ImplSDL3_Shutdown ();
-  _ = ig.ImGui_ImplOpenGL3_Init(glsl_version);
+  _ = ig.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
   defer ig.ImGui_ImplOpenGL3_Shutdown ();
 
   //------------

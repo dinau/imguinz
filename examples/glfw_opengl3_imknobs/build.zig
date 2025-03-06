@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(imlibs);
+    //b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "glfw_opengl3_imknobs",
@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.3.9.bin.WIN";
+    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
     var sArc = "64";
     if(builtin.cpu.arch == .x86){
       sArc = "32";

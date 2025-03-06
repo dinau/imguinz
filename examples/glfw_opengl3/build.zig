@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(imlibs);
+    //b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "glfw_opengl3",
@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.3.9.bin.WIN";
+    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
     var sArc = "64";
     if(builtin.cpu.arch == .x86){
       sArc = "32";
@@ -119,7 +119,7 @@ pub fn build(b: *std.Build) void {
     exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
     exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
     exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
-    exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+    //exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     //---------------
     // Sources C/C++
     //---------------
@@ -172,7 +172,7 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini" };
+    const resBin =   [_][]const u8{ "imgui.ini" , "glfw_opengl3.ini" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";

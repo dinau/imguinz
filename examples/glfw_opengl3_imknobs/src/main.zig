@@ -1,6 +1,7 @@
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
 const app = @import("appImGui.zig");
+const utils = @import("utils.zig");
 
 const MainWinWidth :i32 = 1024;
 const MainWinHeight:i32 = 900;
@@ -55,9 +56,9 @@ pub fn gui_main (window: *app.Window) void {
       ig.igSameLine (0, -1.0);
 
       // Custom colors
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  .{.x = 255.0, .y = 0,     .z = 0, .w = 0.7});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, .{.x = 255.0, .y = 0,     .z = 0, .w = 1});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        .{.x = 0,     .y = 255.0, .z = 0, .w = 1});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  utils.vec4(255.0, 0,     0, 0.7));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, utils.vec4(255.0, 0,     0, 1));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        utils.vec4(0,     255.0, 0, 1));
       // Push/PopStyleColor() for each colors used (namely ImGuiCol_ButtonActive and ImGuiCol_ButtonHovered for primary and ImGuiCol_Framebg for Track)
       if (ig.IgKnobFloat("Pitch", &st.val3, -6.0, 6.0, 0.1, "%.1f", ig.IgKnobVariant_WiperOnly, 0, 0, 10, -1, -1)) {
         window.ini.window.colBGz = (st.val3 + 6.0 ) / 12.0;

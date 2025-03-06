@@ -3,6 +3,7 @@ const builtin = @import("builtin");
 const ig = @import("imgui.zig");
 const ip = @import("implot.zig");
 const fonts = @import("fonts.zig");
+const utils = @import("utils.zig");
 
 pub const c = @cImport({
     @cInclude("stdlib.h");
@@ -39,29 +40,51 @@ pub fn main() !void {
     }
     defer ig.glfwTerminate();
 
+  var glsl_version_buf: [30]u8 = undefined;
+
     //-------------------------
-    // Decide GL+GLSL versions
-    //-------------------------
-    const glsl_version = "#version 330";
+  // createImGui
+  //-------------
+  const versions = [_][2]u16{[_]u16{4, 6},
+                             [_]u16{4, 5},
+                             [_]u16{4, 4},
+                             [_]u16{4, 3},
+                             [_]u16{4, 2},
+                             [_]u16{4, 1},
+                             [_]u16{4, 0},
+                             [_]u16{3, 3}
+                           };
+
+  //-------------------------
+  // Decide GL+GLSL versions
+  //-------------------------
+  var window: *ig.GLFWwindow = undefined;
+  var glsl_version: [:0]u8 = undefined;
+  for (versions)|ver|{
     ig.glfwWindowHint(ig.GLFW_OPENGL_FORWARD_COMPAT, ig.GLFW_TRUE);
     ig.glfwWindowHint(ig.GLFW_OPENGL_PROFILE, ig.GLFW_OPENGL_CORE_PROFILE);
-    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, 3);
-    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MINOR, 3);
+    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, ver[0]);
+    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MINOR, ver[1]);
     //
     ig.glfwWindowHint(ig.GLFW_RESIZABLE, ig.GLFW_TRUE); // Resizable window
-    ig.glfwWindowHint(ig.GLFW_VISIBLE, ig.GLFW_FALSE); // Needs this if OpenGL is not initialized !.
+    ig.glfwWindowHint(ig.GLFW_VISIBLE, ig.GLFW_FALSE);  // Needs this if OpenGL is not initialized !.
 
     //---------------------------------------------
     // Create GLFW window and activate OpenGL libs
     //---------------------------------------------
-    const window = ig.glfwCreateWindow(MainWinWidth, MainWinHeight, "Dear ImGui example", null, null);
-    if (window == null) {
-        ig.glfwTerminate();
-        return error.glfwInitFailure;
-    }
-    defer ig.glfwDestroyWindow(window);
+     if(ig.glfwCreateWindow (MainWinWidth, MainWinHeight, "Dear ImGui example", null, null))|pointer|{
+       window = pointer;
+       glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
+       try stdout.print("{s} \n", .{glsl_version});
+       break;
+     }
+  } else {
+      ig.glfwTerminate();
+      return error.glfwCreateWindowFailure;
+  }
+  defer ig.glfwDestroyWindow (window);
 
-    ig.glfwMakeContextCurrent(window);
+  ig.glfwMakeContextCurrent(window);
 
   //---------------------
   // Load title bar icon
@@ -87,11 +110,11 @@ pub fn main() !void {
   }
 
 
-    ig.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
+  ig.glfwSwapInterval(1);  // Enable VSync --- Lower CPU load
 
-    // Setup Dear ImGui context
-    if (ig.igCreateContext(null) == null) {
-        return error.ImGuiCreateContextFailure;
+  // Setup Dear ImGui context
+  if (ig.igCreateContext (null) == null){
+    return error.ImGuiCreateContextFailure;
     }
     defer ig.igDestroyContext(null);
 
@@ -141,7 +164,7 @@ pub fn main() !void {
 
     fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-    const DefaultButtonSize  = ig.ImVec2 {.x = 0, .y = 0} ;
+    const DefaultButtonSize  = utils.vec2(0, 0);
 
     //---------------
     // main loop GUI
@@ -280,7 +303,7 @@ fn imPlotWindow(fshow: *bool) !void {
     {
         _ = ig.igBegin("Plot Window", fshow, 0);
         defer ig.igEnd();
-        if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
+        if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
             defer ip.ImPlot_EndPlot();
             // Using "./zimplot.zig"
             try ip.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);

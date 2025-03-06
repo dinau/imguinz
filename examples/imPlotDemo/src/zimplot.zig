@@ -3,6 +3,7 @@
 //
 const std = @import("std");
 const ip = @cImport({
+    @cDefine("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     @cInclude("cimplot.h");
 });
 

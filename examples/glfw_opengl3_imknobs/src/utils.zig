@@ -47,11 +47,39 @@ pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, ite
 //---------------
 //--- setTooltip
 //---------------
-pub fn setTooltip(str:[]const u8, delay:ig.ImGuiHoveredFlags) void{
+pub fn setTooltip(str:[:0]const u8, delay:ig.ImGuiHoveredFlags) void{
   if(ig.igIsItemHovered(delay)){
     if(ig.igBeginTooltip()){
       ig.igText(str.ptr);
       ig.igEndTooltip();
     }
   }
+}
+
+//-----------------
+//--- setTooltipEx
+//-----------------
+pub fn setTooltipEx(str:[:0]const u8, delay:ig.ImGuiHoveredFlags, color:ig.ImVec4) void{
+  if(ig.igIsItemHovered(delay)){
+    if(ig.igBeginTooltip()){
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text, color);
+      ig.igText(str.ptr);
+      ig.igPopStyleColor(1);
+      ig.igEndTooltip();
+    }
+  }
+}
+
+//---------
+//--- vec2
+//---------
+pub fn vec2(x:f32, y:f32) ig.ImVec2 {
+  return .{.x = x, .y = y};
+}
+
+//---------
+//--- vec4
+//---------
+pub fn vec4(x:f32, y:f32, z:f32, w:f32) ig.ImVec4 {
+  return .{.x = x, .y = y, .z = z, .w = w};
 }

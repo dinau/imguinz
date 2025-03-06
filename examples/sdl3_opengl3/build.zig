@@ -31,7 +31,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(imlibs);
+    //b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "sdl3_opengl3",
@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // 64bit Winddws OS
     //----------------------------------
-    const SDL3_VER = "3.1.6";
+    const SDL3_VER = "3.2.6";
     const sdlBase = "../../libs/sdl";
     const sdlPath = b.fmt("{s}/SDL3-{s}/x86_64-w64-mingw32", .{sdlBase, SDL3_VER});
     //---------------
@@ -181,7 +181,7 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"
+    const resBin =   [_][]const u8{ "imgui.ini", "sdl3_opengl3.ini"
                                   , "sailboat-400.jpg" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};

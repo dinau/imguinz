@@ -4,7 +4,6 @@ const ig = @import ("imgui.zig");
 const fonts = @import ("fonts.zig");
 const utils = @import("utils.zig");
 
-
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
 const MainWinWidth :i32 = 1024;
@@ -28,30 +27,43 @@ pub fn main () !void {
   }
   defer ig.SDL_Quit();
 
+  var glsl_version_buf: [30]u8 = undefined;
+  const versions = [_][2]u16{[_]u16{4, 6},
+                             [_]u16{4, 5},
+                             [_]u16{4, 4},
+                             [_]u16{4, 3},
+                             [_]u16{4, 2},
+                             [_]u16{4, 1},
+                             [_]u16{4, 0},
+                             [_]u16{3, 3}
+                           };
+  var glsl_version: [:0]u8 = undefined;
+
   //-------------------------
   // Decide GL+GLSL versions
   //-------------------------
-  const glsl_version = "#version 330";
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  var window: ?*ig.SDL_Window = null;
+  for (versions)|ver|{
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, ver[0]);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MINOR_VERSION, ver[0]);
 
-  _ = ig.SDL_SetHint(ig.SDL_HINT_IME_SHOW_UI, "1");
-  // Create window with graphics context
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
-  _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
+    _ = ig.SDL_SetHint(ig.SDL_HINT_IME_SHOW_UI, "1");
+    // Create window with graphics context
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
+    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
 
-  // Initialy main window is hidden.  See: showWindowDelay
-  const window_flags = (ig.SDL_WINDOW_HIDDEN | ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_ALLOW_HIGHDPI);
-
-  const window = ig.SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example"
-                                     ,100
-                                     ,100
-                                     ,MainWinWidth, MainWinHeight
-                                     ,window_flags);
-  if (window == null) {
+    // Initialy main window is hidden.  See: showWindowDelay
+    const window_flags = (ig.SDL_WINDOW_HIDDEN | ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_ALLOW_HIGHDPI);
+    if (ig.SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example" ,100 ,100 ,MainWinWidth, MainWinHeight ,window_flags)) |pointer|{
+      window = pointer;
+      glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
+      try stdout.print("{s} \n", .{glsl_version});
+      break;
+    }
+  } else{
     try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{ig.SDL_GetError()});
     return error.SDL_CreatWindow;
   }
@@ -86,7 +98,7 @@ pub fn main () !void {
   // Setup Platform/Renderer backends
   _ = ig.ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
   defer ig.ImGui_ImplSDL2_Shutdown ();
-  _ = ig.ImGui_ImplOpenGL3_Init(glsl_version);
+  _ = ig.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
   defer ig.ImGui_ImplOpenGL3_Shutdown ();
 
   //------------
@@ -113,7 +125,7 @@ pub fn main () !void {
 
   fonts.setupFonts();
 
-  const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  const sz  = utils.vec2(0, 0);
 
   var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
   defer ig.glDeleteTextures(1, &zoomTextureID);
@@ -206,11 +218,11 @@ pub fn main () !void {
       var imageBoxPosTop:ig.ImVec2 = undefined;
       var imageBoxPosEnd:ig.ImVec2 = undefined;
       // Load image
-      const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
-      const uv0        = ig.ImVec2 {.x = 0, .y = 0};
-      const uv1        = ig.ImVec2 {.x = 1, .y = 1};
-      const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
-      const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
+      const size       = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
+      const uv0        = utils.vec2(0, 0);
+      const uv1        = utils.vec2(1, 1);
+      const tint_col   = utils.vec4(1, 1, 1, 1);
+      const border_col = utils.vec4(0, 0, 0, 0);
       ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
       ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
       ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.

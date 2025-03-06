@@ -23,7 +23,7 @@ sOut.add "};"
 
 sOut.add "\n\n\n"
 
-sOut.add "\npub const iconFontsTbl2 = [1390][2][*c]const u8{\n"
+sOut.add "\npub const iconFontsTbl2 = [_][2][*c]const u8{\n"
 for line in readfile("../utils/fonticon/IconsFontAwesome6.h").split('\n'):
   if line =~ peg"@'ICON_FA_'":
     let name = line.strip.split(' ')[1]

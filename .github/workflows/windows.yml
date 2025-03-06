@@ -1,4 +1,4 @@
-name: Windows OS 0.14.0-dev nightly compilation-
+name: Windows OS 0.15.0-dev nightly compilation-
 
 on:
   push:

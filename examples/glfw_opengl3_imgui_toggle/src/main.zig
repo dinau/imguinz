@@ -1,6 +1,7 @@
 const ig = @import ("imgui.zig");
 const fonts = @import("fonts.zig");
 const app = @import("appImGui.zig");
+const utils = @import("utils.zig");
 
 //-----------
 // gui_main()
@@ -25,11 +26,11 @@ pub fn gui_main (window: *app.Window) void {
 
     // ImGui-Toggle demo
     {
-      const green        = ig.ImVec4{.x = 0.16, .y= 0.66, .z = 0.45, .w = 1.0};
-      const green_hover  = ig.ImVec4{.x = 0.0,  .y= 1.0,  .z =0.57,  .w = 1.0};
-      const green_shadow = ig.ImVec4{.x = 0.0,  .y= 1.0,  .z =0.0,   .w = 0.4};
+      const green        = utils.vec4(0.16, 0.66, 0.45, 1.0);
+      const green_hover  = utils.vec4(0.0,  1.0,  0.57, 1.0);
+      const green_shadow = utils.vec4(0.0,  1.0,  0.0,  0.4);
       var value_index: usize = 0;
-      const sz = ig.ImVec2{.x = 0.0, .y = 0.0};
+      const sz = utils.vec2(0.0, 0.0);
       const sThemeClassic = "Theme: Classic";
       const sThemeLight   = "Theme: Light";
       const st = struct {

@@ -1,15 +1,15 @@
 # All examples will be built at a time.
 #
 EXAMPLE_DIRS := \
+							examples/glfw_opengl3 \
+							examples/glfw_opengl3_image_load \
 							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imknobs \
+							examples/glfw_opengl3_implot \
 							examples/glfw_opengl3_imspinner \
+							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
 							examples/imPlotDemo \
-							examples/glfw_opengl3 \
-							examples/glfw_opengl3_implot \
-							examples/glfw_opengl3_jp \
-							examples/glfw_opengl3_image_load \
 							examples/sdl2_opengl3
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
@@ -17,7 +17,7 @@ ifeq ($(OS),Windows_NT)
 endif
 
 all:
-	zig version
+	@echo $(shell zig version)
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
 
 .PHONY: test clean gen cleanexe

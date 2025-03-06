@@ -31,7 +31,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(imlibs);
+    //b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "sdl2_opengl3",
@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const sdl2_Base = "../../libs/sdl/SDL2-2.30.9";
+    const sdl2_Base = "../../libs/sdl/SDL2-2.32.0";
     var sArc:[]const u8 = "x86_64";
     if(builtin.cpu.arch == .x86){
       sArc = "i686";
@@ -194,7 +194,7 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"
+    const resBin =   [_][]const u8{ "imgui.ini", "sdl2_opengl3.ini"
                                   , "beans-400.jpg" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};

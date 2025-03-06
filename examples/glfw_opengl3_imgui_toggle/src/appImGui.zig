@@ -45,10 +45,20 @@ pub const Window = struct {
   showWindowDelay:i32, // TODO: Avoid flickering of window at startup
   ini: TIni,
   clearColor: [4]f32,
+  var glsl_version_buf: [30]u8 = undefined;
 
   //-------------
   // createImGui
   //-------------
+  const versions = [_][2]u16{[_]u16{4, 6},
+                             [_]u16{4, 5},
+                             [_]u16{4, 4},
+                             [_]u16{4, 3},
+                             [_]u16{4, 2},
+                             [_]u16{4, 1},
+                             [_]u16{4, 0},
+                             [_]u16{3, 3}
+                           };
   pub fn createImGui(w:i32, h:i32, title:[*c]const u8) !Window {
     _ = w;
     _ = h;
@@ -65,31 +75,36 @@ pub const Window = struct {
     _ = ig.glfwSetErrorCallback (glfw_error_callback);
     if (ig.glfwInit() == 0) {
       try stdout.print("Failed to initialize GLFW: [main.zig]: \n", .{});
-      try bw.flush(); // don't forget to flush!
       return error.glfwInitFailure;
     }
 
     //-------------------------
     // Decide GL+GLSL versions
     //-------------------------
-    const glsl_version = "#version 330";
-    ig.glfwWindowHint(ig.GLFW_OPENGL_FORWARD_COMPAT, ig.GLFW_TRUE);
-    ig.glfwWindowHint(ig.GLFW_OPENGL_PROFILE, ig.GLFW_OPENGL_CORE_PROFILE);
-    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, 3);
-    ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MINOR, 3);
-    //
-    ig.glfwWindowHint(ig.GLFW_RESIZABLE, ig.GLFW_TRUE); // Resizable window
-    ig.glfwWindowHint(ig.GLFW_VISIBLE, ig.GLFW_FALSE);  // Needs this if OpenGL is not initialized !.
+    var glsl_version: [:0]u8 = undefined;
+    for (versions)|ver|{
+      ig.glfwWindowHint(ig.GLFW_OPENGL_FORWARD_COMPAT, ig.GLFW_TRUE);
+      ig.glfwWindowHint(ig.GLFW_OPENGL_PROFILE, ig.GLFW_OPENGL_CORE_PROFILE);
+      ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MAJOR, ver[0]);
+      ig.glfwWindowHint(ig.GLFW_CONTEXT_VERSION_MINOR, ver[1]);
+      //
+      ig.glfwWindowHint(ig.GLFW_RESIZABLE, ig.GLFW_TRUE); // Resizable window
+      ig.glfwWindowHint(ig.GLFW_VISIBLE, ig.GLFW_FALSE);  // Needs this if OpenGL is not initialized !.
 
-    //---------------------------------------------
-    // Create GLFW window and activate OpenGL libs
-    //---------------------------------------------
-    if (ig.glfwCreateWindow (win.ini.window.viewportWidth, win.ini.window.viewportHeight, title, null, null)) |ptr|{
-      win.handle = ptr;
+      //---------------------------------------------
+      // Create GLFW window and activate OpenGL libs
+      //---------------------------------------------
+      if (ig.glfwCreateWindow (win.ini.window.viewportWidth, win.ini.window.viewportHeight, title, null, null)) |pointer|{
+        win.handle = pointer;
+        glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
+        try stdout.print("{s} \n", .{glsl_version});
+        break;
+      }
     } else{
-      ig.glfwTerminate();
-      return error.glfwInitFailure;
+        ig.glfwTerminate();
+        return error.glfwCreateWindowFailure;
     }
+
     win.showWindowDelay = 2;
     win.clearColor = [_]f32{win.ini.window.colBGx, win.ini.window.colBGy, win.ini.window.colBGz, 1.0};
 
@@ -138,7 +153,7 @@ pub const Window = struct {
     // ImGui GLFW OpenGL backend interface
     //-------------------------------------
     _ = ig.ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
-    _ = ig.ImGui_ImplOpenGL3_Init(glsl_version);
+    _ = ig.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
 
     _ = setTheme(@enumFromInt(win.ini.window.theme));
 
@@ -215,6 +230,9 @@ pub const Window = struct {
       ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
       _ = ig.igSliderFloat ("Float", &st.fval, 0.0, 1.0, "%.3f", 0);
+      win.clearColor[0] = win.ini.window.colBGx;
+      win.clearColor[1] = win.ini.window.colBGy;
+      win.clearColor[2] = win.ini.window.colBGz;
       _ = ig.igColorEdit3 ("Clear color", &win.clearColor, 0);
       win.ini.window.colBGx = win.clearColor[0];
       win.ini.window.colBGy = win.clearColor[1];
@@ -302,16 +320,9 @@ pub fn loadIni(win: *Window) !void {
   const filename = try changeExtension(exe_path, "ini");
 
   var data: TIni = undefined;
-  if (false == try existsFile(filename)){
-    const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
-    defer parsed_data.deinit();
-    data = parsed_data.value;
-    std.debug.print("*.ini file not found: set \"DefaultIni\" values\n",.{});
-
-  } else{
-    std.debug.print("Read ini: {s}\n", .{filename});
-    var file = try std.fs.cwd().openFile(filename, .{});
+  if (std.fs.cwd().openFile(filename, .{})) |file| {
     defer file.close();
+    std.debug.print("Read ini: {s}\n", .{filename});
 
     const file_size = try file.getEndPos();
     const buffer = try allocator.alloc(u8, file_size);
@@ -319,6 +330,11 @@ pub fn loadIni(win: *Window) !void {
     _ = try file.readAll(buffer);
 
     const parsed_data = try std.json.parseFromSlice(TIni, allocator, buffer, .{});
+    defer parsed_data.deinit();
+    data = parsed_data.value;
+  } else |_| {
+    std.debug.print("*.ini file not found: set \"DefaultIni\" values\n",.{});
+    const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
     defer parsed_data.deinit();
     data = parsed_data.value;
   }

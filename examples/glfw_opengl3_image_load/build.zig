@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
-    b.installArtifact(imlibs);
+    //b.installArtifact(imlibs);
 
     const exe = b.addExecutable(.{
         .name = "glfw_opengl3_image_load",
@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.3.9.bin.WIN";
+    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
     var sArc = "64";
     if(builtin.cpu.arch == .x86){
       sArc = "32";
@@ -101,7 +101,7 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path,"include"})));
+    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
@@ -135,11 +135,11 @@ pub fn build(b: *std.Build) void {
     // Libs
     //------
     if (builtin.target.os.tag == .windows){
-    exe.linkSystemLibrary("gdi32");
-    exe.linkSystemLibrary("imm32");
-    exe.linkSystemLibrary("opengl32");
-    exe.linkSystemLibrary("user32");
-    exe.linkSystemLibrary("shell32");
+      exe.linkSystemLibrary("gdi32");
+      exe.linkSystemLibrary("imm32");
+      exe.linkSystemLibrary("opengl32");
+      exe.linkSystemLibrary("user32");
+      exe.linkSystemLibrary("shell32");
       // Static link
       exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3.a"})));
     }else if (builtin.target.os.tag == .linux){
@@ -168,7 +168,7 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini"
+    const resBin =   [_][]const u8{ "imgui.ini" , "glfw_opengl3_image_load.ini"
                                   , "himeji-400.jpg" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};

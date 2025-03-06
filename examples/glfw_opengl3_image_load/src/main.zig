@@ -47,7 +47,7 @@ pub fn gui_main (window: *app.Window) !void {
 
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  //const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
+  //const sz  = utils.vec2(0, 0);
 
   var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
   defer ig.glDeleteTextures(1, &zoomTextureID);
@@ -83,30 +83,30 @@ pub fn gui_main (window: *app.Window) !void {
       _ = ig.igCheckbox ("Demo Window", &showDemoWindow);
       // Save button for capturing window image
       ig.igPushID_Int(0);
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        .{.x = 0.7, .y = 0.7, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, .{.x = 0.8, .y = 0.8, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  .{.x = 0.9, .y = 0.9, .z = 0.0, .w = 1.0});
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text,          .{.x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0});
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        utils.vec4(0.7, 0.7, 0.0, 1.0));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, utils.vec4(0.8, 0.8, 0.0, 1.0));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  utils.vec4(0.9, 0.9, 0.0, 1.0));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text,          utils.vec4(0.0, 0.0, 0.0, 1.0));
 
       // Image save button
       const imageExt = ImgFormatTbl[cbItemIndex].ext;
       var svNameBuf:[200]u8 = undefined;
       var     svBuf:[200]u8 = undefined;
-      const slsName = try std.fmt.bufPrint(&svNameBuf, "{s}_{}{s}", .{SaveImageName, counter, imageExt});
-      if (ig.igButton("Save Image", .{.x = 0, .y = 0})) {
+      const slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{SaveImageName, counter, imageExt});
+      if (ig.igButton("Save Image", utils.vec2(0, 0))) {
         const wkSize = ig.igGetMainViewport().*.WorkSize;
         const sx:c_int =  @intFromFloat(wkSize.x);
         const sy:c_int =  @intFromFloat(wkSize.y);
-        //try stdout.print("{s}, {d}, {d}\n", .{slsName, sx, sy});
+        //try stdout.print("{s}, {d}, {d}\n", .{slszName, sx, sy});
         //try bw.flush(); // don't forget to flush!
-        ig.saveImage(slsName.ptr, 0, 0, sx, sy, 3, 90);    // # --- Save Image !
+        ig.saveImage(slszName.ptr, 0, 0, sx, sy, 3, 90);    // # --- Save Image !
       }
       ig.igPopStyleColor(4);
       ig.igPopID();
 
       // Show tooltip help
-      const slsBuf = try std.fmt.bufPrint(&svBuf, "Save to {s}", .{slsName});
-      utils.setTooltipEx(slsBuf, ig.ImGuiHoveredFlags_DelayNone, ig.ImVec4{.x = 0.0, .y = 1.0, .z = 0.0, .w = 1.0});
+      const slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
+      utils.setTooltipEx(slszBuf, ig.ImGuiHoveredFlags_DelayNone, utils.vec4(0.0, 1.0, 0.0, 1.0));
       counter += 1;
 
       ig.igSameLine(0, -1.0);
@@ -115,7 +115,7 @@ pub fn gui_main (window: *app.Window) !void {
       if (ig.igBeginCombo("##", ImgFormatTbl[cbItemIndex].kind, 0)) {
         for (0..ImgFormatTbl.len) |n| {
           var is_selected = (cbItemIndex == n);
-          if (ig.igSelectable_BoolPtr(ImgFormatTbl[n].kind, &is_selected, 0, .{.x = 0, .y = 0})) {
+          if (ig.igSelectable_BoolPtr(ImgFormatTbl[n].kind, &is_selected, 0, utils.vec2(0, 0))) {
             if (is_selected) {
               ig.igSetItemDefaultFocus();
             }
@@ -124,7 +124,7 @@ pub fn gui_main (window: *app.Window) !void {
         }
         ig.igEndCombo();
       }
-      utils.setTooltipEx("Select image format", ig.ImGuiHoveredFlags_DelayNone, ig.ImVec4{.x = 1.0, .y = 0.0, .z = 0.0, .w = 1.0});
+      utils.setTooltipEx("Select image format", ig.ImGuiHoveredFlags_DelayNone, utils.vec4(1.0, 1.0, 0.0, 1.0));
 
       // Show icon fonts
       ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " Icon font test ");
@@ -150,11 +150,11 @@ pub fn gui_main (window: *app.Window) !void {
       var imageBoxPosTop:ig.ImVec2 = undefined;
       var imageBoxPosEnd:ig.ImVec2 = undefined;
       // Load image
-      const size       = ig.ImVec2 {.x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight)};
-      const uv0        = ig.ImVec2 {.x = 0, .y = 0};
-      const uv1        = ig.ImVec2 {.x = 1, .y = 1};
-      const tint_col   = ig.ImVec4 {.x = 1, .y = 1, .z = 1, .w = 1};
-      const border_col = ig.ImVec4 {.x = 0, .y = 0, .z = 0, .w = 0};
+      const size       = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
+      const uv0        = utils.vec2(0, 0);
+      const uv1        = utils.vec2(1, 1);
+      const tint_col   = utils.vec4(1, 1, 1, 1);
+      const border_col = utils.vec4(0, 0, 0, 0);
       ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
       ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
       ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.

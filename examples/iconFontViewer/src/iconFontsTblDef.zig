@@ -1400,7 +1400,7 @@ pub const iconFontsTbl = [_][*c]const u8{
 
 
 
-pub const iconFontsTbl2 = [1390][2][*c]const u8{
+pub const iconFontsTbl2 = [_][2][*c]const u8{
  [2][*c]const u8{fnt.ICON_FA_0, " ICON_FA_0"  },
  [2][*c]const u8{fnt.ICON_FA_1, " ICON_FA_1"  },
  [2][*c]const u8{fnt.ICON_FA_2, " ICON_FA_2"  },
