@@ -59,7 +59,7 @@ examples in Zig language with less external dependencies.
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
-   - Included GLFW 3.3.9 static library (for Windows)
+   - Included GLFW 3.4.0 static library (for Windows)
    - Included SDL2/SDL3 libraries (for Windows)
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
@@ -70,9 +70,9 @@ examples in Zig language with less external dependencies.
 
 ---
 
-- Zig version confirmed (2025/02)  
-   1. Windows: [zig-windows-x86_64-0.14.0-dev.3328](https://ziglang.org/builds/zig-windows-x86_64-0.14.0-dev.3328+b6a1fdd3f.zip)
-   1. Linux:   [zig-linux-x86_64-0.14.0-dev.3328](https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.3328+b6a1fdd3f.tar.xz)
+- Zig version confirmed (2025/03)  
+   1. Windows: [zig-windows-x86_64-0.14.0.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0.zip)
+   1. Linux:   [zig-linux-x86_64-0.14.0.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0.tar.xz)
 
 - WindowsOS
    - Windows10 or later
@@ -300,10 +300,10 @@ https://github.com/JBetz/build-sdl3-win32
 
 - Windows11 (main)
    - Make: GNU Make 4.4.1
-   - SDL2 ver.2.30.8
-   - SDL3 3.1.3
+   - SDL2 ver.2.32.0
+   - SDL3 3.2.6
    - Git version 2.46.0.windows.1
-- Linux Mint 22 (sub)
+- Debian (sub)
    - Make: GNU Make 4.3
    - SDL2 ver.2.30.0
    - Git version 2.43.0
