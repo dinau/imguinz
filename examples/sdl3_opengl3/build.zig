@@ -44,9 +44,8 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // 64bit Winddws OS
     //----------------------------------
-    const SDL3_VER = "3.2.6";
     const sdlBase = "../../libs/sdl";
-    const sdlPath = b.fmt("{s}/SDL3-{s}/x86_64-w64-mingw32", .{sdlBase, SDL3_VER});
+    const sdlPath = b.fmt("{s}/SDL3/x86_64-w64-mingw32", .{sdlBase});
     //---------------
     // [imlibs] --- Include paths
     //---------------
@@ -120,7 +119,6 @@ pub fn build(b: *std.Build) void {
         "../utils/setupFonts.c",
         "../utils/loadImage.c",
         "../utils/saveImage.c",
-        "../utils/utils.c",
       },
       .flags = &.{
         "-O2",

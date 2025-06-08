@@ -39,23 +39,23 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     // Load Icon
-    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
+    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
     const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
     var sArc = "64";
-    if(builtin.cpu.arch == .x86){
-      sArc = "32";
+    if (builtin.cpu.arch == .x86) {
+        sArc = "32";
     }
-    const glfw_path = b.fmt("{s}{s}", .{Glfw_Base,sArc});
+    const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
     //-----------------------
     // For ImGui/CImGui Libs
     //-----------------------
     //---------------
     // [imlibs] --- Include paths
     //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    imlibs.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
     // ImGui/CImGui
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
@@ -70,39 +70,39 @@ pub fn build(b: *std.Build) void {
     // ImGui
     imlibs.root_module.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     imlibs.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    imlibs.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
-    switch (builtin.target.os.tag){
-      .windows => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-      .linux =>   imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
-      else => {},
+    imlibs.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    switch (builtin.target.os.tag) {
+        .windows => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+        .linux => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        else => {},
     }
 
     //---------------
     // Sources C/C++
     //---------------
     imlibs.addCSourceFiles(.{
-      .files = &.{
-        // ImGui
-        "../../libs/cimgui/imgui/imgui.cpp",
-        "../../libs/cimgui/imgui/imgui_tables.cpp",
-        "../../libs/cimgui/imgui/imgui_demo.cpp",
-        "../../libs/cimgui/imgui/imgui_widgets.cpp",
-        "../../libs/cimgui/imgui/imgui_draw.cpp",
-        // CImGui
-        "../../libs/cimgui/cimgui.cpp",
-        // CImGui-Knobs
-        "../../libs/cimgui-knobs/cimgui-knobs.cpp",
-        "../../libs/cimgui-knobs/libs/imgui-knobs/imgui-knobs.cpp",
-        // ImGui GLFW and OpenGL interface
-        "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
-        "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
-        // Theme Gold
-        "../utils/themeGold.cpp",
-      },
-      .flags = &.{
-        "-O2",
-        "-msse4.2",
-      },
+        .files = &.{
+            // ImGui
+            "../../libs/cimgui/imgui/imgui.cpp",
+            "../../libs/cimgui/imgui/imgui_tables.cpp",
+            "../../libs/cimgui/imgui/imgui_demo.cpp",
+            "../../libs/cimgui/imgui/imgui_widgets.cpp",
+            "../../libs/cimgui/imgui/imgui_draw.cpp",
+            // CImGui
+            "../../libs/cimgui/cimgui.cpp",
+            // CImGui-Knobs
+            "../../libs/cimgui-knobs/cimgui-knobs.cpp",
+            "../../libs/cimgui-knobs/libs/imgui-knobs/imgui-knobs.cpp",
+            // ImGui GLFW and OpenGL interface
+            "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
+            "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
+            // Theme Gold
+            "../utils/themeGold.cpp",
+        },
+        .flags = &.{
+            "-O2",
+            "-msse4.2",
+        },
     });
 
     //-------------------
@@ -111,7 +111,7 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    exe.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
@@ -127,37 +127,35 @@ pub fn build(b: *std.Build) void {
     exe.root_module.addCMacro("CIMGUI_USE_GLFW", "");
     exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
     exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
+    exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     //---------------
     // Sources C/C++
     //---------------
     exe.addCSourceFiles(.{
-      .files = &.{
-        "../utils/setupFonts.c",
-        "../utils/loadImage.c",
-        "../utils/saveImage.c",
-        "../utils/utils.c",
-
-      },
-      .flags = &.{
-        "-O2",
-      },
+        .files = &.{
+            "../utils/setupFonts.c",
+            "../utils/loadImage.c",
+            "../utils/saveImage.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
     });
     //------
     // Libs
     //------
-    if (builtin.target.os.tag == .windows){
-      exe.linkSystemLibrary("gdi32");
-      exe.linkSystemLibrary("imm32");
-      exe.linkSystemLibrary("opengl32");
-      exe.linkSystemLibrary("user32");
-      exe.linkSystemLibrary("shell32");
-      // Static link
-      exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3.a"})));
-    }else if (builtin.target.os.tag == .linux){
-      exe.linkSystemLibrary("glfw3");
-      exe.linkSystemLibrary("GL");
+    if (builtin.target.os.tag == .windows) {
+        exe.linkSystemLibrary("gdi32");
+        exe.linkSystemLibrary("imm32");
+        exe.linkSystemLibrary("opengl32");
+        exe.linkSystemLibrary("user32");
+        exe.linkSystemLibrary("shell32");
+        // Static link
+        exe.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })));
+    } else if (builtin.target.os.tag == .linux) {
+        exe.linkSystemLibrary("glfw3");
+        exe.linkSystemLibrary("GL");
     }
 
     // GLFW
@@ -174,27 +172,26 @@ pub fn build(b: *std.Build) void {
     //
     imlibs.linkLibC();
     imlibs.linkLibCpp();
-    exe.subsystem = .Windows;  // Hide console window
+    exe.subsystem = .Windows; // Hide console window
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini", "glfw_opengl3_imknobs.ini" };
-    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
-                                  , "fonticon/fa6/LICENSE.txt"};
+    const resBin = [_][]const u8{ "imgui.ini", "glfw_opengl3_imknobs.ini" };
+    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
     const resIcon = "src/res/z.png";
 
-    inline for(resBin)|file|{
-      const res = b.addInstallFile(b.path(file),"bin/" ++ file);
-      b.getInstallStep().dependOn(&res.step);
+    inline for (resBin) |file| {
+        const res = b.addInstallFile(b.path(file), "bin/" ++ file);
+        b.getInstallStep().dependOn(&res.step);
     }
-    inline for(resUtils)|file|{
-      const res = b.addInstallFile(b.path("../utils/" ++ file),"utils/" ++ file);
-      b.getInstallStep().dependOn(&res.step);
+    inline for (resUtils) |file| {
+        const res = b.addInstallFile(b.path("../utils/" ++ file), "utils/" ++ file);
+        b.getInstallStep().dependOn(&res.step);
     }
-    const res = b.addInstallFile(b.path(resIcon),"bin/z.png");
+    const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
     b.getInstallStep().dependOn(&res.step);
     //
     // This *creates* a Run step in the build graph, to be executed when another

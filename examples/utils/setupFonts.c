@@ -5,10 +5,10 @@
 
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include "cimgui.h"
-#include "utils.h"
 #include "setupFonts.h"
+#include "IconsFontAwesome6.h"
 
-#define ImGui_GetIO igGetIO
+#define ImGui_GetIO igGetIO_Nil
 
 #define MAX_PATH  2048
 const char* IconFontPath = "../utils/fonticon/fa6/fa-solid-900.ttf";
@@ -26,6 +26,18 @@ char LinuxFontNameTbl[][MAX_PATH] = { // For Linux Mint 22 (Ubuntu/Debian family
                            ,"/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" // Linux Mint English
                            };
 
+/*-------------
+ * existFile()
+ * -----------*/
+static bool existsFile(const char* path) {
+  if (path == NULL){
+    return false;
+  }
+  FILE* fp = fopen(path, "r");
+  if (fp == NULL) return false;
+  fclose(fp);
+  return true;
+}
 /*-----------------
  * getWinFontPath()
  *----------------*/
@@ -42,7 +54,7 @@ char* getWinFontPath(char* sBuf, int bufSize, const char* fontName) {
 float point2px(float point) { //## Convert point to pixel
   return (point * 96) / 72;
 }
-
+#if 1
 const ImWchar ranges_icon_fonts[]  = {(ImWchar)ICON_MIN_FA, (ImWchar)ICON_MAX_FA, (ImWchar)0};
 /*--------------
  * setupFonts()
@@ -83,3 +95,4 @@ void setupFonts(void) {
   config->MergeMode = true;
   ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(11), config , ranges_icon_fonts);
 }
+#endif

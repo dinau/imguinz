@@ -81,7 +81,7 @@ pub fn main () !void {
   }
   defer ig.igDestroyContext (null);
 
-  const pio = ig.igGetIO ();
+  const pio = ig.igGetIO_Nil ();
   pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
   //pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
   // Setup doncking feature --- can't compile well at this moment.
@@ -221,10 +221,8 @@ pub fn main () !void {
       const size       = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
       const uv0        = utils.vec2(0, 0);
       const uv1        = utils.vec2(1, 1);
-      const tint_col   = utils.vec4(1, 1, 1, 1);
-      const border_col = utils.vec4(0, 0, 0, 0);
       ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
-      ig.igImage(@intCast(textureId), size, uv0, uv1, tint_col, border_col);
+      ig.igImage(@intCast(textureId), size, uv0, uv1);
       ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.
       if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
         utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);

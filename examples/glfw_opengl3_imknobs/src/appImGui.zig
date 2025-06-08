@@ -140,7 +140,7 @@ pub const Window = struct {
       return error.ImGuiCreateContextFailure;
     }
 
-    const pio = ig.igGetIO ();
+    const pio = ig.igGetIO_Nil ();
     pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
                                                                     // pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
                                                                     // Setup doncking feature --- can't compile well at this moment.
@@ -164,7 +164,7 @@ pub const Window = struct {
   // render
   //--------
   pub fn render(win: *Window) void {
-    const pio = ig.igGetIO ();
+    const pio = ig.igGetIO_Nil ();
     //-----------
     // Rendering
     //-----------
@@ -218,7 +218,7 @@ pub const Window = struct {
     const st = struct {
       var fval:f32 = 0;
     };
-    const pio = ig.igGetIO ();
+    const pio = ig.igGetIO_Nil ();
     _ = ig.igBegin ("Info window", null, 0);
     defer ig.igEnd ();
       ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
@@ -253,21 +253,6 @@ pub fn setTheme(themeName: Theme) Theme {
     Theme.microsoft => ig.igStyleColorsLight(null),//themeMicrosoft(),
   }
   return themeName;
-}
-
-//---------------
-//--- existsFile
-//---------------
-pub fn existsFile(fname:[]const u8) !bool {
-  var file = std.fs.cwd().createFile(fname, .{ .exclusive = true }) catch |e|
-    switch (e) {
-      error.PathAlreadyExists => {
-        return true;
-    },
-    else => return e,
-  };
-  defer file.close();
-  return false;
 }
 
 const DefaultIni =

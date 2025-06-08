@@ -135,7 +135,6 @@ pub fn build(b: *std.Build) void {
         "../utils/setupFonts.c",
         "../utils/loadImage.c",
         "../utils/saveImage.c",
-        "../utils/utils.c",
       },
       .flags = &.{
         "-O2",

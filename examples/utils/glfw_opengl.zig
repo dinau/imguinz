@@ -1,0 +1,32 @@
+pub const ImDrawData = opaque {};
+
+pub const struct_GLFWwindow = opaque {};
+pub const GLFWwindow = struct_GLFWwindow;
+pub const struct_GLFWmonitor = opaque {};
+pub const GLFWmonitor = struct_GLFWmonitor;
+
+pub extern fn ImGui_ImplGlfw_InitForOpenGL(window: ?*GLFWwindow, install_callbacks: bool) bool;
+pub extern fn ImGui_ImplGlfw_InitForVulkan(window: ?*GLFWwindow, install_callbacks: bool) bool;
+pub extern fn ImGui_ImplGlfw_InitForOther(window: ?*GLFWwindow, install_callbacks: bool) bool;
+pub extern fn ImGui_ImplGlfw_Shutdown() void;
+pub extern fn ImGui_ImplGlfw_NewFrame() void;
+pub extern fn ImGui_ImplGlfw_InstallCallbacks(window: ?*GLFWwindow) void;
+pub extern fn ImGui_ImplGlfw_RestoreCallbacks(window: ?*GLFWwindow) void;
+pub extern fn ImGui_ImplGlfw_SetCallbacksChainForAllWindows(chain_for_all_windows: bool) void;
+pub extern fn ImGui_ImplGlfw_WindowFocusCallback(window: ?*GLFWwindow, focused: c_int) void;
+pub extern fn ImGui_ImplGlfw_CursorEnterCallback(window: ?*GLFWwindow, entered: c_int) void;
+pub extern fn ImGui_ImplGlfw_CursorPosCallback(window: ?*GLFWwindow, x: f64, y: f64) void;
+pub extern fn ImGui_ImplGlfw_MouseButtonCallback(window: ?*GLFWwindow, button: c_int, action: c_int, mods: c_int) void;
+pub extern fn ImGui_ImplGlfw_ScrollCallback(window: ?*GLFWwindow, xoffset: f64, yoffset: f64) void;
+pub extern fn ImGui_ImplGlfw_KeyCallback(window: ?*GLFWwindow, key: c_int, scancode: c_int, action: c_int, mods: c_int) void;
+pub extern fn ImGui_ImplGlfw_CharCallback(window: ?*GLFWwindow, c: c_uint) void;
+pub extern fn ImGui_ImplGlfw_MonitorCallback(monitor: ?*GLFWmonitor, event: c_int) void;
+pub extern fn ImGui_ImplGlfw_Sleep(milliseconds: c_int) void;
+pub extern fn ImGui_ImplOpenGL3_Init(glsl_version: [*c]const u8) bool;
+pub extern fn ImGui_ImplOpenGL3_Shutdown() void;
+pub extern fn ImGui_ImplOpenGL3_NewFrame() void;
+pub extern fn ImGui_ImplOpenGL3_RenderDrawData(draw_data: *anyopaque) void;
+pub extern fn ImGui_ImplOpenGL3_CreateFontsTexture() bool;
+pub extern fn ImGui_ImplOpenGL3_DestroyFontsTexture() void;
+pub extern fn ImGui_ImplOpenGL3_CreateDeviceObjects() bool;
+pub extern fn ImGui_ImplOpenGL3_DestroyDeviceObjects() void;

@@ -691,7 +691,7 @@ fn demo_Help() !void {
     ig.igBulletText(sRes.ptr);
 
     // TODO: Avoided compilation error.
-    if (0 != (ig.igGetIO().*.BackendFlags & ig.ImGuiBackendFlags_RendererHasVtxOffset)){
+    if (0 != (ig.igGetIO_Nil().*.BackendFlags & ig.ImGuiBackendFlags_RendererHasVtxOffset)){
       ig.igBulletText("ImGuiBackendFlags_RendererHasVtxOffset: True");
     }else{
       ig.igBulletText("ImGuiBackendFlags_RendererHasVtxOffset: False");

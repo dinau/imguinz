@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
-    const sdl2_Base = "../../libs/sdl/SDL2-2.32.0";
+    const sdl2_Base = "../../libs/sdl/SDL2";
     var sArc:[]const u8 = "x86_64";
     if(builtin.cpu.arch == .x86){
       sArc = "i686";
@@ -132,7 +132,6 @@ pub fn build(b: *std.Build) void {
         "../utils/setupFonts.c",
         "../utils/loadImage.c",
         "../utils/saveImage.c",
-        "../utils/utils.c",
       },
       .flags = &.{
         "-O2",
@@ -142,30 +141,33 @@ pub fn build(b: *std.Build) void {
     // Libs
     //------
     if (builtin.target.os.tag == .windows){
-      exe.linkSystemLibrary("gdi32");
-      exe.linkSystemLibrary("imm32");
-      exe.linkSystemLibrary("advapi32");
-      exe.linkSystemLibrary("comdlg32");
-      exe.linkSystemLibrary("dinput8");
-      exe.linkSystemLibrary("dxerr8");
-      exe.linkSystemLibrary("dxguid");
-      exe.linkSystemLibrary("gdi32");
-      exe.linkSystemLibrary("hid");
-      exe.linkSystemLibrary("kernel32");
-      exe.linkSystemLibrary("ole32");
-      exe.linkSystemLibrary("oleaut32");
-      exe.linkSystemLibrary("setupapi");
-      exe.linkSystemLibrary("shell32");
-      exe.linkSystemLibrary("user32");
-      exe.linkSystemLibrary("uuid");
-      exe.linkSystemLibrary("version");
-      exe.linkSystemLibrary("winmm");
-      exe.linkSystemLibrary("winspool");
-      exe.linkSystemLibrary("ws2_32");
-      exe.linkSystemLibrary("opengl32");
-      exe.linkSystemLibrary("shell32");
-      exe.linkSystemLibrary("user32");
-      // Static link
+    exe.linkSystemLibrary("opengl32");
+    exe.linkSystemLibrary("gdi32");
+    exe.linkSystemLibrary("imm32");
+    exe.linkSystemLibrary("advapi32");
+    exe.linkSystemLibrary("winmm");
+    exe.linkSystemLibrary("ole32");
+    exe.linkSystemLibrary("oleaut32");
+    exe.linkSystemLibrary("setupapi");
+    exe.linkSystemLibrary("ws2_32");
+    exe.linkSystemLibrary("version");
+    exe.linkSystemLibrary("dinput8");
+    //
+    // If you need enable these library.
+    //
+    //exe.linkSystemLibrary("dxerr8");
+    //exe.linkSystemLibrary("dxguid");
+    //exe.linkSystemLibrary("gdi32");
+    //exe.linkSystemLibrary("hid");
+    //exe.linkSystemLibrary("kernel32");
+    //exe.linkSystemLibrary("shell32");
+    //exe.linkSystemLibrary("user32");
+    //exe.linkSystemLibrary("uuid");
+    //exe.linkSystemLibrary("comdlg32");
+    //exe.linkSystemLibrary("winspool");
+    //exe.linkSystemLibrary("shell32");
+    //exe.linkSystemLibrary("user32");
+    // Static link
       exe.addObjectFile(b.path(b.pathJoin(&.{sdl2_path, "lib","libSDL2.a"})));
     }else if (builtin.target.os.tag == .linux){
       exe.linkSystemLibrary("glfw3");

@@ -52,3 +52,4 @@ dupx:
 
 fmt:
 	zig fmt src/main.zig
+	zig fmt build.zig

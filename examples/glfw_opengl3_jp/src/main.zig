@@ -1,20 +1,18 @@
-const std = @import ("std");
+const ig = @import("cimgui");
+const utils = @import("utils");
+const glfw = @import("glfw");
+const stf = @import("setupfont");
+const app = @import("appimgui");
+const ifa = @import("fonticon");
 const builtin = @import ("builtin");
-const ig = @import ("imgui.zig");
-const fonts = @import("fonts.zig");
-const app = @import("appImGui.zig");
-const utils = @import("utils.zig");
-
-const MainWinWidth :i32 = 1024;
-const MainWinHeight:i32 = 900;
 
 //-----------
 // gui_main()
 //-----------
-pub fn gui_main (window: *app.Window) void {
-  fonts.setupFonts(); // Setup CJK fonts and Icon fonts
+pub fn gui_main(window: *app.Window) void {
+    stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const pio = ig.igGetIO ();
+  const pio = ig.igGetIO_Nil ();
   var showDemoWindow = true;
   var fval: f32 = 0.0;
   var counter: i32 = 0;
@@ -25,13 +23,14 @@ pub fn gui_main (window: *app.Window) void {
 
   const DefaultButtonSize  = utils.vec2(0, 0);
 
-  //---------------
-  // main loop GUI
-  //---------------
-  while (ig.glfwWindowShouldClose (window.handle) == 0) {
-    ig.glfwPollEvents ();
-    // Start the Dear ImGui frame
-    window.frame();
+    //---------------
+    // main loop GUI
+    //---------------
+    while (glfw.glfwWindowShouldClose(@ptrCast(window.handle)) == 0) {
+        glfw.glfwPollEvents();
+
+        // Start the Dear ImGui frame
+        window.frame();
 
     //------------------
     // Show demo window
@@ -42,15 +41,15 @@ pub fn gui_main (window: *app.Window) void {
     // Show main window
     //------------------
     {
-      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
+      _ = ig.igBegin (ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
       defer ig.igEnd ();
-      ig.igText (fonts.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
-      ig.igText (ig.glfwGetVersionString());
-      ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
-      ig.igText (ig.glGetString(ig.GL_VERSION));
-      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
+      ig.igText (ifa.ICON_FA_COMMENT ++ " GLFW v"); ig.igSameLine (0, -1.0);
+      ig.igText (glfw.glfwGetVersionString());
+      ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
+      ig.igText (glfw.glGetString(glfw.GL_VERSION));
+      ig.igText (ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");  ig.igSameLine (0, -1.0);
       ig.igText (ig.igGetVersion());
-      ig.igText (fonts.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
+      ig.igText (ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");  ig.igSameLine (0, -1.0);
       ig.igText (builtin.zig_version_string);
 
       ig.igSpacing();
@@ -68,18 +67,18 @@ pub fn gui_main (window: *app.Window) void {
       ig.igText ("カウンタ = %d", counter);
       ig.igText ("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
       // Show icon fonts
-      ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
-      ig.igText(fonts.ICON_FA_TRASH_CAN  ++ " ゴミ箱");
+      ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
+      ig.igText(ifa.ICON_FA_TRASH_CAN  ++ " ゴミ箱");
 
       ig.igSpacing();
-      ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS_PLUS
-          ++ " " ++ fonts.ICON_FA_POWER_OFF
-          ++ " " ++ fonts.ICON_FA_MICROPHONE
-          ++ " " ++ fonts.ICON_FA_MICROCHIP
-          ++ " " ++ fonts.ICON_FA_VOLUME_HIGH
-          ++ " " ++ fonts.ICON_FA_SCISSORS
-          ++ " " ++ fonts.ICON_FA_SCREWDRIVER_WRENCH
-          ++ " " ++ fonts.ICON_FA_BLOG);
+      ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS
+          ++ " " ++ ifa.ICON_FA_POWER_OFF
+          ++ " " ++ ifa.ICON_FA_MICROPHONE
+          ++ " " ++ ifa.ICON_FA_MICROCHIP
+          ++ " " ++ ifa.ICON_FA_VOLUME_HIGH
+          ++ " " ++ ifa.ICON_FA_SCISSORS
+          ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH
+          ++ " " ++ ifa.ICON_FA_BLOG);
     } // end main window
 
 
@@ -93,6 +92,9 @@ pub fn gui_main (window: *app.Window) void {
 //--------
 // main()
 //--------
+const MainWinWidth: i32 = 1024;
+const MainWinHeight: i32 = 900;
+
 pub fn main () !void {
   var window =  try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
   defer window.destroyImGui();

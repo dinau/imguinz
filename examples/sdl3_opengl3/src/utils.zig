@@ -19,7 +19,7 @@ pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, ite
                         , @intFromFloat(wkSize.y - itemPosEnd.y)  //# y start pos
                         , itemWidth ,itemHeight);                 //# Image width and height must be 2^n.
     //#igText("lbp: (%.2f, %.2f)", pio.MousePos.x, pio.MousePos.y)
-    const pio = ig.igGetIO();
+    const pio = ig.igGetIO_Nil();
     const region_sz = 32.0;
     var region_x = pio.*.MousePos.x - itemPosTop.x - region_sz * 0.5;
     var region_y = pio.*.MousePos.y - itemPosTop.y - region_sz * 0.5;
@@ -40,7 +40,7 @@ pub fn zoomGlass(pTextureID:*ig.GLuint, itemWidth:i32, itemPosTop:ig.ImVec2, ite
     const tint_col =   ig.ImVec4{.x = 1.0,  .y = 1.0,  .z = 1.0,  .w = 1.0}; // # No tint
     const border_col = ig.ImVec4{.x = 0.22, .y = 0.56, .z = 0.22, .w = 1.0}; // # Green
     ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS ++ "  4 x");
-    ig.igImage(pTextureID.*, ig.ImVec2{.x = region_sz * zoom, .y = region_sz * zoom}, uv0, uv1, tint_col, border_col);
+    ig.igImageWithBg(pTextureID.*, ig.ImVec2{.x = region_sz * zoom, .y = region_sz * zoom}, uv0, uv1, tint_col, border_col);
   }
 }
 

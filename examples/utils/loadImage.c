@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdbool.h>
+//#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -12,7 +12,24 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include "utils.h"
+
+#include "loadImage.h"
+
+#define false 0
+#define true (!false)
+
+/*-------------
+ * existFile()
+ * -----------*/
+static unsigned int existsFile(const char* path) {
+  if (path == NULL){
+    return false;
+  }
+  FILE* fp = fopen(path, "r");
+  if (fp == NULL) return false;
+  fclose(fp);
+  return true;
+}
 
 //#------------------------
 //# loadTextureFromBuffer()
@@ -61,7 +78,7 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
   #endif
 
   //# Create a OpenGL texture identifier
-  static bool loadReq = false;
+  static unsigned int loadReq = false;
   if(*pTextureID == 0){
     glGenTextures(1, pTextureID);
     loadReq = true;
@@ -111,7 +128,7 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
 // --------------------
 // LoadTextureFromFile   Simple helper function to load an image into a OpenGL texture with common settings
 // --------------------
-bool LoadTextureFromFile(const char* imageName, GLuint* out_texture, int* out_width, int* out_height) {
+unsigned int LoadTextureFromFile(const char* imageName, GLuint* out_texture, int* out_width, int* out_height) {
   if (!existsFile(imageName)) {
     printf("\nError!: Image file not found  error: %s", imageName);
     return false;
@@ -148,17 +165,18 @@ bool LoadTextureFromFile(const char* imageName, GLuint* out_texture, int* out_wi
 /*--------------------
  * LoadTitleBarIcon()
  * ------------------*/
-void LoadTitleBarIcon(GLFWwindow* window, const char* iconName) {
+//void LoadTitleBarIcon(GLFWwindow* window, const char* iconName) {
+void LoadTitleBarIcon(void* window, const char* iconName) {
   int width, height, channels;
   unsigned char*  pixels = 0;
   if (existsFile(iconName)) {
     pixels = stbi_load(iconName, &width, &height, &channels, 0);
     const GLFWimage img  = {.width = width, .height = height, .pixels = pixels};
-    glfwSetWindowIcon(window, 1, &img);
+    glfwSetWindowIcon((GLFWwindow*)window, 1, &img);
     stbi_image_free(pixels);
   } else {
     printf("\nNot found: %s", iconName);
-    glfwSetWindowIcon(window, 0, NULL);
+    glfwSetWindowIcon((GLFWwindow*)window, 0, NULL);
   }
 }
 #endif

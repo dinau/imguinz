@@ -12,7 +12,7 @@ const MainWinHeight:i32 = 900;
 pub fn gui_main (window: *app.Window) void {
   fonts.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const pio = ig.igGetIO ();
+  const pio = ig.igGetIO_Nil ();
 
   //---------------
   // main loop GUI
@@ -37,23 +37,15 @@ pub fn gui_main (window: *app.Window) void {
       const red :ig.ImColor = .{.Value = utils.vec4(1.0, 0.0, 0.0, 1.0)};
       const blue:ig.ImColor = .{.Value = utils.vec4(0.0, 0.0, 1.0, 1.0)};
       //
-      ig.SpinnerDnaDotsEx("DnaDotsV", 16, 2, red, 1.2 , 8, 0.25, true);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerRainbowMix("Rmix", 16, 2, blue, 2);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerAng8("Ang", 16, 2);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerPulsar("Pulsar", 16, 2);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerClock("Clock", 16, 2);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerAtom("atom", 16, 2);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerSwingDots("wheel", 16, 6);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerDotsToBar("tobar", 16, 2, 0.5);
-      ig.igSameLine(0.0, -1.0);
-      ig.SpinnerBarChartRainbow("rainbow", 16, 4, red, 4);
+      ig.SpinnerDnaDotsEx(      "DnaDotsV", 16, 2, red, 1.2 , 8, 0.25, true); ig.igSameLine(0.0, -1.0);
+      ig.SpinnerRainbowMix(     "Rmix",     16, 2, blue, 2);                  ig.igSameLine(0.0, -1.0);
+      ig.SpinnerAng8(           "Ang",      16, 2);                           ig.igSameLine(0.0, -1.0);
+      ig.SpinnerPulsar(         "Pulsar",   16, 2);                           ig.igSameLine(0.0, -1.0);
+      ig.SpinnerClock(          "Clock",    16, 2);                           ig.igSameLine(0.0, -1.0);
+      ig.SpinnerAtom(           "atom",     16, 2);                           ig.igSameLine(0.0, -1.0);
+      ig.SpinnerSwingDots(      "wheel",    16, 6);                           ig.igSameLine(0.0, -1.0);
+      ig.SpinnerDotsToBar(      "tobar",    16, 2, 0.5);                      ig.igSameLine(0.0, -1.0);
+      ig.SpinnerBarChartRainbow("rainbow",  16, 4, red, 4);
       ig.igNewLine();
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
     } // end main window

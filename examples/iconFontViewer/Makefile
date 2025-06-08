@@ -1,4 +1,5 @@
 #
+#OPT += -fincremental
 OPT += --release=fast
 #OPT += --release=small
 # Fail compilation

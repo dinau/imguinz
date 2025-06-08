@@ -1,7 +1,14 @@
 -I../libs/sdl/SDL2-2.30.3/i686-w64-mingw32/include/SDL2
 -I../libs/sdl/sdl3/32/SDL3-2024-06-02/SDL3/include
 -I../libs/cimplot
+
+-Icimgui
+-Ilibs/cimgui
+-I../libs/cimgui
+-I../../libs/cimgui
+
 -I../libs/cimplot/implot
+-I../libs/cimgui_toggle/
 
 -Wno-stringop-overflow
 -DCIMGUI_USE_GLFW
@@ -12,7 +19,6 @@
 -Wall
 -Wno-unused-function
 -O2
--Ilibs/cimgui
 -I../libs/imgui
 -I.
 -I../libs/imgui/backends

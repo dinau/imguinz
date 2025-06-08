@@ -122,7 +122,7 @@ pub fn main() !void {
     const imPlotContext = ip.ImPlot_CreateContext();
     defer ip.ImPlot_DestroyContext(imPlotContext);
 
-    const pio = ig.igGetIO();
+    const pio = ig.igGetIO_Nil();
     pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     //pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
     // Setup doncking feature --- can't compile well at this moment.

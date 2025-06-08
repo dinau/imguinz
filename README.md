@@ -4,6 +4,7 @@
 - [ImGuinZ](#imguinz)
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
+  - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
   - [Examples screen shots](#examples-screen-shots)
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
@@ -32,7 +33,6 @@
       - [DragRects](#dragrects)
   - [Show / Hide console window](#show--hide-console-window)
   - [SDL libraries](#sdl-libraries)
-  - [My tools version](#my-tools-version)
     - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
     - [SDL game tutorial Platfromer](#sdl-game-tutorial-platfromer)
 
@@ -48,7 +48,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.91.8dock** (2025/02)
+- ImGui / CImGui version **1.91.9b dock** (2025/06)
 - OS: Windows and Linux
 - Frontends and Backends 
 
@@ -71,8 +71,8 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig version confirmed (2025/03)  
-   1. Windows: [zig-windows-x86_64-0.14.0.zip](https://ziglang.org/builds/zig-windows-x86_64-0.14.0.zip)
-   1. Linux:   [zig-linux-x86_64-0.14.0.tar.xz](https://ziglang.org/builds/zig-linux-x86_64-0.14.0.tar.xz)
+   1. Windows: [zig-x86_64-windows-0.14.1.zip](https://ziglang.org/download/0.14.1/zig-x86_64-windows-0.14.1.zip)
+   1. Linux:   [zig-x86_64-linux-0.14.1.tar.xz](https://ziglang.org/download/0.14.1/zig-x86_64-linux-0.14.1.tar.xz)
 
 - WindowsOS
    - Windows10 or later
@@ -111,6 +111,23 @@ examples in Zig language with less external dependencies.
    make run   # or  zig build --release=fast run
    ```
 
+### Available libraries list at this moment
+
+---
+
+Library name / C lang. wrapper
+
+- [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) (2024/11)
+- [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
+- [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
+- [ ] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/05)
+- [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/05)
+- [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) (2025/05)
+- [ ] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
+- [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
+- [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) (2025/05)
+- [ ] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025)
+- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) 
 ### Examples screen shots 
 
 ####  [ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
@@ -284,29 +301,7 @@ Show console window: Comment out this line as follows,
 
 ---
 
-- SDL3  
 https://github.com/libsdl-org/SDL/releases
-
-- SDL3  Build-SDL3  
-https://github.com/mmozeiko/build-sdl3/releases  
-https://github.com/mmozeiko/build-sdl3
-- SDL3 Build-SDL3-Win32  
-https://github.com/JBetz/build-sdl3-win32/releases  
-https://github.com/JBetz/build-sdl3-win32
-
-### My tools version
-
----
-
-- Windows11 (main)
-   - Make: GNU Make 4.4.1
-   - SDL2 ver.2.32.0
-   - SDL3 3.2.6
-   - Git version 2.46.0.windows.1
-- Debian (sub)
-   - Make: GNU Make 4.3
-   - SDL2 ver.2.30.0
-   - Git version 2.43.0
 
 #### Similar project ImGui / CImGui
 
