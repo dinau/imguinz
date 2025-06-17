@@ -258,7 +258,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const exe = b.addExecutable(.{
-        .name = "glfw_opengl3",
+        .name = "glfw_opengl3_jp",
         .root_module = exe_mod,
     });
     //exe.root_module.addImport("cimgui", cimgui_mod);
