@@ -40,8 +40,10 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguinz/actions/workflows/rel.yml/badge.svg)  
-![alt](https://github.com/dinau/imguinz/actions/workflows/linux.yml/badge.svg)
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_dev.yml/badge.svg)
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/linux_dev.yml/badge.svg)
+![alt](https://github.com/dinau/imguinz/actions/workflows/linux_rel.yml/badge.svg)  
 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
@@ -70,7 +72,7 @@ examples in Zig language with less external dependencies.
 
 ---
 
-- Zig version confirmed (2025/03)  
+- Zig version confirmed
    1. Windows: [zig-x86_64-windows-0.14.1.zip](https://ziglang.org/download/0.14.1/zig-x86_64-windows-0.14.1.zip)
    1. Linux:   [zig-x86_64-linux-0.14.1.tar.xz](https://ziglang.org/download/0.14.1/zig-x86_64-linux-0.14.1.tar.xz)
 
@@ -162,8 +164,8 @@ Library name / C lang. wrapper
 Image load and magnifying glass
 
 
-[glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig)  
-[sdl2_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl2_opengl3/src/main.zig)  
+[glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig) / 
+[sdl2_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl2_opengl3/src/main.zig) / 
 [sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
