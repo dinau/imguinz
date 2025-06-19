@@ -154,7 +154,7 @@ pub fn build(b: *std.Build) void {
     // zoomGlass module
     // -----------------
     const zoomglass_mod = b.createModule(.{
-        .root_source_file = b.path("../utils/zoomglass.zig"),
+        .root_source_file = b.path("../utils/zoomGlass.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -190,7 +190,7 @@ pub fn build(b: *std.Build) void {
     // saveimage module
     // -----------------
     const saveimage_step = b.addTranslateC(.{
-        .root_source_file = b.path("../utils/saveimage.h"),
+        .root_source_file = b.path("../utils/saveImage.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
@@ -258,7 +258,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const exe = b.addExecutable(.{
-        .name = "glfw_opengl3",
+        .name = "glfw_opengl3_jp",
         .root_module = exe_mod,
     });
     //exe.root_module.addImport("cimgui", cimgui_mod);

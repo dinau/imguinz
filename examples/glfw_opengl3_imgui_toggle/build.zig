@@ -94,7 +94,7 @@ pub fn build(b: *std.Build) void {
     // zoomGlass module
     // -----------------
     //const zoomglass_mod = b.createModule(.{
-    //    .root_source_file = b.path("src/zoomglass.zig"),
+    //    .root_source_file = b.path("src/zoomGlass.zig"),
     //    .target = target,
     //    .optimize = optimize,
     //});
@@ -149,7 +149,7 @@ pub fn build(b: *std.Build) void {
     // saveimage module
     // -----------------
     const saveimage_step = b.addTranslateC(.{
-        .root_source_file = b.path("../utils/saveimage.h"),
+        .root_source_file = b.path("../utils/saveImage.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,

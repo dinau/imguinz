@@ -1,0 +1,27 @@
+name: Linux OS(Ubuntu) zig-0.14.1 compilation-
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  linux_release:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - uses: mlugg/setup-zig@v2
+      with:
+        version: 0.14.1
+    - name: make
+      run: |
+        sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
+        sudo apt install libglfw3 libglfw3-dev
+        sudo apt install libsdl2-dev
+        make

@@ -28,13 +28,13 @@ pub fn main () !void {
   defer ig.SDL_Quit();
 
   var glsl_version_buf: [30]u8 = undefined;
-  const versions = [_][2]u16{[_]u16{4, 6},
-                             [_]u16{4, 5},
-                             [_]u16{4, 4},
-                             [_]u16{4, 3},
-                             [_]u16{4, 2},
-                             [_]u16{4, 1},
-                             [_]u16{4, 0},
+  const versions = [_][2]u16{//[_]u16{4, 6},
+                             //[_]u16{4, 5},
+                             //[_]u16{4, 4},
+                             //[_]u16{4, 3},
+                             //[_]u16{4, 2},
+                             //[_]u16{4, 1},
+                             //[_]u16{4, 0},
                              [_]u16{3, 3}
                            };
   var glsl_version: [:0]u8 = undefined;
