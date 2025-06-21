@@ -122,8 +122,8 @@ Library name / C lang. wrapper
 - [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) (2024/11)
 - [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
 - [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
-- [ ] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/05)
-- [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/05)
+- [ ] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
+- [ ] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) 
 - [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) (2025/05)
 - [ ] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
@@ -154,8 +154,7 @@ Library name / C lang. wrapper
 
 [glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
-![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
-![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.png)
+![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
 
 #### Image load 
 
@@ -182,7 +181,7 @@ Image load and magnifying glass
 
 ---
 
-[iconFontViewer.zig](https://github.com/dinau/imguinz/blob/main/examples/iconFontViewer/src/main.zig) and magnifying glass
+[iconFontViewer.zig](https://github.com/dinau/imguinz/blob/main/examples/iconFontViewer/src/main.zig), magnifying glass, incremental search
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/iconFontViewer.png)
 
