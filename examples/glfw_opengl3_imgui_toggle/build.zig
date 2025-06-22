@@ -170,10 +170,10 @@ pub fn build(b: *std.Build) void {
     exe_mod.addImport("appimgui", appimgui_mod);
 
     // -----------------
-    // zoomGlass module
+    // zoomglass module
     // -----------------
     const zoomglass_mod = b.createModule(.{
-        .root_source_file = b.path("../utils/zoomglass.zig"),
+        .root_source_file = b.path("../utils/zoomGlass.zig"),
         .target = target,
         .optimize = optimize,
     });
