@@ -1091,6 +1091,7 @@ fn demo_MarkersAndText() !void {
         var  ys = [2]ig.ImS8{10,11};
         // filled markers
         for (0..@intCast(ip.ImPlotMarker_COUNT))|m| {
+            ig.igPushID_Int(@intCast(m));
             ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x = 0, .y = 0, .z = 0, .w = -1}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
             try ip.ImPlot_PlotLineXy("##Filled", &xs, &ys, 2);
             ig.igPopID();
