@@ -1,9 +1,13 @@
 const std = @import("std");
-const ig = @import("imgui.zig");
-const fonts = @import("fonts.zig");
-const app = @import("appImGui.zig");
-const ift = @import("iconFontsTblDef.zig");
-const utils = @import("utils.zig");
+const ig = @import("cimgui");
+const glfw = @import("glfw");
+const ifa = @import("fonticon");
+const stf = @import("setupfont");
+const utils = @import("utils");
+const zg = @import("zoomglass");
+const app = @import("appimgui");
+
+const ift = @import("./iconFontsTblDef.zig");
 
 const MainWinWidth: i32 = 1200;
 const MainWinHeight: i32 = 800;
@@ -12,7 +16,7 @@ const MainWinHeight: i32 = 800;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    fonts.setupFonts(); // Setup CJK fonts and Icon fonts
+    stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
 
@@ -20,13 +24,13 @@ pub fn gui_main(window: *app.Window) !void {
     var showIconFontsViewerWindow = true;
     const DefaultButtonSize = utils.vec2(0, 0);
 
-    var listBoxTextureID: ig.GLuint = 0; //# Must be == 0 at first
-    defer ig.glDeleteTextures(1, &listBoxTextureID);
+    var listBoxTextureID: glfw.GLuint = 0; //# Must be == 0 at first
+    defer glfw.glDeleteTextures(1, &listBoxTextureID);
     //---------------
     // main loop GUI
     //---------------
-    while (ig.glfwWindowShouldClose(window.handle) == 0) {
-        ig.glfwPollEvents();
+    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
+        glfw.glfwPollEvents();
         // Start the Dear ImGui frame
         window.frame();
 
@@ -42,14 +46,14 @@ pub fn gui_main(window: *app.Window) !void {
         if (showIconFontsViewerWindow) {
             _ = ig.igBegin("Icon Font Viewer", &showIconFontsViewerWindow, 0);
             defer ig.igEnd();
-            ig.igSeparatorText(fonts.ICON_FA_FONT_AWESOME ++ " Icon font view: " ++ " icons");
+            ig.igSeparatorText(ifa.ICON_FA_FONT_AWESOME ++ " Icon font view: " ++ " icons");
             //
             const listBoxWidth = 340; //# The value must be 2^n
             ig.igText("No.[%4d]", item_current);
             ig.igSameLine(0, -1.0);
             var sBuf = [_:0]u8{0} ** 100;
             _ = try std.fmt.bufPrint(&sBuf, "{s}", .{ift.iconFontsTbl[item_current]});
-            if (ig.igButton(fonts.ICON_FA_COPY ++ " Copy to", DefaultButtonSize)) {
+            if (ig.igButton(ifa.ICON_FA_COPY ++ " Copy to", DefaultButtonSize)) {
                 var it = std.mem.tokenizeAny(u8, &sBuf, " ");
                 _ = it.next().?;
                 ig.igSetClipboardText(it.next().?.ptr);
@@ -70,7 +74,7 @@ pub fn gui_main(window: *app.Window) !void {
             // # Show magnifying glass (Zooming in Toolchip)
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 if ((pio.*.MousePos.x - listBoxPosTop.x) < 50) {
-                    utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd);
+                    zg.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd);
                 }
             }
         } // end IconFontsViewer window

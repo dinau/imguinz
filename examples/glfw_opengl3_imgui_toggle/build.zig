@@ -42,9 +42,59 @@ pub fn build(b: *std.Build) void {
     const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
 
     const utils_path = "../utils";
+
     // -----------------
     // Modules
     // -----------------
+
+    // -----------------
+    // toggle module
+    // -----------------
+    const toggle_step = b.addTranslateC(.{
+        .root_source_file = b.path("src/toggle.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    toggle_step.addIncludePath(b.path("../../libs/cimgui"));
+    toggle_step.addIncludePath(b.path("../../libs/cimgui_toggle"));
+    //
+    const toggle_mod = toggle_step.createModule();
+    toggle_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    toggle_mod.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
+    exe_mod.addImport("toggle", toggle_mod);
+
+    // -----------------
+    // cimgui module
+    // -----------------
+    const cimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/cimgui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe_mod.addImport("cimgui", cimgui_mod);
+
+    // -----------------
+    // glfw_opengl module
+    // -----------------
+    const glfw_opengl_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/glfw_opengl.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe_mod.addImport("glfw_opengl", glfw_opengl_mod);
+
+    // -----------------
+    // glfw module
+    // -----------------
+    const glfw_step = b.addTranslateC(.{
+        .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const glfw_mod = glfw_step.createModule();
+    exe_mod.addImport("glfw", glfw_mod);
 
     // -----------------
     // clib module
@@ -58,14 +108,14 @@ pub fn build(b: *std.Build) void {
     exe_mod.addImport("clib", clib_step.createModule());
 
     // -----------------
-    // font_icon module
+    // fonticon module
     // -----------------
-    const font_icon_mod = b.createModule(.{
+    const fonticon_mod = b.createModule(.{
         .root_source_file = b.path(b.pathJoin(&.{ utils_path, "/fonticon/IconsFontAwesome6.zig" })),
         .target = target,
         .optimize = optimize,
     });
-    exe_mod.addImport("fonticon", font_icon_mod);
+    exe_mod.addImport("fonticon", fonticon_mod);
 
     // -----------------
     // utils module
@@ -78,49 +128,8 @@ pub fn build(b: *std.Build) void {
     utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
     utils_mod.addIncludePath(b.path("../../libs/cimgui"));
     utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    utils_mod.addImport("cimgui", cimgui_mod);
     exe_mod.addImport("utils", utils_mod);
-
-    // -----------------
-    // appimgui module
-    // -----------------
-    const appimgui_mod = b.createModule(.{
-        .root_source_file = b.path("src/appImGui.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    exe_mod.addImport("appimgui", appimgui_mod);
-
-    // -----------------
-    // zoomGlass module
-    // -----------------
-    //const zoomglass_mod = b.createModule(.{
-    //    .root_source_file = b.path("src/zoomGlass.zig"),
-    //    .target = target,
-    //    .optimize = optimize,
-    //});
-    //exe_mod.addImport("zoomglass", zoomglass_mod);
-
-    // -----------------
-    // setupfont module
-    // -----------------
-    const setupfont_step = b.addTranslateC(.{
-        .root_source_file = b.path("../utils/setupFonts.h"),
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-    });
-    const setupfont_mod = setupfont_step.createModule();
-    setupfont_mod.addIncludePath(b.path("../../libs/cimgui"));
-    setupfont_mod.addIncludePath(b.path(b.pathJoin(&.{ utils_path, "/fonticon" })));
-    setupfont_mod.addCSourceFiles(.{
-        .files = &.{
-            "../utils/setupFonts.c",
-        },
-        .flags = &.{
-            "-O2",
-        },
-    });
-    exe_mod.addImport("setupfont", setupfont_mod);
 
     // -----------------
     // loadimage module
@@ -146,6 +155,57 @@ pub fn build(b: *std.Build) void {
     exe_mod.addImport("loadimage", loadimage_mod);
 
     // -----------------
+    // appimgui module
+    // -----------------
+    const appimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils//appImGui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    appimgui_mod.addImport("cimgui", cimgui_mod);
+    appimgui_mod.addImport("glfw", glfw_mod);
+    appimgui_mod.addImport("glfw_opengl", glfw_opengl_mod);
+    appimgui_mod.addImport("fonticon", fonticon_mod);
+    appimgui_mod.addImport("loadimage", loadimage_mod);
+    exe_mod.addImport("appimgui", appimgui_mod);
+
+    // -----------------
+    // zoomGlass module
+    // -----------------
+    const zoomglass_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/zoomglass.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    zoomglass_mod.addImport("cimgui", cimgui_mod);
+    zoomglass_mod.addImport("glfw", glfw_mod);
+    zoomglass_mod.addImport("fonticon", fonticon_mod);
+    zoomglass_mod.addImport("loadimage", loadimage_mod);
+    exe_mod.addImport("zoomglass", zoomglass_mod);
+
+    // -----------------
+    // setupfont module
+    // -----------------
+    const setupfont_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/setupFonts.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const setupfont_mod = setupfont_step.createModule();
+    setupfont_mod.addIncludePath(b.path("../../libs/cimgui"));
+    setupfont_mod.addIncludePath(b.path(b.pathJoin(&.{ utils_path, "/fonticon" })));
+    setupfont_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/setupFonts.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+    exe_mod.addImport("setupfont", setupfont_mod);
+
+    // -----------------
     // saveimage module
     // -----------------
     const saveimage_step = b.addTranslateC(.{
@@ -169,37 +229,33 @@ pub fn build(b: *std.Build) void {
     //----------------------
     //  ImGui/CImGui Module
     //----------------------
-
     //----------------
     // rename exe_mod
     //----------------
-    const cimgui_mod = exe_mod;
-    //
-    cimgui_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
-    cimgui_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
-    cimgui_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
-    cimgui_mod.addIncludePath(b.path("../../libs/cimgui"));
-    cimgui_mod.addIncludePath(b.path("../utils"));
+    exe_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui"));
+    exe_mod.addIncludePath(b.path("../utils"));
     // toggle
-    cimgui_mod.addIncludePath(b.path("../../libs/cimgui_toggle"));
-    cimgui_mod.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
     // macro
-    cimgui_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    cimgui_mod.addCMacro("ImDrawIdx", "unsigned int");
-    cimgui_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    exe_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
+    exe_mod.addCMacro("ImDrawIdx", "unsigned int");
+    exe_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     switch (builtin.target.os.tag) {
-        .windows => cimgui_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-        .linux => cimgui_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        .windows => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+        .linux => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
     }
     // GLFW / Opengl3 backend
-    cimgui_mod.addCMacro("CIMGUI_USE_GLFW", "");
-    cimgui_mod.addCMacro("CIMGUI_USE_OPENGL3", "");
+    exe_mod.addCMacro("CIMGUI_USE_GLFW", "");
+    exe_mod.addCMacro("CIMGUI_USE_OPENGL3", "");
 
     //---------------
     // Sources C/C++
     //---------------
-    cimgui_mod.addCSourceFiles(.{
+    exe_mod.addCSourceFiles(.{
         .files = &.{
             // ImGui
             "../../libs/cimgui/imgui/imgui.cpp",

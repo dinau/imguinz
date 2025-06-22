@@ -1,45 +1,32 @@
-// Used zig-0.12.0 (2024/06)
-//
 const std = @import("std");
 const builtin = @import("builtin");
 
-// Although this function looks imperative, note that its job is to
-// declaratively construct a build graph that will be executed by an external
-// runner.
 pub fn build(b: *std.Build) void {
-    // Standard target options allows the person running `zig build` to choose
-    // what target to build for. Here we do not override the defaults, which
-    // means any target is allowed, and the default is native. Other options
-    // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
-
-    // Standard optimization options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
-    // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const imlibs = b.addStaticLibrary(.{
-        .name = "cimgui",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/cimgui.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-
-    // This declares intent for the library to be installed into the standard
-    // location when the user invokes the "install" step (the default step when
-    // running `zig build`).
-    //b.installArtifact(imlibs);
-
-    const exe = b.addExecutable(.{
-        .name = "glfw_opengl3_imknobs",
+    //const imlibs = b.addStaticLibrary(.{
+    //    .name = "cimgui",
+    //    .root_source_file = b.path("src/cimgui.zig"),
+    //    .target = target,
+    //    .optimize = optimize,
+    //});
+    //
+    const exe_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
-    // Load Icon
-    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+
+    //exe.root_module = b.createModule(.{
+    //    // `root_source_file` is the Zig "entry point" of the module. If a module
+    //    // only contains e.g. external object files, you can make this `null`.
+    //    // In this case the main source file is merely a path, however, in more
+    //    // complicated build scripts, this could be a generated file.
+    //    .target = target,
+    //    .optimize = optimize,
+    //});
+
     //----------------------------------
     // Detect 32bit or 64bit Winddws OS
     //----------------------------------
@@ -49,38 +36,225 @@ pub fn build(b: *std.Build) void {
         sArc = "32";
     }
     const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
-    //-----------------------
-    // For ImGui/CImGui Libs
-    //-----------------------
-    //---------------
-    // [imlibs] --- Include paths
-    //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
-    // ImGui/CImGui
-    imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
-    imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
-    imlibs.addIncludePath(b.path("../../libs/cimgui"));
-    // CImGui-Knobs
-    imlibs.addIncludePath(b.path("../../libs/cimgui-knobs"));
-    imlibs.addIncludePath(b.path("../../libs/cimgui-knobs/libs/imgui-knobs"));
 
-    //--------------------------------
-    // Define macro for C/C++ sources
-    //--------------------------------
-    // ImGui
-    imlibs.root_module.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    imlibs.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    imlibs.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    const utils_path = "../utils";
+    // -----------------
+    // Modules
+    // -----------------
+    // -----------------
+    // cimgui module
+    // -----------------
+    const cimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/cimgui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe_mod.addImport("cimgui", cimgui_mod);
+
+    // -----------------
+    // glfw_opengl module
+    // -----------------
+    const glfw_opengl_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/glfw_opengl.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe_mod.addImport("glfw_opengl", glfw_opengl_mod);
+
+    // -----------------
+    // glfw module
+    // -----------------
+    const glfw_step = b.addTranslateC(.{
+        .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const glfw_mod = glfw_step.createModule();
+    exe_mod.addImport("glfw", glfw_mod);
+
+    // -----------------
+    // clib module
+    // -----------------
+    const clib_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/clib.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    exe_mod.addImport("clib", clib_step.createModule());
+
+    // -----------------
+    // fonticon module
+    // -----------------
+    const fonticon_mod = b.createModule(.{
+        .root_source_file = b.path(b.pathJoin(&.{ utils_path, "fonticon/IconsFontAwesome6.zig" })),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe_mod.addImport("fonticon", fonticon_mod);
+
+    // -----------------
+    // utils module
+    // -----------------
+    const utils_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/utils.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
+    utils_mod.addIncludePath(b.path("../../libs/cimgui"));
+    utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    utils_mod.addImport("cimgui", cimgui_mod);
+    exe_mod.addImport("utils", utils_mod);
+
+    // -----------------
+    // loadimage module
+    // -----------------
+    const loadimage_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/loadImage.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const loadimage_mod = loadimage_step.createModule();
+    loadimage_mod.addIncludePath(b.path("../../libs/stb"));
+    loadimage_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    loadimage_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/loadImage.c",
+        },
+        .flags = &.{
+            "-O2",
+            "-DCIMGUI_USE_GLFW",
+        },
+    });
+    exe_mod.addImport("loadimage", loadimage_mod);
+
+    // -----------------
+    // imknobs module
+    // -----------------
+    const imknobs_step = b.addTranslateC(.{
+        .root_source_file = b.path("../../libs/cimgui-knobs/cimgui-knobs.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    imknobs_step.addIncludePath(b.path("../../libs/cimgui"));
+    imknobs_step.addIncludePath(b.path("../../libs/cimknobs"));
+    imknobs_step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    //
+    const imknobs_mod = imknobs_step.createModule();
+    // Enable other knobss. See ../../libs/cimknobs/cimknobs.[h,cpp]
+    exe_mod.addCMacro("knobs_DNADOTS","");
+    exe_mod.addCMacro("IMknobs_DEMO","");
+    //
+    exe_mod.addImport("imknobs", imknobs_mod);
+
+    // -----------------
+    // appimgui module
+    // -----------------
+    const appimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils//appImGui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    appimgui_mod.addImport("cimgui", cimgui_mod);
+    appimgui_mod.addImport("glfw", glfw_mod);
+    appimgui_mod.addImport("glfw_opengl", glfw_opengl_mod);
+    appimgui_mod.addImport("fonticon", fonticon_mod);
+    appimgui_mod.addImport("loadimage", loadimage_mod);
+    exe_mod.addImport("appimgui", appimgui_mod);
+
+    // -----------------
+    // zoomGlass module
+    // -----------------
+    const zoomglass_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/zoomGlass.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    zoomglass_mod.addImport("cimgui", cimgui_mod);
+    zoomglass_mod.addImport("glfw", glfw_mod);
+    zoomglass_mod.addImport("fonticon", fonticon_mod);
+    zoomglass_mod.addImport("loadimage", loadimage_mod);
+    exe_mod.addImport("zoomglass", zoomglass_mod);
+
+    // -----------------
+    // setupfont module
+    // -----------------
+    const setupfont_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/setupFonts.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const setupfont_mod = setupfont_step.createModule();
+    setupfont_mod.addIncludePath(b.path("../../libs/cimgui"));
+    setupfont_mod.addIncludePath(b.path(b.pathJoin(&.{ utils_path, "fonticon" })));
+    setupfont_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/setupFonts.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+    exe_mod.addImport("setupfont", setupfont_mod);
+
+    // -----------------
+    // saveimage module
+    // -----------------
+    const saveimage_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/saveImage.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const saveimage_mod = saveimage_step.createModule();
+    saveimage_mod.addIncludePath(b.path("../../libs/stb"));
+    saveimage_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/saveImage.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+    exe_mod.addImport("saveimage", saveimage_mod);
+
+    //----------------------
+    //  ImGui/CImGui Module
+    //----------------------
+
+    //----------------
+    // rename exe_mod
+    //----------------
+    exe_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui"));
+    exe_mod.addIncludePath(b.path("../utils"));
+    // cimgui-knobs
+    exe_mod.addIncludePath(b.path("../../libs/cimgui-knobs"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui-knobs//libs/imgui-knobs"));
+    // macro
+    exe_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
+    exe_mod.addCMacro("ImDrawIdx", "unsigned int");
+    exe_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     switch (builtin.target.os.tag) {
-        .windows => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-        .linux => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        .windows => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+        .linux => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
     }
+    // GLFW / Opengl3 backend
+    exe_mod.addCMacro("CIMGUI_USE_GLFW", "");
+    exe_mod.addCMacro("CIMGUI_USE_OPENGL3", "");
 
     //---------------
     // Sources C/C++
     //---------------
-    imlibs.addCSourceFiles(.{
+    exe_mod.addCSourceFiles(.{
         .files = &.{
             // ImGui
             "../../libs/cimgui/imgui/imgui.cpp",
@@ -90,6 +264,7 @@ pub fn build(b: *std.Build) void {
             "../../libs/cimgui/imgui/imgui_draw.cpp",
             // CImGui
             "../../libs/cimgui/cimgui.cpp",
+            "../../libs/cimgui/cimgui_impl.cpp",
             // CImGui-Knobs
             "../../libs/cimgui-knobs/cimgui-knobs.cpp",
             "../../libs/cimgui-knobs/libs/imgui-knobs/imgui-knobs.cpp",
@@ -101,50 +276,21 @@ pub fn build(b: *std.Build) void {
         },
         .flags = &.{
             "-O2",
-            "-msse4.2",
         },
     });
 
-    //-------------------
-    // For application
-    //-------------------
-    //---------------
-    // Include paths
-    //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
-    exe.addIncludePath(b.path("src"));
-    exe.addIncludePath(b.path("../utils"));
-    exe.addIncludePath(b.path("../utils/fonticon"));
-    exe.addIncludePath(b.path("../../libs/stb"));
-    exe.addIncludePath(b.path("../../libs/cimgui/generator/output"));
-    // CImGui
-    exe.addIncludePath(b.path("../../libs/cimgui"));
-    // CImGui-Knobs
-    exe.addIncludePath(b.path("../../libs/cimgui-knobs"));
-    //--------------------------------
-    // Define macro for C/C++ sources
-    //--------------------------------
-    exe.root_module.addCMacro("CIMGUI_USE_GLFW", "");
-    exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
-    exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
-    exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    //---------------
-    // Sources C/C++
-    //---------------
-    exe.addCSourceFiles(.{
-        .files = &.{
-            "../utils/setupFonts.c",
-            "../utils/loadImage.c",
-            "../utils/saveImage.c",
-        },
-        .flags = &.{
-            "-O2",
-        },
+    const exe = b.addExecutable(.{
+        .name = "glfw_opengl3_imknobs",
+        .root_module = exe_mod,
     });
-    //------
-    // Libs
-    //------
+    //exe.root_module.addImport("cimgui", cimgui_mod);
+
+    // Load Icon
+    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+
+    //----------
+    // Linking
+    //----------
     if (builtin.target.os.tag == .windows) {
         exe.linkSystemLibrary("gdi32");
         exe.linkSystemLibrary("imm32");
@@ -167,11 +313,7 @@ pub fn build(b: *std.Build) void {
     // System
     exe.linkLibC();
     exe.linkLibCpp();
-    //
-    exe.linkLibrary(imlibs);
-    //
-    imlibs.linkLibC();
-    imlibs.linkLibCpp();
+
     exe.subsystem = .Windows; // Hide console window
 
     // This declares intent for the executable to be installed into the

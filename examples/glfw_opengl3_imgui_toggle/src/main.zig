@@ -1,7 +1,10 @@
+const ig = @import("cimgui");
+const glfw = @import("glfw");
+const ifa = @import("fonticon");
 const stf = @import("setupfont");
-//
-const app = @import("appImGui.zig");
-const ig = @import("imgui.zig");
+const app = @import("appimgui");
+
+const toggle = @import("toggle");
 
 //-----------
 // gui_main()
@@ -12,8 +15,8 @@ pub fn gui_main(window: *app.Window) void {
     //---------------
     // main loop GUI
     //---------------
-    while (ig.glfwWindowShouldClose(window.handle) == 0) {
-        ig.glfwPollEvents();
+    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
+        glfw.glfwPollEvents();
 
         // Start the Dear ImGui frame
         window.frame();
@@ -30,17 +33,20 @@ pub fn gui_main(window: *app.Window) void {
             const green_hover = ig.ImVec4{ .x = 0.0, .y = 1.0, .z = 0.57, .w = 1.0 };
             const green_shadow = ig.ImVec4{ .x = 0.0, .y = 1.0, .z = 0.0, .w = 0.4 };
             var value_index: usize = 0;
-            const sz: ig.ImVec2 = .{ .x = 0.0, .y = 0.0 };
+            const sz: toggle.ImVec2 = .{ .x = 0.0, .y = 0.0 };
             const sThemeClassic = "Theme: Classic";
             const sThemeLight = "Theme: Light";
             const st = struct {
                 var values = [8]bool{ true, true, true, true, true, true, true, true };
                 var sTheme: []const u8 = sThemeClassic[0..];
             };
-            _ = ig.igBegin("Zig: ImGui-Toggle demo 2025/02", null, 0);
+            _ = ig.igBegin("Zig: ImGui-Toggle demo 2025/02" ++ " " ++ ifa.ICON_FA_DOG, null, 0);
             defer ig.igEnd();
-            //
-            if (ig.Toggle("##toggle1", &st.values[value_index], sz)) {
+
+            //--------------
+            // Theme Toggle
+            //--------------
+            if (toggle.Toggle("##toggle1", &st.values[value_index], sz)) {
                 if (st.values[value_index]) {
                     st.sTheme = sThemeClassic[0..];
                     ig.igStyleColorsClassic(null);
@@ -53,36 +59,57 @@ pub fn gui_main(window: *app.Window) void {
             ig.igText("%s", st.sTheme.ptr);
             ig.igSeparator();
             value_index += 1;
-            //
-            _ = ig.Toggle("Default Toggle", &st.values[value_index], sz);
+
+            //----------------
+            // Default Toggle
+            //----------------
+            _ = toggle.Toggle("Default Toggle", &st.values[value_index], sz);
             ig.igSameLine(0.0, -1.0);
             value_index += 1;
-            //
-            _ = ig.ToggleAnim("Animated Toggle", &st.values[value_index], ig.ImGuiToggleFlags_Animated, 1.0, sz);
+
+            //-----------------
+            // Animated Toggle
+            //-----------------
+            _ = toggle.ToggleAnim("Animated Toggle", &st.values[value_index], toggle.ImGuiToggleFlags_Animated, 1.0, sz);
             value_index += 1;
+
+            //---------------
+            // Bordered Knob
+            //---------------
             // This toggle draws a simple border around it's frame and knob
-            _ = ig.ToggleAnim("Bordered Knob", &st.values[value_index], ig.ImGuiToggleFlags_Bordered, 1.0, sz);
+            _ = toggle.ToggleAnim("Bordered Knob", &st.values[value_index], toggle.ImGuiToggleFlags_Bordered, 1.0, sz);
             ig.igSameLine(0.0, -1.0);
             value_index += 1;
-            //
-            {
-                ig.igPushStyleColor_Vec4(ig.ImGuiCol_BorderShadow, green_shadow);
-                _ = ig.ToggleAnim("Shadowed Knob", &st.values[value_index], ig.ImGuiToggleFlags_Shadowed, 1.0, sz);
-                value_index += 1;
+
+            //---------------
+            // Shadowed Knob
+            //---------------
+            ig.igPushStyleColor_Vec4(ig.ImGuiCol_BorderShadow, green_shadow);
+            _ = toggle.ToggleAnim("Shadowed Knob", &st.values[value_index], toggle.ImGuiToggleFlags_Shadowed, 1.0, sz);
+            value_index += 1;
                 //
-                _ = ig.ToggleAnim("Bordered + Shadowed Knob", &st.values[value_index], ig.ImGuiToggleFlags_Bordered | ig.ImGuiToggleFlags_Shadowed, 1.0, sz);
-                value_index += 1;
-                ig.igPopStyleColor(1);
-            }
+            //--------------------------
+            // Bordered + Shadowed Knob
+            //--------------------------
+            _ = toggle.ToggleAnim("Bordered + Shadowed Knob", &st.values[value_index], toggle.ImGuiToggleFlags_Bordered | toggle.ImGuiToggleFlags_Shadowed, 1.0, sz);
+            value_index += 1;
+            ig.igPopStyleColor(1);
+
+            //--------------
+            // Green Toggle
+            //--------------
             // This toggle uses stack-pushed style colors to change the way it displays
             ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button, green);
             ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, green_hover);
-            _ = ig.Toggle("Green Toggle", &st.values[value_index], sz);
+            _ = toggle.Toggle("Green Toggle", &st.values[value_index], sz);
             ig.igSameLine(0.0, -1.0);
             ig.igPopStyleColor(2);
             value_index += 1;
-            //
-            _ = ig.ToggleFlag("Toggle with A11y Labels", &st.values[value_index], ig.ImGuiToggleFlags_A11y, sz);
+
+            //-------------------------
+            // Toggle with A11y Labels
+            //-------------------------
+            _ = toggle.ToggleFlag("Toggle with A11y Labels", &st.values[value_index], toggle.ImGuiToggleFlags_A11y, sz);
             value_index += 1;
         }
 

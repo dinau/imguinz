@@ -82,7 +82,7 @@ examples in Zig language with less external dependencies.
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
+  $ sudo apt install libopengl-dev libgl1-mesa-dev
   ```
 
   and for glfw3 and sdl2,
