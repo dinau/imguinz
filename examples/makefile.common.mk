@@ -19,6 +19,8 @@ run: all
 	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
 	cp $(ZIG_BIN_DIR)/imgui.ini .
 	cp $(ZIG_BIN_DIR)/$(TARGET).ini .
+	$(AFTER_RUN_CMD)
+
 
 gen:
 	nim ../utils/genImPlotFuncs.nims
@@ -53,3 +55,5 @@ dupx:
 fmt:
 	zig fmt src/main.zig
 	zig fmt build.zig
+
+pretty: fmt
