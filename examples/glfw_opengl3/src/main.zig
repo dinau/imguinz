@@ -26,7 +26,7 @@ pub fn gui_main(window: *app.Window) void {
         //------------------
         // Show info window
         //------------------
-        window.showInfoWindow();    // See:  examples/utils/appImGui.zig
+        window.showInfoWindow(); // See:  examples/utils/appImGui.zig
 
         //--------
         // render

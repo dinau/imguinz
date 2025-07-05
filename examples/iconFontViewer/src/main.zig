@@ -85,8 +85,7 @@ pub fn gui_main(window: *app.Window) !void {
         {
             _ = ig.igBegin("Icon Font Viewer2", null, 0);
             defer ig.igEnd();
-            const wsZoom = 2.5;
-            const wsNormal = 1.0;
+            const wsZoom = 45;
             const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
             const text_base_height = ig.igGetTextLineHeightWithSpacing();
             const outer_size = utils.vec2(0.0, text_base_height * 8);
@@ -99,16 +98,18 @@ pub fn gui_main(window: *app.Window) !void {
                     for (0..col) |column| {
                         const ix = (row * col) + column;
                         _ = ig.igTableSetColumnIndex(@intCast(column));
-                        ig.igSetWindowFontScale(wsZoom);
+                        //ig.igSetWindowFontScale(wsZoom);
+                        ig.igPushFont(null, wsZoom);
                         //---- select 1: Text
                         ig.igText("%s", ift.iconFontsTbl2[ix][0]);
                         //---- select 2: Button
                         //if (ig.igButton(ift.iconFontsTbl2[ix][0], DefaultButtonSize)){
                         //  item_current = ix;
                         //}
+                        ig.igPopFont();
                         const iconFontLabel = std.mem.span(ift.iconFontsTbl2[ix][1]);
                         utils.setTooltipEx(iconFontLabel, ig.ImGuiHoveredFlags_DelayNone, utils.vec4(0.0, 1.0, 0.0, 1.0));
-                        ig.igSetWindowFontScale(wsNormal);
+                        //ig.igSetWindowFontScale(wsNormal);
                         //
                         ig.igPushID_Int(@intCast(ix));
                         defer ig.igPopID();

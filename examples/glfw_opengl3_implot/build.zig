@@ -1,21 +1,8 @@
-// Used zig-0.12.0 (2024/06)
-//
 const std = @import("std");
 const builtin = @import("builtin");
 
-// Although this function looks imperative, note that its job is to
-// declaratively construct a build graph that will be executed by an external
-// runner.
 pub fn build(b: *std.Build) void {
-    // Standard target options allows the person running `zig build` to choose
-    // what target to build for. Here we do not override the defaults, which
-    // means any target is allowed, and the default is native. Other options
-    // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
-
-    // Standard optimization options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
-    // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
     const imlibs = b.addStaticLibrary(.{
@@ -40,22 +27,22 @@ pub fn build(b: *std.Build) void {
     });
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
-    //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
-    //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
-    var sArc = "64";
-    if(builtin.cpu.arch == .x86){
-      sArc = "32";
+    //-----------
+    // GLFW path
+    //-----------
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
     }
-    const glfw_path = b.fmt("{s}{s}", .{Glfw_Base,sArc});
     //-----------------------
     // For ImGui/CImGui Libs
     //-----------------------
     //---------------
     // [imlibs] --- Include paths
     //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    imlibs.addIncludePath(.{.cwd_relative = b.pathJoin(&.{glfw_path, "include"})});
     // ImGui/CImGui
     imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
     imlibs.addIncludePath(b.path("../../libs/imgui/backends"));
@@ -110,7 +97,7 @@ pub fn build(b: *std.Build) void {
     //---------------
     // Include paths
     //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{glfw_path, "include"})));
+    exe.addIncludePath(.{.cwd_relative = b.pathJoin(&.{glfw_path, "include"})});
     exe.addIncludePath(b.path("src"));
     exe.addIncludePath(b.path("../utils"));
     exe.addIncludePath(b.path("../utils/fonticon"));
@@ -150,7 +137,7 @@ pub fn build(b: *std.Build) void {
     exe.linkSystemLibrary("user32");
     exe.linkSystemLibrary("shell32");
       // Static link
-      exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3.a"})));
+        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
     }else if (builtin.target.os.tag == .linux){
       exe.linkSystemLibrary("glfw3");
       exe.linkSystemLibrary("GL");

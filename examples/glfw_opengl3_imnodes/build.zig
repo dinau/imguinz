@@ -32,22 +32,21 @@ pub fn build(b: *std.Build) void {
     //});
 
     //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
+    // GLFW path
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
-    var sArc = "64";
-    if (builtin.cpu.arch == .x86) {
-        sArc = "32";
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
     }
-    const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
-
     const utils_path = "../utils";
     // --------
     // Modules
     // --------
-    // ------------
+    // ---------------
     // imnodes module
-    // ------------
+    // ---------------
     const imnodes_step = b.addTranslateC(.{
         .root_source_file = b.path("../../libs/cimnodes/cimnodes.h"),
         .target = target,
@@ -81,9 +80,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("cimgui", cimgui_mod);
 
-    // -------------------
+    // -----------------
     // glfw_opengl module
-    // -------------------
+    // -----------------
     const glfw_opengl_mod = b.createModule(.{
         .root_source_file = b.path("../utils/glfw_opengl.zig"),
         .target = target,
@@ -149,7 +148,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -240,7 +239,7 @@ pub fn build(b: *std.Build) void {
     //----------------
     // rename exe_mod
     //----------------
-    exe_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    exe_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui"));

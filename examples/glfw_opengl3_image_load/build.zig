@@ -32,24 +32,21 @@ pub fn build(b: *std.Build) void {
     //});
 
     //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
+    // GLFW path
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
-    var sArc = "64";
-    if (builtin.cpu.arch == .x86) {
-        sArc = "32";
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
     }
-    const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
-
     const utils_path = "../utils";
-
-
-    // -----------------
+    // --------
     // Modules
-    // -----------------
-    // -----------------
+    // --------
+    // --------------
     // cimgui module
-    // -----------------
+    // --------------
     const cimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils/cimgui.zig"),
         .target = target,
@@ -67,9 +64,9 @@ pub fn build(b: *std.Build) void {
     });
     main_mod.addImport("glfw_opengl", glfw_opengl_mod);
 
-    // -----------------
+    // ------------
     // glfw module
-    // -----------------
+    // ------------
     const glfw_step = b.addTranslateC(.{
         .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
         .target = target,
@@ -79,9 +76,9 @@ pub fn build(b: *std.Build) void {
     const glfw_mod = glfw_step.createModule();
     main_mod.addImport("glfw", glfw_mod);
 
-    // -----------------
+    // ------------
     // clib module
-    // -----------------
+    // ------------
     const clib_step = b.addTranslateC(.{
         .root_source_file = b.path("../utils/clib.h"),
         .target = target,
@@ -90,9 +87,9 @@ pub fn build(b: *std.Build) void {
     });
     main_mod.addImport("clib", clib_step.createModule());
 
-    // -----------------
+    // ----------------
     // fonticon module
-    // -----------------
+    // ----------------
     const fonticon_mod = b.createModule(.{
         .root_source_file = b.path(b.pathJoin(&.{ utils_path, "/fonticon/IconsFontAwesome6.zig" })),
         .target = target,
@@ -100,9 +97,9 @@ pub fn build(b: *std.Build) void {
     });
     main_mod.addImport("fonticon", fonticon_mod);
 
-    // -----------------
+    // -------------
     // utils module
-    // -----------------
+    // -------------
     const utils_mod = b.createModule(.{
         .root_source_file = b.path("../utils/utils.zig"),
         .target = target,
@@ -122,7 +119,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -134,9 +131,9 @@ pub fn build(b: *std.Build) void {
     });
     main_mod.addImport("loadimage", loadimage_mod);
 
-    // -----------------
+    // ----------------
     // appimgui module
-    // -----------------
+    // ----------------
     const appimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils//appImGui.zig"),
         .target = target,
@@ -209,7 +206,7 @@ pub fn build(b: *std.Build) void {
     //----------------------
     //  ImGui/CImGui Module
     //----------------------
-    main_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    main_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     main_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     main_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     main_mod.addIncludePath(b.path("../../libs/cimgui"));
@@ -260,9 +257,9 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    //----------
+    //---------
     // Linking
-    //----------
+    //---------
     if (builtin.target.os.tag == .windows) {
         exe.linkSystemLibrary("gdi32");
         exe.linkSystemLibrary("imm32");
@@ -270,7 +267,7 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
         // Static link
-        exe.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })));
+        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");

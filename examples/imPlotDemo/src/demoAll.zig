@@ -1061,7 +1061,7 @@ fn demo_Images() !void {
     if (ip.ImPlot_BeginPlot("##image", .{ .x = -1, .y = 0 }, 0)) {
         //ip.ImPlot_PlotImage("my image",ig.igGetIO().*.Fonts.*.TexID, st.bmin, st.bmax, st.uv0, st.uv1, st.tint, 0);
         // TODO
-        ip.ImPlot_PlotImage("my image", @intCast(st.textureId)
+        ip.ImPlot_PlotImage("my image", .{._TexData = null, ._TexID = st.textureId}
           , .{.x = st.bmin.x, .y = st.bmin.y} //st.bmin
           , .{.x = st.bmax.x, .y = st.bmax.y} //st.bmin
           , .{.x = st.uv0.x, .y = st.uv0.y}   //st.bmin

@@ -9,6 +9,8 @@
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
+    - [ImNodes / CImNodes](#imnodes--cimnodes)
+    - [ImGuizmo / CImGuizmo](#imguizmo--cimguizmo)
     - [Image load](#image-load)
     - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
     - [Icon font viewer](#icon-font-viewer)
@@ -50,7 +52,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.91.9b dock** (2025/06)
+- ImGui / CImGui version **1.92.0 dock** (2025/07)
 - OS: Windows and Linux
 - Frontends and Backends 
 
@@ -75,6 +77,7 @@ examples in Zig language with less external dependencies.
 - Zig version confirmed
    1. Windows: [zig-x86_64-windows-0.14.1.zip](https://ziglang.org/download/0.14.1/zig-x86_64-windows-0.14.1.zip)
    1. Linux:   [zig-x86_64-linux-0.14.1.tar.xz](https://ziglang.org/download/0.14.1/zig-x86_64-linux-0.14.1.tar.xz)
+   1. zig-0.15.0-dev.885 or later
 
 - WindowsOS
    - Windows10 or later
@@ -122,8 +125,8 @@ Library name / C lang. wrapper
 - [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) (2024/11)
 - [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
 - [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
-- [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
-- [ ] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) 
+- [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/06)
+- [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/07) 
 - [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) (2025/05)
 - [ ] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
@@ -163,6 +166,16 @@ Library name / C lang. wrapper
 [glfw_opengl3_imnodes.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imnodes/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imnodes.png)
+
+
+#### [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)
+
+---
+
+
+[glfw_opengl3_imguizmo.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguizmo/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imguizmo.png)
 
 #### Image load 
 

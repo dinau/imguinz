@@ -69,8 +69,8 @@ void setupFonts(void) {
     fontPath = getWinFontPath(sBufFontPath, sizeof(sBufFontPath), WinFontNameTbl[i]);
     if (existsFile(fontPath)) {
       font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(14.5)
-          , config
-          , ImFontAtlas_GetGlyphRangesJapanese(pio->Fonts));
+          , NULL
+          , NULL);
       printf("Found FontPath: [%s]\n",fontPath);
       break;
     }
@@ -80,8 +80,8 @@ void setupFonts(void) {
     fontPath = LinuxFontNameTbl[i];
     if (existsFile(fontPath)) {
       font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(13)
-          , config
-          , ImFontAtlas_GetGlyphRangesJapanese(pio->Fonts));
+          , NULL
+          , NULL);
       printf("Found FontPath: [%s]\n",fontPath);
       break;
     }

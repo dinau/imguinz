@@ -32,24 +32,21 @@ pub fn build(b: *std.Build) void {
     //});
 
     //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
+    // GLFW path
     //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
-    var sArc = "64";
-    if (builtin.cpu.arch == .x86) {
-        sArc = "32";
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
     }
-    const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
-
     const utils_path = "../utils";
-
-    // -----------------
+    // --------
     // Modules
-    // -----------------
-
-    // -----------------
+    // --------
+    // --------------
     // toggle module
-    // -----------------
+    // --------------
     const toggle_step = b.addTranslateC(.{
         .root_source_file = b.path("src/toggle.h"),
         .target = target,
@@ -61,12 +58,12 @@ pub fn build(b: *std.Build) void {
     //
     const toggle_mod = toggle_step.createModule();
     toggle_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
-    toggle_mod.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
+    toggle_mod.addIncludePath(b.path("../../libs/cimgui_toggle/imgui_toggle"));
     exe_mod.addImport("toggle", toggle_mod);
 
-    // -----------------
+    // --------------
     // cimgui module
-    // -----------------
+    // --------------
     const cimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils/cimgui.zig"),
         .target = target,
@@ -84,9 +81,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("glfw_opengl", glfw_opengl_mod);
 
-    // -----------------
+    // ------------
     // glfw module
-    // -----------------
+    // ------------
     const glfw_step = b.addTranslateC(.{
         .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
         .target = target,
@@ -96,9 +93,9 @@ pub fn build(b: *std.Build) void {
     const glfw_mod = glfw_step.createModule();
     exe_mod.addImport("glfw", glfw_mod);
 
-    // -----------------
+    // ------------
     // clib module
-    // -----------------
+    // ------------
     const clib_step = b.addTranslateC(.{
         .root_source_file = b.path("../utils/clib.h"),
         .target = target,
@@ -107,9 +104,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("clib", clib_step.createModule());
 
-    // -----------------
+    // ----------------
     // fonticon module
-    // -----------------
+    // ----------------
     const fonticon_mod = b.createModule(.{
         .root_source_file = b.path(b.pathJoin(&.{ utils_path, "/fonticon/IconsFontAwesome6.zig" })),
         .target = target,
@@ -117,9 +114,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("fonticon", fonticon_mod);
 
-    // -----------------
+    // -------------
     // utils module
-    // -----------------
+    // -------------
     const utils_mod = b.createModule(.{
         .root_source_file = b.path("../utils/utils.zig"),
         .target = target,
@@ -142,7 +139,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -154,9 +151,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("loadimage", loadimage_mod);
 
-    // -----------------
+    // ----------------
     // appimgui module
-    // -----------------
+    // ----------------
     const appimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils//appImGui.zig"),
         .target = target,
@@ -229,20 +226,21 @@ pub fn build(b: *std.Build) void {
     //----------------------
     //  ImGui/CImGui Module
     //----------------------
+
     //----------------
     // rename exe_mod
     //----------------
-    exe_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    exe_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui"));
     exe_mod.addIncludePath(b.path("../utils"));
     // toggle
-    exe_mod.addIncludePath(b.path("../../libs/cimgui_toggle/libs/imgui_toggle"));
+    exe_mod.addIncludePath(b.path("../../libs/cimgui_toggle/imgui_toggle"));
     // macro
     exe_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     exe_mod.addCMacro("ImDrawIdx", "unsigned int");
-    exe_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    //exe_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     switch (builtin.target.os.tag) {
         .windows => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => exe_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
@@ -270,10 +268,10 @@ pub fn build(b: *std.Build) void {
             "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
             "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
             // ImGui-Toggle
-            "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle.cpp",
-            "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_presets.cpp",
-            "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_renderer.cpp",
-            "../../libs/cimgui_toggle/libs/imgui_toggle/imgui_toggle_palette.cpp",
+            "../../libs/cimgui_toggle/imgui_toggle/imgui_toggle.cpp",
+            "../../libs/cimgui_toggle/imgui_toggle/imgui_toggle_presets.cpp",
+            "../../libs/cimgui_toggle/imgui_toggle/imgui_toggle_renderer.cpp",
+            "../../libs/cimgui_toggle/imgui_toggle/imgui_toggle_palette.cpp",
             // CImGui-Toggle
             "../../libs/cimgui_toggle/cimgui_toggle.cpp",
             "../../libs/cimgui_toggle/cimgui_offset_rect.cpp",
@@ -294,9 +292,9 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    //----------
+    //---------
     // Linking
-    //----------
+    //---------
     if (builtin.target.os.tag == .windows) {
         exe.linkSystemLibrary("gdi32");
         exe.linkSystemLibrary("imm32");
@@ -304,7 +302,7 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
         // Static link
-        exe.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })));
+        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");

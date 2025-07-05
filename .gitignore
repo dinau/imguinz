@@ -1,3 +1,5 @@
+subadd.bat
+delModule.mak
 .ccache/
 examples/utils/tools
 examples/glfw_opengl3_bench

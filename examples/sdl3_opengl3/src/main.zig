@@ -225,7 +225,7 @@ pub fn main () !void {
       const uv0        = ig.ImVec2 {.x = 0, .y = 0};
       const uv1        = ig.ImVec2 {.x = 1, .y = 1};
       ig.igGetCursorScreenPos(&imageBoxPosTop);// # Get absolute pos.
-      ig.igImage(@intCast(textureId), size, uv0, uv1);
+      ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
       ig.igGetCursorScreenPos(&imageBoxPosEnd);// # Get absolute pos.
       if(ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
         utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);

@@ -31,23 +31,22 @@ pub fn build(b: *std.Build) void {
     //    .optimize = optimize,
     //});
 
-    //----------------------------------
-    // Detect 32bit or 64bit Winddws OS
-    //----------------------------------
-    const Glfw_Base = "../../libs/glfw/glfw-3.4.bin.WIN";
-    var sArc = "64";
-    if (builtin.cpu.arch == .x86) {
-        sArc = "32";
+    //-----------
+    // GLFW path
+    //-----------
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
     }
-    const glfw_path = b.fmt("{s}{s}", .{ Glfw_Base, sArc });
-
     const utils_path = "../utils";
-    // -----------------
+    // --------
     // Modules
-    // -----------------
-    // -----------------
+    // --------
+    // --------------
     // cimgui module
-    // -----------------
+    // --------------
     const cimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils/cimgui.zig"),
         .target = target,
@@ -65,9 +64,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("glfw_opengl", glfw_opengl_mod);
 
-    // -----------------
+    // ------------
     // glfw module
-    // -----------------
+    // ------------
     const glfw_step = b.addTranslateC(.{
         .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
         .target = target,
@@ -77,9 +76,9 @@ pub fn build(b: *std.Build) void {
     const glfw_mod = glfw_step.createModule();
     exe_mod.addImport("glfw", glfw_mod);
 
-    // -----------------
+    // ------------
     // clib module
-    // -----------------
+    // ------------
     //const clib_step = b.addTranslateC(.{
     //    .root_source_file = b.path("../utils/clib.h"),
     //    .target = target,
@@ -88,9 +87,9 @@ pub fn build(b: *std.Build) void {
     //});
     //exe_mod.addImport("clib", clib_step.createModule());
 
-    // -----------------
+    // ----------------
     // fonticon module
-    // -----------------
+    // ----------------
     const fonticon_mod = b.createModule(.{
         .root_source_file = b.path(b.pathJoin(&.{ utils_path, "fonticon/IconsFontAwesome6.zig" })),
         .target = target,
@@ -98,9 +97,9 @@ pub fn build(b: *std.Build) void {
     });
     exe_mod.addImport("fonticon", fonticon_mod);
 
-    // -----------------
+    // -------------
     // utils module
-    // -----------------
+    // -------------
     const utils_mod = b.createModule(.{
         .root_source_file = b.path("../utils/utils.zig"),
         .target = target,
@@ -123,7 +122,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -152,14 +151,22 @@ pub fn build(b: *std.Build) void {
     const imspinner_mod = imspinner_step.createModule();
     //imspinner_mod.addIncludePath(b.path("../../libs/cimgui"));
     // Enable other spinners. See ../../libs/cimspinner/cimspinner.[h,cpp]
+    exe_mod.addCMacro("SPINNER_RAINBOWMIX","");
     exe_mod.addCMacro("SPINNER_DNADOTS","");
+    exe_mod.addCMacro("SPINNER_ANG8","");
+    exe_mod.addCMacro("SPINNER_CLOCK","");
+    exe_mod.addCMacro("SPINNER_PULSAR","");
+    exe_mod.addCMacro("SPINNER_DOTSTOBAR","");
+    exe_mod.addCMacro("SPINNER_ATOM","");
+    exe_mod.addCMacro("SPINNER_BARCHARTRAINBOW","");
+    exe_mod.addCMacro("SPINNER_SWINGDOTS","");
     exe_mod.addCMacro("IMSPINNER_DEMO","");
     //
     exe_mod.addImport("imspinner", imspinner_mod);
 
-    // -----------------
+    // ----------------
     // appimgui module
-    // -----------------
+    // ----------------
     const appimgui_mod = b.createModule(.{
         .root_source_file = b.path("../utils//appImGui.zig"),
         .target = target,
@@ -236,14 +243,15 @@ pub fn build(b: *std.Build) void {
     //----------------
     // rename exe_mod
     //----------------
-    exe_mod.addIncludePath(b.path(b.pathJoin(&.{ glfw_path, "include" })));
+    exe_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui"));
     exe_mod.addIncludePath(b.path("../utils"));
     // cimspinner
     exe_mod.addIncludePath(b.path("../../libs/cimspinner"));
-    exe_mod.addIncludePath(b.path("../../libs/cimspinner/libs/imspinner"));
+    exe_mod.addIncludePath(b.path("../../libs/cimspinner/imspinner"));
+    exe_mod.addIncludePath(b.path("src"));
     // macro
     exe_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     exe_mod.addCMacro("ImDrawIdx", "unsigned int");
@@ -293,9 +301,9 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    //----------
+    //---------
     // Linking
-    //----------
+    //---------
     if (builtin.target.os.tag == .windows) {
         exe.linkSystemLibrary("gdi32");
         exe.linkSystemLibrary("imm32");
@@ -303,7 +311,7 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
         // Static link
-        exe.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })));
+        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");
