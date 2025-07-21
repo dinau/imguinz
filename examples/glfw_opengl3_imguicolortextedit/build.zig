@@ -1,0 +1,421 @@
+const std = @import("std");
+const builtin = @import("builtin");
+
+pub fn build(b: *std.Build) void {
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
+    //const imlibs = b.addStaticLibrary(.{
+    //    .name = "cimgui",
+    //    .root_source_file = b.path("src/cimgui.zig"),
+    //    .target = target,
+    //    .optimize = optimize,
+    //});
+    //
+    const main_mod = b.createModule(.{
+        // `root_source_file` is the Zig "entry point" of the module. If a module
+        // only contains e.g. external object files, you can make this `null`.
+        // In this case the main source file is merely a path, however, in more
+        // complicated build scripts, this could be a generated file.
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    //exe.root_module = b.createModule(.{
+    //    // `root_source_file` is the Zig "entry point" of the module. If a module
+    //    // only contains e.g. external object files, you can make this `null`.
+    //    // In this case the main source file is merely a path, however, in more
+    //    // complicated build scripts, this could be a generated file.
+    //    .target = target,
+    //    .optimize = optimize,
+    //});
+
+    //----------------------------------
+    // GLFW path
+    //----------------------------------
+    var glfw_path: []u8 = undefined;
+    switch (builtin.target.os.tag) {
+        .windows => glfw_path = b.fmt("{s}", .{"../../libs/glfw/glfw-3.4.bin.WIN64"}),
+        .linux => glfw_path = b.fmt("{s}", .{"/usr"}),
+        else => {},
+    }
+    const utils_path = "../utils";
+    // --------
+    // Modules
+    // --------
+    // --------------
+    // cimgui module
+    // --------------
+    const cimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/cimgui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    main_mod.addImport("cimgui", cimgui_mod);
+
+    // -----------------
+    // glfw_opengl module
+    // -----------------
+    const glfw_opengl_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/glfw_opengl.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    main_mod.addImport("glfw_opengl", glfw_opengl_mod);
+
+    // ------------
+    // glfw module
+    // ------------
+    const glfw_step = b.addTranslateC(.{
+        .root_source_file = b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const glfw_mod = glfw_step.createModule();
+    main_mod.addImport("glfw", glfw_mod);
+
+    // ------------
+    // clib module
+    // ------------
+    const clib_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/clib.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    main_mod.addImport("clib", clib_step.createModule());
+
+    // ----------------
+    // fonticon module
+    // ----------------
+    const fonticon_mod = b.createModule(.{
+        .root_source_file = b.path(b.pathJoin(&.{ utils_path, "/fonticon/IconsFontAwesome6.zig" })),
+        .target = target,
+        .optimize = optimize,
+    });
+    main_mod.addImport("fonticon", fonticon_mod);
+
+    // -------------
+    // utils module
+    // -------------
+    const utils_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/utils.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    utils_mod.addImport("cimgui", cimgui_mod);
+    main_mod.addImport("utils", utils_mod);
+
+    // -----------------
+    // loadimage module
+    // -----------------
+    const loadimage_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/loadImage.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const loadimage_mod = loadimage_step.createModule();
+    loadimage_mod.addIncludePath(b.path("../../libs/stb"));
+    loadimage_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
+    loadimage_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/loadImage.c",
+        },
+        .flags = &.{
+            "-O2",
+            "-DCIMGUI_USE_GLFW",
+        },
+    });
+    main_mod.addImport("loadimage", loadimage_mod);
+
+    // ----------------
+    // appimgui module
+    // ----------------
+    const appimgui_mod = b.createModule(.{
+        .root_source_file = b.path("../utils//appImGui.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    appimgui_mod.addImport("cimgui", cimgui_mod);
+    appimgui_mod.addImport("glfw", glfw_mod);
+    appimgui_mod.addImport("glfw_opengl", glfw_opengl_mod);
+    appimgui_mod.addImport("fonticon", fonticon_mod);
+    appimgui_mod.addImport("loadimage", loadimage_mod);
+    main_mod.addImport("appimgui", appimgui_mod);
+
+    // -----------------
+    // zoomglass module
+    // -----------------
+    const zoomglass_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/zoomGlass.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    zoomglass_mod.addImport("cimgui", cimgui_mod);
+    zoomglass_mod.addImport("glfw", glfw_mod);
+    zoomglass_mod.addImport("fonticon", fonticon_mod);
+    zoomglass_mod.addImport("loadimage", loadimage_mod);
+    main_mod.addImport("zoomglass", zoomglass_mod);
+
+    // -----------------
+    // setupfont module
+    // -----------------
+    const setupfont_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/setupFonts.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const setupfont_mod = setupfont_step.createModule();
+    setupfont_mod.addIncludePath(b.path("../../libs/cimgui"));
+    setupfont_mod.addIncludePath(b.path(b.pathJoin(&.{ utils_path, "/fonticon" })));
+    setupfont_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/setupFonts.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+    main_mod.addImport("setupfont", setupfont_mod);
+
+    // -----------------
+    // saveimage module
+    // -----------------
+    const saveimage_step = b.addTranslateC(.{
+        .root_source_file = b.path("../utils/saveImage.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const saveimage_mod = saveimage_step.createModule();
+    saveimage_mod.addIncludePath(b.path("../../libs/stb"));
+    saveimage_mod.addCSourceFiles(.{
+        .files = &.{
+            "../utils/saveImage.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+    main_mod.addImport("saveimage", saveimage_mod);
+
+    // -------------
+    // tools module
+    // -------------
+    const tools_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/tools.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    tools_mod.addImport("loadimage", loadimage_mod);
+    tools_mod.addImport("saveimage", saveimage_mod);
+    tools_mod.addImport("setupfont", setupfont_mod);
+    tools_mod.addImport("zoomglass", zoomglass_mod);
+    tools_mod.addImport("utils", utils_mod);
+    main_mod.addImport("tools", tools_mod);
+
+    // -----------------------
+    // filedialog module
+    // -----------------------
+    const filedialog_step = b.addTranslateC(.{
+        .root_source_file = b.path("src/filedialog.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    filedialog_step.addIncludePath(b.path("../../libs/cimgui"));
+    filedialog_step.addIncludePath(b.path("../../libs/CImGuiFileDialog/libs/ImGuiFileDialog"));
+    const filedialog_mod = filedialog_step.createModule();
+    main_mod.addImport("filedialog", filedialog_mod);
+
+    // --------------------------
+    // imguicolortextedit module
+    // --------------------------
+    const imguicolortextedit_step = b.addTranslateC(.{
+        .root_source_file = b.path("../../libs/cimCTE/cimCTE.h"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    imguicolortextedit_step.defineCMacroRaw("CIMGUI_DEFINE_ENUMS_AND_STRUCTS");
+    imguicolortextedit_step.addIncludePath(b.path("../../libs/cimgui"));
+    const imguicolortextedit_mod = imguicolortextedit_step.createModule();
+    main_mod.addImport("imguicolortextedit", imguicolortextedit_mod);
+
+    //----------------------
+    //  ImGui/CImGui Module
+    //----------------------
+    main_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
+    main_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
+    main_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
+    main_mod.addIncludePath(b.path("../../libs/cimgui"));
+    main_mod.addIncludePath(b.path("../utils"));
+    main_mod.addIncludePath(b.path("../utils/fonticon"));
+    // ImGuiFileDialog
+    main_mod.addIncludePath(b.path("../../libs/CImGuiFileDialog"));
+    main_mod.addIncludePath(b.path("../../libs/CImGuiFileDialog/libs/ImGuiFileDialog"));
+    main_mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
+    // ImGuiColorTextEdit
+    main_mod.addIncludePath(b.path("../../libs/cimCTE"));
+    main_mod.addIncludePath(b.path("../../libs/cimCTE/ImGuiColorTextEdit"));
+    main_mod.addIncludePath(b.path("../../libs/cimCTE/ImGuiColorTextEdit/vendor/regex/include"));
+    // macro
+    main_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
+    main_mod.addCMacro("ImDrawIdx", "unsigned int");
+    main_mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    switch (builtin.target.os.tag) {
+        .windows => main_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
+        .linux => main_mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        else => {},
+    }
+    // GLFW / Opengl3 backend
+    main_mod.addCMacro("CIMGUI_USE_GLFW", "");
+    main_mod.addCMacro("CIMGUI_USE_OPENGL3", "");
+
+    //---------------
+    // Sources C/C++
+    //---------------
+    main_mod.addCSourceFiles(.{
+        .files = &.{
+            // ImGui
+            "../../libs/cimgui/imgui/imgui.cpp",
+            "../../libs/cimgui/imgui/imgui_tables.cpp",
+            "../../libs/cimgui/imgui/imgui_demo.cpp",
+            "../../libs/cimgui/imgui/imgui_widgets.cpp",
+            "../../libs/cimgui/imgui/imgui_draw.cpp",
+            // CImGui
+            "../../libs/cimgui/cimgui.cpp",
+            "../../libs/cimgui/cimgui_impl.cpp",
+            // ImGui GLFW and OpenGL interface
+            "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
+            "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
+            // ImGuiFileDialog
+            "../../libs/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",
+            // ImGuiColorTextEdit
+            "../../libs/cimCTE/cimCTE.cpp",
+            "../../libs/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
+            "../../libs/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
+            "../../libs/cimCTE/ImGuiColorTextEdit/TextEditor.cpp",
+            "../../libs/cimCTE/ImGuiColorTextEdit/UnitTests.cpp",
+            // Theme Gold
+            "../utils/themeGold.cpp",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
+
+    const exe = b.addExecutable(.{
+        .name = "glfw_opengl3_imguicolortextedit",
+        .root_module = main_mod,
+    });
+    exe.addIncludePath(b.path("src"));
+
+    // Load Icon
+    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+
+    //---------
+    // Linking
+    //---------
+    if (builtin.target.os.tag == .windows) {
+        exe.linkSystemLibrary("gdi32");
+        exe.linkSystemLibrary("imm32");
+        exe.linkSystemLibrary("opengl32");
+        exe.linkSystemLibrary("user32");
+        exe.linkSystemLibrary("shell32");
+        // Static link
+        exe.addObjectFile(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }) });
+    } else if (builtin.target.os.tag == .linux) {
+        exe.linkSystemLibrary("glfw3");
+        exe.linkSystemLibrary("GL");
+    }
+
+    // GLFW
+    //exe.addLibraryPath(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-64"})));
+    //exe.linkSystemLibrary("glfw3");      // For static link
+    // Dynamic link
+    //exe.addObjectFile(b.path(b.pathJoin(&.{glfw_path, "lib-mingw-w64","libglfw3dll.a"})));
+    //exe.linkSystemLibrary("glfw3dll"); // For dynamic link
+    // System
+    exe.linkLibC();
+    exe.linkLibCpp();
+
+    exe.subsystem = .Windows; // Hide console window
+
+    // This declares intent for the executable to be installed into the
+    // standard location when the user invokes the "install" step (the default
+    // step when running `zig build`).
+    b.installArtifact(exe);
+
+    const resBin = [_][]const u8{ "imgui.ini", "glfw_opengl3_imguicolortextedit.ini",
+                                  "main.cpp",
+                                  "fonts/notonoto_v0.0.3/NOTONOTO-Regular.ttf",
+                                  "fonts/notonoto_v0.0.3/LICENSE",
+                                  "fonts/notonoto_v0.0.3/README.md",
+                                };
+    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
+    const resIcon = "src/res/z.png";
+
+    inline for (resBin) |file| {
+        const res = b.addInstallFile(b.path(file), "bin/" ++ file);
+        b.getInstallStep().dependOn(&res.step);
+    }
+    inline for (resUtils) |file| {
+        const res = b.addInstallFile(b.path("../utils/" ++ file), "utils/" ++ file);
+        b.getInstallStep().dependOn(&res.step);
+    }
+    const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
+    b.getInstallStep().dependOn(&res.step);
+    //
+    // This *creates* a Run step in the build graph, to be executed when another
+    // step is evaluated that depends on it. The next line below will establish
+    // such a dependency.
+    const run_cmd = b.addRunArtifact(exe);
+
+    // By making the run step depend on the install step, it will be run from the
+    // installation directory rather than directly from within the cache directory.
+    // This is not necessary, however, if the application depends on other installed
+    // files, this ensures they will be present and in the expected location.
+    run_cmd.step.dependOn(b.getInstallStep());
+
+    // This allows the user to pass arguments to the application in the build
+    // command itself, like this: `zig build run -- arg1 arg2 etc`
+    if (b.args) |args| {
+        run_cmd.addArgs(args);
+    }
+
+    // This creates a build step. It will be visible in the `zig build --help` menu,
+    // and can be selected like this: `zig build run`
+    // This will evaluate the `run` step rather than the default, which is "install".
+    const run_step = b.step("run", "Run the app");
+    run_step.dependOn(&run_cmd.step);
+
+    // Creates a step for unit testing. This only builds the test executable
+    // but does not run it.
+    const lib_unit_tests = b.addTest(.{
+        .root_source_file = b.path("src/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
+
+    const exe_unit_tests = b.addTest(.{
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
+
+    // Similar to creating the run step earlier, this exposes a `test` step to
+    // the `zig build --help` menu, providing a way for the user to request
+    // running the unit tests.
+    const test_step = b.step("test", "Run unit tests");
+    test_step.dependOn(&run_lib_unit_tests.step);
+    test_step.dependOn(&run_exe_unit_tests.step);
+}

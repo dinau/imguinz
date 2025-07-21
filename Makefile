@@ -5,6 +5,7 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_image_load \
 							examples/glfw_opengl3_imfiledialog \
 							examples/glfw_opengl3_imgui_toggle \
+							examples/glfw_opengl3_imguicolortextedit \
 							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imnodes \
 							examples/glfw_opengl3_imguizmo \
@@ -52,6 +53,7 @@ EXT_LIB_DIR = ../../imguin_git/libs
 TARGET_DIR = libs
 copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d imspinner imCTE imgui-knobs
 
+# ImGuiColorTextEdit
 imCTE:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
 	@-mkdir -p $(TARGET_DIR)/c$@/ImGuiColorTextEdit/vendor/regex

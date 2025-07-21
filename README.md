@@ -10,6 +10,7 @@
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
     - [ImGuiFileDialog / CImGuiFileDialog](#imguifiledialog--cimguifiledialog)
+    - [ImGuiColorTextEdit / cimCTE](#imguicolortextedit--cimcte)
     - [ImNodes / CImNodes](#imnodes--cimnodes)
     - [ImGuizmo / CImGuizmo](#imguizmo--cimguizmo)
     - [Image load](#image-load)
@@ -121,56 +122,78 @@ Library name / C lang. wrapper
 - [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog) (2025/07)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) (2025/05)
-- [ ] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) 
+- [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/07)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) 
 
 ### Examples screen shots 
 
-####  [ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
+#### ImGui-Toggle / CImGui-Toggle
 
 ---
+
+[ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
 
 [glfw_opengl3_imgui_toggle.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_toggle/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imtoggle.png)  
 
-####  [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/cimgui-knobs)
+#### ImGui-Knobs / CImGui-Knobs
 
 ---
+
+[ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/cimgui-knobs)
 
 [glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imknobs/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imknobs.png)  
 
-#### [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
+#### ImSpinner / CImSpinner
 
 ---
+
+[ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
 
 [glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
 
-#### [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
+#### ImGuiFileDialog / CImGuiFileDialog
 
 ---
+
+[ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 
 [glfw_opengl3_imfiledialog.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imfiledialog/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imfiledialog.png)
 
-#### [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
+#### ImGuiColorTextEdit / cimCTE
 
 ---
+
+[ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) 
+
+[glfw_opengl3_imguicolortextedit.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguicolortextedit/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imguicolortextedit.png)
+![alt](img/imguicolortextedit.png)
+
+#### ImNodes / CImNodes
+
+---
+
+[ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
 
 [glfw_opengl3_imnodes.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imnodes/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imnodes.png)
 
 
-#### [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)
+#### ImGuizmo / CImGuizmo
 
 ---
 
+[ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)
 
 [glfw_opengl3_imguizmo.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguizmo/src/main.zig)  
 
