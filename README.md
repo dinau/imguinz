@@ -9,7 +9,7 @@
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
-    - [ImGuiFileDialog / CImSpinner](#imguifiledialog--cimspinner)
+    - [ImGuiFileDialog / CImGuiFileDialog](#imguifiledialog--cimguifiledialog)
     - [ImNodes / CImNodes](#imnodes--cimnodes)
     - [ImGuizmo / CImGuizmo](#imguizmo--cimguizmo)
     - [Image load](#image-load)
@@ -150,7 +150,7 @@ Library name / C lang. wrapper
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
 
-#### [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImSpinner](https://github.com/dinau/CImGuiFileDialog)
+#### [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 
 ---
 

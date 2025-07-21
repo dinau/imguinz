@@ -242,8 +242,8 @@ pub fn build(b: *std.Build) void {
     main_mod.addIncludePath(b.path("../utils"));
     main_mod.addIncludePath(b.path("../utils/fonticon"));
     // ImGuiFileDialog
-    main_mod.addIncludePath(b.path("../../libs/CImguiFileDialog"));
-    main_mod.addIncludePath(b.path("../../libs/CImguiFileDialog/libs/ImGuiFileDialog"));
+    main_mod.addIncludePath(b.path("../../libs/CImGuiFileDialog"));
+    main_mod.addIncludePath(b.path("../../libs/CImGuiFileDialog/libs/ImGuiFileDialog"));
     main_mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
     // macro
     main_mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
@@ -276,7 +276,7 @@ pub fn build(b: *std.Build) void {
             "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
             "../../libs/cimgui/imgui/backends/imgui_impl_glfw.cpp",
             // ImGuiFileDialog
-            "../../libs/CImguiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",
+            "../../libs/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",
             // Theme Gold
             "../utils/themeGold.cpp",
         },

@@ -6,6 +6,7 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_imfiledialog \
 							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imknobs \
+							examples/glfw_opengl3_imnodes \
 							examples/glfw_opengl3_imguizmo \
 							examples/glfw_opengl3_implot \
 							examples/glfw_opengl3_imspinner \
