@@ -202,6 +202,7 @@ pub fn build(b: *std.Build) void {
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";
 
+
     inline for(resBin)|file|{
       const res = b.addInstallFile(b.path(file),"bin/" ++ file);
       b.getInstallStep().dependOn(&res.step);
@@ -212,6 +213,18 @@ pub fn build(b: *std.Build) void {
     }
     const res = b.addInstallFile(b.path(resIcon),"bin/z.png");
     b.getInstallStep().dependOn(&res.step);
+
+    // If dynamic link, copy SDL2.dll
+    //const resSDL  = b.pathJoin(&.{sdl2_path ,"bin/SDL2.dll"});
+    //switch (builtin.target.os.tag){
+    //  .windows => {
+    //      const res2 = b.addInstallFile(.{.cwd_relative = resSDL},"bin/SDL2.dll");
+    //      b.getInstallStep().dependOn(&res2.step);
+    //  } ,
+    //  .linux => {}   ,
+    //  else => {},
+    //}
+
     //
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish

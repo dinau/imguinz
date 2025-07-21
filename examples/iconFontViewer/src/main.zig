@@ -2,9 +2,7 @@ const std = @import("std");
 const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
-const stf = @import("setupfont");
-const utils = @import("utils");
-const zg = @import("zoomglass");
+const utils = @import("tools");
 const app = @import("appimgui");
 
 const ift = @import("./iconFontsTblDef.zig");
@@ -16,13 +14,14 @@ const MainWinHeight: i32 = 800;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    utils.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
 
     var item_current: usize = 0;
     var showIconFontsViewerWindow = true;
     const DefaultButtonSize = utils.vec2(0, 0);
+    var wsZoom:f32 = 45;
 
     var listBoxTextureID: glfw.GLuint = 0; //# Must be == 0 at first
     defer glfw.glDeleteTextures(1, &listBoxTextureID);
@@ -47,7 +46,7 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igBegin("Icon Font Viewer", &showIconFontsViewerWindow, 0);
             defer ig.igEnd();
             ig.igSeparatorText(ifa.ICON_FA_FONT_AWESOME ++ " Icon font view: " ++ " icons");
-            //
+
             const listBoxWidth = 340; //# The value must be 2^n
             ig.igText("No.[%4d]", item_current);
             ig.igSameLine(0, -1.0);
@@ -74,10 +73,10 @@ pub fn gui_main(window: *app.Window) !void {
             // # Show magnifying glass (Zooming in Toolchip)
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 if ((pio.*.MousePos.x - listBoxPosTop.x) < 50) {
-                    zg.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd);
+                    utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd);
                 }
             }
-        } // end IconFontsViewer window
+        }
 
         //---------------------
         // Show icons in Table
@@ -85,7 +84,15 @@ pub fn gui_main(window: *app.Window) !void {
         {
             _ = ig.igBegin("Icon Font Viewer2", null, 0);
             defer ig.igEnd();
-            const wsZoom = 45;
+
+            ig.igText("%s", " Zoom x");
+            ig.igSameLine(0, -1.0);
+            _ = ig.igSliderFloat("##Zoom1", &wsZoom, 30, 90, "%.1f", 0);
+            ig.igSeparator();
+
+            _ = ig.igBeginChild_Str("child2", .{.x = 0, .y = 0}, 0, 0);
+            defer ig.igEndChild();
+
             const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
             const text_base_height = ig.igGetTextLineHeightWithSpacing();
             const outer_size = utils.vec2(0.0, text_base_height * 8);
@@ -120,19 +127,20 @@ pub fn gui_main(window: *app.Window) !void {
                                 ig.igSetClipboardText(iconFontLabel);
                             }
                         }
-                    } // end for
-                } // end for
+                    } // end for col
+                } // end for row
             } // end block igBeginTable
         } // end igBegin
 
-        {// -- Text filter window
-          _= ig.igBegin("Icon Font filter", null, 0);
+        { // -- Text filter window
+            _ = ig.igBegin("Icon Font filter", null, 0);
+            defer ig.igEnd();
             ig.igText("(Copy)");
-            if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)){
-              //filterAry[1]:match(".+(ICON.+)");
-              //if (std.mem.containsAtLeast(u8, filterAry[0],"ICON")){
-              // ig.igSetClipboardText(sRes);
-              //}
+            if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
+                //filterAry[1]:match(".+(ICON.+)");
+                //if (std.mem.containsAtLeast(u8, filterAry[0],"ICON")){
+                // ig.igSetClipboardText(sRes);
+                //}
             }
             //filterAry = {}
             utils.setTooltip("Copied first line to clipboard !", ig.ImGuiHoveredFlags_DelayNone); //-- Show tooltip help
@@ -140,19 +148,18 @@ pub fn gui_main(window: *app.Window) !void {
             const filter = ig.ImGuiTextFilter_ImGuiTextFilter("");
             _ = ig.ImGuiTextFilter_Draw(filter, "Filter", 0.0);
             const tbl = ift.iconFontsTbl;
-            for (tbl, 0..) |pstr, i|{
-              if (ig.ImGuiTextFilter_PassFilter(filter, pstr, null)){
-                ig.igText("[%04d]  %s", i ,pstr);
-                //table.insert(filterAry, tbl[i])
-              }
+            for (tbl, 0..) |pstr, i| {
+                if (ig.ImGuiTextFilter_PassFilter(filter, pstr, null)) {
+                    ig.igText("[%04d]  %s", i, pstr);
+                    //table.insert(filterAry, tbl[i])
+                }
             }
-          ig.igEnd();
         }
         //--------
         // render
         //--------
         window.render();
-    } // end while loop
+    } // end main while loop
 }
 
 //--------

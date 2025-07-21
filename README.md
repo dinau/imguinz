@@ -9,6 +9,7 @@
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
+    - [ImGuiFileDialog / CImSpinner](#imguifiledialog--cimspinner)
     - [ImNodes / CImNodes](#imnodes--cimnodes)
     - [ImGuizmo / CImGuizmo](#imguizmo--cimguizmo)
     - [Image load](#image-load)
@@ -52,7 +53,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.92.0 dock** (2025/07)
+- ImGui / CImGui version **1.92.1 dock** (2025/07)
 - OS: Windows and Linux
 - Frontends and Backends 
 
@@ -77,7 +78,7 @@ examples in Zig language with less external dependencies.
 - Zig version confirmed
    1. Windows: [zig-x86_64-windows-0.14.1.zip](https://ziglang.org/download/0.14.1/zig-x86_64-windows-0.14.1.zip)
    1. Linux:   [zig-x86_64-linux-0.14.1.tar.xz](https://ziglang.org/download/0.14.1/zig-x86_64-linux-0.14.1.tar.xz)
-   1. zig-0.15.0-dev.885 or later
+   1. or Zig version <= 0.15.0-dev.885
 
 - WindowsOS
    - Windows10 or later
@@ -85,14 +86,7 @@ examples in Zig language with less external dependencies.
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install libopengl-dev libgl1-mesa-dev
-  ```
-
-  and for glfw3 and sdl2,
-
-  ```sh
-  $ sudo apt install libglfw3 libglfw3-dev
-  $ sudo apt install libsdl2-dev
+  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}
   ```
 
 ### Build and run
@@ -102,17 +96,13 @@ examples in Zig language with less external dependencies.
 1. Download this project.
 
    ```sh
-   git clone --recurse-submodules https://github.com/dinau/imguinz
+   git clone https://github.com/dinau/imguinz
    ```
-1. Go to one of the examples folder,
+
+1. Go to one of the examples folder, buid and run 
 
    ```sh
    cd imguinz/examples/glfw_opengl3
-   ```
-
-1. Build and Run 
-
-   ```sh
    make run   # or  zig build --release=fast run
    ```
 
@@ -128,11 +118,12 @@ Library name / C lang. wrapper
 - [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/06)
 - [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/07) 
 - [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) (2025/05)
-- [ ] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
+- [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog) (2025/07)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) (2025/05)
-- [ ] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025)
+- [ ] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) 
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) 
+
 ### Examples screen shots 
 
 ####  [ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
@@ -158,6 +149,14 @@ Library name / C lang. wrapper
 [glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
+
+#### [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImSpinner](https://github.com/dinau/CImGuiFileDialog)
+
+---
+
+[glfw_opengl3_imfiledialog.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imfiledialog/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imfiledialog.png)
 
 #### [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
 

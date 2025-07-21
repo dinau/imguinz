@@ -105,9 +105,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     utils_mod.addImport("cimgui", cimgui_mod);
     exe_mod.addImport("utils", utils_mod);
 
@@ -122,7 +119,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
+    loadimage_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -144,23 +141,22 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
     });
     imspinner_step.addIncludePath(b.path("../../libs/cimgui"));
-    imspinner_step.addIncludePath(b.path("../../libs/cimspinner"));
-    //imspinner_step.addIncludePath(b.path("../../libs/cimspinner/libs/imspinner"));
-    imspinner_step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    imspinner_step.addIncludePath(b.path("../../libs/cimspinner/imspinner"));
+    imspinner_step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     //
     const imspinner_mod = imspinner_step.createModule();
     //imspinner_mod.addIncludePath(b.path("../../libs/cimgui"));
     // Enable other spinners. See ../../libs/cimspinner/cimspinner.[h,cpp]
-    exe_mod.addCMacro("SPINNER_RAINBOWMIX","");
-    exe_mod.addCMacro("SPINNER_DNADOTS","");
-    exe_mod.addCMacro("SPINNER_ANG8","");
-    exe_mod.addCMacro("SPINNER_CLOCK","");
-    exe_mod.addCMacro("SPINNER_PULSAR","");
-    exe_mod.addCMacro("SPINNER_DOTSTOBAR","");
-    exe_mod.addCMacro("SPINNER_ATOM","");
-    exe_mod.addCMacro("SPINNER_BARCHARTRAINBOW","");
-    exe_mod.addCMacro("SPINNER_SWINGDOTS","");
-    exe_mod.addCMacro("IMSPINNER_DEMO","");
+    exe_mod.addCMacro("SPINNER_RAINBOWMIX", "");
+    exe_mod.addCMacro("SPINNER_DNADOTS", "");
+    exe_mod.addCMacro("SPINNER_ANG8", "");
+    exe_mod.addCMacro("SPINNER_CLOCK", "");
+    exe_mod.addCMacro("SPINNER_PULSAR", "");
+    exe_mod.addCMacro("SPINNER_DOTSTOBAR", "");
+    exe_mod.addCMacro("SPINNER_ATOM", "");
+    exe_mod.addCMacro("SPINNER_BARCHARTRAINBOW", "");
+    exe_mod.addCMacro("SPINNER_SWINGDOTS", "");
+    exe_mod.addCMacro("IMSPINNER_DEMO", "");
     //
     exe_mod.addImport("imspinner", imspinner_mod);
 
@@ -243,7 +239,7 @@ pub fn build(b: *std.Build) void {
     //----------------
     // rename exe_mod
     //----------------
-    exe_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
+    exe_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui"));
@@ -285,7 +281,7 @@ pub fn build(b: *std.Build) void {
             // Theme Gold
             "../utils/themeGold.cpp",
             // Spinner
-            "../../libs/cimspinner/cimspinner.cpp",
+            "../../libs/cimspinner/imspinner/cimspinner.cpp",
         },
         .flags = &.{
             "-O2",
@@ -311,7 +307,7 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
         // Static link
-        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
+        exe.addObjectFile(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }) });
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");
@@ -334,9 +330,8 @@ pub fn build(b: *std.Build) void {
     // step when running `zig build`).
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini", "glfw_opengl3_imspinner.ini" };
-    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
-                                  , "fonticon/fa6/LICENSE.txt"};
+    const resBin = [_][]const u8{ "imgui.ini", "glfw_opengl3_imspinner.ini" };
+    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
     const resIcon = "src/res/z.png";
 
     inline for (resBin) |file| {

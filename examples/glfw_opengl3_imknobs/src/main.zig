@@ -36,7 +36,7 @@ pub fn gui_main (window: *app.Window) void {
     // Show cimgui-knobs window
     //---------------------------
     {
-      _ = ig.igBegin (ifa.ICON_FA_THUMBS_UP ++ " ImGui knobs in Zig lang. 2025/02", null, 0);
+      _ = ig.igBegin (ifa.ICON_FA_THUMBS_UP ++ " ImGui knobs in Zig 2025/02", null, 0);
       defer ig.igEnd ();
       const st = struct  {
         var val1:f32 = 0;

@@ -105,9 +105,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     utils_mod.addImport("cimgui", cimgui_mod);
     exe_mod.addImport("utils", utils_mod);
 
@@ -122,7 +119,7 @@ pub fn build(b: *std.Build) void {
     });
     const loadimage_mod = loadimage_step.createModule();
     loadimage_mod.addIncludePath(b.path("../../libs/stb"));
-    loadimage_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
+    loadimage_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
     loadimage_mod.addCSourceFiles(.{
         .files = &.{
             "../utils/loadImage.c",
@@ -213,7 +210,7 @@ pub fn build(b: *std.Build) void {
     //----------------
     // rename exe_mod
     //----------------
-    exe_mod.addIncludePath(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "include"})});
+    exe_mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "include" }) });
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
     exe_mod.addIncludePath(b.path("../../libs/cimgui"));
@@ -275,7 +272,7 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
         // Static link
-        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
+        exe.addObjectFile(.{ .cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }) });
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");

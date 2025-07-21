@@ -101,9 +101,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     utils_mod.addImport("cimgui", cimgui_mod);
     exe_mod.addImport("utils", utils_mod);
 
@@ -144,10 +141,6 @@ pub fn build(b: *std.Build) void {
     imknobs_step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
     //
     const imknobs_mod = imknobs_step.createModule();
-    // Enable other knobss. See ../../libs/cimknobs/cimknobs.[h,cpp]
-    exe_mod.addCMacro("knobs_DNADOTS","");
-    exe_mod.addCMacro("IMknobs_DEMO","");
-    //
     exe_mod.addImport("imknobs", imknobs_mod);
 
     // ----------------

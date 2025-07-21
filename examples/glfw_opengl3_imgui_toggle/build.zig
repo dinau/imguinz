@@ -122,9 +122,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    utils_mod.addIncludePath(b.path("../../libs/glfw/glfw-3.4.bin.WIN64/include"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui"));
-    utils_mod.addIncludePath(b.path("../../libs/cimgui/imgui"));
     utils_mod.addImport("cimgui", cimgui_mod);
     exe_mod.addImport("utils", utils_mod);
 

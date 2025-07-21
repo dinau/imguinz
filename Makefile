@@ -3,6 +3,7 @@
 EXAMPLE_DIRS := \
 							examples/glfw_opengl3 \
 							examples/glfw_opengl3_image_load \
+							examples/glfw_opengl3_imfiledialog \
 							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imguizmo \
@@ -32,6 +33,7 @@ cleanexe:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanexe ))
 
 gen: copylibs
+	@$(MAKE) -C examples/utils
 
 #
 define def_make
@@ -45,7 +47,7 @@ MAKEFLAGS += --no-print-directory
 #-------------------------
 # Copy external libraries
 #-------------------------
-EXT_LIB_DIR = ../libs
+EXT_LIB_DIR = ../../imguin_git/libs
 TARGET_DIR = libs
 copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d imspinner imCTE imgui-knobs
 
@@ -105,11 +107,11 @@ implot3d:
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
 imspinner:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/$@] to $(TARGET_DIR)/
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}               $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE.txt,*.h,README.md} $(TARGET_DIR)/c$@/$@/
-	@echo "" >  $(TARGET_DIR)/c$@/cimspinner_config.h
+	@-cp -f $(EXT_LIB_DIR)/c$@/{README.md,LICENSE.txt}                  $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{*.cpp,*.h,LICENSE.txt,README.md} $(TARGET_DIR)/c$@/$@/
+	@#echo "" >  $(TARGET_DIR)/c$@/$@/cimspinner_config.h
 
 imgui-knobs:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/

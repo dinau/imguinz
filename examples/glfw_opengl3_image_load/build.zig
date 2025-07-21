@@ -203,6 +203,22 @@ pub fn build(b: *std.Build) void {
     });
     main_mod.addImport("saveimage", saveimage_mod);
 
+    // -------------
+    // tools module
+    // -------------
+    const tools_mod = b.createModule(.{
+        .root_source_file = b.path("../utils/tools.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    tools_mod.addImport("loadimage", loadimage_mod);
+    tools_mod.addImport("saveimage", saveimage_mod);
+    tools_mod.addImport("setupfont", setupfont_mod);
+    tools_mod.addImport("zoomglass", zoomglass_mod);
+    tools_mod.addImport("utils", utils_mod);
+    main_mod.addImport("tools", tools_mod);
+
+
     //----------------------
     //  ImGui/CImGui Module
     //----------------------
@@ -253,6 +269,7 @@ pub fn build(b: *std.Build) void {
         .name = "glfw_opengl3_image_load",
         .root_module = main_mod,
     });
+    exe.addIncludePath(b.path("src"));
 
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });

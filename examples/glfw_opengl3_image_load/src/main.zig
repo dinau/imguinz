@@ -2,11 +2,7 @@ const std = @import("std");
 const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
-const stf = @import("setupfont");
-const utils = @import("utils");
-const img_ld = @import("loadimage");
-const img_sv = @import("saveimage");
-const zg = @import("zoomglass");
+const utils = @import("tools");
 const app = @import("appimgui");
 
 const TImgFormat = struct {
@@ -41,9 +37,9 @@ pub fn gui_main(window: *app.Window) !void {
     var textureId: glfw.GLuint = undefined;
     var textureWidth: c_int = 0;
     var textureHeight: c_int = 0;
-    _ = img_ld.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
+    _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    utils.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const sz = utils.vec2(0, 0);
 
@@ -97,7 +93,7 @@ pub fn gui_main(window: *app.Window) !void {
                 const wkSize = ig.igGetMainViewport().*.WorkSize;
                 const sx: c_int = @intFromFloat(wkSize.x);
                 const sy: c_int = @intFromFloat(wkSize.y);
-                img_sv.saveImage(slszName.ptr, 0, 0, sx, sy, 3, 90); // # --- Save Image !
+                utils.saveImage(slszName.ptr, 0, 0, sx, sy, 3, 90); // # --- Save Image !
             }
             ig.igPopStyleColor(4);
             ig.igPopID();
@@ -151,7 +147,7 @@ pub fn gui_main(window: *app.Window) !void {
             ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
             ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-                zg.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);
+                utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);
             }
         }
         // Rendering
