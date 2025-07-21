@@ -176,7 +176,6 @@ Library name / C lang. wrapper
 [glfw_opengl3_imguicolortextedit.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguicolortextedit/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imguicolortextedit.png)
-![alt](img/imguicolortextedit.png)
 
 #### ImNodes / CImNodes
 
