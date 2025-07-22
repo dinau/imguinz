@@ -164,9 +164,9 @@ Library name / C lang. wrapper
 
 [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
 
-[glfw_opengl3_imPlot3d.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imPlot3d/src/main.zig)  
+[glfw_opengl3_implot3d.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot3d/src/main.zig)  
 
-![alt](https://github.com/dinau/imguinz/raw/main/img/imPlot3d.gif)
+![alt](https://github.com/dinau/imguinz/raw/main/img/implot3d.gif)
 
 #### ImGuiFileDialog / CImGuiFileDialog
 
