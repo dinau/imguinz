@@ -9,6 +9,7 @@
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
+    - [ImPlot3D / CImPlot3D](#implot3d--cimplot3d)
     - [ImGuiFileDialog / CImGuiFileDialog](#imguifiledialog--cimguifiledialog)
     - [ImGuiColorTextEdit / cimCTE](#imguicolortextedit--cimcte)
     - [ImNodes / CImNodes](#imnodes--cimnodes)
@@ -100,7 +101,7 @@ examples in Zig language with less external dependencies.
    git clone https://github.com/dinau/imguinz
    ```
 
-1. Go to one of the examples folder, buid and run 
+1. Go to one of the examples folder, build and run 
 
    ```sh
    cd imguinz/examples/glfw_opengl3
@@ -115,7 +116,7 @@ Library name / C lang. wrapper
 
 - [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) (2024/11)
 - [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
-- [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
+- [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) (2025/07)
 - [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/06)
 - [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/07) 
 - [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) (2025/05)
@@ -156,6 +157,16 @@ Library name / C lang. wrapper
 [glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
+
+#### ImPlot3D / CImPlot3D
+
+---
+
+[ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
+
+[glfw_opengl3_imPlot3d.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imPlot3d/src/main.zig)  
+
+![alt](https://github.com/dinau/imguinz/raw/main/img/imPlot3d.gif)
 
 #### ImGuiFileDialog / CImGuiFileDialog
 
