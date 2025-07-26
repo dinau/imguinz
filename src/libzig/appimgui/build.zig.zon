@@ -1,0 +1,31 @@
+.{
+    .name = .appimgui,
+    .version = "0.0.1",
+    .fingerprint =0xe8f911ae1d236def , // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .cimgui  =  .{
+            .path = "../cimgui"
+        },
+        .fonticon  =  .{
+            .path = "../fonticon"
+        },
+        .loadimage = .{
+            .path = "../loadimage"
+        },
+        .glfw = .{
+            .path = "../glfw"
+        },
+        .impl_glfw = .{
+            .path = "../impl_glfw"
+        },
+        .impl_opengl3 = .{
+            .path = "../impl_opengl3"
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

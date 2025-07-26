@@ -1,0 +1,13 @@
+.{
+    .name = .glfw,
+    .version = "0.0.0",
+    .fingerprint =0x3bbe0a5cb2ff8c7b, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

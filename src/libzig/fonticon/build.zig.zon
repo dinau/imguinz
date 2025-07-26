@@ -1,0 +1,13 @@
+.{
+    .name = .fonticon,
+    .version = "0.0.1",
+    .fingerprint = 0x742494bbf5416473, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

@@ -303,8 +303,6 @@ pub fn build(b: *std.Build) void {
         exe.linkSystemLibrary("opengl32");
         exe.linkSystemLibrary("user32");
         exe.linkSystemLibrary("shell32");
-        // Static link
-        exe.addObjectFile(.{.cwd_relative = b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" })});
     } else if (builtin.target.os.tag == .linux) {
         exe.linkSystemLibrary("glfw3");
         exe.linkSystemLibrary("GL");

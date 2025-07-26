@@ -35,7 +35,6 @@ cleanexe:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanexe ))
 
 gen: copylibs
-	@$(MAKE) -C examples/utils
 
 #
 define def_make

@@ -2,7 +2,7 @@ const std = @import("std");
 const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
-const utils = @import("tools");
+const utils = @import("utils");
 const app = @import("appimgui");
 
 const TImgFormat = struct {
