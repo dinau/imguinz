@@ -1,4 +1,5 @@
-#
+# Now Debug build TODO
+
 OPT += --release=fast
 #OPT += --release=small
 # Fail compilation

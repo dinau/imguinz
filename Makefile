@@ -3,7 +3,7 @@
 EXAMPLE_DIRS := \
 							examples/glfw_opengl3 \
 							examples/glfw_opengl3_image_load \
-							examples/glfw_opengl3_imfiledialog \
+							examples/glfw_opengl3_imfileopendialog \
 							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imguicolortextedit \
 							examples/glfw_opengl3_imknobs \
@@ -49,7 +49,7 @@ MAKEFLAGS += --no-print-directory
 # Copy external libraries
 #-------------------------
 EXT_LIB_DIR = ../../imguin_git/libs
-TARGET_DIR = libs
+TARGET_DIR = src/libc
 copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d imspinner imCTE imgui-knobs
 
 # ImGuiColorTextEdit
@@ -110,9 +110,8 @@ implot3d:
 
 imspinner:
 	@echo copying [ $(EXT_LIB_DIR)/$@] to $(TARGET_DIR)/
-	@-mkdir -p $(TARGET_DIR)/c$@/$@
-	@-cp -f $(EXT_LIB_DIR)/c$@/{README.md,LICENSE.txt}                  $(TARGET_DIR)/c$@/
-	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{*.cpp,*.h,LICENSE.txt,README.md} $(TARGET_DIR)/c$@/$@/
+	@-mkdir -p $(TARGET_DIR)/c$@
+	@cp -f $(EXT_LIB_DIR)/$@/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/c$@/
 	@#echo "" >  $(TARGET_DIR)/c$@/$@/cimspinner_config.h
 
 imgui-knobs:
@@ -122,8 +121,8 @@ imgui-knobs:
 	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/libs/$@/
 
 
-libs:
-	-mkdir -p ../$@
+#$(TARGET_DIR):
+#	-mkdir -p $@
 
 
 .PHONY: cimgui cimplot cimnodes cimguizmo cimguifiledialog cimgui_toggle cimCTE

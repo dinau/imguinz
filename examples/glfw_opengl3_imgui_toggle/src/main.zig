@@ -4,7 +4,7 @@ const ifa = @import("fonticon");
 const stf = @import("setupfont");
 const app = @import("appimgui");
 
-const toggle = @import("toggle");
+const toggle = @import("imtoggle");
 
 //-----------
 // gui_main()

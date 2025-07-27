@@ -1,0 +1,46 @@
+.{
+    .name = .app_sdl2_opengl3,
+    .version = "0.0.1",
+    .fingerprint = 0x8a6f564893b90f74, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .appimgui  =  .{
+            .path = "../../src/libzig/appimgui"
+        },
+        .cimgui  =  .{
+            .path = "../../src/libzig/cimgui"
+        },
+        .fonticon =  .{
+            .path = "../../src/libzig/fonticon"
+        },
+        .glfw = .{
+            .path = "../../src/libzig/glfw"
+        },
+        .loadicon = .{
+            .path = "../../src/libzig/loadicon"
+        },
+        .loadimage = .{
+            .path = "../../src/libzig/loadimage"
+        },
+        .saveimage = .{
+            .path = "../../src/libzig/saveimage"
+        },
+        .setupfont = .{
+            .path = "../../src/libzig/setupfont"
+        },
+        .utils = .{
+            .path = "../../src/libzig/utils"
+        },
+        .zoomglass = .{
+            .path = "../../src/libzig/zoomglass"
+        },
+        .impl_sdl2 = .{
+            .path = "../../src/libzig/impl_sdl2"
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

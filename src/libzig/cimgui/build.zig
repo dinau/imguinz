@@ -1,7 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -19,8 +18,14 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    //switch(step.optimize){
+    //    .Debug =>       std.debug.print("[{s}]  build in cimgui module\n",.{"debug"}),
+    //    .ReleaseSafe => std.debug.print("[{s}]  build in cimgui module\n",.{"rel"}),
+    //    .ReleaseFast => std.debug.print("[{s}]  build in cimgui module\n",.{"fast"}),
+    //    .ReleaseSmall => std.debug.print("[{s}] build in cimgui module\n",.{"small"}),
+    //}
 
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
@@ -51,8 +56,6 @@ pub fn build(b: *std.Build) void {
             //"../utils/themeGold.cpp",
         },
     });
-
-
 
     const lib = b.addLibrary(.{
         .linkage = .static,

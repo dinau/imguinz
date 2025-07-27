@@ -2,11 +2,11 @@ const std = @import("std");
 const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
-const utils = @import("tools");
+const utils = @import("utils");
 const app = @import("appimgui");
 
 //const fdlg = @import("filedialog");
-const cte = @import("imguicolortextedit");
+const cte = @import("imcolortextedit");
 
 fn point2px(point: f32) f32 {
     return (point * 96) / 72;

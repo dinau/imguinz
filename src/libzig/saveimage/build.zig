@@ -1,7 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -25,7 +24,7 @@ pub fn build(b: *std.Build) void {
 
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
-        .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
+        .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
     }
 
@@ -42,5 +41,5 @@ pub fn build(b: *std.Build) void {
         .root_module = mod,
     });
     b.installArtifact(lib);
-//    std.debug.print("{s}\n",.{mod_name});
+    //    std.debug.print("{s}\n",.{mod_name});
 }

@@ -1,7 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -21,7 +20,7 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
     });
 
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.defineCMacro("CIMGUI_USE_OPENGL3", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimgui/imgui"));
@@ -31,7 +30,7 @@ pub fn build(b: *std.Build) void {
 
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
-        .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
+        .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
     }
 
@@ -54,13 +53,11 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-
-
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = mod_name,
         .root_module = mod,
     });
     b.installArtifact(lib);
-//    std.debug.print("{s} module\n",.{mod_name});
+    //    std.debug.print("{s} module\n",.{mod_name});
 }

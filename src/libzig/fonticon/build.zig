@@ -1,7 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -43,5 +42,5 @@ pub fn build(b: *std.Build) void {
     }
 
     b.installArtifact(lib);
-//    std.debug.print("{s} module\n",.{mod_name});
+    //    std.debug.print("{s} module\n",.{mod_name});
 }

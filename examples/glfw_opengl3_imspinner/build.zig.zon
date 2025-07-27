@@ -1,0 +1,52 @@
+.{
+    .name = .glfw_opegl3_imspinner,
+    .version = "0.0.1",
+    .fingerprint = 0x3d224367e8e3a9ff , // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .appimgui  =  .{
+            .path = "../../src/libzig/appimgui"
+        },
+        .cimgui  =  .{
+            .path = "../../src/libzig/cimgui"
+        },
+        .imspinner =  .{
+            .path = "../../src/libzig/imspinner"
+        },
+        .fonticon =  .{
+            .path = "../../src/libzig/fonticon"
+        },
+        .glfw = .{
+            .path = "../../src/libzig/glfw"
+        },
+        .impl_glfw = .{
+            .path = "../../src/libzig/impl_glfw"
+        },
+        .impl_opengl3 = .{
+            .path = "../../src/libzig/impl_opengl3"
+        },
+        .loadicon = .{
+            .path = "../../src/libzig/loadicon"
+        },
+        .loadimage = .{
+            .path = "../../src/libzig/loadimage"
+        },
+        .saveimage = .{
+            .path = "../../src/libzig/saveimage"
+        },
+        .setupfont = .{
+            .path = "../../src/libzig/setupfont"
+        },
+        .utils = .{
+            .path = "../../src/libzig/utils"
+        },
+        .zoomglass = .{
+            .path = "../../src/libzig/zoomglass"
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

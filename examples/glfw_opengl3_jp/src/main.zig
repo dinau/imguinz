@@ -78,13 +78,13 @@ pub fn gui_main(window: *app.Window) void {
 
             ig.igSpacing();
             ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++
-               " " ++ ifa.ICON_FA_POWER_OFF ++
-               " " ++ ifa.ICON_FA_MICROPHONE ++
-               " " ++ ifa.ICON_FA_MICROCHIP ++
-               " " ++ ifa.ICON_FA_VOLUME_HIGH ++
-               " " ++ ifa.ICON_FA_SCISSORS ++
-               " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++
-               " " ++ ifa.ICON_FA_BLOG);
+                " " ++ ifa.ICON_FA_POWER_OFF ++
+                " " ++ ifa.ICON_FA_MICROPHONE ++
+                " " ++ ifa.ICON_FA_MICROCHIP ++
+                " " ++ ifa.ICON_FA_VOLUME_HIGH ++
+                " " ++ ifa.ICON_FA_SCISSORS ++
+                " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++
+                " " ++ ifa.ICON_FA_BLOG);
         } // end main window
 
         //--------

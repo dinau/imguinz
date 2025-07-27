@@ -1,8 +1,9 @@
 const std = @import ("std");
 const builtin = @import ("builtin");
-const ig = @import ("imgui.zig");
-const fonts = @import ("fonts.zig");
-const utils = @import("utils.zig");
+const ig = @import ("cimgui");
+const ifa = @import ("fonticon");
+const utils = @import("utils");
+const stf = @import("setupfont");
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
@@ -123,7 +124,7 @@ pub fn main () !void {
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
   var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
-  fonts.setupFonts();
+  stf.setupFonts();
 
   const sz  = utils.vec2(0, 0);
 
@@ -156,17 +157,17 @@ pub fn main () !void {
     // Show main window
     //------------------
     {
-      _ = ig.igBegin (fonts.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
+      _ = ig.igBegin (ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
       defer ig.igEnd ();
       var ver:ig.SDL_version = undefined;
       ig.SDL_GetVersion(&ver);
-      ig.igText (fonts.ICON_FA_COMMENT ++ " SDL v"); ig.igSameLine (0, -1.0);
+      ig.igText (ifa.ICON_FA_COMMENT ++ " SDL v"); ig.igSameLine (0, -1.0);
       ig.igText ("%d.%d.%d", ver.major, ver.minor, ver.patch);
-      ig.igText (fonts.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
+      ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
       ig.igText (ig.glGetString(ig.GL_VERSION));
-      ig.igText(fonts.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
+      ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
       ig.igText(ig.igGetVersion());
-      ig.igText(fonts.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
+      ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
       ig.igText(builtin.zig_version_string);
 
       ig.igSpacing();
@@ -185,18 +186,18 @@ pub fn main () !void {
       ig.igText ("Counter = %d", counter);
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
       // Show icon fonts
-      ig.igSeparatorText(fonts.ICON_FA_WRENCH ++ " Icon font test ");
-      ig.igText(fonts.ICON_FA_TRASH_CAN  ++ " Trash");
+      ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " Icon font test ");
+      ig.igText(ifa.ICON_FA_TRASH_CAN  ++ " Trash");
 
       ig.igSpacing();
-      ig.igText(fonts.ICON_FA_MAGNIFYING_GLASS_PLUS
-          ++ " " ++ fonts.ICON_FA_POWER_OFF
-          ++ " " ++ fonts.ICON_FA_MICROPHONE
-          ++ " " ++ fonts.ICON_FA_MICROCHIP
-          ++ " " ++ fonts.ICON_FA_VOLUME_HIGH
-          ++ " " ++ fonts.ICON_FA_SCISSORS
-          ++ " " ++ fonts.ICON_FA_SCREWDRIVER_WRENCH
-          ++ " " ++ fonts.ICON_FA_BLOG);
+      ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS
+          ++ " " ++ ifa.ICON_FA_POWER_OFF
+          ++ " " ++ ifa.ICON_FA_MICROPHONE
+          ++ " " ++ ifa.ICON_FA_MICROCHIP
+          ++ " " ++ ifa.ICON_FA_VOLUME_HIGH
+          ++ " " ++ ifa.ICON_FA_SCISSORS
+          ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH
+          ++ " " ++ ifa.ICON_FA_BLOG);
     } // end main window
 
     //---------------------
