@@ -14,12 +14,12 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
-							examples/imPlotDemo \
-							examples/sdl2_opengl3
-ifeq ($(OS),Windows_NT)
-	EXAMPLE_DIRS += \
-								examples/sdl3_opengl3
-endif
+							examples/imPlotDemo
+#							examples/sdl2_opengl3
+#ifeq ($(OS),Windows_NT)
+#	EXAMPLE_DIRS += \
+#								examples/sdl3_opengl3
+#endif
 
 all:
 	@echo $(shell zig version)
