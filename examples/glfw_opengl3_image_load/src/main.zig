@@ -3,6 +3,7 @@ const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
 const utils = @import("utils");
+const stf = @import("setupfont");
 const app = @import("appimgui");
 
 const TImgFormat = struct {
@@ -39,7 +40,7 @@ pub fn gui_main(window: *app.Window) !void {
     var textureHeight: c_int = 0;
     _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    utils.setupFonts(); // Setup CJK fonts and Icon fonts
+    stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const sz = utils.vec2(0, 0);
 
@@ -49,8 +50,13 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
 
         // Start the Dear ImGui frame
         window.frame();

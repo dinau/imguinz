@@ -1,10 +1,7 @@
 const std = @import("std");
-const builtin = @import("builtin");
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const ip = @import("implot.zig");
 const ip3 = @import("implot3d.zig");
-const utils = @import("utils.zig");
 const ifa = @import("fonticon");
 const app = @import("appimgui");
 const stf = @import("setupfont");
@@ -14,10 +11,6 @@ pub const c = @cImport({
 });
 
 const IMGUI_HAS_DOCK = false; // Docking feature
-
-fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
-    std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
-}
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
@@ -53,8 +46,13 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose()) {
+        window.pollEvents();
+
+        // Iconify sleep
+        if (window.isIconified()) {
+            continue;
+        }
 
         // Start the Dear ImGui frame
         window.frame();
@@ -75,9 +73,9 @@ pub fn gui_main(window: *app.Window) !void {
             // Static vars
             const N = 20;
             const st = struct {
-                var xs: [400]f32 = undefined;
-                var ys: [400]f32 = undefined;
-                var zs: [400]f32 = undefined;
+                var xs: [N * N]f32 = undefined;
+                var ys: [N * N]f32 = undefined;
+                var zs: [N * N]f32 = undefined;
                 var t: f32 = 0.0;
                 //
                 var selected_fill: c_int = 1; // Colormap by default
@@ -93,20 +91,20 @@ pub fn gui_main(window: *app.Window) !void {
             };
 
             ig.igText("Frame rate  %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
-            st.t = st.t + ig.igGetIO_Nil().*.DeltaTime;
+            st.t += ig.igGetIO_Nil().*.DeltaTime;
             // Define the range for X and Y
             const min_val: f32 = -1.0;
             const max_val: f32 = 1.0;
             const step = (max_val - min_val) / (N - 1);
             // Populate the xs, ys, and zs arrays
-            for (0..(N - 1)) |i| {
+            var i: usize = 0;
+            while (i < N) : (i += 1) {
                 var j: usize = 0;
-                while (j < N) {
+                while (j < N) : (j += 1) {
                     const idx = i * N + j;
                     st.xs[idx] = min_val + @as(f32, @floatFromInt(j)) * step; // X values are constant along rows
                     st.ys[idx] = min_val + @as(f32, @floatFromInt(i)) * step; // Y values are constant along columns
                     st.zs[idx] = std.math.sin(2 * st.t + std.math.sqrt((st.xs[idx] * st.xs[idx] + st.ys[idx] * st.ys[idx]))); // z = sin(2t + sqrt(x^2 + y^2))
-                    j = j + 1;
                 }
             }
             // Choose fill color

@@ -26,8 +26,13 @@ pub fn gui_main(window: *app.Window) void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(@ptrCast(window.handle)) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
 
         // Start the Dear ImGui frame
         window.frame();

@@ -1,6 +1,4 @@
-const std = @import("std");
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const ifa = @import("fonticon");
 const stf = @import("setupfont");
 const utils = @import("utils");
@@ -20,8 +18,13 @@ pub fn gui_main (window: *app.Window) void {
   //---------------
   // main loop GUI
   //---------------
-  while (glfw.glfwWindowShouldClose (window.handle) == 0) {
-    glfw.glfwPollEvents ();
+  while (!window.shouldClose ()) {
+    window.pollEvents ();
+
+    // Iconify sleep
+    if( window.isIconified()){
+        continue;
+    }
 
     // Start the Dear ImGui frame
     window.frame();

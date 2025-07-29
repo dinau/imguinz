@@ -8,7 +8,6 @@
         .saveimage = .{ .path = "../saveimage" },
         .loadimage = .{ .path = "../loadimage" },
         .loadicon = .{ .path = "../loadicon" },
-        .setupfont = .{ .path = "../setupfont" },
         .zoomglass = .{ .path = "../zoomglass" },
     },
     .paths = .{

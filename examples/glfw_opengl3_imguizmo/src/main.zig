@@ -1,8 +1,4 @@
-// Notice: This example might not work well at this moment.
-
-const std = @import("std");
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const ifa = @import("fonticon");
 const stf = @import("setupfont");
 const app = @import("appimgui");
@@ -36,10 +32,17 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
+
         // Start the Dear ImGui frame
         window.frame();
+
         // Start ImGuizmo frame
         imguizmo.ImGuizmo_BeginFrame();
 

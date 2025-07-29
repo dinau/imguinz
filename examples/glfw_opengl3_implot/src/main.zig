@@ -1,10 +1,6 @@
-const std = @import("std");
-const builtin = @import("builtin");
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const ip = @import("implot.zig");
 const ifa = @import("fonticon");
-const utils = @import("utils.zig");
 const app = @import("appimgui");
 const stf = @import("setupfont");
 
@@ -13,10 +9,6 @@ pub const c = @cImport({
 });
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
-
-fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
-    std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
-}
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
@@ -49,8 +41,13 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
 
         // Start the Dear ImGui frame
         window.frame();

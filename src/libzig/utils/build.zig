@@ -20,8 +20,7 @@ pub fn build(b: *std.Build) void {
     });
     mod.addImport(mod_name, mod);
     // import modules
-    //const modules = [_][]const u8{"cimgui","loadimage","saveimage","loadicon","setupfont","zoomglass"};
-    const modules = [_][]const u8{ "cimgui", "loadimage", "saveimage", "loadicon", "setupfont", "zoomglass" };
+    const modules = [_][]const u8{ "cimgui", "loadimage", "saveimage", "loadicon", "zoomglass" };
     for (modules) |module| {
         const mod_dep = b.dependency(module, .{});
         mod.addImport(module, mod_dep.module(module));

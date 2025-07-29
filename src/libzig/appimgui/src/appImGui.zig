@@ -213,6 +213,33 @@ pub const Window = struct {
         glfw.glfwTerminate();
     }
 
+    //-------------
+    // isIconified
+    //-------------
+    pub fn isIconified(win: *Window) bool {
+       if( 0 != glfw.glfwGetWindowAttrib(win.handle, glfw.GLFW_ICONIFIED)){
+           impl_glfw.ImGui_ImplGlfw_Sleep(10);
+           return true;
+       }
+       else {
+           return false;
+       }
+    }
+
+    //-------------
+    // shouldClose
+    //-------------
+    pub fn shouldClose(win: *Window) bool {
+        return glfw.glfwWindowShouldClose(win.handle) != 0;
+    }
+
+    //------------
+    // pollEvents
+    //------------
+    pub fn pollEvents(win: *Window) void {
+        _ = win;
+        glfw.glfwPollEvents();
+    }
     //------------------
     // Show info window
     //------------------

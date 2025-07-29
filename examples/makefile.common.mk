@@ -55,5 +55,6 @@ dupx:
 fmt:
 	zig fmt src/main.zig
 	zig fmt build.zig
+	zig fmt build.zig.zon
 
 pretty: fmt

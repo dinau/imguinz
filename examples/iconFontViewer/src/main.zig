@@ -3,6 +3,7 @@ const ig = @import("cimgui");
 const glfw = @import("glfw");
 const ifa = @import("fonticon");
 const utils = @import("utils");
+const stf = @import("setupfont");
 const app = @import("appimgui");
 
 const ift = @import("./iconFontsTblDef.zig");
@@ -14,7 +15,7 @@ const MainWinHeight: i32 = 800;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    utils.setupFonts(); // Setup CJK fonts and Icon fonts
+    stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
 
@@ -28,8 +29,14 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
+
         // Start the Dear ImGui frame
         window.frame();
 

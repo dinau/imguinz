@@ -1,5 +1,4 @@
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const stf = @import("setupfont");
 const app = @import("appimgui");
 
@@ -12,8 +11,13 @@ pub fn gui_main(window: *app.Window) void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(@ptrCast(window.handle)) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose()) {
+        window.pollEvents();
+
+        // Iconify sleep
+        if (window.isIconified()) {
+            continue;
+        }
 
         // Start the Dear ImGui frame
         window.frame();
@@ -26,7 +30,7 @@ pub fn gui_main(window: *app.Window) void {
         //------------------
         // Show info window
         //------------------
-        window.showInfoWindow(); // See:  examples/utils/appImGui.zig
+        window.showInfoWindow(); // See:  ../../src/libzig/appimgui/appImGui.zig
 
         //--------
         // render

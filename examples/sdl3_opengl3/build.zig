@@ -5,111 +5,37 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const imlibs = b.addStaticLibrary(.{
-        .name = "cimgui",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/cimgui.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    // Get executable name from current directory name
+    const allocator = b.allocator;
+    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
+    defer allocator.free(abs_path);
+    const exe_name = std.fs.path.basename(abs_path);
 
-    // This declares intent for the library to be installed into the standard
-    // location when the user invokes the "install" step (the default step when
-    // running `zig build`).
-    //b.installArtifact(imlibs);
-
-    const exe = b.addExecutable(.{
-        .name = "sdl3_opengl3",
+    const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+
+    // Register external module from "./build.zig.zon" file.
+    addExternalModule(b, main_mod);
+
+    const exe = b.addExecutable(.{
+        .name = exe_name,
+        .root_module = main_mod,
+    });
+
     // Load Icon
     exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
+
     //----------------------------------
     // 64bit Winddws OS
     //----------------------------------
-    const sdlBase = "../../libs/sdl";
-    const sdlPath = b.fmt("{s}/SDL3/x86_64-w64-mingw32", .{sdlBase});
-    //---------------
-    // [imlibs] --- Include paths
-    //---------------
-    imlibs.addIncludePath(b.path(b.pathJoin(&.{sdlPath, "include"})));
-    // ImGui/CImGui
-    imlibs.addIncludePath(b.path("../../libs/cimgui/imgui"));
-    imlibs.addIncludePath(b.path("../../libs/cimgui/imgui/backends"));
-    imlibs.addIncludePath(b.path("../../libs/cimgui"));
-    //--------------------------------
-    // Define macro for C/C++ sources
-    //--------------------------------
-    // ImGui
-    imlibs.root_module.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    imlibs.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    imlibs.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
-    switch (builtin.target.os.tag){
-      .windows => imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-      .linux =>   imlibs.root_module.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
-      else => {},
-    }
-
-    //---------------
-    // Sources C/C++
-    //---------------
-    imlibs.addCSourceFiles(.{
-      .files = &.{
-        // ImGui
-        "../../libs/cimgui/imgui/imgui.cpp",
-        "../../libs/cimgui/imgui/imgui_tables.cpp",
-        "../../libs/cimgui/imgui/imgui_demo.cpp",
-        "../../libs/cimgui/imgui/imgui_widgets.cpp",
-        "../../libs/cimgui/imgui/imgui_draw.cpp",
-        // CImGui
-        "../../libs/cimgui/cimgui.cpp",
-        // ImGui SDL3 and OpenGL interface
-        "../../libs/cimgui/imgui/backends/imgui_impl_opengl3.cpp",
-        "../../libs/cimgui/imgui/backends/imgui_impl_sdl3.cpp",
-      },
-      .flags = &.{
-        "-O2",
-      },
-    });
+    const sdlPath = "../../src/libc/sdl/SDL3/x86_64-w64-mingw32";
 
     //-------------------
     // For application
     //-------------------
-    //---------------
-    // Include paths
-    //---------------
-    exe.addIncludePath(b.path(b.pathJoin(&.{sdlPath, "include"})));
-    exe.addIncludePath(b.path("src"));
-    exe.addIncludePath(b.path("../utils"));
-    exe.addIncludePath(b.path("../utils/fonticon"));
-    exe.addIncludePath(b.path("../../libs/stb"));
-    // CImGui
-    exe.addIncludePath(b.path("../../libs/cimgui"));
-    exe.addIncludePath(b.path("../../libs/"));
-    //--------------------------------
-    // Define macro for C/C++ sources
-    //--------------------------------
-    exe.root_module.addCMacro("CIMGUI_USE_SDL3", "");
-    exe.root_module.addCMacro("CIMGUI_USE_OPENGL3", "");
-    exe.root_module.addCMacro("ImDrawIdx", "unsigned int");
-    exe.root_module.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS","1");
-    exe.root_module.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    //---------------
-    // Sources C/C++
-    //---------------
-    exe.addCSourceFiles(.{
-      .files = &.{
-        "../utils/setupFonts.c",
-        "../utils/loadImage.c",
-        "../utils/saveImage.c",
-      },
-      .flags = &.{
-        "-O2",
-      },
-    });
     //------
     // Libs
     //------
@@ -154,15 +80,9 @@ pub fn build(b: *std.Build) void {
     exe.linkLibC();
     exe.linkLibCpp();
     //
-    exe.linkLibrary(imlibs);
     //
-    imlibs.linkLibC();
-    imlibs.linkLibCpp();
     exe.subsystem = .Windows;  // Hide console window
 
-    // This declares intent for the executable to be installed into the
-    // standard location when the user invokes the "install" step (the default
-    // step when running `zig build`).
     b.installArtifact(exe);
 
     const resBin =   [_][]const u8{ "imgui.ini", "sdl3_opengl3.ini"
@@ -186,52 +106,67 @@ pub fn build(b: *std.Build) void {
       const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
       b.getInstallStep().dependOn(&resSdl.step);
     }
-    //
-    // This *creates* a Run step in the build graph, to be executed when another
-    // step is evaluated that depends on it. The next line below will establish
-    // such a dependency.
-    const run_cmd = b.addRunArtifact(exe);
 
-    // By making the run step depend on the install step, it will be run from the
-    // installation directory rather than directly from within the cache directory.
-    // This is not necessary, however, if the application depends on other installed
-    // files, this ensures they will be present and in the expected location.
+    const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
 
-    // This allows the user to pass arguments to the application in the build
-    // command itself, like this: `zig build run -- arg1 arg2 etc`
     if (b.args) |args| {
         run_cmd.addArgs(args);
     }
-
-    // This creates a build step. It will be visible in the `zig build --help` menu,
-    // and can be selected like this: `zig build run`
-    // This will evaluate the `run` step rather than the default, which is "install".
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
 
-    // Creates a step for unit testing. This only builds the test executable
-    // but does not run it.
-    const lib_unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+}
 
-    const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
+// Register external module from "./build.zig.zon" file.
+fn addExternalModule(b: *std.Build, module: *std.Build.Module) void {
+    const allocator = b.allocator;
+    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
+    defer allocator.free(abs_path);
 
-    const exe_unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    const fp = std.fs.cwd().openFile("build.zig.zon", .{}) catch |err| {
+        std.debug.print("Failed to open file: {}\n", .{err});
+        return;
+    };
+    defer fp.close();
 
-    const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
+    var buffered_reader = std.io.bufferedReader(fp.reader());
+    var reader = buffered_reader.reader();
 
-    // Similar to creating the run step earlier, this exposes a `test` step to
-    // the `zig build --help` menu, providing a way for the user to request
-    // running the unit tests.
-    const test_step = b.step("test", "Run unit tests");
-    test_step.dependOn(&run_lib_unit_tests.step);
-    test_step.dependOn(&run_exe_unit_tests.step);
+    var state: i32 = 1;
+    var idx: ?usize = undefined;
+    while (true) {
+        const line = reader.readUntilDelimiterOrEofAlloc(allocator, '\n', 4096) catch |err| {
+            std.debug.print("Read error: {}\n", .{err});
+            break;
+        };
+        if (line == null) break; // EOF
+        defer allocator.free(line.?);
+        const sLine = line.?;
+        switch (state) {
+            1 => {
+                idx = std.mem.indexOf(u8, sLine, ".dependencies");
+                if (idx) |_| {
+                    state += 1;
+                }
+            },
+            2 => {
+                idx = std.mem.indexOf(u8, line.?, ".{");
+                if (idx) |_| {
+                    var itr = std.mem.splitSequence(u8, sLine, "=");
+                    if (itr.next()) |pname| {
+                        const plib_name = std.mem.trim(u8, pname, " ");
+                        const lib_name = std.mem.trimLeft(u8, plib_name, ".");
+                        if (!std.mem.eql(u8, lib_name, "paths")) {
+                            const dep = b.dependency(lib_name, .{});
+                            const mod = dep.module(lib_name);
+                            module.addImport(lib_name, mod);
+                            //std.debug.print("External lib name = [{s}]\n", .{lib_name});
+                        }
+                    }
+                }
+            },
+            else => {},
+        }
+    }
 }

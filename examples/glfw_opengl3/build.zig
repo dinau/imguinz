@@ -26,25 +26,28 @@ pub fn build(b: *std.Build) void {
     });
 
     // Load Icon
-    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+    exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+
+    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
+    // See. https://github.com/ziglang/zig/pull/22587
 
     //---------
     // Linking
     //---------
     if (builtin.target.os.tag == .windows) {
-        exe.linkSystemLibrary("gdi32");
-        exe.linkSystemLibrary("imm32");
-        exe.linkSystemLibrary("opengl32");
-        exe.linkSystemLibrary("user32");
-        exe.linkSystemLibrary("shell32");
+        exe.root_module.linkSystemLibrary("gdi32", .{});
+        exe.root_module.linkSystemLibrary("imm32", .{});
+        exe.root_module.linkSystemLibrary("opengl32", .{});
+        exe.root_module.linkSystemLibrary("user32", .{});
+        exe.root_module.linkSystemLibrary("shell32", .{});
     } else if (builtin.target.os.tag == .linux) {
-        exe.linkSystemLibrary("glfw3");
-        exe.linkSystemLibrary("GL");
+        exe.root_module.linkSystemLibrary("glfw3", .{});
+        exe.root_module.linkSystemLibrary("GL", .{});
     }
 
-    // System
-    exe.linkLibC();
-    exe.linkLibCpp();
+    // root_module
+    exe.root_module.link_libc = true;
+    exe.root_module.link_libcpp = true;
 
     exe.subsystem = .Windows; // Hide console window
 
@@ -120,10 +123,9 @@ fn addExternalModule(b: *std.Build, module: *std.Build.Module) void {
                         const plib_name = std.mem.trim(u8, pname, " ");
                         const lib_name = std.mem.trimLeft(u8, plib_name, ".");
                         if (!std.mem.eql(u8, lib_name, "paths")) {
-                            const dep = b.dependency(lib_name, .{});
-                            const mod = dep.module(lib_name);
+                            const dep = b.lazyDependency(lib_name, .{});
+                            const mod = dep.?.module(lib_name);
                             module.addImport(lib_name, mod);
-                            //std.debug.print("External lib name = [{s}]\n", .{lib_name});
                         }
                     }
                 }

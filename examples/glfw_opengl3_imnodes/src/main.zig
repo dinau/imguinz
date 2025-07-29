@@ -1,6 +1,5 @@
 const std = @import("std");
 const ig = @import("cimgui");
-const glfw = @import("glfw");
 const ifa = @import("fonticon");
 const stf = @import("setupfont");
 const app = @import("appimgui");
@@ -54,8 +53,13 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (glfw.glfwWindowShouldClose(window.handle) == 0) {
-        glfw.glfwPollEvents();
+    while (!window.shouldClose ()) {
+        window.pollEvents ();
+
+        // Iconify sleep
+        if( window.isIconified()){
+            continue;
+        }
         // Start the Dear ImGui frame
         window.frame();
 
@@ -155,8 +159,6 @@ pub fn gui_main(window: *app.Window) !void {
 // saveObj
 //---------
 fn saveObj(this: *recObj) !void {
-    //const stdout = std.io.getStdOut().writer();
-    //try stdout.print("\n=== Save obj\n", .{});
     //-- Save the internal imnodes state
     imnodes.imnodes_SaveCurrentEditorStateToIniFile("save_load.ini");
     //-- Dump our editor state as bytes into a file
@@ -164,14 +166,12 @@ fn saveObj(this: *recObj) !void {
     defer fout.close();
     //-- Copy the vector: nodes to the file
     try fout.writeAll(std.mem.asBytes(&this.nodes.items.len)); //   -- save vector:nodes size
-    //try stdout.print("Nodes size: {d}\n", .{this.nodes.items.len});
     for (this.nodes.items) |nd| {
         try fout.writeAll(std.mem.asBytes(&nd.id));
         try fout.writeAll(std.mem.asBytes(&nd.value));
     }
     //-- Copy the vector: links to the file
     try fout.writeAll(std.mem.asBytes(&this.links.items.len)); //   -- save vector:links size
-    //try stdout.print("Links size: {d}\n", .{this.links.items.len});
     for (this.links.items) |lk| {
         try fout.writeAll(std.mem.asBytes(&lk.id));
         try fout.writeAll(std.mem.asBytes(&lk.start_attr));
@@ -185,8 +185,6 @@ fn saveObj(this: *recObj) !void {
 // loadObj
 //---------
 fn loadObj(this: *recObj) !void {
-    //const stdout = std.io.getStdOut().writer();
-    //try stdout.print("=== Load obj\n", .{});
     //-- Load the internal imnodes state
     imnodes.imnodes_LoadCurrentEditorStateFromIniFile("save_load.ini");
     //-- Load our editor state into memory
@@ -198,7 +196,6 @@ fn loadObj(this: *recObj) !void {
     if (sz == 0) {
         return;
     }
-    //try stdout.print("Nodes size: {d}\n", .{sz});
     for (0..sz) |_| {
         var id: c_int = undefined;
         _ = try fin.readAll(std.mem.asBytes(&id));
@@ -208,7 +205,6 @@ fn loadObj(this: *recObj) !void {
     }
     //-- Load links into memory
     _ = try fin.readAll(std.mem.asBytes(&sz));
-    //try stdout.print("Links size: {d}\n", .{sz});
     for (0..sz) |_| {
         var id: c_int = undefined;
         _ = try fin.readAll(std.mem.asBytes(&id));

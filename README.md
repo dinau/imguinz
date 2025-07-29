@@ -59,15 +59,15 @@ examples in Zig language with less external dependencies.
 - OS: Windows and Linux
 - Frontends and Backends 
 
-   |                    | GLFW   | SDL2  | SDL3   |
-   | ---                | :----: | :---- | :----: |
-   | OpenGL3<br>backend | v      | v     | v      |
+   |                    | GLFW   |   SDL3   |
+   | ---                | :----: |   :----: |
+   | OpenGL3<br>backend | v      |   v      |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
    - Included GLFW 3.4.0 static library (for Windows)
-   - Included SDL2/SDL3 libraries (for Windows)
+   - Included SDL3 libraries (for Windows)
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
@@ -88,7 +88,7 @@ examples in Zig language with less external dependencies.
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}
+  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
   ```
 
 ### Build and run
@@ -115,7 +115,7 @@ examples in Zig language with less external dependencies.
 Library name / C lang. wrapper
 
 - [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) (2024/11)
-- [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
+- [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot) (2025)
 - [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) (2025/07)
 - [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes) (2025/06)
 - [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo) (2025/07) 
@@ -217,7 +217,6 @@ Image load and magnifying glass
 
 
 [glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig) / 
-[sdl2_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl2_opengl3/src/main.zig) / 
 [sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
