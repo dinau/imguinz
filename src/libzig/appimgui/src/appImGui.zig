@@ -6,6 +6,7 @@ const impl_gl = @import("impl_opengl3");
 const impl_glfw = @import("impl_glfw");
 const ifa = @import("fonticon");
 const img_ld = @import("loadimage");
+const icon = @import("loadicon");
 
 //---------------------
 // glfw_error_callback
@@ -126,7 +127,7 @@ pub const Window = struct {
             const icon_path = try std.fs.path.join(allocator, &paths);
             defer allocator.free(icon_path);
             // Load icon
-            img_ld.LoadTitleBarIcon(win.handle, icon_path.ptr);
+            icon.LoadTitleBarIcon(win.handle, icon_path.ptr);
         }
 
         glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load

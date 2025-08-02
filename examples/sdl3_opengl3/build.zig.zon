@@ -1,7 +1,7 @@
 .{
-    .name = .app_glfw_opegl3_image_load,
+    .name = .app_sdl3_opengl3,
     .version = "0.0.1",
-    .fingerprint = 0xd739e67a93b844f7, // Changing this has security and trust implications.
+    .fingerprint = 0x9d14420befc33bf5, // Changing this has security and trust implications.
     .minimum_zig_version = "0.14.1",
     .dependencies = .{
         .appimgui  =  .{
@@ -13,14 +13,26 @@
         .fonticon =  .{
             .path = "../../src/libzig/fonticon"
         },
-        .glfw = .{
+        .glfw =  .{
             .path = "../../src/libzig/glfw"
+        },
+        .impl_opengl3 =  .{
+            .path = "../../src/libzig/impl_opengl3"
+        },
+        .impl_sdl3 =  .{
+            .path = "../../src/libzig/impl_sdl3"
+        },
+        .loadimage =  .{
+            .path = "../../src/libzig/loadimage"
         },
         .setupfont = .{
             .path = "../../src/libzig/setupfont"
         },
         .utils = .{
             .path = "../../src/libzig/utils"
+        },
+        .sdl3 = .{
+            .path = "../../src/libzig/sdl3"
         },
     },
     .paths = .{

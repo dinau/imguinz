@@ -2,12 +2,14 @@ const std = @import ("std");
 const builtin = @import ("builtin");
 
 const ig= @import ("cimgui");
-const fonts = @import ("fonticon");
+const ifa = @import ("fonticon");
 const stf = @import ("setupfont");
 const utils = @import("utils");
 const sdl = @import("sdl3");
+const glfw = @import("glfw");
 const impl_sdl3 = @import("impl_sdl3");
 const impl_opengl3 = @import("impl_opengl3");
+const img_load = @import("loadimage");
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
@@ -26,11 +28,11 @@ pub fn main () !void {
   const stdout = bw.writer();
 
   // Setup SDL
-  if (ig.SDL_Init(ig.SDL_INIT_VIDEO | ig.SDL_INIT_GAMEPAD) == false) {
-    try stdout.print("Error: {s}\n", .{ig.SDL_GetError()});
+  if (sdl.SDL_Init(sdl.SDL_INIT_VIDEO | sdl.SDL_INIT_GAMEPAD) == false) {
+    try stdout.print("Error: {s}\n", .{sdl.SDL_GetError()});
     return error.SDL_init;
   }
-  defer ig.SDL_Quit();
+  defer sdl.SDL_Quit();
   var glsl_version_buf: [30]u8 = undefined;
   const versions = [_][2]u16{[_]u16{4, 6},
                              [_]u16{4, 5},
@@ -46,43 +48,43 @@ pub fn main () !void {
   //-------------------------
   // Decide GL+GLSL versions
   //-------------------------
-  var window: *ig.SDL_Window = undefined;
+  var window: *sdl.SDL_Window = undefined;
   for (versions)|ver|{
     //_ = ver;
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_FLAGS, 0);
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_PROFILE_MASK, ig.SDL_GL_CONTEXT_PROFILE_CORE);
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MAJOR_VERSION, ver[0]);
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_CONTEXT_MINOR_VERSION, ver[1]);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_CONTEXT_FLAGS, 0);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_CONTEXT_PROFILE_MASK, sdl.SDL_GL_CONTEXT_PROFILE_CORE);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_CONTEXT_MAJOR_VERSION, ver[0]);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_CONTEXT_MINOR_VERSION, ver[1]);
 
-    //_ = ig.SDL_SetHint(ig.SDL_HINT_IME_SHOW_UI, "1");
+    //_ = sdl.SDL_SetHint(sdl.SDL_HINT_IME_SHOW_UI, "1");
 
     // Create window with graphics context
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DOUBLEBUFFER, 1);
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_DEPTH_SIZE, 24);
-    _ = ig.SDL_GL_SetAttribute(ig.SDL_GL_STENCIL_SIZE, 8);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_DOUBLEBUFFER, 1);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_DEPTH_SIZE, 24);
+    _ = sdl.SDL_GL_SetAttribute(sdl.SDL_GL_STENCIL_SIZE, 8);
 
     // Initialy main window is hidden.  See: showWindowDelay
-    const window_flags = (ig.SDL_WINDOW_OPENGL | ig.SDL_WINDOW_RESIZABLE | ig.SDL_WINDOW_HIDDEN);
+    const window_flags = (sdl.SDL_WINDOW_OPENGL | sdl.SDL_WINDOW_RESIZABLE | sdl.SDL_WINDOW_HIDDEN);
 
-    if(ig.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags))|pointer|{
+    if(sdl.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags))|pointer|{
       window = pointer;
       glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
       try stdout.print("{s} \n", .{glsl_version});
       break;
     }
   }else{
-    try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{ig.SDL_GetError()});
+    try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{sdl.SDL_GetError()});
     return error.SDL_CreatWindow;
   }
 
-  defer ig.SDL_DestroyWindow(window);
+  defer sdl.SDL_DestroyWindow(window);
 
-  _ = ig.SDL_SetWindowPosition(window, ig.SDL_WINDOWPOS_CENTERED, ig.SDL_WINDOWPOS_CENTERED);
-  const gl_context = ig.SDL_GL_CreateContext(window);
-  defer _ = ig.SDL_GL_DeleteContext(gl_context);
+  _ = sdl.SDL_SetWindowPosition(window, sdl.SDL_WINDOWPOS_CENTERED, sdl.SDL_WINDOWPOS_CENTERED);
+  const gl_context = sdl.SDL_GL_CreateContext(window);
+  defer _ = sdl.SDL_GL_DeleteContext(gl_context);
 
-  _= ig.SDL_GL_MakeCurrent(window, gl_context);
-  _= ig.SDL_GL_SetSwapInterval(1);  // Enable vsync
+  _= sdl.SDL_GL_MakeCurrent(window, gl_context);
+  _= sdl.SDL_GL_SetSwapInterval(1);  // Enable vsync
 
   // Setup Dear ImGui context
   if (ig.igCreateContext (null) == null){
@@ -105,19 +107,19 @@ pub fn main () !void {
   // ig.igStyleColorsClassic(null);
 
   // Setup Platform/Renderer backends
-  _ = ig.ImGui_ImplSDL3_InitForOpenGL(window, gl_context);
-  defer ig.ImGui_ImplSDL3_Shutdown ();
-  _ = ig.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
-  defer ig.ImGui_ImplOpenGL3_Shutdown ();
+  _ = impl_sdl3.ImGui_ImplSDL3_InitForOpenGL(@ptrCast(window), gl_context);
+  defer impl_sdl3.ImGui_ImplSDL3_Shutdown ();
+  _ = impl_opengl3.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
+  defer impl_opengl3.ImGui_ImplOpenGL3_Shutdown ();
 
   //------------
   // Load image
   //------------
   const ImageName = "sailboat-400.jpg";
-  var textureId : ig.GLuint = undefined;
+  var textureId : glfw.GLuint = undefined;
   var textureWidth: c_int = 0;
   var textureHeight : c_int = 0;
-  _ = ig.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
+  _ = img_load.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
   //-------------
   // Global vars
@@ -136,22 +138,22 @@ pub fn main () !void {
 
   const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
 
-  var zoomTextureID: ig.GLuint = 0; //# Must be == 0 at first
-  defer ig.glDeleteTextures(1, &zoomTextureID);
+  var zoomTextureID: glfw.GLuint = 0; //# Must be == 0 at first
+  defer glfw.glDeleteTextures(1, &zoomTextureID);
 
   var done = false;
   while (!done) {
-    var event: ig.SDL_Event = undefined;
-    while (ig.SDL_PollEvent(&event)) {
-      _ = ig.ImGui_ImplSDL3_ProcessEvent(&event);
-      if (event.type == ig.SDL_EVENT_QUIT)
+    var event: sdl.SDL_Event = undefined;
+    while (sdl.SDL_PollEvent(&event)) {
+      _ = impl_sdl3.ImGui_ImplSDL3_ProcessEvent(@ptrCast(&event));
+      if (event.type == sdl.SDL_EVENT_QUIT)
         done = true;
-      if ((event.type == ig.SDL_EVENT_WINDOW_CLOSE_REQUESTED) and (event.window.windowID == ig.SDL_GetWindowID(window)))
+      if ((event.type == sdl.SDL_EVENT_WINDOW_CLOSE_REQUESTED) and (event.window.windowID == sdl.SDL_GetWindowID(window)))
         done = true;
     }
     // Start the Dear ImGui frame
-    ig.ImGui_ImplOpenGL3_NewFrame();
-    ig.ImGui_ImplSDL3_NewFrame();
+    impl_opengl3.ImGui_ImplOpenGL3_NewFrame();
+    impl_sdl3.ImGui_ImplSDL3_NewFrame();
     ig.igNewFrame();
 
     //------------------
@@ -168,9 +170,9 @@ pub fn main () !void {
       _ = ig.igBegin (ifa.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0);
       defer ig.igEnd ();
       ig.igText (ifa.ICON_FA_COMMENT ++ " SDL3 v"); ig.igSameLine (0, -1.0);
-      ig.igText ("[%d],[%s]", ig.SDL_GetVersion(), ig.SDL_GetRevision());
+      ig.igText ("[%d],[%s]", sdl.SDL_GetVersion(), sdl.SDL_GetRevision());
       ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
-      ig.igText (ig.glGetString(ig.GL_VERSION));
+      ig.igText (glfw.glGetString(glfw.GL_VERSION));
       ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
       ig.igText(ig.igGetVersion());
       ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
@@ -239,17 +241,17 @@ pub fn main () !void {
     // Rendering
     //-----------
     ig.igRender ();
-    ig.glViewport(0, 0, @intFromFloat(pio.*.DisplaySize.x), @intFromFloat(pio.*.DisplaySize.y));
-    ig.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
-    ig.glClear(ig.GL_COLOR_BUFFER_BIT);
-    ig.ImGui_ImplOpenGL3_RenderDrawData(ig.igGetDrawData());
-    _ = ig.SDL_GL_SwapWindow(window);
+    glfw.glViewport(0, 0, @intFromFloat(pio.*.DisplaySize.x), @intFromFloat(pio.*.DisplaySize.y));
+    glfw.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+    glfw.glClear(glfw.GL_COLOR_BUFFER_BIT);
+    impl_opengl3.ImGui_ImplOpenGL3_RenderDrawData(@ptrCast(ig.igGetDrawData()));
+    _ = sdl.SDL_GL_SwapWindow(window);
 
     if(showWindowDelay >= 0){
       showWindowDelay -= 1;
     }
     if(showWindowDelay == 0){ // Visible main window here at start up
-      _ = ig.SDL_ShowWindow(window);
+      _ = sdl.SDL_ShowWindow(window);
     }
 
   }// while end

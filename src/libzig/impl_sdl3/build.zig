@@ -10,30 +10,35 @@ pub fn build(b: *std.Build) void {
     defer allocator.free(current_dir_abs);
     const mod_name = std.fs.path.basename(current_dir_abs);
 
-    const sdl2_path = "../../libc/sdl/SDL2/x86_64-w64-mingw32";
+    const sdl_path = "../../libc/sdl/SDL3/x86_64-w64-mingw32";
     // -------
     // module
     // -------
     const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_sdl2.h"),
+        .root_source_file = b.path("src/impl_sdl3.h"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
     });
 
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    step.defineCMacro("CIMGUI_USE_GLFW", "");
+    step.defineCMacro("CIMGUI_USE_SDL3","");
+    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
     step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimgui/imgui"));
+    step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
 
     switch (builtin.target.os.tag) {
-        .windows => mod.addIncludePath(b.path(b.pathJoin(&.{ sdl2_path, "include/SDL2" }))),
-        .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include/SDL2" }),
+        .windows => {
+            mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
+            mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
+        },
+        .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
         else => {},
     }
 
+    mod.addCMacro("CIMGUI_USE_SDL3", "");
+    mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     // macro
@@ -45,11 +50,11 @@ pub fn build(b: *std.Build) void {
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
     }
-    mod.addCMacro("CIMGUI_USE_SDL2", "");
+    mod.addCMacro("CIMGUI_USE_SDL3", "");
     mod.addCSourceFiles(.{
         .files = &.{
-            "../../libc/cimgui/imgui/backends/imgui_impl_sdl2.cpp",
             "../../libc/cimgui/cimgui_impl.cpp",
+            "../../libc/cimgui/imgui/backends/imgui_impl_sdl3.cpp",
         },
     });
 

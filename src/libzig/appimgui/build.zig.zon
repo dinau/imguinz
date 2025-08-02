@@ -6,6 +6,7 @@
     .dependencies = .{
         .cimgui = .{ .path = "../cimgui" },
         .fonticon = .{ .path = "../fonticon" },
+        .loadicon = .{ .path = "../loadicon" },
         .loadimage = .{ .path = "../loadimage" },
         .glfw = .{ .path = "../glfw" },
         .impl_glfw = .{ .path = "../impl_glfw" },

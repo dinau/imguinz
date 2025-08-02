@@ -13,8 +13,7 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
-							examples/imPlotDemo \
-							examples/sdl2_opengl3
+							examples/imPlotDemo
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
 								examples/sdl3_opengl3
@@ -149,3 +148,14 @@ cimCTE:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
 cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
+
+
+
+
+copyblib:
+	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_copylib,$(exdir)))
+
+define def_copylib
+	cp examples/build_lib.zig $(1)/
+
+endef

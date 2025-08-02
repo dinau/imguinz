@@ -1,5 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
+const blib = @import("./build_lib.zig");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -18,7 +19,7 @@ pub fn build(b: *std.Build) void {
     });
 
     // Register external module from "./build.zig.zon" file.
-    addExternalModule(b, main_mod);
+    blib.addExternalModule(b, main_mod);
 
     const exe = b.addExecutable(.{
         .name = exe_name,
@@ -26,10 +27,10 @@ pub fn build(b: *std.Build) void {
     });
 
     // Load Icon
-    exe.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc")});
+    exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    //----------------------------------
-    // 64bit Winddws OS
+    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
+    // See. https://github.com/ziglang/zig/pull/22587
     //----------------------------------
     const sdlPath = "../../src/libc/sdl/SDL3/x86_64-w64-mingw32";
 
@@ -40,35 +41,35 @@ pub fn build(b: *std.Build) void {
     // Libs
     //------
     if (builtin.target.os.tag == .windows){
-      exe.linkSystemLibrary("gdi32");
-      exe.linkSystemLibrary("imm32");
-      exe.linkSystemLibrary("advapi32");
-      exe.linkSystemLibrary("comdlg32");
-      exe.linkSystemLibrary("dinput8");
-      exe.linkSystemLibrary("dxerr8");
-      exe.linkSystemLibrary("dxguid");
-      exe.linkSystemLibrary("gdi32");
-      exe.linkSystemLibrary("hid");
-      exe.linkSystemLibrary("kernel32");
-      exe.linkSystemLibrary("ole32");
-      exe.linkSystemLibrary("oleaut32");
-      exe.linkSystemLibrary("setupapi");
-      exe.linkSystemLibrary("shell32");
-      exe.linkSystemLibrary("user32");
-      exe.linkSystemLibrary("uuid");
-      exe.linkSystemLibrary("version");
-      exe.linkSystemLibrary("winmm");
-      exe.linkSystemLibrary("winspool");
-      exe.linkSystemLibrary("ws2_32");
-      exe.linkSystemLibrary("opengl32");
-      exe.linkSystemLibrary("shell32");
-      exe.linkSystemLibrary("user32");
+      exe.root_module.linkSystemLibrary("gdi32", .{});
+      exe.root_module.linkSystemLibrary("imm32", .{});
+      exe.root_module.linkSystemLibrary("advapi32", .{});
+      exe.root_module.linkSystemLibrary("comdlg32", .{});
+      exe.root_module.linkSystemLibrary("dinput8", .{});
+      exe.root_module.linkSystemLibrary("dxerr8", .{});
+      exe.root_module.linkSystemLibrary("dxguid", .{});
+      exe.root_module.linkSystemLibrary("gdi32", .{});
+      exe.root_module.linkSystemLibrary("hid", .{});
+      exe.root_module.linkSystemLibrary("kernel32", .{});
+      exe.root_module.linkSystemLibrary("ole32", .{});
+      exe.root_module.linkSystemLibrary("oleaut32", .{});
+      exe.root_module.linkSystemLibrary("setupapi", .{});
+      exe.root_module.linkSystemLibrary("shell32", .{});
+      exe.root_module.linkSystemLibrary("user32", .{});
+      exe.root_module.linkSystemLibrary("uuid", .{});
+      exe.root_module.linkSystemLibrary("version", .{});
+      exe.root_module.linkSystemLibrary("winmm", .{});
+      exe.root_module.linkSystemLibrary("winspool", .{});
+      exe.root_module.linkSystemLibrary("ws2_32", .{});
+      exe.root_module.linkSystemLibrary("opengl32", .{});
+      exe.root_module.linkSystemLibrary("shell32", .{});
+      exe.root_module.linkSystemLibrary("user32", .{});
       // Static link
       exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3.dll.a"})));
     }else if (builtin.target.os.tag == .linux){
-      exe.linkSystemLibrary("glfw3");
-      exe.linkSystemLibrary("GL");
-      exe.linkSystemLibrary("SDL3");
+      exe.root_module.linkSystemLibrary("glfw3", .{});
+      exe.root_module.linkSystemLibrary("GL", .{});
+      exe.root_module.linkSystemLibrary("SDL3", .{});
     }
     // sdl3
     //exe.addLibraryPath(b.path(b.pathJoin(&.{sdlPath, "lib-mingw-64"})));
@@ -76,9 +77,10 @@ pub fn build(b: *std.Build) void {
     // Dynamic link
     //exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3dll.a"})));
     //exe.linkSystemLibrary("SDL3dll"); // For dynamic link
-    // System
-    exe.linkLibC();
-    exe.linkLibCpp();
+
+    // root_module
+    exe.root_module.link_libc = true;
+    exe.root_module.link_libcpp = true;
     //
     //
     exe.subsystem = .Windows;  // Hide console window
@@ -116,57 +118,4 @@ pub fn build(b: *std.Build) void {
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
 
-}
-
-// Register external module from "./build.zig.zon" file.
-fn addExternalModule(b: *std.Build, module: *std.Build.Module) void {
-    const allocator = b.allocator;
-    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(abs_path);
-
-    const fp = std.fs.cwd().openFile("build.zig.zon", .{}) catch |err| {
-        std.debug.print("Failed to open file: {}\n", .{err});
-        return;
-    };
-    defer fp.close();
-
-    var buffered_reader = std.io.bufferedReader(fp.reader());
-    var reader = buffered_reader.reader();
-
-    var state: i32 = 1;
-    var idx: ?usize = undefined;
-    while (true) {
-        const line = reader.readUntilDelimiterOrEofAlloc(allocator, '\n', 4096) catch |err| {
-            std.debug.print("Read error: {}\n", .{err});
-            break;
-        };
-        if (line == null) break; // EOF
-        defer allocator.free(line.?);
-        const sLine = line.?;
-        switch (state) {
-            1 => {
-                idx = std.mem.indexOf(u8, sLine, ".dependencies");
-                if (idx) |_| {
-                    state += 1;
-                }
-            },
-            2 => {
-                idx = std.mem.indexOf(u8, line.?, ".{");
-                if (idx) |_| {
-                    var itr = std.mem.splitSequence(u8, sLine, "=");
-                    if (itr.next()) |pname| {
-                        const plib_name = std.mem.trim(u8, pname, " ");
-                        const lib_name = std.mem.trimLeft(u8, plib_name, ".");
-                        if (!std.mem.eql(u8, lib_name, "paths")) {
-                            const dep = b.dependency(lib_name, .{});
-                            const mod = dep.module(lib_name);
-                            module.addImport(lib_name, mod);
-                            //std.debug.print("External lib name = [{s}]\n", .{lib_name});
-                        }
-                    }
-                }
-            },
-            else => {},
-        }
-    }
 }

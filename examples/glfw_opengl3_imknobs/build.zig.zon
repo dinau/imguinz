@@ -16,32 +16,11 @@
         .fonticon =  .{
             .path = "../../src/libzig/fonticon"
         },
-        .glfw = .{
-            .path = "../../src/libzig/glfw"
-        },
-        .impl_glfw = .{
-            .path = "../../src/libzig/impl_glfw"
-        },
-        .impl_opengl3 = .{
-            .path = "../../src/libzig/impl_opengl3"
-        },
-        .loadicon = .{
-            .path = "../../src/libzig/loadicon"
-        },
-        .loadimage = .{
-            .path = "../../src/libzig/loadimage"
-        },
-        .saveimage = .{
-            .path = "../../src/libzig/saveimage"
-        },
         .setupfont = .{
             .path = "../../src/libzig/setupfont"
         },
         .utils = .{
             .path = "../../src/libzig/utils"
-        },
-        .zoomglass = .{
-            .path = "../../src/libzig/zoomglass"
         },
     },
     .paths = .{

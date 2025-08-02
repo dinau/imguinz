@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -10,21 +9,24 @@ pub fn build(b: *std.Build) void {
     defer allocator.free(current_dir_abs);
     const mod_name = std.fs.path.basename(current_dir_abs);
 
+    const sdl_path = "../../libc/sdl/SDL3/x86_64-w64-mingw32";
     // -------
     // module
     // -------
-    const mod = b.addModule(mod_name, .{
-        .root_source_file = b.path("src/appImGui.zig"),
+    const step = b.addTranslateC(.{
+        .root_source_file = b.path(b.pathJoin(&.{ sdl_path, "include/SDL3/SDL.h" })),
         .target = target,
         .optimize = optimize,
+        .link_libc = true,
     });
+
+    step.defineCMacro("SDL_ENABLE_OLD_NAMES", "");
+    step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
+    step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
+    const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
-    // import modules
-    const modules = [_][]const u8{ "cimgui", "fonticon", "loadicon", "loadimage", "glfw", "impl_glfw", "impl_opengl3" };
-    for (modules) |module| {
-        const mod_dep = b.dependency(module, .{});
-        mod.addImport(module, mod_dep.module(module));
-    }
+
+
 
     const lib = b.addLibrary(.{
         .linkage = .static,

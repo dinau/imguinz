@@ -1,5 +1,4 @@
 const ig = @import("cimgui");
-const utils = @import("utils");
 const glfw = @import("glfw");
 const stf = @import("setupfont");
 const app = @import("appimgui");
@@ -20,8 +19,6 @@ pub fn gui_main(window: *app.Window) void {
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
     var sTextInuputBuf = [_:0]u8{0} ** 200;
-
-    const DefaultButtonSize = utils.vec2(0, 0);
 
     //---------------
     // main loop GUI
@@ -73,7 +70,7 @@ pub fn gui_main(window: *app.Window) void {
             _ = ig.igSliderFloat("浮動小数", &fval, 0.0, 1.0, "%.3f", 0);
             _ = ig.igColorEdit3("背景色 変更", &clearColor, 0);
 
-            if (ig.igButton("Button", DefaultButtonSize)) counter += 1;
+            if (ig.igButton("Button", .{.x = 0, .y = 0})) counter += 1;
             ig.igSameLine(0, -1.0);
             ig.igText("カウンタ = %d", counter);
             ig.igText("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);

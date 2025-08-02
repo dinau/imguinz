@@ -16,15 +16,6 @@
         .glfw = .{
             .path = "../../src/libzig/glfw"
         },
-        .loadicon = .{
-            .path = "../../src/libzig/loadicon"
-        },
-        .loadimage = .{
-            .path = "../../src/libzig/loadimage"
-        },
-        .saveimage = .{
-            .path = "../../src/libzig/saveimage"
-        },
         .setupfont = .{
             .path = "../../src/libzig/setupfont"
         },

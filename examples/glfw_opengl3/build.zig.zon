@@ -16,36 +16,8 @@
             .path = "../../src/libzig/fonticon",
             .lazy = true,
         },
-        .glfw = .{
-            .path = "../../src/libzig/glfw",
-            .lazy = true,
-        },
-        .impl_glfw = .{
-            .path = "../../src/libzig/impl_glfw",
-            .lazy = true,
-        },
-        .impl_opengl3 = .{
-            .path = "../../src/libzig/impl_opengl3",
-            .lazy = true,
-        },
-        .loadicon = .{
-            .path = "../../src/libzig/loadicon",
-            .lazy = true,
-        },
-        .loadimage = .{
-            .path = "../../src/libzig/loadimage",
-            .lazy = true,
-        },
         .setupfont = .{
             .path = "../../src/libzig/setupfont",
-            .lazy = true,
-        },
-        .utils = .{
-            .path = "../../src/libzig/utils",
-            .lazy = true,
-        },
-        .zoomglass = .{
-            .path = "../../src/libzig/zoomglass",
             .lazy = true,
         },
     },
