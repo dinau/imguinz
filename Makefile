@@ -10,6 +10,7 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_imnodes \
 							examples/glfw_opengl3_imguizmo \
 							examples/glfw_opengl3_implot \
+							examples/glfw_opengl3_implot3d \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
