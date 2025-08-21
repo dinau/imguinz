@@ -33,7 +33,7 @@
     - [Axes Tab](#axes-tab)
       - [LogScale](#logscale)
     - [Subplots Tab](#subplots-tab)
-      - [Tables (Dynamic)](#tables-dynamic)
+      - [Tables](#tables)
     - [Tools Tab](#tools-tab)
       - [DragRects](#dragrects)
   - [Show / Hide console window](#show--hide-console-window)
@@ -45,9 +45,7 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/win_dev.yml/badge.svg)
 ![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svg)  
-![alt](https://github.com/dinau/imguinz/actions/workflows/linux_dev.yml/badge.svg)
 ![alt](https://github.com/dinau/imguinz/actions/workflows/linux_rel.yml/badge.svg)  
 
 
@@ -78,9 +76,8 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig version confirmed
-   1. Windows: [zig-x86_64-windows-0.14.1.zip](https://ziglang.org/download/0.14.1/zig-x86_64-windows-0.14.1.zip)
-   1. Linux:   [zig-x86_64-linux-0.14.1.tar.xz](https://ziglang.org/download/0.14.1/zig-x86_64-linux-0.14.1.tar.xz)
-   1. or Zig version <= 0.15.0-dev.885
+   1. Windows: [zig-x86_64-windows-0.15.1.zip](https://ziglang.org/download/0.15.1/zig-x86_64-windows-0.15.1.zip)
+   1. Linux:   [zig-x86_64-linux-0.15.1.tar.xz](https://ziglang.org/download/0.15.1/zig-x86_64-linux-0.15.1.tar.xz)
 
 - WindowsOS
    - Windows10 or later
@@ -321,9 +318,9 @@ make run   # or zig build --release=fast run
 
 ---
 
-##### Tables (Dynamic)
+##### Tables 
 
-![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Tables.png)
+![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Tables.gif)
 
 #### Tools Tab
 

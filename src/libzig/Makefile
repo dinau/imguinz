@@ -5,6 +5,12 @@ DIRS = \
 	glfw \
 	imcolortextedit \
 	imfileopendialog \
+	imknobs \
+	imnodes \
+	implot \
+	implot3d \
+	imspinner \
+	impl_sdl3 \
 	impl_glfw \
 	impl_opengl3 \
 	imtoggle \
@@ -12,6 +18,7 @@ DIRS = \
 	loadimage \
 	saveimage \
 	setupfont \
+	sdl3 \
 	utils \
 	zoomglass
 

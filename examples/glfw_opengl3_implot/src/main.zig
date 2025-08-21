@@ -1,5 +1,6 @@
 const ig = @import("cimgui");
-const ip = @import("implot.zig");
+const ip = @import("implot");
+const ipz = @import("zimplot.zig");
 const ifa = @import("fonticon");
 const app = @import("appimgui");
 const stf = @import("setupfont");
@@ -96,8 +97,8 @@ fn imPlotWindow(fshow: *bool) !void {
         if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
             defer ip.ImPlot_EndPlot();
             // Using "./zimplot.zig"
-            try ip.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);
-            try ip.ImPlot_PlotLineXy("My Line Plot", &st.x_data, &st.y_data, st.x_data.len);
+            try ipz.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);
+            try ipz.ImPlot_PlotLineXy("My Line Plot", &st.x_data, &st.y_data, st.x_data.len);
         }
     }
 }

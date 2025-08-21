@@ -23,9 +23,9 @@ pub fn main () !void {
   //-------------
   // For print()
   //-------------
-  const stdout_file = std.io.getStdOut().writer();
-  var bw = std.io.bufferedWriter(stdout_file);
-  const stdout = bw.writer();
+  var stdout_buffer: [1024]u8 = undefined;
+  var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+  const stdout = &stdout_writer.interface;
 
   // Setup SDL
   if (sdl.SDL_Init(sdl.SDL_INIT_VIDEO | sdl.SDL_INIT_GAMEPAD) == false) {

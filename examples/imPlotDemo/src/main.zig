@@ -1,5 +1,5 @@
 const ig = @import("cimgui");
-const ip = @import("implot.zig");
+const ip = @import("implot");
 const ifa = @import("fonticon");
 const demo = @import ("demoAll.zig");
 const app = @import("appimgui");

@@ -1,7 +1,8 @@
 const std = @import("std");
 const ig = @import("cimgui");
-const ip = @import("implot.zig");
-const ip3 = @import("implot3d.zig");
+const ip = @import("implot");
+const ipz = @import("zimplot.zig");
+const ip3 = @import("implot3d");
 const ifa = @import("fonticon");
 const app = @import("appimgui");
 const stf = @import("setupfont");
@@ -97,16 +98,29 @@ pub fn gui_main(window: *app.Window) !void {
             const max_val: f32 = 1.0;
             const step = (max_val - min_val) / (N - 1);
             // Populate the xs, ys, and zs arrays
-            var i: usize = 0;
-            while (i < N) : (i += 1) {
-                var j: usize = 0;
-                while (j < N) : (j += 1) {
+
+            //var i: usize = 0;
+            //while (i < N) : (i += 1) {
+            //    var j: usize = 0;
+            //    while (j < N) : (j += 1) {
+            //        const idx = i * N + j;
+            //        st.xs[idx] = min_val + @as(f32, @floatFromInt(j)) * step; // X values are constant along rows
+            //        st.ys[idx] = min_val + @as(f32, @floatFromInt(i)) * step; // Y values are constant along columns
+            //        st.zs[idx] = std.math.sin(2 * st.t + std.math.sqrt((st.xs[idx] * st.xs[idx] + st.ys[idx] * st.ys[idx]))); // z = sin(2t + sqrt(x^2 + y^2))
+            //    }
+            //}
+
+            for (0..N) |i| {
+                for (0..N) |j| {
                     const idx = i * N + j;
                     st.xs[idx] = min_val + @as(f32, @floatFromInt(j)) * step; // X values are constant along rows
                     st.ys[idx] = min_val + @as(f32, @floatFromInt(i)) * step; // Y values are constant along columns
                     st.zs[idx] = std.math.sin(2 * st.t + std.math.sqrt((st.xs[idx] * st.xs[idx] + st.ys[idx] * st.ys[idx]))); // z = sin(2t + sqrt(x^2 + y^2))
+                    if (!(j < N)) break;
                 }
+                if (!(i < N)) break;
             }
+
             // Choose fill color
             ig.igText("Fill color");
             ig.igIndent(0);

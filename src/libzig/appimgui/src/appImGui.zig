@@ -11,7 +11,7 @@ const icon = @import("loadicon");
 //---------------------
 // glfw_error_callback
 //---------------------
-fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.C) void {
+fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void {
     std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
@@ -57,16 +57,24 @@ pub const Window = struct {
     //-------------
     // createImGui
     //-------------
-    const versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
+    var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
+    switch (builtin.target.os.tag) {
+        .linux => {
+                  versions[0][0] = 3;
+                  versions[0][1] = 3;
+                  },
+        else => {},
+    }
+
     pub fn createImGui(w: i32, h: i32, title: [*c]const u8) !Window {
         _ = w;
         _ = h;
         var win: Self = undefined;
         try loadIni(&win);
         // For print()
-        const stdout_file = std.io.getStdOut().writer();
-        var bw = std.io.bufferedWriter(stdout_file);
-        const stdout = bw.writer();
+        var stdout_buffer: [1024]u8 = undefined;
+        var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+        const stdout = &stdout_writer.interface;
 
         //-------------------
         // GLFW initializing
@@ -74,6 +82,7 @@ pub const Window = struct {
         _ = glfw.glfwSetErrorCallback(glfw_error_callback);
         if (glfw.glfwInit() == 0) {
             try stdout.print("Failed to initialize GLFW: [main.zig]: \n", .{});
+            try stdout.flush(); // Don't forget to flush!
             return error.glfwInitFailure;
         }
 
@@ -97,7 +106,12 @@ pub const Window = struct {
                 win.handle = pointer;
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 try stdout.print("{s} \n", .{glsl_version});
+                try stdout.print("w = {d}, h = {d} \n", .{win.ini.window.viewportWidth, win.ini.window.viewportHeight});
+                try stdout.flush(); // Don't forget to flush!
                 break;
+            } else{
+                try stdout.print("Error!: Failed: glfwCrateWindow() \n", .{});
+                try stdout.flush(); // Don't forget to flush!
             }
         } else {
             glfw.glfwTerminate();
@@ -403,29 +417,29 @@ pub fn loadIni(win: *Window) !void {
 }
 
 //---------
-// saveIni
+// saveIni   TODO for zig-0.15.1
 //---------
 pub fn saveIni(win: *Window) !void {
     // Window pos
-    glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
+     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
+//
+//    // Window size
+//    const ws = ig.igGetMainViewport().*.WorkSize;
+//    win.ini.window.viewportWidth = @intFromFloat(ws.x);
+//    win.ini.window.viewportHeight = @intFromFloat(ws.y);
+//
+//    // Save to ini file
+//    const allocator = std.heap.page_allocator;
+//    const exe_path = try std.fs.selfExePathAlloc(allocator);
+//    defer allocator.free(exe_path);
+//
+//    const filename = try changeExtension(exe_path, "ini");
+//    std.debug.print("Write ini: {s}\n", .{filename});
+//
+//    var file = try std.fs.cwd().createFile(filename, .{});
+//    defer file.close();
 
-    // Window size
-    const ws = ig.igGetMainViewport().*.WorkSize;
-    win.ini.window.viewportWidth = @intFromFloat(ws.x);
-    win.ini.window.viewportHeight = @intFromFloat(ws.y);
-
-    // Save to ini file
-    const allocator = std.heap.page_allocator;
-    const exe_path = try std.fs.selfExePathAlloc(allocator);
-    defer allocator.free(exe_path);
-
-    const filename = try changeExtension(exe_path, "ini");
-    std.debug.print("Write ini: {s}\n", .{filename});
-
-    var file = try std.fs.cwd().createFile(filename, .{});
-    defer file.close();
-
-    var json_string = std.ArrayList(u8).init(allocator);
-    try std.json.stringify(win.ini, .{ .whitespace = .indent_2 }, json_string.writer());
-    try file.writeAll(json_string.items);
+//    var writer = file.writer(&.{}).interface;
+ //   try std.json.Stringify.value(win.ini, .{ .whitespace = .indent_2 }, &writer);
+    //try file.writeAll(json_string.items);
 }

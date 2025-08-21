@@ -4,24 +4,12 @@
     .fingerprint = 0x9af0a2e94478276f, // Changing this has security and trust implications.
     .minimum_zig_version = "0.14.1",
     .dependencies = .{
-        .appimgui  =  .{
-            .path = "../../src/libzig/appimgui"
-        },
-        .cimgui  =  .{
-            .path = "../../src/libzig/cimgui"
-        },
-        .implot =  .{
-            .path = "../../src/libzig/implot"
-        },
-        .implot3d =  .{
-            .path = "../../src/libzig/implot3d"
-        },
-        .fonticon =  .{
-            .path = "../../src/libzig/fonticon"
-        },
-        .setupfont = .{
-            .path = "../../src/libzig/setupfont"
-        },
+        .appimgui = .{ .path = "../../src/libzig/appimgui" },
+        .cimgui = .{ .path = "../../src/libzig/cimgui" },
+        .implot = .{ .path = "../../src/libzig/implot" },
+        .implot3d = .{ .path = "../../src/libzig/implot3d" },
+        .fonticon = .{ .path = "../../src/libzig/fonticon" },
+        .setupfont = .{ .path = "../../src/libzig/setupfont" },
     },
     .paths = .{
         "build.zig",

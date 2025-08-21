@@ -14,8 +14,7 @@ pub fn addExternalModule(b: *std.Build, module: *std.Build.Module) void {
     };
     defer fp.close();
 
-    var buffered_reader = std.io.bufferedReader(fp.reader());
-    var reader = buffered_reader.reader();
+    var reader = fp.deprecatedReader();
 
     var state: i32 = 1;
     var idx: ?usize = undefined;

@@ -50,11 +50,13 @@ pub fn build(b: *std.Build) void {
     exe.root_module.link_libc = true;
     exe.root_module.link_libcpp = true;
 
-    exe.subsystem = .Windows; // Hide console window
+    //exe.subsystem = .Windows; // Hide console window
 
     b.installArtifact(exe);
 
-    const resBin = [_][]const u8{ "imgui.ini", };
+    const resBin = [_][]const u8{
+        "imgui.ini",
+    };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
     const resIcon = "src/res/z.png";
 

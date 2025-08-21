@@ -7,7 +7,8 @@ const c = @cImport ({
 });
 
 const ig = @import ("cimgui");
-const ip = @import("implot.zig");
+const ip = @import("implot");
+const ipz = @import("zimplot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
 pub const INFINITY_f32 = std.math.inf(f32);
@@ -45,7 +46,7 @@ pub const WaveData = struct {
     }
 };
 
-pub fn SineWave(data: ?*anyopaque, idx: c_int, point: [*c]ip.ImPlotPoint ) callconv(.C) ?*anyopaque  {
+pub fn SineWave(data: ?*anyopaque, idx: c_int, point: [*c]ip.ImPlotPoint ) callconv(.c) ?*anyopaque  {
     const fdata = @as([*c]f32,@ptrCast(@alignCast(data.?))).*;
     const fidx =  @as(f32,@floatFromInt(idx));
     point.*.x = fidx;
@@ -230,7 +231,7 @@ pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: 
         ip.ImPlot_SetupAxesLimits(0, @floatFromInt(count - 1), min_v, max_v, ig.ImGuiCond_Always);
         ip.ImPlot_SetNextLineStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, IMPLOT_AUTO);
         ip.ImPlot_SetNextFillStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, 0.25);
-        try ip.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
+        try ipz.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopStyleVar(1);

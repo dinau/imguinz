@@ -1,4 +1,4 @@
-name: Linux OS(Ubuntu) zig-0.14.1 compilation-
+name: Linux OS(Ubuntu) zig-0.15.1 compilation-
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         submodules: 'recursive'
     - uses: mlugg/setup-zig@v2
       with:
-        version: 0.14.1
+        version: 0.15.1
     - name: make
       run: |
         sudo apt install libopengl-dev libgl1-mesa-dev

@@ -7,6 +7,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+#define even(x) ((x / 2) * 2)
 //#-------------
 //# saveImage()
 //#-------------
@@ -15,8 +16,10 @@ void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imag
     printf("Error!: Color component numbers must be 3 (RGB) at %s\n", __FILE__);
     return;
   }
-  int iWidth  = (imageWidth  - xs);
-  int iHeight = (imageHeight - ys);
+  int ixs = even(xs);
+  int iys = even(ys);
+  int iWidth  = (even(imageWidth)  - xs);
+  int iHeight = (even(imageHeight) - ys);
   if ((1 > iWidth) || (1 > iHeight)) {
     printf("Error!: Rect of save image is mismatch at %s\n", __FILE__);
     return;
@@ -27,8 +30,8 @@ void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imag
   // 読み取るOpneGLのバッファを指定 GL_FRONT:フロントバッファ　GL_BACK:バックバッファ
   glReadBuffer(GL_BACK);
   // OpenGLで画面に描画されている内容をバッファに格納
-  glReadPixels(xs, ys,                  //# 読み取る領域の左下隅のx,y座標 //0 or getCurrentWidth() - 1
-               imageWidth, imageHeight, //# 読み取る領域
+  glReadPixels(ixs, iys,                  //# 読み取る領域の左下隅のx,y座標 //0 or getCurrentWidth() - 1
+               iWidth, iHeight, //# 読み取る領域
                GL_RGB,                  //# it means GL_BGR,  //取得したい色情報の形式
                GL_UNSIGNED_BYTE,        //# 読み取ったデータを保存する配列の型
                texBuffer);              //# ビットマップのピクセルデータ（実際にはバイト配列）へのポインタ

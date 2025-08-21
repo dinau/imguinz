@@ -35,19 +35,19 @@ pub fn gui_main(window: *app.Window) !void {
 
     //-- ImNode: Initialize NodeEditor
     var obj: recObj = undefined;
-    obj.nodes = std.ArrayList(Node).init(allocator);
-    obj.links = std.ArrayList(Link).init(allocator);
-    defer obj.nodes.deinit();
-    defer obj.links.deinit();
+    obj.nodes = try std.ArrayList(Node).initCapacity(allocator,1024);
+    obj.links = try std.ArrayList(Link).initCapacity(allocator,1024);
+    defer obj.nodes.deinit(allocator);
+    defer obj.links.deinit(allocator);
 
     imnodes.imnodes_GetIO().*.LinkDetachWithModifierClick.Modifier = imnodes.getIOKeyCtrlPtr();
     imnodes.imnodes_PushAttributeFlag(imnodes.ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-    try loadObj(&obj);
+    try loadObj(allocator, &obj);
 
     //-- ImNode: Shutdown NodeEditor
     defer {
         imnodes.imnodes_PopAttributeFlag();
-        saveObj(&obj) catch unreachable;
+        saveObj(allocator, &obj) catch unreachable;
     }
 
     //---------------
@@ -87,7 +87,7 @@ pub fn gui_main(window: *app.Window) !void {
                     var pos: imnodes.ImVec2 = undefined;
                     ig.igGetMousePos(@ptrCast(&pos));
                     imnodes.imnodes_SetNodeScreenSpacePos(node_id, pos);
-                    try obj.nodes.append(.{ .id = node_id, .value = 0 });
+                    try obj.nodes.append(allocator, .{ .id = node_id, .value = 0 });
                 }
                 for (obj.nodes.items, 0..) |*node, nodeN| {
                     imnodes.imnodes_BeginNode(node.id);
@@ -130,7 +130,7 @@ pub fn gui_main(window: *app.Window) !void {
             if (imnodes.imnodes_IsLinkCreated_BoolPtr(&lnk.start_attr, &lnk.end_attr, null)) {
                 obj.current_id += 1;
                 lnk.id = obj.current_id;
-                try obj.links.append(lnk);
+                try obj.links.append(allocator, lnk);
             }
 
             var link_id: c_int = undefined;
@@ -158,7 +158,8 @@ pub fn gui_main(window: *app.Window) !void {
 //---------
 // saveObj
 //---------
-fn saveObj(this: *recObj) !void {
+fn saveObj(alloc: std.mem.Allocator, this: *recObj) !void {
+    _ = alloc;
     //-- Save the internal imnodes state
     imnodes.imnodes_SaveCurrentEditorStateToIniFile("save_load.ini");
     //-- Dump our editor state as bytes into a file
@@ -184,7 +185,7 @@ fn saveObj(this: *recObj) !void {
 //---------
 // loadObj
 //---------
-fn loadObj(this: *recObj) !void {
+fn loadObj(alloc: std.mem.Allocator, this: *recObj) !void {
     //-- Load the internal imnodes state
     imnodes.imnodes_LoadCurrentEditorStateFromIniFile("save_load.ini");
     //-- Load our editor state into memory
@@ -201,7 +202,7 @@ fn loadObj(this: *recObj) !void {
         _ = try fin.readAll(std.mem.asBytes(&id));
         var value: f32 = undefined;
         _ = try fin.readAll(std.mem.asBytes(&value));
-        try this.nodes.append(.{ .id = id, .value = value });
+        try this.nodes.append(alloc, .{ .id = id, .value = value });
     }
     //-- Load links into memory
     _ = try fin.readAll(std.mem.asBytes(&sz));
@@ -212,7 +213,7 @@ fn loadObj(this: *recObj) !void {
         _ = try fin.readAll(std.mem.asBytes(&start_attr));
         var end_attr: c_int = undefined;
         _ = try fin.readAll(std.mem.asBytes(&end_attr));
-        try this.links.append(.{ .id = id, .start_attr = start_attr, .end_attr = end_attr });
+        try this.links.append(alloc, .{ .id = id, .start_attr = start_attr, .end_attr = end_attr });
     }
     //-- copy current_id into memory
     var current_id: c_int = undefined;
