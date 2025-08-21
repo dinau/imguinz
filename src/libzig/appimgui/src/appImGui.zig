@@ -52,19 +52,10 @@ pub const Window = struct {
     showWindowDelay: i32, // TODO: Avoid flickering of window at startup
     ini: TIni,
     clearColor: [4]f32,
-    var glsl_version_buf: [30]u8 = undefined;
 
     //-------------
     // createImGui
     //-------------
-    var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
-    switch (builtin.target.os.tag) {
-        .linux => {
-                  versions[0][0] = 3;
-                  versions[0][1] = 3;
-                  },
-        else => {},
-    }
 
     pub fn createImGui(w: i32, h: i32, title: [*c]const u8) !Window {
         _ = w;
@@ -90,6 +81,15 @@ pub const Window = struct {
         // Decide GL+GLSL versions
         //-------------------------
         var glsl_version: [:0]u8 = undefined;
+        var glsl_version_buf: [30]u8 = undefined;
+        var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
+        switch (builtin.target.os.tag) {
+            .linux => {
+                      versions[0][0] = 3;
+                      versions[0][1] = 3;
+                      },
+            else => {},
+        }
         for (versions) |ver| {
             glfw.glfwWindowHint(glfw.GLFW_OPENGL_FORWARD_COMPAT, glfw.GLFW_TRUE);
             glfw.glfwWindowHint(glfw.GLFW_OPENGL_PROFILE, glfw.GLFW_OPENGL_CORE_PROFILE);
