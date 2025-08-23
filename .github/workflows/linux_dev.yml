@@ -1,4 +1,4 @@
-name: Linux OS(Ubuntu) zig-0.15.1 compilation-
+name: Linux OS(Ubuntu) zig-0.16.1 compilation-
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
         submodules: 'recursive'
     - uses: mlugg/setup-zig@v2
       with:
-        version: 0.15.1
+        version: master
     - name: make
       run: |
         sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}

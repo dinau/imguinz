@@ -1,4 +1,4 @@
-name: Linux OS(Ubuntu) zig-0.15.1 compilation-
+name: Windows OS zig-0.16.0 compilation-
 
 on:
   push:
@@ -7,16 +7,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-  linux_release:
-    runs-on: ubuntu-latest
+  win_dev:
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - uses: mlugg/setup-zig@v2
       with:
-        version: 0.15.1
+        version: master
     - name: make
       run: |
-        sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}
+        pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
         make

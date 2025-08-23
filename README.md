@@ -45,8 +45,10 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svgg) 
 ![alt](https://github.com/dinau/imguinz/actions/workflows/linux_rel.yml/badge.svg)  
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_dev.yml/badge.svgg) 
+![alt](https://github.com/dinau/imguinz/actions/workflows/linux_dev.yml/badge.svg)  
 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
@@ -82,10 +84,14 @@ examples in Zig language with less external dependencies.
 - WindowsOS
    - Windows10 or later
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
+      ```sh
+      pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
+      ```
+
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
+  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}
   ```
 
 ### Build and run
