@@ -23,6 +23,6 @@ jobs:
     - name: make
       shell: msys2 {0}
       run: |
-        export PATH="$PATH:$(dirname $(cygpath -u "$(where zig | head -n 1)"))"
-        pacman -S --noconfirm mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3,pkg-config} make
+        export PATH=$PATH:/c/Users/runneradmin/AppData/Local/zig
+        pacman -S --noconfirm mingw-w64-x86_64-{gcc,glfw,sdl3,pkg-config} make
         make
