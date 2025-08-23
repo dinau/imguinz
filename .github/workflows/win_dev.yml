@@ -16,17 +16,6 @@ jobs:
     - uses: mlugg/setup-zig@v2
       with:
         version: master
-    - name: Install MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        update: true
     - name: make
-      shell: msys2 {0}
       run: |
-        zig_path=$(find /d/a/_temp -type f -name zig.exe 2>/dev/null | head -n 1)
-            if [ -n "$zig_path" ]; then
-              export PATH="$(dirname "$zig_path"):$PATH"
-            fi
-            zig version
-        pacman -S --noconfirm mingw-w64-x86_64-{gcc,glfw,sdl3,pkg-config} make
         make
