@@ -20,8 +20,8 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         update: true
-      shell: msys2 {0}
     - name: make
+      shell: msys2 {0}
       run: |
         pacman -S --noconfirm mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3,pkg-config} make
         make
