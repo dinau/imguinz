@@ -1,5 +1,5 @@
 #include <stdio.h>
-//#include <stdbool.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -14,9 +14,6 @@
 #include "stb_image.h"
 
 #include "loadImage.h"
-
-#define false 0
-#define true (!false)
 
 /*-------------
  * existFile()
@@ -102,7 +99,7 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
   }
   err = glGetError();
   if(err != 0){
-    puts("Error!: [0x{err:X}]: glTexImage2D()");
+    printf("Error!: 0x%02X: glTexImage2D()\n", err);
     free(texBuffer);
     free(dataBuffer);
     return;
@@ -119,7 +116,7 @@ void loadTextureFromBuffer(GLuint *pTextureID, int xs, int ys, int imageWidth, i
                   , dataBuffer);
   err = glGetError();
   if(err != 0){
-    puts("Error! [0x{err:X}]: glTexSubImage2D()");
+    printf("Error! 0x%02X: glTexSubImage2D()\n", err);
   }
   free(texBuffer);
   free(dataBuffer);

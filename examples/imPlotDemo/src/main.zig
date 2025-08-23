@@ -28,11 +28,9 @@ pub fn gui_main(window: *app.Window) !void {
   //------------------------
   // Select Dear ImGui style
   //------------------------
-    ig.igStyleColorsClassic(null);
-    //ig.igStyleColorsDark (null);
+  ig.igStyleColorsClassic(null);
+  //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
-
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
   //---------------
   // main loop GUI

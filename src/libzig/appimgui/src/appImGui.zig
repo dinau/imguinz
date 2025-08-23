@@ -12,7 +12,9 @@ const icon = @import("loadicon");
 // glfw_error_callback
 //---------------------
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void {
-    std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
+    if (builtin.mode == .Debug) {
+        std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
+    }
 }
 
 pub const Theme = enum {

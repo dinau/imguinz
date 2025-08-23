@@ -37,8 +37,6 @@ pub fn gui_main(window: *app.Window) !void {
     //ig.igStyleColorsDark (null);
     //ig.igStyleColorsLight (null);
 
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
-
     //---------------
     // main loop GUI
     //---------------

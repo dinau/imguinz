@@ -7,7 +7,10 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
-#define even(x) ((x / 2) * 2)
+int even(int x) {
+  return ((x / 2) * 2);
+}
+
 //#-------------
 //# saveImage()
 //#-------------
@@ -18,8 +21,8 @@ void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imag
   }
   int ixs = even(xs);
   int iys = even(ys);
-  int iWidth  = (even(imageWidth)  - xs);
-  int iHeight = (even(imageHeight) - ys);
+  int iWidth  = (even(imageWidth)  - ixs);
+  int iHeight = (even(imageHeight) - iys);
   if ((1 > iWidth) || (1 > iHeight)) {
     printf("Error!: Rect of save image is mismatch at %s\n", __FILE__);
     return;
