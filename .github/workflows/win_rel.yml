@@ -28,3 +28,5 @@ jobs:
               export PATH="$(dirname "$zig_path"):$PATH"
             fi
             zig version
+        pacman -S --noconfirm mingw-w64-x86_64-{gcc,glfw,sdl3,pkg-config} make
+        make
