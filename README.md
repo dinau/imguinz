@@ -14,6 +14,7 @@
     - [ImGuiColorTextEdit / cimCTE](#imguicolortextedit--cimcte)
     - [ImNodes / CImNodes](#imnodes--cimnodes)
     - [ImGuizmo / CImGuizmo](#imguizmo--cimguizmo)
+    - [imgui_markdown / cimgui_markdown](#imgui_markdown--cimgui_markdown)
     - [Image load](#image-load)
     - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
     - [Icon font viewer](#icon-font-viewer)
@@ -127,7 +128,7 @@ Library name / C lang. wrapper
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) (2025/05)
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/07)
-- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) 
+- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) (2025/09) WIP 
 
 ### Examples screen shots 
 
@@ -211,6 +212,18 @@ Library name / C lang. wrapper
 [glfw_opengl3_imguizmo.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguizmo/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imguizmo.png)
+
+#### imgui_markdown / cimgui_markdown
+
+---
+
+WIP
+
+[imgui_markdown](https://github.com/enkisoftware/imgui_markdown) / [cImgui_markdown](https://github.com/dinau/cimgui_markdown)
+
+[glfw_opengl3_imgui_markdown.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_markdown/src/main.zig)  
+
+![alt](https://github.com/dinau/cimgui_markdown/raw/main/demo/img/cimgui_markdown.png)
 
 #### Image load 
 
