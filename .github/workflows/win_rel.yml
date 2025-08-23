@@ -16,6 +16,12 @@ jobs:
     - uses: mlugg/setup-zig@v2
       with:
         version: 0.15.1
+    - name: Show zig path
+      shell: pwsh
+      run: |
+        Get-Command zig
+        where zig
+        echo $env:PATH
     - name: Install MSYS2
       uses: msys2/setup-msys2@v2
       with:
