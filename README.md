@@ -46,9 +46,9 @@
 
 ## ImGuinZ 
 
-![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svgg) 
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_rel.yml/badge.svg) 
 ![alt](https://github.com/dinau/imguinz/actions/workflows/linux_rel.yml/badge.svg)  
-![alt](https://github.com/dinau/imguinz/actions/workflows/win_dev.yml/badge.svgg) 
+![alt](https://github.com/dinau/imguinz/actions/workflows/win_dev.yml/badge.svg) 
 ![alt](https://github.com/dinau/imguinz/actions/workflows/linux_dev.yml/badge.svg)  
 
 
