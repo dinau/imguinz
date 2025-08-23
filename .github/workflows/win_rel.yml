@@ -16,16 +16,14 @@ jobs:
     - uses: mlugg/setup-zig@v2
       with:
         version: 0.15.1
-    - name: Show zig path
-      shell: pwsh
-      run: |
-        Get-Command zig
-        where zig
-        echo $env:PATH
     - name: Install MSYS2
       uses: msys2/setup-msys2@v2
       with:
         update: true
     - name: make
       run: |
-        where zig
+        zig_path=$(find /d/a/_temp -type f -name zig.exe 2>/dev/null | head -n 1)
+            if [ -n "$zig_path" ]; then
+              export PATH="$(dirname "$zig_path"):$PATH"
+            fi
+            zig version
