@@ -80,7 +80,7 @@ pub fn gui_main(window: *app.Window) !void {
             // # Show magnifying glass (Zooming in Toolchip)
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 if ((pio.*.MousePos.x - listBoxPosTop.x) < 50) {
-                    utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd);
+                    utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, true);
                 }
             }
         }

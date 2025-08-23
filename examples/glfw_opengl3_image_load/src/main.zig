@@ -36,6 +36,7 @@ pub fn gui_main(window: *app.Window) !void {
     //------------
     const ImageName = "himeji-400.jpg";
     var textureId: glfw.GLuint = undefined;
+    defer glfw.glDeleteTextures(1, &textureId);
     var textureWidth: c_int = 0;
     var textureHeight: c_int = 0;
     _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
@@ -153,7 +154,7 @@ pub fn gui_main(window: *app.Window) !void {
             ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
             ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-                utils.zoomGlass(&zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd);
+                utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }
         }
         // Rendering
