@@ -86,13 +86,13 @@ examples in Zig language with less external dependencies.
    - Windows10 or later
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
       ```sh
-      pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
+      pacman -S make
       ```
 
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,sdl2-dev}
+  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
   ```
 
 ### Build and run

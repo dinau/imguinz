@@ -7,7 +7,7 @@ OPT += --release=fast
 include ../makefile.common.header.mk
 
 
-AFTER_BUILD_CMD = strip $(TARGET_EXE)
+#AFTER_BUILD_CMD = strip $(TARGET_EXE)
 
 
 include ../makefile.common.mk
