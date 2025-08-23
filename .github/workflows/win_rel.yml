@@ -21,6 +21,7 @@ jobs:
       with:
         update: true
     - name: make
+      shell: msys2 {0}
       run: |
         zig_path=$(find /d/a/_temp -type f -name zig.exe 2>/dev/null | head -n 1)
             if [ -n "$zig_path" ]; then
