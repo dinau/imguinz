@@ -2,7 +2,7 @@
     .name = .glfw_opegl3_imspinner,
     .version = "0.0.1",
     .fingerprint = 0x3d224367e8e3a9ff , // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .dependencies = .{
         .appimgui  =  .{
             .path = "../../src/libzig/appimgui"

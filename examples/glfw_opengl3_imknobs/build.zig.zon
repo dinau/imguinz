@@ -2,7 +2,7 @@
     .name = .glfw_opegl3_imknobs,
     .version = "0.0.1",
     .fingerprint = 0x9706b59c7e0f4a80 , // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .dependencies = .{
         .appimgui  =  .{
             .path = "../../src/libzig/appimgui"

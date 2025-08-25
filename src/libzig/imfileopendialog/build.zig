@@ -30,16 +30,9 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/CImGuiFileDialog/libs/ImGuiFileDialog"));
     mod.addIncludePath(b.path("../fonticon/src/fonticon"));
     // macro
-    mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    mod.addCMacro("ImDrawIdx", "unsigned int");
-    mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     // for fileopendialog
     mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
-    switch (builtin.target.os.tag) {
-        .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-        .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
-        else => {},
-    }
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",

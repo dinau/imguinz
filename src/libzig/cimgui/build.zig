@@ -18,12 +18,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    //switch(step.optimize){
-    //    .Debug =>       std.debug.print("[{s}]  build in cimgui module\n",.{"debug"}),
-    //    .ReleaseSafe => std.debug.print("[{s}]  build in cimgui module\n",.{"rel"}),
-    //    .ReleaseFast => std.debug.print("[{s}]  build in cimgui module\n",.{"fast"}),
-    //    .ReleaseSmall => std.debug.print("[{s}] build in cimgui module\n",.{"small"}),
-    //}
 
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     const mod = step.addModule(mod_name);
@@ -35,7 +29,7 @@ pub fn build(b: *std.Build) void {
     // macro
     mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     mod.addCMacro("ImDrawIdx", "unsigned int");
-    mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     switch (builtin.target.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),

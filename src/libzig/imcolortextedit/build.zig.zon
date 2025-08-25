@@ -2,7 +2,7 @@
     .name = .imcolortextedit,
     .version = "0.0.1",
     .fingerprint = 0x2ff66f2c5ede9a4b, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{
         "build.zig",

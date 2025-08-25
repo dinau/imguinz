@@ -115,7 +115,7 @@ pub fn main () !void {
   //------------
   // Load image
   //------------
-  const ImageName = "sailboat-400.jpg";
+  const ImageName = "fuji-poke-480.png";
   var textureId : glfw.GLuint = undefined;
   var textureWidth: c_int = 0;
   var textureHeight : c_int = 0;

@@ -23,7 +23,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimspinner"));
 
-
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
 
@@ -168,15 +167,8 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("SPINNER_SPLINEANG", "");
 
     // macro
-    mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
-    mod.addCMacro("ImDrawIdx", "unsigned int");
-    mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");  // needs this line for imspinner
+    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");  // needs this line for imspinner
 
-    switch (builtin.target.os.tag) {
-        .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-        .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
-        else => {},
-    }
     mod.addCSourceFiles(.{
         .files = &.{
         "../../libc/cimspinner/cimspinner.cpp",

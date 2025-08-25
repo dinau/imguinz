@@ -231,7 +231,7 @@ pub fn Sparkline(id: anytype, values: anytype, count: c_int, min_v: f32, max_v: 
         ip.ImPlot_SetupAxesLimits(0, @floatFromInt(count - 1), min_v, max_v, ig.ImGuiCond_Always);
         ip.ImPlot_SetNextLineStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, IMPLOT_AUTO);
         ip.ImPlot_SetNextFillStyle(.{.x = col.x, .y = col.y, .z = col.z, .w = col.w}, 0.25);
-        try ipz.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
+        ipz.ImPlot_PlotLineEx(id, values, count, 1.0, 0, ip.ImPlotLineFlags_Shaded, offset, stride(values[0]));
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopStyleVar(1);

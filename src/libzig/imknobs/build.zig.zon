@@ -2,7 +2,7 @@
     .name = .imknobs,
     .version = "0.0.1",
     .fingerprint = 0xdf7fa91e94971a2e, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{
         "build.zig",

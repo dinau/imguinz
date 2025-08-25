@@ -59,8 +59,8 @@ pub fn gui_main(window: *app.Window) !void {
         window.showInfoWindow();
 
         if (showImPlotTestWindow) {
-            try imPlotWindow(&showImPlotTestWindow);
-            try imPlotWindow2(&showImPlotTestWindow);
+            imPlotWindow(&showImPlotTestWindow);
+            imPlotWindow2(&showImPlotTestWindow);
         }
 
         //--------
@@ -73,7 +73,7 @@ pub fn gui_main(window: *app.Window) !void {
 //--------------
 // imPlotWindow
 //--------------
-fn imPlotWindow(fshow: *bool) !void {
+fn imPlotWindow(fshow: *bool) void {
     const numx = 20;
     const st = struct {
         var bar_data: [numx]ig.ImS32 = undefined;
@@ -95,8 +95,8 @@ fn imPlotWindow(fshow: *bool) !void {
         if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
             defer ip.ImPlot_EndPlot();
             // Using "./zimplot.zig"
-            try ipz.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);
-            try ipz.ImPlot_PlotLineXy("My Line Plot", &st.x_data, &st.y_data, st.x_data.len);
+            ipz.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);
+            ipz.ImPlot_PlotLineXy("My Line Plot", &st.x_data, &st.y_data, st.x_data.len);
         }
     }
 }
@@ -104,7 +104,7 @@ fn imPlotWindow(fshow: *bool) !void {
 //---------------
 // imPlotWindow2
 //---------------
-fn imPlotWindow2(fshow: *bool) !void {
+fn imPlotWindow2(fshow: *bool) void {
     const numx = 20;
     const st = struct {
         var bar_data: [numx]ig.ImS32 = undefined;

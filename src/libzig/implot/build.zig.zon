@@ -2,7 +2,7 @@
     .name = .implot,
     .version = "0.0.1",
     .fingerprint =0x60641c5887d4b180, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{
         "build.zig",

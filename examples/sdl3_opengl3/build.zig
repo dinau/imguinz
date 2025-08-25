@@ -88,7 +88,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(exe);
 
     const resBin =   [_][]const u8{ "imgui.ini", "sdl3_opengl3.ini"
-                                  , "sailboat-400.jpg" };
+                                  , "fuji-poke-480.png" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
     const resIcon = "src/res/z.png";

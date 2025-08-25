@@ -21,8 +21,8 @@ void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imag
   }
   int ixs = even(xs);
   int iys = even(ys);
-  int iWidth  = (even(imageWidth)  - ixs);
-  int iHeight = (even(imageHeight) - iys);
+  int iWidth  = even(imageWidth);
+  int iHeight = even(imageHeight);
   if ((1 > iWidth) || (1 > iHeight)) {
     printf("Error!: Rect of save image is mismatch at %s\n", __FILE__);
     return;
@@ -33,6 +33,7 @@ void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imag
   // 読み取るOpneGLのバッファを指定 GL_FRONT:フロントバッファ　GL_BACK:バックバッファ
   glReadBuffer(GL_BACK);
   // OpenGLで画面に描画されている内容をバッファに格納
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(ixs, iys,                  //# 読み取る領域の左下隅のx,y座標 //0 or getCurrentWidth() - 1
                iWidth, iHeight, //# 読み取る領域
                GL_RGB,                  //# it means GL_BGR,  //取得したい色情報の形式

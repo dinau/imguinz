@@ -30,15 +30,9 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimplot3d/implot3d"));
     // macro
-    mod.addCMacro("IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS", "");
     mod.addCMacro("ImDrawIdx", "unsigned int");
-    mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
+    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
 
-    switch (builtin.target.os.tag) {
-        .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
-        .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
-        else => {},
-    }
     mod.addCSourceFiles(.{
         .files = &.{
         // ImPlot
