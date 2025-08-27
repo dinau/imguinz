@@ -109,7 +109,6 @@ pub const Window = struct {
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 try stdout.print("{s} \n", .{glsl_version});
                 try stdout.print("w = {d}, h = {d} \n", .{win.ini.window.viewportWidth, win.ini.window.viewportHeight});
-                try stdout.flush(); // Don't forget to flush!
                 break;
             } else{
                 try stdout.print("Error!: Failed: glfwCrateWindow() \n", .{});
