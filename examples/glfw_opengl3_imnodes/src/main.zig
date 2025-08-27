@@ -26,8 +26,6 @@ pub fn gui_main(window: *app.Window) !void {
     const imnodes_context = imnodes.imnodes_CreateContext();
     defer imnodes.imnodes_DestroyContext(imnodes_context);
 
-    //const pio = ig.igGetIO_Nil();
-    //
     var showImNodesWindow = true;
 
     // Alloator
@@ -228,7 +226,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
     defer window.destroyImGui();
 
-    //_ = app.setTheme(app.Theme.light); // Theme: dark, classic, light, microsoft
+    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

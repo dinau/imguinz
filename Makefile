@@ -18,6 +18,7 @@ EXAMPLE_DIRS := \
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
 								examples/sdl3_opengl3
+								examples/sdl3_sdlgpu3
 endif
 
 all:

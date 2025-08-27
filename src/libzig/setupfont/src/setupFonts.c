@@ -1,7 +1,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include "cimgui.h"
@@ -54,7 +54,7 @@ char* getWinFontPath(char* sBuf, int bufSize, const char* fontName) {
 float point2px(float point) { //## Convert point to pixel
   return (point * 96) / 72;
 }
-#if 1
+
 const ImWchar ranges_icon_fonts[]  = {(ImWchar)ICON_MIN_FA, (ImWchar)ICON_MAX_FA, (ImWchar)0};
 /*--------------
  * setupFonts()
@@ -75,15 +75,17 @@ void setupFonts(void) {
       break;
     }
   }
-  tableLen = sizeof(LinuxFontNameTbl) / MAX_PATH;
-  for(int i=0; i<tableLen; i++){
-    fontPath = LinuxFontNameTbl[i];
-    if (existsFile(fontPath)) {
-      font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(13)
-          , NULL
-          , NULL);
-      printf("Found FontPath: [%s]\n",fontPath);
-      break;
+  if(font == NULL){
+    tableLen = sizeof(LinuxFontNameTbl) / MAX_PATH;
+    for(int i=0; i<tableLen; i++){
+      fontPath = LinuxFontNameTbl[i];
+      if (existsFile(fontPath)) {
+        font = ImFontAtlas_AddFontFromFileTTF(pio->Fonts, fontPath, point2px(13)
+            , NULL
+            , NULL);
+        printf("Found FontPath: [%s]\n",fontPath);
+        break;
+      }
     }
   }
   if (font == NULL) {
@@ -95,4 +97,3 @@ void setupFonts(void) {
   config->MergeMode = true;
   ImFontAtlas_AddFontFromFileTTF(pio->Fonts, IconFontPath, point2px(11), config , ranges_icon_fonts);
 }
-#endif

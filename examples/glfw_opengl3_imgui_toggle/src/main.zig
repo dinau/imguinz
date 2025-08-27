@@ -134,7 +134,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
     defer window.destroyImGui();
 
-    _ = app.setTheme(app.Theme.classic); // Theme: dark, classic, light, microsoft
+    _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

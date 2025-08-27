@@ -50,7 +50,7 @@ pub fn build(b: *std.Build) void {
     exe.root_module.link_libc = true;
     exe.root_module.link_libcpp = true;
 
-    //exe.subsystem = .Windows; // Hide console window TODO
+    exe.subsystem = .Windows; // Hide console window TODO
 
     b.installArtifact(exe);
 

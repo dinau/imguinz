@@ -87,7 +87,7 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
-    const resBin =   [_][]const u8{ "imgui.ini", "sdl3_opengl3.ini"
+    const resBin =   [_][]const u8{ "imgui.ini"
                                   , "fuji-poke-480.png" };
     const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf"
                                   , "fonticon/fa6/LICENSE.txt"};
@@ -103,6 +103,13 @@ pub fn build(b: *std.Build) void {
     }
     const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
     b.getInstallStep().dependOn(&res.step);
+
+    // save [Executable name].ini
+    const sExeIni = b.fmt("{s}.ini", .{exe_name});
+    const resExeIni = b.addInstallFile(b.path(sExeIni), b.pathJoin(&.{ "bin", sExeIni }));
+    b.getInstallStep().dependOn(&resExeIni.step);
+
+
     if(true){// Enable if use SDL3.dll with dynamic linking.
       const resSdlDll = b.pathJoin(&.{sdlPath, "bin", "SDL3.dll"});
       const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
