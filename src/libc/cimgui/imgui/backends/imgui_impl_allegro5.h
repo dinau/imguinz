@@ -10,6 +10,7 @@
 // Missing features or Issues:
 //  [ ] Renderer: The renderer is suboptimal as we need to unindex our buffers and convert vertices manually.
 //  [ ] Platform: Missing gamepad support.
+//  [ ] Renderer: Multi-viewport support (multiple windows).
 
 // You can use unmodified imgui_impl_* files in your project. See examples/ folder for examples of using this.
 // Prefer including the entire imgui/ repository into your project (either as a copy or as a submodule), and only build the backends you need.
@@ -32,6 +33,7 @@ IMGUI_IMPL_API void     ImGui_ImplAllegro5_Shutdown();
 IMGUI_IMPL_API void     ImGui_ImplAllegro5_NewFrame();
 IMGUI_IMPL_API void     ImGui_ImplAllegro5_RenderDrawData(ImDrawData* draw_data);
 IMGUI_IMPL_API bool     ImGui_ImplAllegro5_ProcessEvent(ALLEGRO_EVENT* event);
+IMGUI_IMPL_API void     ImGui_ImplAllegro5_SetDisplay(ALLEGRO_DISPLAY* display);
 
 // Use if you want to reset your rendering device without losing Dear ImGui state.
 IMGUI_IMPL_API bool     ImGui_ImplAllegro5_CreateDeviceObjects();

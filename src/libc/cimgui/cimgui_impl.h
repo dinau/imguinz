@@ -100,6 +100,46 @@ CIMGUI_API bool ImGui_ImplSDL3_ProcessEvent(const SDL_Event* event);
 CIMGUI_API void ImGui_ImplSDL3_SetGamepadMode(ImGui_ImplSDL3_GamepadMode mode,SDL_Gamepad** manual_gamepads_array,int manual_gamepads_count);
 
 #endif
+#ifdef CIMGUI_USE_SDLRENDERER2
+#ifdef CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+
+typedef struct SDL_Renderer SDL_Renderer;
+struct SDL_Renderer;
+typedef struct ImGui_ImplSDLRenderer2_RenderState ImGui_ImplSDLRenderer2_RenderState;
+struct ImGui_ImplSDLRenderer2_RenderState
+{
+    SDL_Renderer* Renderer;
+};
+#endif //CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+CIMGUI_API bool ImGui_ImplSDLRenderer2_Init(SDL_Renderer* renderer);
+CIMGUI_API void ImGui_ImplSDLRenderer2_Shutdown(void);
+CIMGUI_API void ImGui_ImplSDLRenderer2_NewFrame(void);
+CIMGUI_API void ImGui_ImplSDLRenderer2_RenderDrawData(ImDrawData* draw_data,SDL_Renderer* renderer);
+CIMGUI_API void ImGui_ImplSDLRenderer2_CreateDeviceObjects(void);
+CIMGUI_API void ImGui_ImplSDLRenderer2_DestroyDeviceObjects(void);
+CIMGUI_API void ImGui_ImplSDLRenderer2_UpdateTexture(ImTextureData* tex);
+
+#endif
+#ifdef CIMGUI_USE_SDLRENDERER3
+#ifdef CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+
+typedef struct SDL_Renderer SDL_Renderer;
+struct SDL_Renderer;
+typedef struct ImGui_ImplSDLRenderer3_RenderState ImGui_ImplSDLRenderer3_RenderState;
+struct ImGui_ImplSDLRenderer3_RenderState
+{
+    SDL_Renderer* Renderer;
+};
+#endif //CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+CIMGUI_API bool ImGui_ImplSDLRenderer3_Init(SDL_Renderer* renderer);
+CIMGUI_API void ImGui_ImplSDLRenderer3_Shutdown(void);
+CIMGUI_API void ImGui_ImplSDLRenderer3_NewFrame(void);
+CIMGUI_API void ImGui_ImplSDLRenderer3_RenderDrawData(ImDrawData* draw_data,SDL_Renderer* renderer);
+CIMGUI_API void ImGui_ImplSDLRenderer3_CreateDeviceObjects(void);
+CIMGUI_API void ImGui_ImplSDLRenderer3_DestroyDeviceObjects(void);
+CIMGUI_API void ImGui_ImplSDLRenderer3_UpdateTexture(ImTextureData* tex);
+
+#endif
 #ifdef CIMGUI_USE_VULKAN
 #ifdef CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 
@@ -165,7 +205,6 @@ struct ImGui_ImplVulkanH_Window
     VkSurfaceFormatKHR SurfaceFormat;
     VkPresentModeKHR PresentMode;
     VkRenderPass RenderPass;
-    VkPipeline Pipeline;
     bool UseDynamicRendering;
     bool ClearEnable;
     VkClearValue ClearValue;
@@ -190,8 +229,8 @@ CIMGUI_API void ImGui_ImplVulkan_UpdateTexture(ImTextureData* tex);
 CIMGUI_API VkDescriptorSet ImGui_ImplVulkan_AddTexture(VkSampler sampler,VkImageView image_view,VkImageLayout image_layout);
 CIMGUI_API void ImGui_ImplVulkan_RemoveTexture(VkDescriptorSet descriptor_set);
 CIMGUI_API bool ImGui_ImplVulkan_LoadFunctions(uint32_t api_version,PFN_vkVoidFunction(*loader_func)(const char* function_name,void* user_data),void* user_data);
-CIMGUI_API void ImGui_ImplVulkanH_CreateOrResizeWindow(VkInstance instance,VkPhysicalDevice physical_device,VkDevice device,ImGui_ImplVulkanH_Window* wnd,uint32_t queue_family,const VkAllocationCallbacks* allocator,int w,int h,uint32_t min_image_count);
-CIMGUI_API void ImGui_ImplVulkanH_DestroyWindow(VkInstance instance,VkDevice device,ImGui_ImplVulkanH_Window* wnd,const VkAllocationCallbacks* allocator);
+CIMGUI_API void ImGui_ImplVulkanH_CreateOrResizeWindow(VkInstance instance,VkPhysicalDevice physical_device,VkDevice device,ImGui_ImplVulkanH_Window* wd,uint32_t queue_family,const VkAllocationCallbacks* allocator,int w,int h,uint32_t min_image_count);
+CIMGUI_API void ImGui_ImplVulkanH_DestroyWindow(VkInstance instance,VkDevice device,ImGui_ImplVulkanH_Window* wd,const VkAllocationCallbacks* allocator);
 CIMGUI_API VkSurfaceFormatKHR ImGui_ImplVulkanH_SelectSurfaceFormat(VkPhysicalDevice physical_device,VkSurfaceKHR surface,const VkFormat* request_formats,int request_formats_count,VkColorSpaceKHR request_color_space);
 CIMGUI_API VkPresentModeKHR ImGui_ImplVulkanH_SelectPresentMode(VkPhysicalDevice physical_device,VkSurfaceKHR surface,const VkPresentModeKHR* request_modes,int request_modes_count);
 CIMGUI_API VkPhysicalDevice ImGui_ImplVulkanH_SelectPhysicalDevice(VkInstance instance);

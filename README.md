@@ -56,13 +56,15 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.92.1 dock** (2025/07)
+- ImGui / CImGui version **1.92.2b dock** (2025/08)
 - OS: Windows and Linux
 - Frontends and Backends 
 
-   |                    | GLFW   |   SDL3   |
-   | ---                | :----: |   :----: |
-   | OpenGL3<br>backend | v      |   v      |
+   |                    | GLFW   | SDL3                                                                                     |
+   | ---                | :----: | :----:                                                                                   |
+   | OpenGL3<br>backend | v      | v                                                                                        |
+   | SDLGPU3<br>backend | -      | WIP:  [v](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
+   | vulkan<br>backend  | -      | -                                                                                        |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -72,7 +74,6 @@ examples in Zig language with less external dependencies.
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
-
 
 ### Prerequisites
 

@@ -2,9 +2,10 @@
 // This needs to be used along with the SDL3 Platform Backend
 
 // Implemented features:
-//  [X] Renderer: User texture binding. Use simply cast a reference to your SDL_GPUTextureSamplerBinding to ImTextureID.
+//  [X] Renderer: User texture binding. Use 'SDL_GPUTexture*' as texture identifier. Read the FAQ about ImTextureID/ImTextureRef! **IMPORTANT** Before 2025/08/08, ImTextureID was a reference to a SDL_GPUTextureSamplerBinding struct.
 //  [X] Renderer: Large meshes support (64k+ vertices) even with 16-bit indices (ImGuiBackendFlags_RendererHasVtxOffset).
 //  [X] Renderer: Texture updates support for dynamic font atlas (ImGuiBackendFlags_RendererHasTextures).
+//  [X] Renderer: Multi-viewport support (multiple windows). Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
 
 // The aim of imgui_impl_sdlgpu3.h/.cpp is to be usable in your engine without any modification.
 // IF YOU FEEL YOU NEED TO MAKE ANY CHANGE TO THIS CODE, please share them and your feedback at https://github.com/ocornut/imgui/
@@ -22,6 +23,9 @@
 //   Calling the function is MANDATORY, otherwise the ImGui will not upload neither the vertex nor the index buffer for the GPU. See imgui_impl_sdlgpu3.cpp for more info.
 
 // CHANGELOG
+//  2025-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
+//  2025-08-08: *BREAKING* Changed ImTextureID type from SDL_GPUTextureSamplerBinding* to SDL_GPUTexture*, which is more natural and easier for user to manage. If you need to change the current sampler, you can access the ImGui_ImplSDLGPU3_RenderState struct. (#8866, #8163, #7998, #7988)
+//  2025-08-08: Expose SamplerDefault and SamplerCurrent in ImGui_ImplSDLGPU3_RenderState. Allow callback to change sampler.
 //  2025-06-25: Mapping transfer buffer for texture update use cycle=true. Fixes artifacts e.g. on Metal backend.
 //  2025-06-11: Added support for ImGuiBackendFlags_RendererHasTextures, for dynamic font atlas. Removed ImGui_ImplSDLGPU3_CreateFontsTexture() and ImGui_ImplSDLGPU3_DestroyFontsTexture().
 //  2025-04-28: Added support for special ImDrawCallback_ResetRenderState callback to reset render state.
@@ -36,11 +40,6 @@
 #include "imgui_impl_sdlgpu3_shaders.h"
 
 // SDL_GPU Data
-struct ImGui_ImplSDLGPU3_Texture
-{
-    SDL_GPUTexture*              Texture = nullptr;
-    SDL_GPUTextureSamplerBinding TextureSamplerBinding = { nullptr, nullptr };
-};
 
 // Reusable buffers used for rendering 1 current in-flight frame, for ImGui_ImplSDLGPU3_RenderDrawData()
 struct ImGui_ImplSDLGPU3_FrameData
@@ -84,12 +83,13 @@ static ImGui_ImplSDLGPU3_Data* ImGui_ImplSDLGPU3_GetBackendData()
     return ImGui::GetCurrentContext() ? (ImGui_ImplSDLGPU3_Data*)ImGui::GetIO().BackendRendererUserData : nullptr;
 }
 
-static void ImGui_ImplSDLGPU3_SetupRenderState(ImDrawData* draw_data, SDL_GPUGraphicsPipeline* pipeline, SDL_GPUCommandBuffer* command_buffer, SDL_GPURenderPass * render_pass, ImGui_ImplSDLGPU3_FrameData* fd, uint32_t fb_width, uint32_t fb_height)
+static void ImGui_ImplSDLGPU3_SetupRenderState(ImDrawData* draw_data, ImGui_ImplSDLGPU3_RenderState* render_state, SDL_GPUGraphicsPipeline* pipeline, SDL_GPUCommandBuffer* command_buffer, SDL_GPURenderPass* render_pass, ImGui_ImplSDLGPU3_FrameData* fd, uint32_t fb_width, uint32_t fb_height)
 {
-    //ImGui_ImplSDLGPU3_Data* bd = ImGui_ImplSDLGPU3_GetBackendData();
+    ImGui_ImplSDLGPU3_Data* bd = ImGui_ImplSDLGPU3_GetBackendData();
+    render_state->SamplerCurrent = render_state->SamplerCurrent = bd->TexSampler;
 
     // Bind graphics pipeline
-    SDL_BindGPUGraphicsPipeline(render_pass,pipeline);
+    SDL_BindGPUGraphicsPipeline(render_pass, pipeline);
 
     // Bind Vertex And Index Buffers
     if (draw_data->TotalVtxCount > 0)
@@ -180,9 +180,8 @@ void ImGui_ImplSDLGPU3_PrepareDrawData(ImDrawData* draw_data, SDL_GPUCommandBuff
 
     ImDrawVert* vtx_dst = (ImDrawVert*)SDL_MapGPUTransferBuffer(v->Device, fd->VertexTransferBuffer, true);
     ImDrawIdx* idx_dst = (ImDrawIdx*)SDL_MapGPUTransferBuffer(v->Device, fd->IndexTransferBuffer, true);
-    for (int n = 0; n < draw_data->CmdListsCount; n++)
+    for (const ImDrawList* draw_list : draw_data->CmdLists)
     {
-        const ImDrawList* draw_list = draw_data->CmdLists[n];
         memcpy(vtx_dst, draw_list->VtxBuffer.Data, draw_list->VtxBuffer.Size * sizeof(ImDrawVert));
         memcpy(idx_dst, draw_list->IdxBuffer.Data, draw_list->IdxBuffer.Size * sizeof(ImDrawIdx));
         vtx_dst += draw_list->VtxBuffer.Size;
@@ -228,19 +227,25 @@ void ImGui_ImplSDLGPU3_RenderDrawData(ImDrawData* draw_data, SDL_GPUCommandBuffe
     if (pipeline == nullptr)
         pipeline = bd->Pipeline;
 
-    ImGui_ImplSDLGPU3_SetupRenderState(draw_data, pipeline, command_buffer, render_pass, fd, fb_width, fb_height);
-
     // Will project scissor/clipping rectangles into framebuffer space
     ImVec2 clip_off = draw_data->DisplayPos;         // (0,0) unless using multi-viewports
     ImVec2 clip_scale = draw_data->FramebufferScale; // (1,1) unless using retina display which are often (2,2)
+
+    // Setup render state structure (for callbacks and custom texture bindings)
+    ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+    ImGui_ImplSDLGPU3_RenderState render_state;
+    render_state.Device = bd->InitInfo.Device;
+    render_state.SamplerDefault = render_state.SamplerCurrent = bd->TexSampler;
+    platform_io.Renderer_RenderState = &render_state;
+
+    ImGui_ImplSDLGPU3_SetupRenderState(draw_data, &render_state, pipeline, command_buffer, render_pass, fd, fb_width, fb_height);
 
     // Render command lists
     // (Because we merged all buffers into a single one, we maintain our own offset into them)
     int global_vtx_offset = 0;
     int global_idx_offset = 0;
-    for (int n = 0; n < draw_data->CmdListsCount; n++)
+    for (const ImDrawList* draw_list : draw_data->CmdLists)
     {
-        const ImDrawList* draw_list = draw_data->CmdLists[n];
         for (int cmd_i = 0; cmd_i < draw_list->CmdBuffer.Size; cmd_i++)
         {
             const ImDrawCmd* pcmd = &draw_list->CmdBuffer[cmd_i];
@@ -249,7 +254,7 @@ void ImGui_ImplSDLGPU3_RenderDrawData(ImDrawData* draw_data, SDL_GPUCommandBuffe
                 // User callback, registered via ImDrawList::AddCallback()
                 // (ImDrawCallback_ResetRenderState is a special callback value used by the user to request the renderer to reset render state.)
                 if (pcmd->UserCallback == ImDrawCallback_ResetRenderState)
-                    ImGui_ImplSDLGPU3_SetupRenderState(draw_data, pipeline, command_buffer, render_pass, fd, fb_width, fb_height);
+                    ImGui_ImplSDLGPU3_SetupRenderState(draw_data, &render_state, pipeline, command_buffer, render_pass, fd, fb_width, fb_height);
                 else
                     pcmd->UserCallback(draw_list, pcmd);
             }
@@ -276,9 +281,14 @@ void ImGui_ImplSDLGPU3_RenderDrawData(ImDrawData* draw_data, SDL_GPUCommandBuffe
                 SDL_SetGPUScissor(render_pass,&scissor_rect);
 
                 // Bind DescriptorSet with font or user texture
-                SDL_BindGPUFragmentSamplers(render_pass, 0, (SDL_GPUTextureSamplerBinding*)pcmd->GetTexID(), 1);
+                SDL_GPUTextureSamplerBinding texture_sampler_binding;
+                texture_sampler_binding.texture = (SDL_GPUTexture*)(intptr_t)pcmd->GetTexID();
+                texture_sampler_binding.sampler = render_state.SamplerCurrent;
+                SDL_BindGPUFragmentSamplers(render_pass, 0, &texture_sampler_binding, 1);
 
                 // Draw
+                // **IF YOU GET A CRASH HERE** In 1.92.2 on 2025/08/08 we have changed ImTextureID to store 'SDL_GPUTexture*' instead of storing 'SDL_GPUTextureSamplerBinding'.
+                // Any code loading custom texture using this backend needs to be updated.
                 SDL_DrawGPUIndexedPrimitives(render_pass, pcmd->ElemCount, 1, pcmd->IdxOffset + global_idx_offset, pcmd->VtxOffset + global_vtx_offset, 0);
             }
         }
@@ -297,18 +307,13 @@ void ImGui_ImplSDLGPU3_RenderDrawData(ImDrawData* draw_data, SDL_GPUCommandBuffe
 static void ImGui_ImplSDLGPU3_DestroyTexture(ImTextureData* tex)
 {
     ImGui_ImplSDLGPU3_Data* bd = ImGui_ImplSDLGPU3_GetBackendData();
-    ImGui_ImplSDLGPU3_Texture* backend_tex = (ImGui_ImplSDLGPU3_Texture*)tex->BackendUserData;
-    if (backend_tex == nullptr)
-        return;
-    SDL_GPUTextureSamplerBinding* binding = (SDL_GPUTextureSamplerBinding*)(intptr_t)tex->BackendUserData;
-    IM_ASSERT(backend_tex->Texture == binding->texture);
-    SDL_ReleaseGPUTexture(bd->InitInfo.Device, backend_tex->Texture);
-    IM_DELETE(backend_tex);
+    SDL_GPUTexture* raw_tex = (SDL_GPUTexture*)(intptr_t)tex->GetTexID();
+    if (raw_tex != nullptr)
+        SDL_ReleaseGPUTexture(bd->InitInfo.Device, raw_tex);
 
     // Clear identifiers and mark as destroyed (in order to allow e.g. calling InvalidateDeviceObjects while running)
     tex->SetTexID(ImTextureID_Invalid);
     tex->SetStatus(ImTextureStatus_Destroyed);
-    tex->BackendUserData = nullptr;
 }
 
 void ImGui_ImplSDLGPU3_UpdateTexture(ImTextureData* tex)
@@ -322,7 +327,6 @@ void ImGui_ImplSDLGPU3_UpdateTexture(ImTextureData* tex)
         //IMGUI_DEBUG_LOG("UpdateTexture #%03d: WantCreate %dx%d\n", tex->UniqueID, tex->Width, tex->Height);
         IM_ASSERT(tex->TexID == ImTextureID_Invalid && tex->BackendUserData == nullptr);
         IM_ASSERT(tex->Format == ImTextureFormat_RGBA32);
-        ImGui_ImplSDLGPU3_Texture* backend_tex = IM_NEW(ImGui_ImplSDLGPU3_Texture)();
 
         // Create texture
         SDL_GPUTextureCreateInfo texture_info = {};
@@ -335,19 +339,16 @@ void ImGui_ImplSDLGPU3_UpdateTexture(ImTextureData* tex)
         texture_info.num_levels = 1;
         texture_info.sample_count = SDL_GPU_SAMPLECOUNT_1;
 
-        backend_tex->Texture = SDL_CreateGPUTexture(v->Device, &texture_info);
-        backend_tex->TextureSamplerBinding.texture = backend_tex->Texture;
-        backend_tex->TextureSamplerBinding.sampler = bd->TexSampler;
-        IM_ASSERT(backend_tex->Texture && "Failed to create font texture, call SDL_GetError() for more info");
+        SDL_GPUTexture* raw_tex = SDL_CreateGPUTexture(v->Device, &texture_info);
+        IM_ASSERT(raw_tex != nullptr && "Failed to create font texture, call SDL_GetError() for more info");
 
         // Store identifiers
-        tex->SetTexID((ImTextureID)(intptr_t)&backend_tex->TextureSamplerBinding);
-        tex->BackendUserData = backend_tex;
+        tex->SetTexID((ImTextureID)(intptr_t)raw_tex);
     }
 
     if (tex->Status == ImTextureStatus_WantCreate || tex->Status == ImTextureStatus_WantUpdates)
     {
-        ImGui_ImplSDLGPU3_Texture* backend_tex = (ImGui_ImplSDLGPU3_Texture*)tex->BackendUserData;
+        SDL_GPUTexture* raw_tex = (SDL_GPUTexture*)(intptr_t)tex->GetTexID();
         IM_ASSERT(tex->Format == ImTextureFormat_RGBA32);
 
         // Update full texture or selected blocks. We only ever write to textures regions which have never been used before!
@@ -385,7 +386,7 @@ void ImGui_ImplSDLGPU3_UpdateTexture(ImTextureData* tex)
         transfer_info.transfer_buffer = bd->TexTransferBuffer;
 
         SDL_GPUTextureRegion texture_region = {};
-        texture_region.texture = backend_tex->Texture;
+        texture_region.texture = raw_tex;
         texture_region.x = (Uint32)upload_x;
         texture_region.y = (Uint32)upload_y;
         texture_region.w = (Uint32)upload_w;
@@ -615,6 +616,9 @@ void ImGui_ImplSDLGPU3_DestroyDeviceObjects()
     if (bd->Pipeline)           { SDL_ReleaseGPUGraphicsPipeline(v->Device, bd->Pipeline); bd->Pipeline = nullptr; }
 }
 
+static void ImGui_ImplSDLGPU3_InitMultiViewportSupport();
+static void ImGui_ImplSDLGPU3_ShutdownMultiViewportSupport();
+
 bool ImGui_ImplSDLGPU3_Init(ImGui_ImplSDLGPU3_InitInfo* info)
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -627,11 +631,14 @@ bool ImGui_ImplSDLGPU3_Init(ImGui_ImplSDLGPU3_InitInfo* info)
     io.BackendRendererName = "imgui_impl_sdlgpu3";
     io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;  // We can honor the ImDrawCmd::VtxOffset field, allowing for large meshes.
     io.BackendFlags |= ImGuiBackendFlags_RendererHasTextures;   // We can honor ImGuiPlatformIO::Textures[] requests during render.
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;  // We can create multi-viewports on the Renderer side (optional)
 
     IM_ASSERT(info->Device != nullptr);
     IM_ASSERT(info->ColorTargetFormat != SDL_GPU_TEXTUREFORMAT_INVALID);
 
     bd->InitInfo = *info;
+
+    ImGui_ImplSDLGPU3_InitMultiViewportSupport();
 
     return true;
 }
@@ -642,10 +649,11 @@ void ImGui_ImplSDLGPU3_Shutdown()
     IM_ASSERT(bd != nullptr && "No renderer backend to shutdown, or already shutdown?");
     ImGuiIO& io = ImGui::GetIO();
 
+    ImGui_ImplSDLGPU3_ShutdownMultiViewportSupport();
     ImGui_ImplSDLGPU3_DestroyDeviceObjects();
     io.BackendRendererName = nullptr;
     io.BackendRendererUserData = nullptr;
-    io.BackendFlags &= ~(ImGuiBackendFlags_RendererHasVtxOffset | ImGuiBackendFlags_RendererHasTextures);
+    io.BackendFlags &= ~(ImGuiBackendFlags_RendererHasVtxOffset | ImGuiBackendFlags_RendererHasTextures | ImGuiBackendFlags_RendererHasViewports);
     IM_DELETE(bd);
 }
 
@@ -657,5 +665,76 @@ void ImGui_ImplSDLGPU3_NewFrame()
     if (!bd->TexSampler)
         ImGui_ImplSDLGPU3_CreateDeviceObjects();
 }
+
+//--------------------------------------------------------------------------------------------------------
+// MULTI-VIEWPORT / PLATFORM INTERFACE SUPPORT
+// This is an _advanced_ and _optional_ feature, allowing the backend to create and handle multiple viewports simultaneously.
+// If you are new to dear imgui or creating a new binding for dear imgui, it is recommended that you completely ignore this section first..
+//--------------------------------------------------------------------------------------------------------
+
+static void ImGui_ImplSDLGPU3_CreateWindow(ImGuiViewport* viewport)
+{
+    ImGui_ImplSDLGPU3_Data* data = ImGui_ImplSDLGPU3_GetBackendData();
+    SDL_Window* window = SDL_GetWindowFromID((SDL_WindowID)(intptr_t)viewport->PlatformHandle);
+    SDL_ClaimWindowForGPUDevice(data->InitInfo.Device, window);
+    viewport->RendererUserData = (void*)1;
+}
+
+static void ImGui_ImplSDLGPU3_RenderWindow(ImGuiViewport* viewport, void*)
+{
+    ImGui_ImplSDLGPU3_Data* data = ImGui_ImplSDLGPU3_GetBackendData();
+    SDL_Window* window = SDL_GetWindowFromID((SDL_WindowID)(intptr_t)viewport->PlatformHandle);
+
+    ImDrawData* draw_data = viewport->DrawData;
+
+    SDL_GPUCommandBuffer* command_buffer = SDL_AcquireGPUCommandBuffer(data->InitInfo.Device);
+
+    SDL_GPUTexture* swapchain_texture;
+    SDL_AcquireGPUSwapchainTexture(command_buffer, window, &swapchain_texture, nullptr, nullptr);
+
+    if (swapchain_texture != nullptr)
+    {
+        ImGui_ImplSDLGPU3_PrepareDrawData(draw_data, command_buffer); // FIXME-OPT: Not optimal, may this be done earlier?
+        SDL_GPUColorTargetInfo target_info = {};
+        target_info.texture = swapchain_texture;
+        target_info.clear_color = SDL_FColor{ 0.0f,0.0f,0.0f,1.0f };
+        target_info.load_op = SDL_GPU_LOADOP_CLEAR;
+        target_info.store_op = SDL_GPU_STOREOP_STORE;
+        target_info.mip_level = 0;
+        target_info.layer_or_depth_plane = 0;
+        target_info.cycle = false;
+        SDL_GPURenderPass* render_pass = SDL_BeginGPURenderPass(command_buffer, &target_info, 1, nullptr);
+        ImGui_ImplSDLGPU3_RenderDrawData(draw_data, command_buffer, render_pass);
+        SDL_EndGPURenderPass(render_pass);
+    }
+
+    SDL_SubmitGPUCommandBuffer(command_buffer);
+}
+
+static void ImGui_ImplSDLGPU3_DestroyWindow(ImGuiViewport* viewport)
+{
+    ImGui_ImplSDLGPU3_Data* data = ImGui_ImplSDLGPU3_GetBackendData();
+    if (viewport->RendererUserData)
+    {
+        SDL_Window* window = SDL_GetWindowFromID((SDL_WindowID)(intptr_t)viewport->PlatformHandle);
+        SDL_ReleaseWindowFromGPUDevice(data->InitInfo.Device, window);
+    }
+    viewport->RendererUserData = nullptr;
+}
+
+static void ImGui_ImplSDLGPU3_InitMultiViewportSupport()
+{
+    ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+    platform_io.Renderer_RenderWindow = ImGui_ImplSDLGPU3_RenderWindow;
+    platform_io.Renderer_CreateWindow = ImGui_ImplSDLGPU3_CreateWindow;
+    platform_io.Renderer_DestroyWindow = ImGui_ImplSDLGPU3_DestroyWindow;
+}
+
+static void ImGui_ImplSDLGPU3_ShutdownMultiViewportSupport()
+{
+    ImGui::DestroyPlatformWindows();
+}
+
+//-----------------------------------------------------------------------------
 
 #endif // #ifndef IMGUI_DISABLE
