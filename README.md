@@ -60,11 +60,11 @@ examples in Zig language with less external dependencies.
 - OS: Windows and Linux
 - Frontends and Backends 
 
-   |                    | GLFW   | SDL3                                                                                     |
-   | ---                | :----: | :----:                                                                                   |
-   | OpenGL3<br>backend | v      | v                                                                                        |
-   | SDLGPU3<br>backend | -      | WIP:  [v](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
-   | vulkan<br>backend  | -      | -                                                                                        |
+   |                    | GLFW   | SDL3                                                                               |
+   | ---                | :----: | :----:                                                                             |
+   | OpenGL3<br>backend | v      | v                                                                                  |
+   | SDLGPU3<br>backend | -      | [v](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
+   | vulkan<br>backend  | -      | -                                                                                  |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -79,39 +79,42 @@ examples in Zig language with less external dependencies.
 
 ---
 
-- Zig version confirmed
-   1. Windows: [zig-x86_64-windows-0.15.1.zip](https://ziglang.org/download/0.15.1/zig-x86_64-windows-0.15.1.zip)
-   1. Linux:   [zig-x86_64-linux-0.15.1.tar.xz](https://ziglang.org/download/0.15.1/zig-x86_64-linux-0.15.1.tar.xz)
+- Zig compiler version confirmed
+   - Windows: [zig-x86_64-windows-0.15.1.zip](https://ziglang.org/download/0.15.1/zig-x86_64-windows-0.15.1.zip)
+   - Linux:   [zig-x86_64-linux-0.15.1.tar.xz](https://ziglang.org/download/0.15.1/zig-x86_64-linux-0.15.1.tar.xz)
 
 - WindowsOS
    - Windows10 or later
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
       ```sh
-      pacman -S make
+      pacman -S make mingw-w64-x86_64-{gcc,vulkan-headers,vulkan-loader}
       ```
 
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
+   sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
   ```
+
+   - SDL3  
+   If you are using Debian13, add
+   
+      ```sh
+      sudo apt install libsdl3-dev
+      ```
+
+      otherwise [install SDL3 manually](https://github.com/dinau/sdl3_nim#for-linux-os)
 
 ### Build and run
 
 ---
 
-1. Download this project.
-
    ```sh
    git clone https://github.com/dinau/imguinz
+   cd imguinz/examples/glfw_opengl3              # cd one of examples
+   make run                                      # or  zig build --release=fast run
    ```
 
-1. Go to one of the examples folder, build and run 
-
-   ```sh
-   cd imguinz/examples/glfw_opengl3
-   make run   # or  zig build --release=fast run
-   ```
 
 ### Available libraries list at this moment
 
@@ -234,7 +237,8 @@ Image load and magnifying glass
 
 
 [glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig) / 
-[sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig)
+[sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig) / 
+[sdl3_sdlgpu3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
 
