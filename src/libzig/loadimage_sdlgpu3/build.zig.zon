@@ -1,0 +1,12 @@
+.{
+    .name = .loadimage_sdlgpu3,
+    .version = "0.0.1",
+    .fingerprint = 0xfcba22bfe208a824, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

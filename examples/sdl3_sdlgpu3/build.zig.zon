@@ -1,0 +1,23 @@
+.{
+    .name = .sdl3_sdl3gpu,
+    .version = "0.0.1",
+    .fingerprint = 0x2a1ce24bdc032144, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .appimgui = .{ .path = "../../src/libzig/appimgui" },
+        .cimgui = .{ .path = "../../src/libzig/cimgui" },
+        .fonticon = .{ .path = "../../src/libzig/fonticon" },
+        .glfw = .{ .path = "../../src/libzig/glfw" },
+        .impl_sdl3 = .{ .path = "../../src/libzig/impl_sdl3" },
+        .impl_sdlgpu3 = .{ .path = "../../src/libzig/impl_sdlgpu3" },
+        .loadimage_sdlgpu3 = .{ .path = "../../src/libzig/loadimage_sdlgpu3" },
+        .setupfont = .{ .path = "../../src/libzig/setupfont" },
+        .utils = .{ .path = "../../src/libzig/utils" },
+        .sdl3 = .{ .path = "../../src/libzig/sdl3" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
