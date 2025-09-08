@@ -45,24 +45,24 @@ pub fn gui_main(window: *app.Window) void {
         {
             _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.igEnd();
-            ig.igText(ifa.ICON_FA_COMMENT ++ " GLFW v");
+            ig.igText("%s",ifa.ICON_FA_COMMENT ++ " GLFW v");
             ig.igSameLine(0, -1.0);
-            ig.igText(glfw.glfwGetVersionString());
-            ig.igText(ifa.ICON_FA_COMMENT ++ " OpenGL v");
+            ig.igText("%s",glfw.glfwGetVersionString());
+            ig.igText("%s",ifa.ICON_FA_COMMENT ++ " OpenGL v");
             ig.igSameLine(0, -1.0);
-            ig.igText(glfw.glGetString(glfw.GL_VERSION));
-            ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
+            ig.igText("%s",glfw.glGetString(glfw.GL_VERSION));
+            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
             ig.igSameLine(0, -1.0);
-            ig.igText(ig.igGetVersion());
-            ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
+            ig.igText("%s",ig.igGetVersion());
+            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
             ig.igSameLine(0, -1.0);
-            ig.igText(builtin.zig_version_string);
+            ig.igText("%s",builtin.zig_version_string);
 
             ig.igSpacing();
             _ = ig.igInputTextWithHint("テキスト入力", "ここに入力", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-            ig.igText("入力結果:");
+            ig.igText("%s","入力結果:");
             ig.igSameLine(0, -1.0);
-            ig.igText(&sTextInuputBuf);
+            ig.igText("%s",&sTextInuputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("デモ・ウインドウ", &showDemoWindow);
@@ -76,10 +76,10 @@ pub fn gui_main(window: *app.Window) void {
             ig.igText("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
             // Show icon fonts
             ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
-            ig.igText(ifa.ICON_FA_TRASH_CAN ++ " ゴミ箱");
+            ig.igText("%s",ifa.ICON_FA_TRASH_CAN ++ " ゴミ箱");
 
             ig.igSpacing();
-            ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++
+            ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++
                 " " ++ ifa.ICON_FA_POWER_OFF ++
                 " " ++ ifa.ICON_FA_MICROPHONE ++
                 " " ++ ifa.ICON_FA_MICROCHIP ++

@@ -120,7 +120,7 @@ pub fn gui_main(window: *app.Window) !void {
             }
 
             // Choose fill color
-            ig.igText("Fill color");
+            ig.igText("%s","Fill color");
             ig.igIndent(0);
             // Choose solid color
             _ = ig.igRadioButton_IntPtr("Solid", &st.selected_fill, 0);

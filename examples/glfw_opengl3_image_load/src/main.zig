@@ -78,9 +78,9 @@ pub fn gui_main(window: *app.Window) !void {
             defer ig.igEnd();
 
             _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-            ig.igText("Input result:");
+            ig.igText("%s","Input result:");
             ig.igSameLine(0, -1.0);
-            ig.igText(&sTextInuputBuf);
+            ig.igText("%s",&sTextInuputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);
@@ -131,10 +131,10 @@ pub fn gui_main(window: *app.Window) !void {
 
             // Show icon fonts
             ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " Icon font test ");
-            ig.igText(ifa.ICON_FA_TRASH_CAN ++ " Trash");
+            ig.igText("%s",ifa.ICON_FA_TRASH_CAN ++ " Trash");
 
             ig.igSpacing();
-            ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ ifa.ICON_FA_POWER_OFF ++ " " ++ ifa.ICON_FA_MICROPHONE ++ " " ++ ifa.ICON_FA_MICROCHIP ++ " " ++ ifa.ICON_FA_VOLUME_HIGH ++ " " ++ ifa.ICON_FA_SCISSORS ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ ifa.ICON_FA_BLOG);
+            ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ ifa.ICON_FA_POWER_OFF ++ " " ++ ifa.ICON_FA_MICROPHONE ++ " " ++ ifa.ICON_FA_MICROCHIP ++ " " ++ ifa.ICON_FA_VOLUME_HIGH ++ " " ++ ifa.ICON_FA_SCISSORS ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ ifa.ICON_FA_BLOG);
         } // end main window
 
         //------------------------

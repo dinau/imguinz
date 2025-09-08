@@ -142,7 +142,7 @@ pub fn gui_main(window: *app.Window) !void {
         { // -- Text filter window
             _ = ig.igBegin("Icon Font filter", null, 0);
             defer ig.igEnd();
-            ig.igText("(Copy)");
+            ig.igText("%s","(Copy)");
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 //filterAry[1]:match(".+(ICON.+)");
                 //if (std.mem.containsAtLeast(u8, filterAry[0],"ICON")){

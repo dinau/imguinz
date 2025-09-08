@@ -170,14 +170,14 @@ pub fn main () !void {
       ig.igText ("[%d],[%s]", sdl.SDL_GetVersion(), sdl.SDL_GetRevision());
       ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
       ig.igText (glfw.glGetString(glfw.GL_VERSION));
-      ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
-      ig.igText(ig.igGetVersion());
-      ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
-      ig.igText(builtin.zig_version_string);
+      ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
+      ig.igText("%s",ig.igGetVersion());
+      ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
+      ig.igText("%s",builtin.zig_version_string);
 
       ig.igSpacing();
       _ = ig.igInputTextWithHint("InputText","Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-      ig.igText("Input result:"); ig.igSameLine(0, -1.0); ig.igText(&sTextInuputBuf);
+      ig.igText("%s","Input result:"); ig.igSameLine(0, -1.0); ig.igText("%s",&sTextInuputBuf);
 
       ig.igSpacing();
       _ = ig.igCheckbox ("Demo Window", &showDemoWindow);
@@ -192,10 +192,10 @@ pub fn main () !void {
       ig.igText ("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
       // Show icon fonts
       ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " Icon font test ");
-      ig.igText(ifa.ICON_FA_TRASH_CAN  ++ " Trash");
+      ig.igText("%s",ifa.ICON_FA_TRASH_CAN  ++ " Trash");
 
       ig.igSpacing();
-      ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS_PLUS
+      ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS
           ++ " " ++ ifa.ICON_FA_POWER_OFF
           ++ " " ++ ifa.ICON_FA_MICROPHONE
           ++ " " ++ ifa.ICON_FA_MICROCHIP
