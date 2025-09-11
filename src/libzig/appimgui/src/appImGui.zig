@@ -64,18 +64,13 @@ pub const Window = struct {
         _ = h;
         var win: Self = undefined;
         try loadIni(&win);
-        // For print()
-        var stdout_buffer: [1024]u8 = undefined;
-        var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
-        const stdout = &stdout_writer.interface;
 
         //-------------------
         // GLFW initializing
         //-------------------
         _ = glfw.glfwSetErrorCallback(glfw_error_callback);
         if (glfw.glfwInit() == 0) {
-            try stdout.print("Failed to initialize GLFW: [main.zig]: \n", .{});
-            try stdout.flush(); // Don't forget to flush!
+            std.debug.print("Failed to initialize GLFW: [main.zig]: \n", .{});
             return error.glfwInitFailure;
         }
 
@@ -107,12 +102,11 @@ pub const Window = struct {
             if (glfw.glfwCreateWindow(win.ini.window.viewportWidth, win.ini.window.viewportHeight, title, null, null)) |pointer| {
                 win.handle = pointer;
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
-                try stdout.print("{s} \n", .{glsl_version});
-                try stdout.print("w = {d}, h = {d} \n", .{win.ini.window.viewportWidth, win.ini.window.viewportHeight});
+                std.debug.print("{s} \n", .{glsl_version});
+                std.debug.print("w = {d}, h = {d} \n", .{win.ini.window.viewportWidth, win.ini.window.viewportHeight});
                 break;
             } else{
-                try stdout.print("Error!: Failed: glfwCrateWindow() \n", .{});
-                try stdout.flush(); // Don't forget to flush!
+                std.debug.print("Error!: Failed: glfwCrateWindow() \n", .{});
             }
         } else {
             glfw.glfwTerminate();

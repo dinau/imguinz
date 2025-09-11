@@ -23,13 +23,9 @@ pub fn main() !void {
     //-------------
     // For print()
     //-------------
-    var stdout_buffer: [1024]u8 = undefined;
-    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
-    const stdout = &stdout_writer.interface;
-
     // Setup SDL
     if (sdl.SDL_Init(sdl.SDL_INIT_VIDEO | sdl.SDL_INIT_GAMEPAD) == false) {
-        try stdout.print("Error: {s}\n", .{sdl.SDL_GetError()});
+        std.debug.print("Error: {s}\n", .{sdl.SDL_GetError()});
         return error.SDL_init;
     }
 
@@ -39,7 +35,7 @@ pub fn main() !void {
     if (sdl.SDL_CreateWindow("SDL3GPU example", @intFromFloat(MainWinWidth * main_scale), @intFromFloat(MainWinHeight * main_scale), window_flags)) |pointer| {
         window = pointer;
     } else {
-        try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{sdl.SDL_GetError()});
+        std.debug.print("Error: SDL_CreateWindow(): {s}\n", .{sdl.SDL_GetError()});
         return error.SDL_CreatWindow;
     }
     // Create GPU Device
@@ -48,13 +44,13 @@ pub fn main() !void {
     if (sdl.SDL_CreateGPUDevice(flags_gpu, true, null)) |device| {
         gpu_device = device;
     } else {
-        try stdout.print("Error: SDL_CreateGPUDevice(): {s}\n", .{sdl.SDL_GetError()});
+        std.debug.print("Error: SDL_CreateGPUDevice(): {s}\n", .{sdl.SDL_GetError()});
         return error.SDL_CreateGPUDevice;
     }
 
     // Claim window for GPU Device
     if (!sdl.SDL_ClaimWindowForGPUDevice(gpu_device, window)) {
-        try stdout.print("Error: SDL_ClaimWindowForGPUDevice(): {s}\n", .{sdl.SDL_GetError()});
+        std.debug.print("Error: SDL_ClaimWindowForGPUDevice(): {s}\n", .{sdl.SDL_GetError()});
         return error.SDL_ClaimWindowForGPUDevice;
     }
     _ = sdl.SDL_SetGPUSwapchainParameters(gpu_device, window, sdl.SDL_GPU_SWAPCHAINCOMPOSITION_SDR, sdl.SDL_GPU_PRESENTMODE_VSYNC);

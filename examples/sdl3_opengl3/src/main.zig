@@ -20,29 +20,22 @@ const MainWinHeight:i32 = 900;
 // main()
 //--------
 pub fn main () !void {
-  //-------------
-  // For print()
-  //-------------
-  var stdout_buffer: [1024]u8 = undefined;
-  var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
-  const stdout = &stdout_writer.interface;
-
   // Setup SDL
   if (sdl.SDL_Init(sdl.SDL_INIT_VIDEO | sdl.SDL_INIT_GAMEPAD) == false) {
-    try stdout.print("Error: {s}\n", .{sdl.SDL_GetError()});
+    std.debug.print("Error: {s}\n", .{sdl.SDL_GetError()});
     return error.SDL_init;
   }
   defer sdl.SDL_Quit();
   var glsl_version_buf: [30]u8 = undefined;
-  const versions = [_][2]u16{[_]u16{4, 6},
-                             [_]u16{4, 5},
-                             [_]u16{4, 4},
-                             [_]u16{4, 3},
-                             [_]u16{4, 2},
-                             [_]u16{4, 1},
-                             [_]u16{4, 0},
-                             [_]u16{3, 3}
-                           };
+  var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
+  switch (builtin.target.os.tag) {
+      .linux => {
+                versions[0][0] = 3;
+                versions[0][1] = 3;
+                },
+      .macos => {},
+      else => {},
+  }
   var glsl_version: [:0]u8 = undefined;
 
   //-------------------------
@@ -69,11 +62,11 @@ pub fn main () !void {
     if(sdl.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags))|pointer|{
       window = pointer;
       glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ ver[0] * 100 + ver[1] * 10});
-      try stdout.print("{s} \n", .{glsl_version});
+      std.debug.print("{s} \n", .{glsl_version});
       break;
     }
   }else{
-    try stdout.print("Error: SDL_CreateWindow(): {s}\n", .{sdl.SDL_GetError()});
+    std.debug.print("Error: SDL_CreateWindow(): {s}\n", .{sdl.SDL_GetError()});
     return error.SDL_CreatWindow;
   }
 

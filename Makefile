@@ -26,8 +26,10 @@ all:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
 
 .PHONY: test clean gen cleanexe
-test:
-	@echo $(notdir $(EXAMPLE_DIRS))
+
+sdl:
+	$(MAKE) -C examples/sdl3_opengl3
+	$(MAKE) -C examples/sdl3_sdlgpu3
 
 clean:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanall ))
