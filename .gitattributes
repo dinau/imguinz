@@ -5,3 +5,4 @@
 *.nim linguist-vendored
 *.lua linguist-vendored
 src/libc/** linguist-vendored
+src/libzig/** linguist-vendored
