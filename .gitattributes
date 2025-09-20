@@ -2,9 +2,9 @@
 
 *.zig linguist-language=Zig
 *.c linguist-vendored
+*.cpp linguist-vendored
+*.h linguist-vendored
+*.hpp linguist-vendored
 *.nim linguist-vendored
 *.lua linguist-vendored
-src/libc/** linguist-vendored
-src/libzig/** linguist-vendored
-examples/glfw_opengl3_imguicolortextedit/main.cpp linguist-vendored
 Makefile linguist-vendored
