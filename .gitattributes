@@ -1,1 +1,7 @@
 *.zig text eol=lf
+
+*.zig linguist-language=Zig
+*.c linguist-vendored
+*.nim linguist-vendored
+*.lua linguist-vendored
+src/libc/** linguist-vendored
