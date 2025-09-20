@@ -6,3 +6,5 @@
 *.lua linguist-vendored
 src/libc/** linguist-vendored
 src/libzig/** linguist-vendored
+examples/glfw_opengl3_imguicolortextedit/main.cpp linguist-vendored
+Makefile linguist-vendored
