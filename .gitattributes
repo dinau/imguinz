@@ -7,4 +7,10 @@
 *.hpp linguist-vendored
 *.nim linguist-vendored
 *.lua linguist-vendored
+*.css linguist-vendored
 Makefile linguist-vendored
+
+CMakeLists.txt linguist-vendored
+**/CMakeLists.txt linguist-vendored
+*.cmake linguist-vendored
+**/*.cmake linguist-vendored
