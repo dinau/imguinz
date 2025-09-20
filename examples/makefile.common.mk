@@ -13,7 +13,7 @@ all:
 	zig build $(OPT)
 	@-$(AFTER_BUILD_CMD)
 
-.PHONY: run gen cleanall cleanexe trans clean
+.PHONY: run gen cleanall cleanexe cleancache trans clean
 
 run: all
 	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
@@ -34,6 +34,10 @@ cleanall:
 
 cleanexe:
 	@-rm -fr zig-out
+
+cleancache:
+	@-rm -fr .zig-cache
+	@-rm  zig-out/bin/$(TARGET).pdb
 
 
 INCS +=	-I../../libs/cimplot/implot/ -I../../libs/cimgui/imgui/

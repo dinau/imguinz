@@ -40,6 +40,7 @@ pub fn build(b: *std.Build) void {
     //------
     // Libs
     //------
+    exe.root_module.linkSystemLibrary("glfw3", .{});
     if (builtin.target.os.tag == .windows){
       exe.root_module.linkSystemLibrary("gdi32", .{});
       exe.root_module.linkSystemLibrary("imm32", .{});
@@ -67,7 +68,6 @@ pub fn build(b: *std.Build) void {
       // Static link
       exe.addObjectFile(b.path(b.pathJoin(&.{sdlPath, "lib","libSDL3.dll.a"})));
     }else if (builtin.target.os.tag == .linux){
-      exe.root_module.linkSystemLibrary("glfw3", .{});
       exe.root_module.linkSystemLibrary("GL", .{});
       exe.root_module.linkSystemLibrary("SDL3", .{});
     }

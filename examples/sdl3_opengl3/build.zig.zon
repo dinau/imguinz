@@ -13,9 +13,7 @@
         .fonticon =  .{
             .path = "../../src/libzig/fonticon"
         },
-        .glfw =  .{
-            .path = "../../src/libzig/glfw"
-        },
+        .glfw = .{ .path = "../../src/libzig/glfw" },
         .impl_opengl3 =  .{
             .path = "../../src/libzig/impl_opengl3"
         },

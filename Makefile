@@ -44,6 +44,7 @@ gen: copylibs
 define def_make
 	@echo ==== Enter: $(1) ====
 	@$(MAKE) -C  $(1) $(2)
+	@$(MAKE) -C  $(1) cleancache
 
 endef
 

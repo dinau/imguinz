@@ -50,7 +50,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
 examples in Zig language with less external dependencies.
 
-- ImGui / CImGui version **1.92.2b dock** (2025/08)
+- ImGui / CImGui version **1.92.3 dock** (2025/09)
 - OS: Windows and Linux
 - Frontends and Backends 
 
@@ -58,7 +58,7 @@ examples in Zig language with less external dependencies.
    | ---                | :----: | :----:                                                                             |
    | OpenGL3<br>backend | v      | v                                                                                  |
    | SDLGPU3<br>backend | -      | [v](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
-   | vulkan<br>backend  | -      | -                                                                                  |
+   | vulkan<br>backend  | WIP    | WIP                                                                                |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -375,7 +375,7 @@ https://github.com/libsdl-org/SDL/releases
 
 ---
 
-| Language [^order]    |          | Project                                                                                                                                         |
+| Language             |          | Project                                                                                                                                         |
 | -------------------: | :---:    | :----------------------------------------------------------------:                                                                              |
 | **Lua**              | Script   | [LuaJITImGui](https://github.com/dinau/luajitImGui)                                                                                             |
 | **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui) / [NeLuaImGui2](https://github.com/dinau/neluaImGui2)                                         |
@@ -393,12 +393,10 @@ https://github.com/libsdl-org/SDL/releases
 ![ald](https://github.com/dinau/nelua-platformer/raw/main/img/platformer-nelua-sdl2.gif)
 
 
-| Language    [^order] |          | SDL         | Project                                                                                                                                               |
+| Language             |          | SDL         | Project                                                                                                                                               |
 | -------------------: | :---:    | :---:       | :----------------------------------------------------------------:                                                                                    |
 | **LuaJIT**           | Script   | SDL2        | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)
 | **Nelua**            | Compiler | SDL2        | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)
 | **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
 | **Zig**              | Compiler | SDL2        | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
-
-[^order]: Alphabectial order

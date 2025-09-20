@@ -162,7 +162,7 @@ pub fn main () !void {
       ig.igText (ifa.ICON_FA_COMMENT ++ " SDL3 v"); ig.igSameLine (0, -1.0);
       ig.igText ("[%d],[%s]", sdl.SDL_GetVersion(), sdl.SDL_GetRevision());
       ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
-      ig.igText (glfw.glGetString(glfw.GL_VERSION));
+      //ig.igText (glfw.glGetString(glfw.GL_VERSION));
       ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
       ig.igText("%s",ig.igGetVersion());
       ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);
