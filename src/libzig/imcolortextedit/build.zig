@@ -32,8 +32,6 @@ pub fn build(b: *std.Build) void {
 
     // macro
     //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
-    // for fileopendialog
-    mod.addCMacro("CUSTOM_IMGUIFILEDIALOG_CONFIG", "\"customIconFont.h\"");
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimCTE/cimCTE.cpp",

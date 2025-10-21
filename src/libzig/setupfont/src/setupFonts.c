@@ -19,11 +19,12 @@ char WinFontNameTbl[][MAX_PATH] = {
                                  ,"YuGothM.ttc"    // Windows 10
                                  ,"segoeui.ttf"    // English standard
                                  };
-char LinuxFontNameTbl[][MAX_PATH] = { // For Linux Mint 22 (Ubuntu/Debian family ok ?)
-                            "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"          // JP
-                           ,"/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"               // Debian
-                           ,"/usr/share/fonts/opentype/ipafont-gothic/ipam.ttf"               // Debian
-                           ,"/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" // Linux Mint English
+char LinuxFontNameTbl[][MAX_PATH] = { // For Linux: Ubuntu/Debian families
+                            "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf",               // Debian jp
+                            "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",          // JP
+                            "/usr/share/fonts/opentype/ipafont-gothic/ipam.ttf",               // Debian jp
+                            "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf", // Linux Mint English
+                            "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",             // English region standard font
                            };
 
 /*-------------

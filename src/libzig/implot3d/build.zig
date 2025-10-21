@@ -21,7 +21,6 @@ pub fn build(b: *std.Build) void {
 
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimgui_toggle"));
     step.addIncludePath(b.path("../../libc/cimplot3d/cimplot3d"));
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);

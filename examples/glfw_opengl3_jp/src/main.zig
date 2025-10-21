@@ -20,6 +20,8 @@ pub fn gui_main(window: *app.Window) void {
     // Input text buffer
     var sTextInuputBuf = [_:0]u8{0} ** 200;
 
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------

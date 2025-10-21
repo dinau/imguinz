@@ -32,6 +32,8 @@ pub fn gui_main(window: *app.Window) !void {
   //ig.igStyleColorsDark (null);
   //ig.igStyleColorsLight (null);
 
+  //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
   //---------------
   // main loop GUI
   //---------------

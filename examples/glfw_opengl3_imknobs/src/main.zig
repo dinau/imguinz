@@ -15,6 +15,8 @@ const MainWinHeight:i32 = 900;
 pub fn gui_main (window: *app.Window) void {
   stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
+  //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
   //---------------
   // main loop GUI
   //---------------

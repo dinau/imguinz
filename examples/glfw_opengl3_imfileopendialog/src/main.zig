@@ -30,6 +30,8 @@ pub fn gui_main(window: *app.Window) !void {
     var sFilter: [2048]u8 = .{0} ** 2048;
     var sDatas: [2048]u8 = .{0} ** 2048;
 
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------

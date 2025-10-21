@@ -35,6 +35,7 @@ clean:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanall ))
 	$(MAKE) -C src/libzig $@
 
+cleanall: clean cleanexe
 cleanexe:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanexe ))
 

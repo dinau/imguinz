@@ -45,6 +45,7 @@ pub fn build(b: *std.Build) void {
 
     } else if (builtin.target.os.tag == .linux) {
         exe.root_module.linkSystemLibrary("GL", .{});
+        exe.root_module.linkSystemLibrary("X11", .{});
     }
 
     // root_module

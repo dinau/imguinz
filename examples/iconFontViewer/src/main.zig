@@ -26,6 +26,9 @@ pub fn gui_main(window: *app.Window) !void {
 
     var listBoxTextureID: glfw.GLuint = 0; //# Must be == 0 at first
     defer glfw.glDeleteTextures(1, &listBoxTextureID);
+
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------

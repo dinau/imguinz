@@ -33,6 +33,7 @@ pub fn gui_main(window: *app.Window) !void {
 
     //-- ImNode: Initialize NodeEditor
     var obj: recObj = undefined;
+    obj.current_id = 0;
     obj.nodes = try std.ArrayList(Node).initCapacity(allocator,1024);
     obj.links = try std.ArrayList(Link).initCapacity(allocator,1024);
     defer obj.nodes.deinit(allocator);
@@ -47,6 +48,8 @@ pub fn gui_main(window: *app.Window) !void {
         imnodes.imnodes_PopAttributeFlag();
         saveObj(allocator, &obj) catch unreachable;
     }
+
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
     //---------------
     // main loop GUI

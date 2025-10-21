@@ -87,7 +87,7 @@ examples in Zig language with less external dependencies.
 - Linux OS (Ubuntu / Debian families)
 
   ```sh
-   sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev}
+   sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,xcursor-dev,xinerama-dev,xi-dev} git make
   ```
 
    - SDL3  
@@ -128,7 +128,7 @@ Library name / C lang. wrapper
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/07)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) (2025/09) WIP 
 
-### Examples screen shots 
+### Examples screenshots 
 
 #### ImGui-Toggle / CImGui-Toggle
 
@@ -400,3 +400,15 @@ https://github.com/libsdl-org/SDL/releases
 | **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
 | **Zig**              | Compiler | SDL2        | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
+
+
+
+Notes:
+
+- Using ImPlot3D / ImPlot with Zig
+- Zig + ImGui + ImPlot3D / ImPlot demo
+- Build with ImPlot3D / ImPlot
+- ImPlot3D integration example
+- This project builds and runs Dear ImGui + ImPlot3D / ImPlotusing Zig.
+- ImPlot3D is compiled from source (implot3d.h / implot3d.cpp)
+- ImPlot is compiled from source (implot.h / implot.cpp)

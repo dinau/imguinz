@@ -48,6 +48,8 @@ pub fn gui_main(window: *app.Window) !void {
     var zoomTextureID: glfw.GLuint = 0; //# Must be == 0 at first
     defer glfw.glDeleteTextures(1, &zoomTextureID);
 
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------

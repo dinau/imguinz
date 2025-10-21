@@ -29,6 +29,8 @@ pub fn gui_main(window: *app.Window) !void {
     var MPmo = [_]f32{ 2.3787, 0, 0, 0, 0, 3.1716, 0, 0, 0, 0, -1.0002, -1, 0, 0, -0.2, 0 };
     var MOmo = [_]f32{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0.5, 0.5, 0.5, 1 };
 
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------

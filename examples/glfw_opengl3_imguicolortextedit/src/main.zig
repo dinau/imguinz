@@ -51,6 +51,8 @@ pub fn gui_main(window: *app.Window) !void {
     const textPoint = 14.5;
     const textFont = ig.ImFontAtlas_AddFontFromFileTTF(pio.*.Fonts, fontFullPath, point2px(textPoint), null, null);
 
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+
     //---------------
     // main loop GUI
     //---------------
@@ -89,12 +91,12 @@ pub fn gui_main(window: *app.Window) !void {
                 //-------------
                 if (ig.igBeginMenu("File", true)) {
                     defer ig.igEndMenu();
-                    if (ig.igMenuItem_BoolPtr("Save", "Ctrl-S", null, true)) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_FLOPPY_DISK ++ " Save", "Ctrl-S", null, true)) {
                         copyCstrToString(sBuffer, cte.TextEditor_GetText(editor));
                         //--writeFile("main.cpp", strText)
                         //print"saved"
                     }
-                    if (ig.igMenuItem_Bool("Quit", "Alt-F4", false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_SQUARE_PLUS ++ " Quit", "Alt-F4", false, true)) {
                         fQuit = true;
                         //print"quit";
                     }
@@ -105,30 +107,30 @@ pub fn gui_main(window: *app.Window) !void {
                 if (ig.igBeginMenu("Edit", true)) {
                     defer ig.igEndMenu();
                     var ro = cte.TextEditor_IsReadOnlyEnabled(editor);
-                    if (ig.igMenuItem_BoolPtr("Read-only mode", null, &ro, true)) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_LOCK ++ " Read-only mode", null, &ro, true)) {
                         cte.TextEditor_SetReadOnlyEnabled(editor, ro);
                     }
                     ig.igSeparator();
                     //
-                    if (ig.igMenuItem_BoolPtr("Undo", "ALT-Backspace", null, !ro and cte.TextEditor_CanUndo(editor))) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_ARROW_ROTATE_LEFT ++ " Undo", "ALT-Backspace", null, !ro and cte.TextEditor_CanUndo(editor))) {
                         cte.TextEditor_Undo(editor, 1);
                     }
-                    if (ig.igMenuItem_BoolPtr("Redo", "Ctrl-Y", null, !ro and cte.TextEditor_CanRedo(editor))) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_ARROW_ROTATE_RIGHT ++ " Redo", "Ctrl-Y", null, !ro and cte.TextEditor_CanRedo(editor))) {
                         cte.TextEditor_Redo(editor, 1);
                     }
                     ig.igSeparator();
                     //
-                    if (ig.igMenuItem_BoolPtr("Copy", "Ctrl-C", null, cte.TextEditor_AnyCursorHasSelection(editor))) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_COPY ++ " Copy", "Ctrl-C", null, cte.TextEditor_AnyCursorHasSelection(editor))) {
                         cte.TextEditor_Copy(editor);
                     }
-                    if (ig.igMenuItem_BoolPtr("Cut", "Ctrl-X", null, !ro and cte.TextEditor_AnyCursorHasSelection(editor))) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_SCISSORS ++ " Cut", "Ctrl-X", null, !ro and cte.TextEditor_AnyCursorHasSelection(editor))) {
                         cte.TextEditor_Cut(editor);
                     }
-                    if (ig.igMenuItem_BoolPtr("Paste", "Ctrl-V", null, !ro and ig.igGetClipboardText() != null)) {
+                    if (ig.igMenuItem_BoolPtr(ifa.ICON_FA_PASTE ++ " Paste", "Ctrl-V", null, !ro and ig.igGetClipboardText() != null)) {
                         cte.TextEditor_Paste(editor);
                     }
                     ig.igSeparator();
-                    if (ig.igMenuItem_Bool("Select all", "Ctrl-A", false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_SQUARE ++ " Select all", "Ctrl-A", false, true)) {
                         cte.TextEditor_SelectAll(editor);
                     }
                 }
@@ -137,16 +139,16 @@ pub fn gui_main(window: *app.Window) !void {
                 //-------------
                 if (ig.igBeginMenu("Theme", true)) {
                     defer ig.igEndMenu();
-                    if (ig.igMenuItem_Bool("Dark palette", null, false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_STAR_AND_CRESCENT ++ " Dark palette", null, false, true)) {
                         cte.TextEditor_SetPalette(editor, cte.Dark);
                     }
-                    if (ig.igMenuItem_Bool("Light palette", null, false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_SUN ++ " Light palette", null, false, true)) {
                         cte.TextEditor_SetPalette(editor, cte.Light);
                     }
-                    if (ig.igMenuItem_Bool("Mariana palette", null, false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_M ++ " Mariana palette", null, false, true)) {
                         cte.TextEditor_SetPalette(editor, cte.Mariana);
                     }
-                    if (ig.igMenuItem_Bool("Retro blue palette", "Ctrl-B", false, true)) {
+                    if (ig.igMenuItem_Bool(ifa.ICON_FA_CAMERA_RETRO ++ " Retro blue palette", "Ctrl-B", false, true)) {
                         cte.TextEditor_SetPalette(editor, cte.RetroBlue);
                     }
                 }

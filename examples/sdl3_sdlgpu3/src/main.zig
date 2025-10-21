@@ -9,7 +9,7 @@ const sdl = @import("sdl3");
 const impl_sdl3 = @import("impl_sdl3");
 const impl_sdlgpu3 = @import("impl_sdlgpu3");
 const img_load = @import("loadimage_sdlgpu3");
-const zmg = @import("zoomglass.zig");
+const zmg = @import("./zoomGlass.zig");
 
 const IMGUI_HAS_DOCK = false; // Docking feature
 
