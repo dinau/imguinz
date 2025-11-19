@@ -9,7 +9,7 @@ const toggle = @import("imtoggle");
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 

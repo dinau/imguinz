@@ -14,6 +14,9 @@ EXAMPLE_DIRS := \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
+							examples/raylib_basic \
+							examples/raylib_cjk \
+							examples/rlimgui_basic\
 							examples/imPlotDemo
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \

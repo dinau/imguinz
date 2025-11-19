@@ -1030,7 +1030,7 @@ fn demo_Histogram2D() !void {
 // demo_Images
 //-------------
 fn demo_Images() !void {
-    const ImageName = "himeji-400.jpg";
+    const ImageName = "./resources/himeji-400.jpg";
     const st = struct {
         var bmin = ip.ImPlotPoint{ .x = 0, .y = 0 };
         var bmax = ip.ImPlotPoint{ .x = 1, .y = 1 };

@@ -88,7 +88,7 @@ pub fn main() !void {
     //------------
     // Load image
     //------------
-    const ImageName = "fuji-poke-480.png";
+    const ImageName = "./resources/fuji-poke-480.png";
     var pTextureId: *sdl.SDL_GPUTexture = undefined;
     var textureWidth: c_int = 0;
     var textureHeight: c_int = 0;
@@ -107,7 +107,7 @@ pub fn main() !void {
     var sTextInuputBuf = [_:0]u8{0} ** 200;
     var showWindowDelay: i32 = 2; // TODO: Avoid flickering of window at startup.
 
-    stf.setupFonts();
+    _ = stf.setupFonts();
 
     var done = false;
     while (!done) {

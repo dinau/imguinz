@@ -6,6 +6,9 @@
 -Ilibc/cimgui
 -Ilibc/cimgui/imgui
 -Ilibc/cimgui/imgui/backends
+
+-Ilibc/fonticon/
+
 -Ilibc/sdl/SDL3/x86_64-w64-mingw32/include
 -Ilibc/sdl/SDL3/x86_64-w64-mingw32/include/SDL3
 -Ilibc/stb

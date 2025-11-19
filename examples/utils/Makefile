@@ -27,4 +27,4 @@ CFLAGS += -Ic:/zig/lib/libc/include/any-windows-any
 CFLAGS += -DCIMGUI_DEFINE_ENUMS_AND_STRUCTS
 
 gen:
-	zig translate-c ../../libs/cimgui/cimgui.h $(CFLAGS) > cimgui.zig
+	zig translate-c ../../src/libc/cimgui/cimgui.h $(CFLAGS) > cimgui.zig

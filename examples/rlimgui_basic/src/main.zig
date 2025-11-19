@@ -1,0 +1,136 @@
+// Refer to:
+//      https://github.com/raysan5/raylib/blob/master/examples/models/models_heightmap_rendering.c
+//
+//      This program is under ./LICENSE.raylib.txt.
+//
+const std = @import("std");
+const ig = @import("cimgui");
+const stf = @import("setupfont");
+const ifa = @import("fonticon");
+const rl = @import("raylib");
+const rlig = @import("rlimgui");
+const builtin = @import("builtin");
+
+const MainWinWidth: i32 = 900;
+const MainWinHeight: i32 = 700;
+
+fn testDrawRectangle() void {
+    const rec = rl.Rectangle{.x = 50, .y = 50, .width = 400, .height = 150};
+    rl.DrawRectangleRec(rec, rl.Color{.r = 64, .g = 166, .b = 217, .a = 55});
+}
+
+fn testDrawText() void {
+    const raylib_version = "Raylib v" ++ rl.RAYLIB_VERSION;
+    const zig_version = "Zig-" ++ builtin.zig_version_string;
+    rl.DrawText(zig_version,   70, 70,  20, rl.DARKBLUE);
+    rl.DrawText(raylib_version, 70, 100, 20, rl.DARKBLUE);
+    rl.DrawText("2025/11",                               70, 130, 20, rl.DARKBLUE);
+
+    const font = rl.GetFontDefault();
+    const position = rl.Vector2{.x = 70, .y = 160};
+    rl.DrawTextEx(font, "Hello with custom font", position, 24, 2, rl.GRAY);
+}
+//-----------
+// gui_main()
+//-----------
+pub fn gui_main() !void {
+    rl.SetConfigFlags(rl.FLAG_VSYNC_HINT | rl.FLAG_WINDOW_RESIZABLE);                //  Enable VSYNC
+    rl.InitWindow(MainWinWidth, MainWinHeight, "Zig: Dear ImGui + Raylib + rlImGui");
+    defer rl.CloseWindow();
+
+    // Define our custom camera to look into our 3d world
+    var camera = rl.Camera3D{
+        .position = rl.Vector3{ .x = 18, .y = 18, .z = 18 },                         // Camera position
+        .target = rl.Vector3{ .x = 0, .y = 0, .z = 0 },                              // Camera looking at point
+        .up = rl.Vector3{ .x = 0, .y = 1, .z = 0 },                                  // Camera up vector (rotation towards target)
+        .fovy = 60,                                                                  // Camera field-of-view Y
+        .projection = rl.CAMERA_PERSPECTIVE,                                         // Camera projection type
+    };
+    const image = rl.LoadImage("./resources/istockphoto_com-1209065219-128.png");    // https://www.istockphoto.com  search "grayscale height map"
+    defer rl.UnloadImage(image);                                                     // Unload heightmap image from RAM, already uploaded to VRAM
+
+    const texture = rl.LoadTextureFromImage(image);                                  // Convert image to texture (VRAM)
+    defer rl.UnloadTexture(texture);                                                 // Unload texture
+
+    const mesh = rl.GenMeshHeightmap(image, rl.Vector3{ .x = 16, .y = 8, .z = 16 }); // Generate heightmap mesh (RAM and VRAM)
+    const model = rl.LoadModelFromMesh(mesh);                                        // Load model from generated mesh
+    defer rl.UnloadModel(model);                                                     // Unload model
+
+    model.materials.*.maps.*.texture = texture;                                      // Set map diffuse texture
+    const mapPosition = rl.Vector3{ .x = -8, .y = 0, .z = -8 };                      // Define model position
+
+    rl.SetTargetFPS(60);                                                             // Set our game to run at 60 frames-per-second
+    rlig.rlImGuiSetup(true);
+    const font = stf.setupFonts();                                                                // Setup CJK fonts and Icon fonts
+
+    var mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
+    var buf: [100]u8 = undefined;
+
+    const pio = ig.igGetIO_Nil();
+
+    //---------------
+    // main loop GUI
+    //---------------
+    while (!rl.WindowShouldClose()) {
+        // Update
+        rl.UpdateCamera(&camera, rl.CAMERA_ORBITAL);                                 // Set an orbital camera mode
+                                                                                     //
+        rl.BeginDrawing();
+        defer rl.EndDrawing();
+        rlig.rlImGuiBegin();
+        defer rlig.rlImGuiEnd();
+
+        //-------------
+        // ImGui block
+        //-------------
+        pio.*.FontDefault = @ptrCast(font);
+        {
+            ig.igPushFont(null, 19.0);
+            defer ig.igPopFont();
+
+            ig.igShowDemoWindow(null);
+            _ = ig.igBegin("Test Window " , null, 0);
+            ig.igText("%s", ifa.ICON_FA_SUN ++ " Sun");
+            ig.igText("%s", ifa.ICON_FA_CLOUD_RAIN ++ " Rain" );
+            ig.igText("Change Color");
+            _ = ig.igColorEdit3("##Change color", &mapColor, 0);
+            ig.igEnd();
+        }
+
+        //--------------------
+        //-- Raylib draw texts
+        //--------------------
+        testDrawRectangle();
+        testDrawText();
+
+        //--------------------------
+        //-- Raylib draw height map
+        //--------------------------
+        {
+            rl.ClearBackground(rl.BLACK);
+            {
+                rl.BeginMode3D(camera);
+                const color = rl.Color{ .r = @intFromFloat(mapColor[0] * 255), .g = @intFromFloat(mapColor[1] * 255), .b = @intFromFloat(mapColor[2] * 255), .a = 255 };
+                rl.DrawModel(model, mapPosition, 1, color);
+                rl.DrawGrid(20, 1);
+                rl.EndMode3D();
+            }
+            testDrawText();
+            rl.DrawTexture(texture, MainWinWidth - texture.width - 20, 20, rl.WHITE);
+            rl.DrawRectangleLines(MainWinWidth - texture.width - 20, 20, texture.width, texture.height, rl.WHITE);
+
+            const str = try std.fmt.bufPrint(&buf, "{} FPS\n", .{rl.GetFPS()});
+            rl.DrawText(str.ptr, 10, 10, 20, rl.GRAY);
+
+            rl.DrawText("ImGui + Raylib + rlImGui", 50, 250, 20, rl.RAYWHITE);
+        }
+    } // end while loop
+}
+
+//--------
+// main()
+//--------
+
+pub fn main() !void {
+    try gui_main();
+}

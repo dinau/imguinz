@@ -34,14 +34,14 @@ pub fn gui_main(window: *app.Window) !void {
     //------------
     // Load image
     //------------
-    const ImageName = "himeji-400.jpg";
+    const ImageName = "./resources/himeji-400.jpg";
     var textureId: glfw.GLuint = undefined;
     defer glfw.glDeleteTextures(1, &textureId);
     var textureWidth: c_int = 0;
     var textureHeight: c_int = 0;
     _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const sz = utils.vec2(0, 0);
 

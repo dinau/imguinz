@@ -10,6 +10,9 @@
 -I../libs/cimplot/implot
 -I../libs/cimgui_toggle/
 
+-I../src/libc/raylib/include
+
+
 -Wno-stringop-overflow
 -DCIMGUI_USE_GLFW
 -DCIMGUI_USE_OPENGL3

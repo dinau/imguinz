@@ -5,10 +5,12 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
-  - [Examples screen shots](#examples-screen-shots)
+  - [Examples screenshots](#examples-screenshots)
     - [ImGui-Toggle / CImGui-Toggle](#imgui-toggle--cimgui-toggle)
     - [ImGui-Knobs / CImGui-Knobs](#imgui-knobs--cimgui-knobs)
     - [ImSpinner / CImSpinner](#imspinner--cimspinner)
+    - [Raylib example](#raylib-example)
+    - [Raylib + ImGui + rlImGui](#raylib--imgui--rlimgui)
     - [ImPlot3D / CImPlot3D](#implot3d--cimplot3d)
     - [ImGuiFileDialog / CImGuiFileDialog](#imguifiledialog--cimguifiledialog)
     - [ImGuiColorTextEdit / cimCTE](#imguicolortextedit--cimcte)
@@ -47,18 +49,18 @@
 ## ImGuinZ 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
-[(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) 
-examples in Zig language with less external dependencies.
+[(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
+Raylib, rlImGui and many other libaries and examples in Zig with less external dependencies.
 
-- ImGui / CImGui version **1.92.3 dock** (2025/09)
-- OS: Windows and Linux
+- ImGui / CImGui version **1.92.4 dock** (2025/11)
+- OS: Windows11 and Linux
 - Frontends and Backends 
 
-   |                    | GLFW   | SDL3                                                                               |
-   | ---                | :----: | :----:                                                                             |
-   | OpenGL3<br>backend | v      | v                                                                                  |
-   | SDLGPU3<br>backend | -      | [v](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
-   | vulkan<br>backend  | WIP    | WIP                                                                                |
+   |                    | GLFW   | SDL3                                                                                 |
+   | ---                | :----: | :----:                                                                               |
+   | OpenGL3<br>backend | YES    | YES                                                                                  |
+   | SDLGPU3<br>backend | -      | [YES](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
+   | vulkan<br>backend  | WIP    | WIP                                                                                  |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -74,14 +76,16 @@ examples in Zig language with less external dependencies.
 ---
 
 - Zig compiler version confirmed
-   - Windows: [zig-x86_64-windows-0.15.1.zip](https://ziglang.org/download/0.15.1/zig-x86_64-windows-0.15.1.zip)
-   - Linux:   [zig-x86_64-linux-0.15.1.tar.xz](https://ziglang.org/download/0.15.1/zig-x86_64-linux-0.15.1.tar.xz)
+
+   - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
+   - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
 
 - WindowsOS
-   - Windows10 or later
+   - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
+
       ```sh
-      pacman -S make mingw-w64-x86_64-{gcc,vulkan-headers,vulkan-loader}
+      pacman -S make 
       ```
 
 - Linux OS (Ubuntu / Debian families)
@@ -91,7 +95,7 @@ examples in Zig language with less external dependencies.
   ```
 
    - SDL3  
-   If you are using Debian13, add
+   If you are using Debian13 Trixie, add sdl3 library,
    
       ```sh
       sudo apt install libsdl3-dev
@@ -128,6 +132,9 @@ Library name / C lang. wrapper
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/07)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) (2025/09) WIP 
 
+Additional examples
+- [x] [Raylib](https://github.com/raysan5/raylib), [rlImGui](https://github.com/raylib-extras/rlImGui) (2025/11)
+
 ### Examples screenshots 
 
 #### ImGui-Toggle / CImGui-Toggle
@@ -136,7 +143,7 @@ Library name / C lang. wrapper
 
 [ImGui-Toggle](https://github.com/cmdwtf/imgui_toggle) / [CImGui-Toggle](https://github.com/dinau/cimgui_toggle)
 
-[glfw_opengl3_imgui_toggle.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_toggle/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_toggle/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imtoggle.png)  
 
@@ -146,7 +153,7 @@ Library name / C lang. wrapper
 
 [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/cimgui-knobs)
 
-[glfw_opengl3_imknobs.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imknobs/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imknobs/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imknobs.png)  
 
@@ -156,9 +163,31 @@ Library name / C lang. wrapper
 
 [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner)
 
-[glfw_opengl3_imspinner.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imspinner/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imspinner.gif)
+
+
+#### Raylib example 
+
+---
+
+[raylib_basic](examples/raylib_basic/src/main.zig)  
+
+![alt](img/raylib_basic.gif)
+
+[raylib_cjk](examples/raylib_cjk/src/main.zig): Showing multi byte(CJK) fonts
+
+![alt](img/raylib_cjk.gif)
+
+#### Raylib + ImGui + rlImGui 
+
+---
+
+[main.zig](examples/rlimgui_basic/src/main.zig)  
+
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/rlimgui.gif)
 
 #### ImPlot3D / CImPlot3D
 
@@ -166,7 +195,7 @@ Library name / C lang. wrapper
 
 [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
 
-[glfw_opengl3_implot3d.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot3d/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot3d/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/implot3d.gif)
 
@@ -176,7 +205,7 @@ Library name / C lang. wrapper
 
 [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 
-[glfw_opengl3_imfiledialog.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imfiledialog/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imfiledialog/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imfiledialog.png)
 
@@ -186,7 +215,7 @@ Library name / C lang. wrapper
 
 [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) 
 
-[glfw_opengl3_imguicolortextedit.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguicolortextedit/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguicolortextedit/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imguicolortextedit.png)
 
@@ -196,7 +225,7 @@ Library name / C lang. wrapper
 
 [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
 
-[glfw_opengl3_imnodes.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imnodes/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imnodes/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imnodes.png)
 
@@ -207,7 +236,7 @@ Library name / C lang. wrapper
 
 [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)
 
-[glfw_opengl3_imguizmo.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguizmo/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imguizmo/src/main.zig)  
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/imguizmo.png)
 
@@ -219,7 +248,7 @@ WIP
 
 [imgui_markdown](https://github.com/enkisoftware/imgui_markdown) / [cImgui_markdown](https://github.com/dinau/cimgui_markdown)
 
-[glfw_opengl3_imgui_markdown.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_markdown/src/main.zig)  
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_imgui_markdown/src/main.zig)  
 
 ![alt](https://github.com/dinau/cimgui_markdown/raw/main/demo/img/cimgui_markdown.png)
 
@@ -230,9 +259,9 @@ WIP
 Image load and magnifying glass
 
 
-[glfw_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig) / 
-[sdl3_opengl3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig) / 
-[sdl3_sdlgpu3.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig)
+[glfw_opengl3: main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3/src/main.zig) / 
+[sdl3_opengl3: main.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_opengl3/src/main.zig) / 
+[sdl3_sdlgpu3: main.zig](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/sdl2_opengl3.png)
 
@@ -240,7 +269,7 @@ Image load and magnifying glass
 
 ---
 
-[glfw_opengl3_jp.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_jp/src/main.zig)
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_jp/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_jp.png)
 
@@ -248,7 +277,7 @@ Image load and magnifying glass
 
 ---
 
-[iconFontViewer.zig](https://github.com/dinau/imguinz/blob/main/examples/iconFontViewer/src/main.zig), magnifying glass, incremental search
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/iconFontViewer/src/main.zig), magnifying glass, incremental search
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/iconFontViewer.png)
 
@@ -260,7 +289,7 @@ Image load / save and magnifying glass.
 Image file captured would be saved in .the folder `./zig-out/bin`.  
 Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
-[glfw_opengl3_image_load.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_image_load/src/main.zig) 
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_image_load/src/main.zig) 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_image_load.png)  
 
@@ -268,7 +297,7 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ---
 
-[glfw_opengl3_implot.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot/src/main.zig)
+[main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_implot.png)
 
@@ -407,8 +436,8 @@ Notes:
 
 - Using ImPlot3D / ImPlot with Zig
 - Zig + ImGui + ImPlot3D / ImPlot demo
-- Build with ImPlot3D / ImPlot
+- Build with ImPlot3D / ImPlot / Raylib / rlImGui
 - ImPlot3D integration example
-- This project builds and runs Dear ImGui + ImPlot3D / ImPlotusing Zig.
+- This project builds and runs Dear ImGui + ImPlot3D / ImPlot / Raylib / rlImGui using Zig.
 - ImPlot3D is compiled from source (implot3d.h / implot3d.cpp)
 - ImPlot is compiled from source (implot.h / implot.cpp)

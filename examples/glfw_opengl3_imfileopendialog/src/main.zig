@@ -15,7 +15,7 @@ pub fn gui_main(window: *app.Window) !void {
     //-------------
     var showDemoWindow = true;
 
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
                         //
     //------------------------------
     // Create FileDialog object

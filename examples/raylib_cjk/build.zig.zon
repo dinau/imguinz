@@ -1,0 +1,17 @@
+.{
+    .name = .app_raylib_cjk,
+    .version = "0.0.1",
+    .fingerprint = 0xa3b884ada244ea28, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.2",
+    .dependencies = .{
+        .raylib = .{
+            .path = "../../src/libzig/raylib",
+            .lazy = true,
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

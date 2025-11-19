@@ -108,7 +108,7 @@ pub fn main () !void {
   //------------
   // Load image
   //------------
-  const ImageName = "fuji-poke-480.png";
+  const ImageName = "./resources/fuji-poke-480.png";
   var textureId : glfw.GLuint = undefined;
   var textureWidth: c_int = 0;
   var textureHeight : c_int = 0;
@@ -127,7 +127,7 @@ pub fn main () !void {
   var sTextInuputBuf =  [_:0]u8{0} ** 200;
   var showWindowDelay:i32 = 2; // TODO: Avoid flickering of window at startup.
 
-  stf.setupFonts();
+  _ = stf.setupFonts();
 
   const sz  = ig.ImVec2 {.x = 0, .y = 0} ;
 
@@ -162,7 +162,7 @@ pub fn main () !void {
       ig.igText (ifa.ICON_FA_COMMENT ++ " SDL3 v"); ig.igSameLine (0, -1.0);
       ig.igText ("[%d],[%s]", sdl.SDL_GetVersion(), sdl.SDL_GetRevision());
       ig.igText (ifa.ICON_FA_COMMENT ++ " OpenGL v"); ig.igSameLine (0, -1.0);
-      //ig.igText (glfw.glGetString(glfw.GL_VERSION));
+      ig.igText (glfw.glGetString(glfw.GL_VERSION));
       ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v"); ig.igSameLine (0, -1.0);
       ig.igText("%s",ig.igGetVersion());
       ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v"); ig.igSameLine (0, -1.0);

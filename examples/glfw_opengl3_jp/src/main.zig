@@ -9,7 +9,7 @@ const builtin = @import("builtin");
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
     var showDemoWindow = true;

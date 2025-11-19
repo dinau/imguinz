@@ -5,23 +5,30 @@ DIRS = \
 	glfw \
 	imcolortextedit \
 	imfileopendialog \
+	imguizmo \
 	imknobs \
 	imnodes \
+	impl_glfw \
+	impl_opengl3 \
+	impl_sdl3 \
+	impl_sdlgpu3 \
 	implot \
 	implot3d \
 	imspinner \
-	impl_sdl3 \
-	impl_glfw \
-	impl_opengl3 \
 	imtoggle \
 	loadicon \
 	loadimage \
+	loadimage_sdlgpu3 \
+	raylib \
+	rlimgui \
 	saveimage \
 	setupfont \
 	sdl3 \
 	utils \
 	zoomglass
 
+all:
+	$(foreach exdir,$(DIRS), $(call def_make,$(exdir),$@))
 
 clean:
 	$(foreach exdir,$(DIRS), $(call def_make,$(exdir),$@))
@@ -32,7 +39,7 @@ fmt:
 #
 define def_make
 	@echo ==== Enter: $(1) ====
-	@-$(MAKE) -C  $(1) $(2)
+	@$(MAKE) -C  $(1) $(2)
 
 endef
 

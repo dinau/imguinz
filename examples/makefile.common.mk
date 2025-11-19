@@ -16,9 +16,11 @@ all:
 .PHONY: run gen cleanall cleanexe cleancache trans clean
 
 run: all
-	(cd $(ZIG_BIN_DIR); ./$(TARGET)$(EXE))
-	cp $(ZIG_BIN_DIR)/imgui.ini .
-	cp $(ZIG_BIN_DIR)/$(TARGET).ini .
+	(cd $(ZIG_BIN_DIR); $(LOCAL_LIB_PATH) ./$(TARGET)$(EXE))
+ifneq ($(COPY_IMGUI_INI),false)
+	@-cp $(ZIG_BIN_DIR)/imgui.ini .
+	@-cp $(ZIG_BIN_DIR)/$(TARGET).ini .
+endif
 	$(AFTER_RUN_CMD)
 
 
@@ -37,7 +39,9 @@ cleanexe:
 
 cleancache:
 	@-rm -fr .zig-cache
+ifeq ($(OS),Windows_NT)
 	@-rm  zig-out/bin/$(TARGET).pdb
+endif
 
 
 INCS +=	-I../../libs/cimplot/implot/ -I../../libs/cimgui/imgui/

@@ -19,11 +19,11 @@ pub fn gui_main(window: *app.Window) !void {
     //-------------
     var showDemoWindow = true;
 
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
     //
     //-- This is a programing font. https://github.com/yuru7/NOTONOTO
-    const fontFullPath = "./fonts/notonoto_v0.0.3/NOTONOTO-Regular.ttf";
-    const fileName = "main.cpp";
+    const fontFullPath = "./resources/fonts/NOTONOTO-Regular.ttf";
+    const fileName = "./resources/main.cpp";
 
     const allocator = std.heap.page_allocator;
     const file = try std.fs.cwd().openFile(fileName, .{});

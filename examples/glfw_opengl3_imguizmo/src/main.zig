@@ -12,7 +12,7 @@ const MainWinHeight: i32 = 800;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     // Set background color
     window.ini.window.colBGx = 0;

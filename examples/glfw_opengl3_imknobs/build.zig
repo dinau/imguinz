@@ -55,20 +55,25 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
+    const install_resources = b.addInstallDirectory(.{
+        .source_dir = b.path("resources"),        // base: assets folder
+        .install_dir = .bin,                      // bin folder
+        .install_subdir = "resources",            // destination: bin/resources/
+    });
+    exe.step.dependOn(&install_resources.step);
+
     const resBin = [_][]const u8{ "imgui.ini", };
-    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
-    const resIcon = "src/res/z.png";
 
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
-    inline for (resUtils) |file| {
-        const res = b.addInstallFile(b.path("../utils/" ++ file), "utils/" ++ file);
+    const fonticon_dir = "../../src/libc/fonticon/fa6/";
+    const res_fonticon = [_][]const u8{ "fa-solid-900.ttf", "LICENSE.txt" };
+    inline for (res_fonticon) |file| {
+        const res = b.addInstallFile(b.path(fonticon_dir ++ file), "bin/resources/fonticon/fa6/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
-    const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
-    b.getInstallStep().dependOn(&res.step);
 
     // save [Executable name].ini
     const sExeIni = b.fmt("{s}.ini", .{exe_name});

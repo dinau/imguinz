@@ -55,25 +55,32 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
-    const resBin = [_][]const u8{ "imgui.ini",
-                                  "main.cpp",
-                                  "fonts/notonoto_v0.0.3/NOTONOTO-Regular.ttf",
-                                  "fonts/notonoto_v0.0.3/LICENSE",
-                                  "fonts/notonoto_v0.0.3/README.md",
-    };
-    const resUtils = [_][]const u8{ "fonticon/fa6/fa-solid-900.ttf", "fonticon/fa6/LICENSE.txt" };
-    const resIcon = "src/res/z.png";
+    const install_resources = b.addInstallDirectory(.{
+        .source_dir = b.path("resources"),        // base: assets folder
+        .install_dir = .bin,                      // bin folder
+        .install_subdir = "resources",            // destination: bin/resources/
+    });
+    exe.step.dependOn(&install_resources.step);
+
+    const resBin = [_][]const u8{ "imgui.ini", };
 
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
-    inline for (resUtils) |file| {
-        const res = b.addInstallFile(b.path("../utils/" ++ file), "utils/" ++ file);
+    const fonticon_dir = "../../src/libc/fonticon/fa6/";
+    const res_fonticon = [_][]const u8{ "fa-solid-900.ttf", "LICENSE.txt" };
+    inline for (res_fonticon) |file| {
+        const res = b.addInstallFile(b.path(fonticon_dir ++ file), "bin/resources/fonticon/fa6/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
-    const res = b.addInstallFile(b.path(resIcon), "bin/z.png");
-    b.getInstallStep().dependOn(&res.step);
+
+    const cjk_font_dir = "../../src/libc/notonoto_v0.0.3/";
+    const cjk_font_files = [_][]const u8{ "LICENSE","NOTONOTO-Regular.ttf","README.md" };
+    inline for (cjk_font_files) |file| {
+        const res = b.addInstallFile(b.path(cjk_font_dir ++ file), "bin/resources/fonts/" ++ file);
+        b.getInstallStep().dependOn(&res.step);
+    }
 
     // save [Executable name].ini
     const sExeIni = b.fmt("{s}.ini", .{exe_name});

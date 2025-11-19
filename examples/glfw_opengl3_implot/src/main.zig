@@ -18,7 +18,7 @@ const MainWinHeight: i32 = 900;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const imPlotContext = ip.ImPlot_CreateContext();
     defer ip.ImPlot_DestroyContext(imPlotContext);
