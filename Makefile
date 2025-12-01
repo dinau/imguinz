@@ -160,12 +160,10 @@ cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
 
 
-
-
 copyblib:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_copylib,$(exdir)))
 
 define def_copylib
-	cp examples/build_lib.zig $(1)/
+	cp -f examples/build_lib.zig $(1)/
 
 endef

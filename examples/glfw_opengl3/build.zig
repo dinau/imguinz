@@ -1,6 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const blib = @import("./build_lib.zig");
+const blib = @import("build_lib.zig");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
