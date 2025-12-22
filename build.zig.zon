@@ -36,8 +36,10 @@
     .paths = .{
         "build.zig",
         "build.zig.zon",
-        "src/libzig",
+        "src",
         "LICENSE",
         "README.md",
+        ".gitignore",
+        "Makefile",
     },
 }
