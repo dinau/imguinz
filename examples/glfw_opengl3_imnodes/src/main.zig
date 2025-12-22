@@ -1,8 +1,7 @@
 const std = @import("std");
-const ig = @import("cimgui");
-const ifa = @import("fonticon");
-const stf = @import("setupfont");
 const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 const imnodes = @import("imnodes");
 
@@ -18,7 +17,7 @@ const recObj = struct { nodes: std.ArrayList(Node), links: std.ArrayList(Link), 
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     //---------------------
     // ImNode init context

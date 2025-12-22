@@ -59,6 +59,4 @@ pub fn build(b: *std.Build) void {
         .linux   => lib.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.so.550" }))),
         else => {},
     }
-    b.installArtifact(lib);
-    //    std.debug.print("{s} module\n",.{mod_name});
 }

@@ -1,11 +1,10 @@
 const std = @import("std");
-const ig = @import("cimgui");
 const ip = @import("implot");
 const ipz = @import("zimplot.zig");
 const ip3 = @import("implot3d");
-const ifa = @import("fonticon");
 const app = @import("appimgui");
-const stf = @import("setupfont");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 pub const c = @cImport({
     @cInclude("stdlib.h");
@@ -20,7 +19,7 @@ const MainWinHeight: i32 = 900;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     // setup ImPlot
     const imPlotContext = ip.ImPlot_CreateContext();

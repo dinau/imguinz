@@ -1,13 +1,10 @@
 const std = @import("std");
 const math = @import("std").math;
-const ifa = @import("fonticon");
-
-const c = @cImport ({
-  @cInclude ("stdlib.h");
-});
-
-const ig = @import ("cimgui");
-const ip = @import("implot");
+const app = @import("appimgui");
+const c   = app.clib;
+const ifa = app.ifa;
+const ig  = app.ig;
+const ip  = @import("implot");
 const ipz = @import("zimplot.zig");
 
 pub const IMPLOT_AUTO: f32 = -1;
@@ -15,6 +12,24 @@ pub const INFINITY_f32 = std.math.inf(f32);
 pub const INFINITY_f64 = std.math.inf(f64);
 pub const NaN_f32      = std.math.nan(f32);
 pub const NaN_f64      = std.math.nan(f64);
+
+// Generate random number
+var prng = std.Random.DefaultPrng.init(0);
+pub var fixed_seed = false;
+
+fn getRandom() std.Random {
+    if (!fixed_seed) {
+        prng = std.Random.DefaultPrng.init(@intCast(std.time.milliTimestamp()));
+        fixed_seed = true;
+    }
+    return prng.random();
+}
+pub fn randomFloat(min: f32, max: f32) f32 {
+    const rnd = getRandom();
+    return min + rnd.float(f32) * (max - min);
+}
+
+//
 pub fn stride(value:anytype) c_int {
   return @sizeOf(@TypeOf(value));
 }
@@ -78,6 +93,7 @@ pub const ImPlotPoint = struct {
 
 // Helper function to get random float between min and max.
 pub fn RandomRange(min: f32, max: f32) f32 {
+    //return randomFloat(min, max);
     return min +  @as(f32,@floatFromInt(c.rand())) * ( max - min) / (@as(f32,@floatFromInt(c.RAND_MAX)));
 }
 
@@ -104,6 +120,8 @@ pub fn RandomGauss() f64 {
         while (true) {
             U1 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
             U2 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
+            //U1 =  @as(f64, randomFloat(0.0, 1.0));
+            //U2 =  @as(f64, randomFloat(0.0, 1.0));
             V1 = 2 * U1 - 1;
             V2 = 2 * U2 - 1;
             S = V1 * V1 + V2 * V2;

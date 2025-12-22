@@ -1,12 +1,15 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const ig = @import("cimgui");
-const glfw = @import("glfw");
+pub const ig = @import("cimgui");
+pub const glfw = @import("glfw");
 const impl_gl = @import("impl_opengl3");
 const impl_glfw = @import("impl_glfw");
-const ifa = @import("fonticon");
-const img_ld = @import("loadimage");
-const icon = @import("loadicon");
+pub const ifa = @import("fonticon");
+pub const img_ld = @import("loadimage");
+pub const icon = @import("loadicon");
+pub const stf = @import("setupfont");
+pub const utils = @import("utils");
+pub const clib = @import("clib");
 
 //---------------------
 // glfw_error_callback
@@ -119,7 +122,7 @@ pub const Window = struct {
         }
 
         win.eventLoadVar = eventLoad.low;
-        win.showWindowDelay = 2;
+        win.showWindowDelay = 1;
         win.clearColor = [_]f32{ win.ini.window.colBGx, win.ini.window.colBGy, win.ini.window.colBGz, 1.0 };
 
         glfw.glfwMakeContextCurrent(win.handle);
@@ -198,12 +201,13 @@ pub const Window = struct {
             }
         }
         glfw.glfwSwapBuffers(win.handle);
+
+        if (win.showWindowDelay == 0) {
+            glfw.glfwShowWindow(win.handle); // Visible main window here at start up
+        }
         if (win.showWindowDelay >= 0) {
             win.showWindowDelay -= 1;
         }
-        if (win.showWindowDelay == 0) {
-            glfw.glfwShowWindow(win.handle);
-        } // Visible main window here at start up
     }
 
     //-------

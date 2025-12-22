@@ -57,7 +57,7 @@ pub fn setupFonts() ?*ig.ImFont {
         if (getWinFontPath(&sBufFontPath, fontName)) |fontPath| {
             if (existsFile(fontPath)) {
                 font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(14.5), null, null,);
-                std.debug.print("Found FontPath: [{s}]\n", .{fontPath});
+                std.debug.print("\nFound FontPath: [{s}]", .{fontPath});
                 break;
             }
         }
@@ -68,7 +68,7 @@ pub fn setupFonts() ?*ig.ImFont {
         for (LinuxFontNameTbl) |fontPath| {
             if (existsFile(fontPath)) {
                 font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(13.0), null, null,);
-                std.debug.print("Found FontPath: [{s}]\n", .{fontPath});
+                std.debug.print("\nFound FontPath: [{s}]", .{fontPath});
                 break;
             }
         }
@@ -76,8 +76,8 @@ pub fn setupFonts() ?*ig.ImFont {
 
     // If still not found, use default
     if (font == null) {
-        std.debug.print("Error!: Font loading failed\n", .{});
-        std.debug.print("Default has been set.\n", .{});
+        std.debug.print("\nError!: Font loading failed", .{});
+        std.debug.print("\nDefault has been set.", .{});
         _ = ig.ImFontAtlas_AddFontDefault(pio.*.Fonts, null);
     }
 

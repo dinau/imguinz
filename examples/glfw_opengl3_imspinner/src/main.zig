@@ -1,7 +1,6 @@
-const ig = @import("cimgui");
-const ifa = @import("fonticon");
-const stf = @import("setupfont");
 const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 const spinner = @import("imspinner");
 
@@ -12,7 +11,7 @@ const MainWinHeight: i32 = 900;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
 

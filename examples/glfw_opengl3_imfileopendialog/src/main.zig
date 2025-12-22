@@ -1,8 +1,7 @@
 const std = @import("std");
-const ig = @import("cimgui");
-const ifa = @import("fonticon");
-const stf = @import("setupfont");
 const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 const fdlg = @import("imfileopendialog");
 
@@ -15,7 +14,7 @@ pub fn gui_main(window: *app.Window) !void {
     //-------------
     var showDemoWindow = true;
 
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
                         //
     //------------------------------
     // Create FileDialog object

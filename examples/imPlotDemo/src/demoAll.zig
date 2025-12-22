@@ -2,15 +2,16 @@
 // 2024/07: Converted to Zig lang. from C++ by dinau
 //
 const std = @import("std");
+const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
+
 const math = @import("std").math;
 //
-const ig = @import("cimgui");
 const ip = @import("implot");
 const ipz = @import("zimplot.zig");
 //
 const utils_ip = @import("utils.zig");
-const utils = @import("utils");
-const ifa = @import("fonticon");
 //
 pub const c = @cImport({
     @cInclude("stdio.h");
@@ -1048,7 +1049,7 @@ fn demo_Images() !void {
     //------------
     if (st.loadImage) {
         st.loadImage = false;
-        _ = utils.LoadTextureFromFile(ImageName, &st.textureId, &st.textureWidth, &st.textureHeight);
+        _ = app.utils.LoadTextureFromFile(ImageName, &st.textureId, &st.textureWidth, &st.textureHeight);
     }
     //
     ig.igBulletText("Below we are displaying the font texture, which is the only texture we have\naccess to in this demo.");
@@ -1406,6 +1407,7 @@ fn demo_ScatterPlots() !void {
     for (0..100)|i| {
         xs1[i] = @as(f32,@floatFromInt(i)) * 0.01;
         ys1[i] = xs1[i] + 0.1 *  @as(f32,@floatFromInt(c.rand())) / @as(f32,@floatFromInt(c.RAND_MAX));
+        //ys1[i] = xs1[i] + 0.1 *  utils_ip.randomFloat(0.0, 1.0);
     }
     var xs2:[50]f32 = undefined;
     var ys2:[50]f32 = undefined;

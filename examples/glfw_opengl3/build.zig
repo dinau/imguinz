@@ -1,6 +1,5 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const blib = @import("build_lib.zig");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -18,38 +17,26 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    // Register external module from "./build.zig.zon" file.
-    blib.addExternalModule(b, main_mod);
-
     const exe = b.addExecutable(.{
         .name = exe_name,
         .root_module = main_mod,
     });
+
+    const imguinz = b.dependency("imguinz", .{});
+    const dependencies = .{
+        "appimgui",
+        // "another_lib",
+    };
+    inline for (dependencies) |dep_name| {
+        const dep = imguinz.builder.dependency(dep_name, .{ .target = target, .optimize = optimize, });
+        exe.root_module.addImport(dep_name, dep.module(dep_name));
+    }
 
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
     // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
     // See. https://github.com/ziglang/zig/pull/22587
-
-    //---------
-    // Linking
-    //---------
-    exe.root_module.linkSystemLibrary("glfw3", .{});
-    if (builtin.target.os.tag == .windows) {
-        exe.root_module.linkSystemLibrary("gdi32", .{});
-        exe.root_module.linkSystemLibrary("imm32", .{});
-        exe.root_module.linkSystemLibrary("opengl32", .{});
-        exe.root_module.linkSystemLibrary("user32", .{});
-        exe.root_module.linkSystemLibrary("shell32", .{});
-    } else if (builtin.target.os.tag == .linux) {
-        exe.root_module.linkSystemLibrary("GL", .{});
-        exe.root_module.linkSystemLibrary("X11", .{});
-    }
-
-    // root_module
-    exe.root_module.link_libc = true;
-    exe.root_module.link_libcpp = true;
 
     exe.subsystem = .Windows; // Hide console window
 
@@ -63,11 +50,11 @@ pub fn build(b: *std.Build) void {
     exe.step.dependOn(&install_resources.step);
 
     const resBin = [_][]const u8{ "imgui.ini", };
-
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
+
     const fonticon_dir = "../../src/libc/fonticon/fa6/";
     const res_fonticon = [_][]const u8{ "fa-solid-900.ttf", "LICENSE.txt" };
     inline for (res_fonticon) |file| {

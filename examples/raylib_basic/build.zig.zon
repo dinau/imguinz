@@ -4,10 +4,7 @@
     .fingerprint = 0x287588afb1d720b6, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
-        .raylib = .{
-            .path = "../../src/libzig/raylib",
-            .lazy = true,
-        },
+        .imguinz = .{ .path = "../../", },
     },
     .paths = .{
         "build.zig",

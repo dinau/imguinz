@@ -432,7 +432,7 @@ https://github.com/libsdl-org/SDL/releases
 
 
 
-Notes:
+Notes: 
 
 - Using ImPlot3D / ImPlot with Zig
 - Zig + ImGui + ImPlot3D / ImPlot demo
@@ -441,3 +441,10 @@ Notes:
 - This project builds and runs Dear ImGui + ImPlot3D / ImPlot / Raylib / rlImGui using Zig.
 - ImPlot3D is compiled from source (implot3d.h / implot3d.cpp)
 - ImPlot is compiled from source (implot.h / implot.cpp)
+
+
+
+
+[^developer_mode]
+[^developer_mode]: Windows11  
+[Settings] - [Privacy & Security] - [For developers] - [Developer Mode]: [ON]

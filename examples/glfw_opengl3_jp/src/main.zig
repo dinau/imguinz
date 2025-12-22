@@ -1,15 +1,13 @@
-const ig = @import("cimgui");
-const glfw = @import("glfw");
-const stf = @import("setupfont");
-const app = @import("appimgui");
-const ifa = @import("fonticon");
 const builtin = @import("builtin");
+const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 //-----------
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
     var showDemoWindow = true;
@@ -25,11 +23,11 @@ pub fn gui_main(window: *app.Window) void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -47,24 +45,24 @@ pub fn gui_main(window: *app.Window) void {
         {
             _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.igEnd();
-            ig.igText("%s",ifa.ICON_FA_COMMENT ++ " GLFW v");
+            ig.igText("%s", ifa.ICON_FA_COMMENT ++ " GLFW v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",glfw.glfwGetVersionString());
-            ig.igText("%s",ifa.ICON_FA_COMMENT ++ " OpenGL v");
+            ig.igText("%s", app.glfw.glfwGetVersionString());
+            ig.igText("%s", ifa.ICON_FA_COMMENT ++ " OpenGL v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",glfw.glGetString(glfw.GL_VERSION));
-            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
+            ig.igText("%s", app.glfw.glGetString(app.glfw.GL_VERSION));
+            ig.igText("%s", ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",ig.igGetVersion());
-            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
+            ig.igText("%s", ig.igGetVersion());
+            ig.igText("%s", ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",builtin.zig_version_string);
+            ig.igText("%s", builtin.zig_version_string);
 
             ig.igSpacing();
             _ = ig.igInputTextWithHint("テキスト入力", "ここに入力", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-            ig.igText("%s","入力結果:");
+            ig.igText("%s", "入力結果:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",&sTextInuputBuf);
+            ig.igText("%s", &sTextInuputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("デモ・ウインドウ", &showDemoWindow);
@@ -72,16 +70,16 @@ pub fn gui_main(window: *app.Window) void {
             _ = ig.igSliderFloat("浮動小数", &fval, 0.0, 1.0, "%.3f", 0);
             _ = ig.igColorEdit3("背景色 変更", &clearColor, 0);
 
-            if (ig.igButton("Button", .{.x = 0, .y = 0})) counter += 1;
+            if (ig.igButton("Button", .{ .x = 0, .y = 0 })) counter += 1;
             ig.igSameLine(0, -1.0);
             ig.igText("カウンタ = %d", counter);
             ig.igText("画面更新レート %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
             // Show icon fonts
             ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " アイコン・フォントテスト");
-            ig.igText("%s",ifa.ICON_FA_TRASH_CAN ++ " ゴミ箱");
+            ig.igText("%s", ifa.ICON_FA_TRASH_CAN ++ " ゴミ箱");
 
             ig.igSpacing();
-            ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++
+            ig.igText("%s", ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++
                 " " ++ ifa.ICON_FA_POWER_OFF ++
                 " " ++ ifa.ICON_FA_MICROPHONE ++
                 " " ++ ifa.ICON_FA_MICROCHIP ++

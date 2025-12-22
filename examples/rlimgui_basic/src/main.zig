@@ -4,11 +4,11 @@
 //      This program is under ./LICENSE.raylib.txt.
 //
 const std = @import("std");
-const ig = @import("cimgui");
-const stf = @import("setupfont");
-const ifa = @import("fonticon");
-const rl = @import("raylib");
-const rlig = @import("rlimgui");
+const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
+const rl  = @import("raylib");
+const rlig    = @import("rlimgui");
 const builtin = @import("builtin");
 
 const MainWinWidth: i32 = 900;
@@ -61,7 +61,7 @@ pub fn gui_main() !void {
 
     rl.SetTargetFPS(60);                                                             // Set our game to run at 60 frames-per-second
     rlig.rlImGuiSetup(true);
-    const font = stf.setupFonts();                                                                // Setup CJK fonts and Icon fonts
+    const font = app.stf.setupFonts();                                                                // Setup CJK fonts and Icon fonts
 
     var mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
     var buf: [100]u8 = undefined;

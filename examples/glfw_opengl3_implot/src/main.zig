@@ -1,13 +1,10 @@
-const ig = @import("cimgui");
 const ip = @import("implot");
 const ipz = @import("zimplot.zig");
-const ifa = @import("fonticon");
 const app = @import("appimgui");
-const stf = @import("setupfont");
+const ig  = app.ig;
+const ifa = app.ifa;
+const c   = app.clib;
 
-pub const c = @cImport({
-    @cInclude("stdlib.h");
-});
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
@@ -18,7 +15,7 @@ const MainWinHeight: i32 = 900;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const imPlotContext = ip.ImPlot_CreateContext();
     defer ip.ImPlot_DestroyContext(imPlotContext);
@@ -29,13 +26,6 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
     var showImPlotDemoWindow = true;
     var showImPlotTestWindow = true;
-
-    //------------------------
-    // Select Dear ImGui style
-    //------------------------
-    ig.igStyleColorsClassic(null);
-    //ig.igStyleColorsDark (null);
-    //ig.igStyleColorsLight (null);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -154,7 +144,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
     defer window.destroyImGui();
 
-    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
+    _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

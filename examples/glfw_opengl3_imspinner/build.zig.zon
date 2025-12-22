@@ -3,23 +3,7 @@
     .version = "0.0.1",
     .fingerprint = 0x3d224367e8e3a9ff , // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
-    .dependencies = .{
-        .appimgui  =  .{
-            .path = "../../src/libzig/appimgui"
-        },
-        .cimgui  =  .{
-            .path = "../../src/libzig/cimgui"
-        },
-        .imspinner =  .{
-            .path = "../../src/libzig/imspinner"
-        },
-        .fonticon =  .{
-            .path = "../../src/libzig/fonticon"
-        },
-        .setupfont = .{
-            .path = "../../src/libzig/setupfont"
-        },
-    },
+    .dependencies = .{ .imguinz  =  .{ .path = "../../" }, },
     .paths = .{
         "build.zig",
         "build.zig.zon",

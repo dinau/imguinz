@@ -1,25 +1,9 @@
 .{
     .name = .app_glfw_opegl3,
     .version = "0.0.1",
-    .fingerprint =0xebafcb8547c4927f , // Changing this has security and trust implications.
+    .fingerprint = 0xebafcb8547c4927f, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
-    .dependencies = .{
-        .appimgui  =  .{
-            .path = "../../src/libzig/appimgui"
-        },
-        .cimgui  =  .{
-            .path = "../../src/libzig/cimgui"
-        },
-        .fonticon =  .{
-            .path = "../../src/libzig/fonticon"
-        },
-        .glfw = .{
-            .path = "../../src/libzig/glfw"
-        },
-        .setupfont = .{
-            .path = "../../src/libzig/setupfont"
-        },
-    },
+    .dependencies = .{ .imguinz  =  .{ .path = "../../" }, },
     .paths = .{
         "build.zig",
         "build.zig.zon",

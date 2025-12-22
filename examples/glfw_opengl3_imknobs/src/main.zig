@@ -1,8 +1,6 @@
-const ig = @import("cimgui");
-const ifa = @import("fonticon");
-const stf = @import("setupfont");
-const utils = @import("utils");
 const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 const knobs = @import("imknobs");
 
@@ -13,7 +11,7 @@ const MainWinHeight:i32 = 900;
 // gui_main()
 //-----------
 pub fn gui_main (window: *app.Window) void {
-  _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+  _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
   //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -66,9 +64,9 @@ pub fn gui_main (window: *app.Window) void {
       ig.igSameLine (0, -1.0);
 
       // Custom colors
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  utils.vec4(255.0, 0,     0, 0.7));
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, utils.vec4(255.0, 0,     0, 1));
-      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        utils.vec4(0,     255.0, 0, 1));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive,  app.utils.vec4(255.0, 0,     0, 0.7));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, app.utils.vec4(255.0, 0,     0, 1));
+      ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button,        app.utils.vec4(0,     255.0, 0, 1));
       // Push/PopStyleColor() for each colors used (namely ImGuiCol_ButtonActive and ImGuiCol_ButtonHovered for primary and ImGuiCol_Framebg for Track)
       if (knobs.IgKnobFloat("Pitch", &st.val3, -6.0, 6.0, 0.1, "%.1f", knobs.IgKnobVariant_WiperOnly, 0, 0, 10, -1, -1)) {
         window.ini.window.colBGz = (st.val3 + 6.0 ) / 12.0;

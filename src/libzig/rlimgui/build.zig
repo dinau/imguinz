@@ -40,14 +40,4 @@ pub fn build(b: *std.Build) void {
         },
         });
     mod.addImport(mod_name, mod);
-
-    const lib = b.addLibrary(.{
-        .linkage = .static,
-        .name = mod_name,
-        .root_module = mod,
-    });
-    lib.linkLibCpp();
-
-    b.installArtifact(lib);
-    //    std.debug.print("{s} module\n",.{mod_name});
 }

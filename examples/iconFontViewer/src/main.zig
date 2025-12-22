@@ -1,10 +1,7 @@
 const std = @import("std");
-const ig = @import("cimgui");
-const glfw = @import("glfw");
-const ifa = @import("fonticon");
-const utils = @import("utils");
-const stf = @import("setupfont");
 const app = @import("appimgui");
+const ig  = app.ig;
+const ifa = app.ifa;
 
 const ift = @import("./iconFontsTblDef.zig");
 
@@ -15,17 +12,17 @@ const MainWinHeight: i32 = 800;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) !void {
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
 
     var item_current: usize = 0;
     var showIconFontsViewerWindow = true;
-    const DefaultButtonSize = utils.vec2(0, 0);
+    const DefaultButtonSize = app.utils.vec2(0, 0);
     var wsZoom:f32 = 45;
 
-    var listBoxTextureID: glfw.GLuint = 0; //# Must be == 0 at first
-    defer glfw.glDeleteTextures(1, &listBoxTextureID);
+    var listBoxTextureID: app.glfw.GLuint = 0; //# Must be == 0 at first
+    defer app.glfw.glDeleteTextures(1, &listBoxTextureID);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -67,7 +64,7 @@ pub fn gui_main(window: *app.Window) !void {
                 _ = it.next().?;
                 ig.igSetClipboardText(it.next().?.ptr);
             }
-            utils.setTooltip("Clipboard", ig.ImGuiHoveredFlags_DelayNone); //# Show tooltip help
+            app.utils.setTooltip("Clipboard", ig.ImGuiHoveredFlags_DelayNone); //# Show tooltip help
             //# Show ListBox header
             ig.igSetNextItemWidth(listBoxWidth);
             _ = ig.igInputText("##ipttxt1", sBuf[0..], sBuf.len, ig.ImGuiTextFlags_None, null, null);
@@ -83,7 +80,7 @@ pub fn gui_main(window: *app.Window) !void {
             // # Show magnifying glass (Zooming in Toolchip)
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 if ((pio.*.MousePos.x - listBoxPosTop.x) < 50) {
-                    utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, true);
+                    app.utils.zoomGlass(&listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, true);
                 }
             }
         }
@@ -105,7 +102,7 @@ pub fn gui_main(window: *app.Window) !void {
 
             const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
             const text_base_height = ig.igGetTextLineHeightWithSpacing();
-            const outer_size = utils.vec2(0.0, text_base_height * 8);
+            const outer_size = app.utils.vec2(0.0, text_base_height * 8);
             const col = 10;
             {
                 _ = ig.igBeginTable("table_scrolly", col, flags, outer_size, 0);
@@ -125,7 +122,7 @@ pub fn gui_main(window: *app.Window) !void {
                         //}
                         ig.igPopFont();
                         const iconFontLabel = std.mem.span(ift.iconFontsTbl2[ix][1]);
-                        utils.setTooltipEx(iconFontLabel, ig.ImGuiHoveredFlags_DelayNone, utils.vec4(0.0, 1.0, 0.0, 1.0));
+                        app.utils.setTooltipEx(iconFontLabel, ig.ImGuiHoveredFlags_DelayNone, app.utils.vec4(0.0, 1.0, 0.0, 1.0));
                         //ig.igSetWindowFontScale(wsNormal);
                         //
                         ig.igPushID_Int(@intCast(ix));
@@ -153,7 +150,7 @@ pub fn gui_main(window: *app.Window) !void {
                 //}
             }
             //filterAry = {}
-            utils.setTooltip("Copied first line to clipboard !", ig.ImGuiHoveredFlags_DelayNone); //-- Show tooltip help
+            app.utils.setTooltip("Copied first line to clipboard !", ig.ImGuiHoveredFlags_DelayNone); //-- Show tooltip help
             ig.igSameLine(0, -1.0);
             const filter = ig.ImGuiTextFilter_ImGuiTextFilter("");
             _ = ig.ImGuiTextFilter_Draw(filter, "Filter", 0.0);

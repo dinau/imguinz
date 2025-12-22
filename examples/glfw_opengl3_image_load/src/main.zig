@@ -1,10 +1,6 @@
 const std = @import("std");
-const ig = @import("cimgui");
-const glfw = @import("glfw");
-const ifa = @import("fonticon");
-const utils = @import("utils");
-const stf = @import("setupfont");
 const app = @import("appimgui");
+const ig = app.ig;
 
 const TImgFormat = struct {
     kind: [:0]const u8,
@@ -35,18 +31,18 @@ pub fn gui_main(window: *app.Window) !void {
     // Load image
     //------------
     const ImageName = "./resources/himeji-400.jpg";
-    var textureId: glfw.GLuint = undefined;
-    defer glfw.glDeleteTextures(1, &textureId);
+    var textureId: app.glfw.GLuint = undefined;
+    defer app.glfw.glDeleteTextures(1, &textureId);
     var textureWidth: c_int = 0;
     var textureHeight: c_int = 0;
-    _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
+    _ = app.utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    _ = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
-    const sz = utils.vec2(0, 0);
+    const sz = app.utils.vec2(0, 0);
 
-    var zoomTextureID: glfw.GLuint = 0; //# Must be == 0 at first
-    defer glfw.glDeleteTextures(1, &zoomTextureID);
+    var zoomTextureID: app.glfw.GLuint = 0; //# Must be == 0 at first
+    defer app.glfw.glDeleteTextures(1, &zoomTextureID);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -76,7 +72,7 @@ pub fn gui_main(window: *app.Window) !void {
         // Show main window
         //------------------
         {
-            _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
+            _ = ig.igBegin(app.ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.igEnd();
 
             _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
@@ -88,10 +84,10 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);
             // Save button for capturing window image
             ig.igPushID_Int(0);
-            ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button, utils.vec4(0.7, 0.7, 0.0, 1.0));
-            ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, utils.vec4(0.8, 0.8, 0.0, 1.0));
-            ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive, utils.vec4(0.9, 0.9, 0.0, 1.0));
-            ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text, utils.vec4(0.0, 0.0, 0.0, 1.0));
+            ig.igPushStyleColor_Vec4(ig.ImGuiCol_Button, app.utils.vec4(0.7, 0.7, 0.0, 1.0));
+            ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonHovered, app.utils.vec4(0.8, 0.8, 0.0, 1.0));
+            ig.igPushStyleColor_Vec4(ig.ImGuiCol_ButtonActive, app.utils.vec4(0.9, 0.9, 0.0, 1.0));
+            ig.igPushStyleColor_Vec4(ig.ImGuiCol_Text, app.utils.vec4(0.0, 0.0, 0.0, 1.0));
 
             // Image save button
             const imageExt = ImgFormatTbl[cbItemIndex].ext;
@@ -102,15 +98,15 @@ pub fn gui_main(window: *app.Window) !void {
                 const wkSize = ig.igGetMainViewport().*.WorkSize;
                 const sx: c_int = @intFromFloat(wkSize.x);
                 const sy: c_int = @intFromFloat(wkSize.y);
-                utils.saveImage(slszName.ptr, 0, 0, sx, sy, 3, 90); // # --- Save Image !
+                app.utils.saveImage(slszName.ptr, 0, 0, sx, sy, 3, 90); // # --- Save Image !
             }
             ig.igPopStyleColor(4);
             ig.igPopID();
 
             // Show tooltip help
             const slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
-            const green = utils.vec4(0.0, 1.0, 0.0, 1.0);
-            utils.setTooltipEx(slszBuf, ig.ImGuiHoveredFlags_DelayNone, green);
+            const green = app.utils.vec4(0.0, 1.0, 0.0, 1.0);
+            app.utils.setTooltipEx(slszBuf, ig.ImGuiHoveredFlags_DelayNone, green);
             counter += 1;
 
             ig.igSameLine(0, -1.0);
@@ -128,15 +124,15 @@ pub fn gui_main(window: *app.Window) !void {
                 }
                 ig.igEndCombo();
             }
-            const yellow = utils.vec4(1.0, 1.0, 0.0, 1.0);
-            utils.setTooltipEx("Select image format", ig.ImGuiHoveredFlags_DelayNone, yellow);
+            const yellow = app.utils.vec4(1.0, 1.0, 0.0, 1.0);
+            app.utils.setTooltipEx("Select image format", ig.ImGuiHoveredFlags_DelayNone, yellow);
 
             // Show icon fonts
-            ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " Icon font test ");
-            ig.igText("%s",ifa.ICON_FA_TRASH_CAN ++ " Trash");
+            ig.igSeparatorText(app.ifa.ICON_FA_WRENCH ++ " Icon font test ");
+            ig.igText("%s",app.ifa.ICON_FA_TRASH_CAN ++ " Trash");
 
             ig.igSpacing();
-            ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ ifa.ICON_FA_POWER_OFF ++ " " ++ ifa.ICON_FA_MICROPHONE ++ " " ++ ifa.ICON_FA_MICROCHIP ++ " " ++ ifa.ICON_FA_VOLUME_HIGH ++ " " ++ ifa.ICON_FA_SCISSORS ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ ifa.ICON_FA_BLOG);
+            ig.igText("%s",app.ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ app.ifa.ICON_FA_POWER_OFF ++ " " ++ app.ifa.ICON_FA_MICROPHONE ++ " " ++ app.ifa.ICON_FA_MICROCHIP ++ " " ++ app.ifa.ICON_FA_VOLUME_HIGH ++ " " ++ app.ifa.ICON_FA_SCISSORS ++ " " ++ app.ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ app.ifa.ICON_FA_BLOG);
         } // end main window
 
         //------------------------
@@ -148,15 +144,15 @@ pub fn gui_main(window: *app.Window) !void {
             var imageBoxPosTop: ig.ImVec2 = undefined;
             var imageBoxPosEnd: ig.ImVec2 = undefined;
             // Load image
-            const size = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight) );
-            const uv0 = utils.vec2(0, 0);
-            const uv1 = utils.vec2(1, 1);
+            const size = app.utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight) );
+            const uv0  = app.utils.vec2(0, 0);
+            const uv1  = app.utils.vec2(1, 1);
             ig.igGetCursorScreenPos(&imageBoxPosTop); // # Get absolute pos.
 
             ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
             ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-                utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
+                app.utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }
         }
         // Rendering
