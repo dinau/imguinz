@@ -2,6 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [ImGuinZ](#imguinz)
+  - [Zig fetch](#zig-fetch)
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
@@ -70,6 +71,114 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
+
+### Zig fetch 
+
+---
+
+1. Zig fetch `imguinz`
+
+   ```sh
+   mkdir myapp
+   cd myapp
+   zig init
+   
+   zig fetch --save git+https://github.com/dinau/imguinz
+   ```
+
+1. Edit build.zig  
+   Add dependencies to `build.zig`
+
+   ```zig
+   const imguinz = b.dependency("imguinz", .{});
+   const dependencies = .{
+       "appimgui",
+       "imspinner",
+    // "another_lib",
+   };
+   inline for (dependencies) |dep_name| {
+       const dep = imguinz.builder.dependency(dep_name, .{
+           .target = target, 
+           .optimize = optimize, 
+       });
+       exe.root_module.addImport(dep_name, dep.module(dep_name));
+   }
+   exe.subsystem = .Windows; // Hide console window
+   ```
+
+   You can set `dependencies` (additional libraries), see [imguinz/build.zig.zon](https://github.com/dinau/imguinz/blob/main/build.zig.zon)
+
+   ```zig
+   "appimgui"     <- Simple app framework for GLFW and OpenGL backend
+   "imspinner"    <- ImSpinner
+   "imguizmo"     <- ImGuizmo
+   "imknobs"      <- ImKnobs 
+   "imnodes"      <- ImNodes
+   "implot"       <- ImPlots
+   "implot3d"     <- ImPlot3D
+   "imtoggle"     <- ImToggle
+   "raylib"       <- Raylib
+   "rlimgui"      <- rlImgui
+   ... snip  ...
+   ```
+
+1. Edit src/main.zig
+
+   ```zig
+   const app = @import("appimgui");
+   const ig = app.ig;
+   const spinner = @import("imspinner");
+   const knobs = @import("imknobs");
+   
+   // gui_main()
+   pub fn gui_main(window: *app.Window) void {
+       window.eventLoadStandard();
+       _ = app.stf.setupFonts();
+   
+       var val2: f32 = 0;
+       while (!window.shouldClose()) { // main loop
+           window.pollEvents();
+           if (window.isIconified()) { // Iconify sleep
+               continue;
+           }
+           window.frame(); // Start ImGui frame
+   
+           ig.igShowDemoWindow(null); // Show demo window
+   
+           _ = ig.igBegin("Spinner", null, 0); // Show Spinner window
+           spinner.SpinnerAtom("atom", 16, 2);
+           ig.igSameLine(0.0, -1.0);
+           if (knobs.IgKnobFloat("Mix", &val2, -1.0, 1.0, 0.1, "%.1f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+               //window.ini.window.colBGy = (val2 + 1) / 2;
+           }
+           ig.igEnd();
+   
+           window.render(); // render
+       } // end while loop
+   }
+   
+   pub fn main() !void {
+       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig lang.");
+       defer window.destroyImGui();
+   
+       _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
+   
+       gui_main(&window); // GUI main proc
+   }
+   ```
+
+1. Build and run
+  
+   ```sh
+   pwd
+   myapp
+
+   zig build
+   cd zig-out/bin
+   ./myapp.exe
+   ```
+   
+   ![myapp.png](img/myapp.png)
 
 ### Prerequisites
 
