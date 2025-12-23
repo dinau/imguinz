@@ -55,8 +55,8 @@ pub fn build(b: *std.Build) void {
     });
 
     switch (builtin.target.os.tag) {
-        .windows => lib.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylibdll.a" }))),
-        .linux   => lib.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.so.550" }))),
+        .windows => lib.root_module.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylibdll.a" }))),
+        .linux   => lib.root_module.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.so.550" }))),
         else => {},
     }
 }

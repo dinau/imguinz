@@ -30,9 +30,7 @@ gen:
 clean: cleanall
 
 cleanall:
-	@-rm -fr zig-out
-	@-rm -fr zig-cache
-	@-rm -fr .zig-cache
+	@-rm -fr zig-out .zig-cache
 
 cleanexe:
 	@-rm -fr zig-out

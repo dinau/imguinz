@@ -94,6 +94,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    const dependencies = .{
        "appimgui",
        "imspinner",
+       "imknobs",
     // "another_lib",
    };
    inline for (dependencies) |dep_name| {
@@ -133,7 +134,6 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    // gui_main()
    pub fn gui_main(window: *app.Window) void {
        window.eventLoadStandard();
-       _ = app.stf.setupFonts();
    
        var val2: f32 = 0;
        while (!window.shouldClose()) { // main loop
