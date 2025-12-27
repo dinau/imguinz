@@ -19,6 +19,8 @@ run: all
 	(cd $(ZIG_BIN_DIR); $(LOCAL_LIB_PATH) ./$(TARGET)$(EXE))
 ifneq ($(COPY_IMGUI_INI),false)
 	@-cp $(ZIG_BIN_DIR)/imgui.ini .
+endif
+ifneq ($(COPY_TARGET_INI),false)
 	@-cp $(ZIG_BIN_DIR)/$(TARGET).ini .
 endif
 	$(AFTER_RUN_CMD)
@@ -59,8 +61,7 @@ dupx:
 	upx -d $(TARGET_EXE)
 
 fmt:
-	zig fmt src/main.zig
-	zig fmt build.zig
-	zig fmt build.zig.zon
+	zig fmt src/
+	zig fmt build.zig build.zig.zon
 
 pretty: fmt

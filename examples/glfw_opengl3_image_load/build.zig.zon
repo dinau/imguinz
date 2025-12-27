@@ -1,10 +1,10 @@
 .{
-    .name = .app_glfw_opegl3_image_load,
+    .name = .app_glfw_opegl3,
     .version = "0.0.1",
-    .fingerprint = 0xd739e67a93b844f7, // Changing this has security and trust implications.
+    .fingerprint = 0xebafcb8547c4927f, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
-        .imguinz  =  .{ .path = "../../" },
+        .imguinz = .{ .path = "../../" },
     },
     .paths = .{
         "build.zig",

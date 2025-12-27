@@ -1,0 +1,7 @@
+.{
+    .name = .win32_dx11,
+    .version = "0.0.1",
+    .minimum_zig_version = "0.15.2",
+    .paths = .{""},
+    .fingerprint = 0xd1e16ca64491ae45,
+}

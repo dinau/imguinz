@@ -18,6 +18,7 @@
         .impl_opengl3      = .{ .path = "src/libzig/impl_opengl3" },
         .impl_sdl3         = .{ .path = "src/libzig/impl_sdl3" },
         .impl_sdlgpu3      = .{ .path = "src/libzig/impl_sdlgpu3" },
+        .impl_win32        = .{ .path = "src/libzig/impl_win32" },
         .implot            = .{ .path = "src/libzig/implot" },
         .implot3d          = .{ .path = "src/libzig/implot3d" },
         .imspinner         = .{ .path = "src/libzig/imspinner" },

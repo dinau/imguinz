@@ -35,9 +35,6 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
-    // See. https://github.com/ziglang/zig/pull/22587
-
     exe.subsystem = .Windows; // Hide console window
 
     b.installArtifact(exe);

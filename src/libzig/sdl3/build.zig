@@ -19,10 +19,10 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-
     step.defineCMacro("SDL_ENABLE_OLD_NAMES", "");
     step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
     step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
+
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
 }

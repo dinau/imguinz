@@ -18,14 +18,12 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimspinner"));
+    step.addIncludePath(b.path("../../libc/imspinner"));
 
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
-
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
 
@@ -166,12 +164,9 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("SPINNER_ROTATESEGMENTSPULSAR", "");
     mod.addCMacro("SPINNER_SPLINEANG", "");
 
-    // macro
-    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");  // needs this line for imspinner
-
     mod.addCSourceFiles(.{
         .files = &.{
-        "../../libc/cimspinner/cimspinner.cpp",
+        "../../libc/imspinner/cimspinner.cpp",
         },
     });
 }

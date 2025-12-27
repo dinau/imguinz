@@ -8,7 +8,7 @@
 #include "stb_image_write.h"
 
 int even(int x) {
-  return ((x / 2) * 2);
+  return (x < 1) ? 0 : (x / 2) * 2;
 }
 
 //#-------------

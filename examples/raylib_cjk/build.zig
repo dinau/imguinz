@@ -24,7 +24,6 @@ pub fn build(b: *std.Build) void {
 
     const imguinz = b.dependency("imguinz", .{});
     const dependencies = .{
-        "raylib",
         // "another_lib",
     };
     inline for (dependencies) |dep_name| {
@@ -46,20 +45,25 @@ pub fn build(b: *std.Build) void {
     });
     exe.step.dependOn(&install_resources.step);
 
+    const raylib_dep = b.dependency("raylib_zig", .{
+        .target = target,
+        .optimize = optimize,
+        //.linkage = .dynamic, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
+
+    });
+    const raylib = raylib_dep.module("raylib"); // main raylib module
+    //const raygui = raylib_dep.module("raygui"); // raygui module
+    const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
+    exe.linkLibrary(raylib_artifact);
+    exe.root_module.addImport("raylib", raylib);
+    //exe.root_module.addImport("raygui", raygui);
+
     const cjk_font_dir = "../../src/libc/notonoto_v0.0.3/";
     const cjk_font_files = [_][]const u8{ "LICENSE", "NOTONOTO-Regular.ttf", "README.md" };
     inline for (cjk_font_files) |file| {
         const res = b.addInstallFile(b.path(cjk_font_dir ++ file), "bin/resources/fonts/" ++ file);
         b.getInstallStep().dependOn(&res.step);
     }
-
-    // Copy DLL to bin/ folder
-    if (builtin.target.os.tag == .windows) {
-        const dllPath = "../../src/libc/raylib/win/lib/raylib.dll";
-        const basename = std.fs.path.basename(b.path(dllPath).getPath(b));
-        const resDll = b.addInstallFile(b.path(dllPath), b.pathJoin(&.{ "bin", basename }));
-        b.getInstallStep().dependOn(&resDll.step);
-    } else if (builtin.target.os.tag == .linux) {}
 
     // save [Executable name].ini
     const sExeIni = b.fmt("{s}.ini", .{exe_name});

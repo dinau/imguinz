@@ -1,7 +1,7 @@
 .{
-    .name = .raylib,
+    .name = .impl_win32,
     .version = "0.0.1",
-    .fingerprint = 0x13035e5ca4fc33e7, // Changing this has security and trust implications.
+    .fingerprint = 0xde37ad0b84672b9, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.2",
     .dependencies = .{},
     .paths = .{

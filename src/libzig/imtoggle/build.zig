@@ -23,14 +23,12 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimgui_toggle"));
     step.addIncludePath(b.path("../../libc/cimgui_toggle/imgui_toggle"));
+
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimgui_toggle/imgui_toggle"));
-    // macro
-    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
-
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimgui_toggle/imgui_toggle/imgui_toggle.cpp",

@@ -34,12 +34,9 @@
       - [Heatmaps](#heatmaps)
       - [Histogram2D](#histogram2d)
       - [Images](#images)
-    - [Axes Tab](#axes-tab)
-      - [LogScale](#logscale)
-    - [Subplots Tab](#subplots-tab)
-      - [Tables](#tables)
-    - [Tools Tab](#tools-tab)
-      - [DragRects](#dragrects)
+    - [Axes Tab / LogScale](#axes-tab--logscale)
+    - [Subplots Tab / Tables](#subplots-tab--tables)
+    - [Tools Tab / DragRects](#tools-tab--dragrects)
   - [Show / Hide console window](#show--hide-console-window)
   - [SDL libraries](#sdl-libraries)
     - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
@@ -61,7 +58,6 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    | ---                | :----: | :----:                                                                               |
    | OpenGL3<br>backend | YES    | YES                                                                                  |
    | SDLGPU3<br>backend | -      | [YES](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
-   | vulkan<br>backend  | WIP    | WIP                                                                                  |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -86,15 +82,15 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    zig fetch --save git+https://github.com/dinau/imguinz
    ```
 
-1. Edit build.zig  
-   Add dependencies to `build.zig`
+1. Add dependencies to `build.zig`
 
    ```zig
    const imguinz = b.dependency("imguinz", .{});
    const dependencies = .{
-       "appimgui",
-       "imspinner",
-       "imknobs",
+       "appimgui",      // Simple app framework
+       "imspinner",     // ImSpinner
+       "imknobs",       // ImKnobs
+       "imtoggle",      // ImToggle
     // "another_lib",
    };
    inline for (dependencies) |dep_name| {
@@ -115,10 +111,9 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    "imguizmo"     <- ImGuizmo
    "imknobs"      <- ImKnobs 
    "imnodes"      <- ImNodes
-   "implot"       <- ImPlots
+   "implot"       <- ImPlot
    "implot3d"     <- ImPlot3D
    "imtoggle"     <- ImToggle
-   "raylib"       <- Raylib
    "rlimgui"      <- rlImgui
    ... snip  ...
    ```
@@ -130,26 +125,28 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    const ig = app.ig;
    const spinner = @import("imspinner");
    const knobs = @import("imknobs");
+   const tgl = @import("imtoggle"); // ImToggle
    
    // gui_main()
    pub fn gui_main(window: *app.Window) void {
-       window.eventLoadStandard();
-   
-       var val2: f32 = 0;
+       var col: f32 = 1.0;
+       var fspd: bool = false;
+       var speed: f32 = 2.0;
+       var spn_col: spinner.ImColor = .{ .Value = .{ .x = col, .y = 1.0, .z = 1.0, .w = 1.0 } };
        while (!window.shouldClose()) { // main loop
            window.pollEvents();
-           if (window.isIconified()) { // Iconify sleep
-               continue;
-           }
            window.frame(); // Start ImGui frame
    
            ig.igShowDemoWindow(null); // Show demo window
-   
+                                      //
+           ig.igSetNextWindowSize(.{ .x = 0.0, .y = 0.0 }, 0); // Fit window size depending on the size of the widgets
            _ = ig.igBegin("Spinner", null, 0); // Show Spinner window
-           spinner.SpinnerAtom("atom", 16, 2);
+           spinner.SpinnerAtomEx("atom", 16, 2, spn_col, speed, 3);
            ig.igSameLine(0.0, -1.0);
-           if (knobs.IgKnobFloat("Mix", &val2, -1.0, 1.0, 0.1, "%.1f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
-               //window.ini.window.colBGy = (val2 + 1) / 2;
+           _ = tgl.Toggle("Speed", &fspd, .{ .x = 0.0, .y = 0.0 });
+           if (fspd) speed = 6.0 else speed = 2.0;
+           if (knobs.IgKnobFloat("Mix", &col, -1.0, 1.0, 0.1, "%.1f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+               spn_col.Value.x = col;
            }
            ig.igEnd();
    
@@ -161,7 +158,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
        var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig lang.");
        defer window.destroyImGui();
    
-       _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
+       _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
    
        gui_main(&window); // GUI main proc
    }
@@ -462,27 +459,21 @@ make run   # or zig build --release=fast run
 
 ![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Images.png)
 
-#### Axes Tab
+#### Axes Tab / LogScale
 
 ---
-
-##### LogScale
 
 ![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/LogScale.png)
 
-#### Subplots Tab
+#### Subplots Tab / Tables
 
 ---
-
-##### Tables 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/Tables.gif)
 
-#### Tools Tab
+#### Tools Tab / DragRects
 
 ---
-
-##### DragRects 
 
 ![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/DragRects.png)
 

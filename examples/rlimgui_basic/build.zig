@@ -25,7 +25,6 @@ pub fn build(b: *std.Build) void {
     const imguinz = b.dependency("imguinz", .{});
     const dependencies = .{
         "appimgui",
-        "raylib",
         "rlimgui",
         // "another_lib",
     };
@@ -43,6 +42,19 @@ pub fn build(b: *std.Build) void {
     exe.subsystem = .Windows; // Hide console window
 
     b.installArtifact(exe);
+
+
+    const raylib_dep = b.dependency("raylib_zig", .{
+        .target = target,
+        .optimize = optimize,
+        .linkage = .dynamic, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
+    });
+    const raylib = raylib_dep.module("raylib"); // main raylib module
+    //const raygui = raylib_dep.module("raygui"); // raygui module
+    const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
+    exe.linkLibrary(raylib_artifact);
+    exe.root_module.addImport("raylib", raylib);
+    //exe.root_module.addImport("raygui", raygui);
 
     const install_resources = b.addInstallDirectory(.{
         .source_dir = b.path("resources"),        // base: assets folder

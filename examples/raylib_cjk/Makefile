@@ -1,7 +1,6 @@
 #
 OPT += --release=fast
 #OPT += --release=small
-# Fail compilation
 #OPT += --release=safe
 
 COPY_IMGUI_INI = false

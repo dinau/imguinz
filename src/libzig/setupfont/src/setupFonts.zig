@@ -46,18 +46,19 @@ const ICON_MAX_FA: c_int = 0xf8ff;
 
 const ranges_icon_fonts = [_]ig.ImWchar{ ICON_MIN_FA, ICON_MAX_FA, 0 };
 
+var config: *ig.ImFontConfig = undefined;
+
 /// Setup fonts for ImGui
 pub fn setupFonts() ?*ig.ImFont {
     const pio = ig.igGetIO_Nil();
-    const config = ig.ImFontConfig_ImFontConfig();
     var font: ?*ig.ImFont = null;
-
+    config = ig.ImFontConfig_ImFontConfig() orelse return null;
     // Try Windows fonts
     for (WinFontNameTbl) |fontName| {
         if (getWinFontPath(&sBufFontPath, fontName)) |fontPath| {
             if (existsFile(fontPath)) {
-                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(14.5), null, null,);
-                std.debug.print("\nFound FontPath: [{s}]", .{fontPath});
+                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(14.5), config, null,);
+                std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
                 break;
             }
         }
@@ -67,8 +68,8 @@ pub fn setupFonts() ?*ig.ImFont {
     if (font == null) {
         for (LinuxFontNameTbl) |fontPath| {
             if (existsFile(fontPath)) {
-                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(13.0), null, null,);
-                std.debug.print("\nFound FontPath: [{s}]", .{fontPath});
+                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(13.0), config, null,);
+                std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
                 break;
             }
         }
@@ -76,9 +77,9 @@ pub fn setupFonts() ?*ig.ImFont {
 
     // If still not found, use default
     if (font == null) {
-        std.debug.print("\nError!: Font loading failed", .{});
-        std.debug.print("\nDefault has been set.", .{});
-        _ = ig.ImFontAtlas_AddFontDefault(pio.*.Fonts, null);
+        std.debug.print("\n==== Error!: Font loading failed\n", .{});
+        std.debug.print("\n==== Default has been set.\n", .{});
+        _ = ig.ImFontAtlas_AddFontDefault(pio.*.Fonts, config);
     }
 
     // Merge IconFont

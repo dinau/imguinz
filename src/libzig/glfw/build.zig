@@ -29,12 +29,11 @@ pub fn build(b: *std.Build) void {
         .name = mod_name,
         .root_module = mod,
     });
+
+    // Static link
     switch (builtin.target.os.tag) {
-        // Static link
-        //.windows => lib.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }))),
-        .windows => lib.root_module.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3dll.a" }))),
+        .windows => lib.root_module.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }))),
         // .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
         else => {},
     }
-    mod.linkSystemLibrary("glfw3", .{});
 }

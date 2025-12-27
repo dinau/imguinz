@@ -1,3 +1,7 @@
+compile-memo.md
+*.org
+raylibx/
+examples/win32_dx11/
 libx/
 .githubx/
 00test

@@ -19,25 +19,22 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.defineCMacro("CIMGUI_USE_GLFW", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimgui/imgui"));
+
     const mod = step.addModule(mod_name);
     mod.addImport(mod_name, mod);
-
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
     }
-
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     // macro
     mod.addCMacro("ImDrawIdx", "unsigned int");
-    //mod.addCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS", "1");
     switch (builtin.target.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),

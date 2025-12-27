@@ -1,5 +1,4 @@
-all:
-	zig build
 
-clean:
-	rm -fr zig-out .zig-cache
+OPT += --release=fast
+
+include ../makefile.common.mk

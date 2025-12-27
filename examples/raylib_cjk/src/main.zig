@@ -17,11 +17,11 @@ pub fn main() anyerror!void {
     const screenWidth = 800;
     const screenHeight = 600;
 
-    rl.SetConfigFlags(rl.FLAG_VSYNC_HINT | rl.FLAG_WINDOW_RESIZABLE); // Enable VSYNC and allow window resizing
-    rl.InitWindow(screenWidth, screenHeight, "Raylib Zig CJK Font");
-    defer rl.CloseWindow();
+    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true});              //  Enable VSYNC
+    rl.initWindow(screenWidth, screenHeight, "Raylib Zig CJK Font");
+    defer rl.closeWindow();
 
-    rl.SetTargetFPS(60);
+    rl.setTargetFPS(60);
     const charset =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ++
         "abcdefghijklmnopqrstuvwxyz" ++
@@ -29,14 +29,13 @@ pub fn main() anyerror!void {
         "Wheel:ズーム 1-5:倍率 SPACE:投影" ++
         "/." ++
         "なし";
-    var count: c_int = 0;
-    const codepoints = rl.LoadCodepoints(charset, &count);
-    defer rl.UnloadCodepoints(codepoints);
+    const codepoints = try rl.loadCodepoints(charset);
+    defer rl.unloadCodepoints(codepoints);
 
     const font_path = "resources/fonts/NOTONOTO-Regular.ttf";
-    const font = rl.LoadFontEx(font_path, 48, codepoints, count); // Load 48px font
+    const font = try rl.loadFontEx(font_path, 48, codepoints); // Load 48px font
     if (font.texture.id == 0) {
-        rl.TraceLog(rl.LOG_ERROR, "Fail !: Read font");
+        rl.traceLog(.info, "Fail !: Read font", .{});
     }
 
     // Initialize camera
@@ -45,62 +44,62 @@ pub fn main() anyerror!void {
         .target = rl.Vector3{ .x = 0.0, .y = 0.0, .z = 0.0 },
         .up = rl.Vector3{ .x = 0.0, .y = 1.0, .z = 0.0 },
         .fovy = 45.0,
-        .projection = rl.CAMERA_PERSPECTIVE,
+        .projection = .perspective,
     };
 
     // Load texture (optional)
     var texture: ?rl.Texture2D = null;
     const img_file = "./resources/z.png";
-    if (rl.FileExists(img_file)) {
-        texture = rl.LoadTexture(img_file);
+    if (rl.fileExists(img_file)) {
+        texture = try rl.loadTexture(img_file);
     }
     defer {
-        if (texture) |tex| rl.UnloadTexture(tex);
+        if (texture) |tex| rl.unloadTexture(tex);
     }
 
-    while (!rl.WindowShouldClose()) {
+    while (!rl.windowShouldClose()) {
         // Zoom operation (mouse wheel)
-        const wheel = rl.GetMouseWheelMove();
+        const wheel = rl.getMouseWheelMove();
         if (wheel != 0) {
             zoom_level *= std.math.pow(f32, 1.1, wheel * 0.2);
             setZoom(zoom_level);
         }
 
         // Number keys (zoom presets)
-        if (rl.IsKeyPressed(rl.KEY_ONE)) setZoom(1.0);
-        if (rl.IsKeyPressed(rl.KEY_TWO)) setZoom(2.0);
-        if (rl.IsKeyPressed(rl.KEY_THREE)) setZoom(3.0);
-        if (rl.IsKeyPressed(rl.KEY_FOUR)) setZoom(5.0);
-        if (rl.IsKeyPressed(rl.KEY_FIVE)) setZoom(10.0);
+        if (rl.isKeyPressed(.one)) setZoom(1.0);
+        if (rl.isKeyPressed(.two)) setZoom(2.0);
+        if (rl.isKeyPressed(.three)) setZoom(3.0);
+        if (rl.isKeyPressed(.four)) setZoom(5.0);
+        if (rl.isKeyPressed(.five)) setZoom(10.0);
 
         // Toggle projection mode
-        if (rl.IsKeyPressed(rl.KEY_SPACE)) {
-            camera.projection = if (camera.projection == rl.CAMERA_PERSPECTIVE)
-                rl.CAMERA_ORTHOGRAPHIC
+        if (rl.isKeyPressed(.space)) {
+            camera.projection = if (camera.projection == .perspective)
+                .orthographic
             else
-                rl.CAMERA_PERSPECTIVE;
+                .perspective;
         }
 
-        rl.UpdateCamera(&camera, rl.CAMERA_ORBITAL);
+        rl.updateCamera(&camera, .orbital);
 
-        rl.BeginDrawing();
-        defer rl.EndDrawing();
+        rl.beginDrawing();
+        defer rl.endDrawing();
 
-        rl.ClearBackground(background_color);
+        rl.clearBackground(background_color);
         { // Mode3D
-            rl.BeginMode3D(camera);
-            defer rl.EndMode3D();
+            rl.beginMode3D(camera);
+            defer rl.endMode3D();
 
-            rl.DrawGrid(20, 1.0);
+            rl.drawGrid(20, 1.0);
 
             // Axes (XYZ)
-            rl.DrawLine3D(rl.Vector3{ .x = -10, .y = 0, .z = 0 }, rl.Vector3{ .x = 10, .y = 0, .z = 0 }, rl.RED);
-            rl.DrawLine3D(rl.Vector3{ .x = 0, .y = -10, .z = 0 }, rl.Vector3{ .x = 0, .y = 10, .z = 0 }, rl.GREEN);
-            rl.DrawLine3D(rl.Vector3{ .x = 0, .y = 0, .z = -10 }, rl.Vector3{ .x = 0, .y = 0, .z = 10 }, rl.BLUE);
+            rl.drawLine3D(rl.Vector3{ .x = -10, .y = 0, .z = 0 }, rl.Vector3{ .x = 10, .y = 0, .z = 0 }, .red);
+            rl.drawLine3D(rl.Vector3{ .x = 0, .y = -10, .z = 0 }, rl.Vector3{ .x = 0, .y = 10, .z = 0 }, .green);
+            rl.drawLine3D(rl.Vector3{ .x = 0, .y = 0, .z = -10 }, rl.Vector3{ .x = 0, .y = 0, .z = 10 }, .blue);
 
-            // Human figure (1.7m tall)
-            rl.DrawCube(rl.Vector3{ .x = 3, .y = 0.85, .z = 0 }, 0.4, 1.7, 0.4, rl.BLUE);
-            rl.DrawCubeWires(rl.Vector3{ .x = 3, .y = 0.85, .z = 0 }, 0.4, 1.7, 0.4, rl.WHITE);
+            // human figure (1.7m tall)
+            rl.drawCube(rl.Vector3{ .x = 3, .y = 0.85, .z = 0 }, 0.4, 1.7, 0.4, .blue);
+            rl.drawCubeWires(rl.Vector3{ .x = 3, .y = 0.85, .z = 0 }, 0.4, 1.7, 0.4, .white);
 
             // Textured billboard (DrawBillboardRec ← correct approach)
             if (texture) |tex| {
@@ -117,20 +116,20 @@ pub fn main() anyerror!void {
                 };
 
                 // Billboard always facing the camera
-                rl.DrawBillboardRec(camera, tex, source, pos, rl.Vector2{ .x = w, .y = h }, rl.WHITE);
+                rl.drawBillboardRec(camera, tex, source, pos, rl.Vector2{ .x = w, .y = h }, .white);
             }
         }
 
         // UI text / explanation
-        rl.DrawTextEx(font, rl.TextFormat("Zoom: %.2f", zoom_level), rl.Vector2{ .x = 10, .y = 40 }, 20, 2, rl.BLUE);
-        rl.DrawTextEx(font, "Wheel:ズーム 1-5:倍率 SPACE:投影", rl.Vector2{ .x = 10, .y = 70 }, 20, 2, rl.WHITE);
+        rl.drawTextEx(font, rl.textFormat("Zoom: %.2f", .{zoom_level}), rl.Vector2{ .x = 10, .y = 40 }, 20, 2, .blue);
+        rl.drawTextEx(font, "Wheel:ズーム 1-5:倍率 SPACE:投影", rl.Vector2{ .x = 10, .y = 70 }, 20, 2, .white);
 
         if (texture) |tex| {
-            rl.DrawText(rl.TextFormat("Texture OK: %dx%d", tex.width, tex.height), 10, 100, 20, rl.DARKGREEN);
+            rl.drawText(rl.textFormat("Texture OK: %dx%d", .{tex.width, tex.height}), 10, 100, 20, .dark_green);
         } else {
-            rl.DrawTextEx(font, "images/mario.png なし", rl.Vector2{ .x = 10, .y = 100 }, 20, 2, rl.ORANGE);
+            rl.drawTextEx(font, "images/mario.png なし", rl.Vector2{ .x = 10, .y = 100 }, 20, 2, .orange);
         }
 
-        rl.DrawFPS(10, screenHeight - 30);
+        rl.drawFPS(10, screenHeight - 30);
     }
 }

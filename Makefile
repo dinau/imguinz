@@ -17,7 +17,8 @@ EXAMPLE_DIRS := \
 							examples/raylib_basic \
 							examples/raylib_cjk \
 							examples/rlimgui_basic\
-							examples/imPlotDemo
+							examples/imPlotDemo \
+							src/libc/win32_dx11
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
 								examples/sdl3_opengl3 \

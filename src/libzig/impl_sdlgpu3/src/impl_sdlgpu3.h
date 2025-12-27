@@ -1,4 +1,3 @@
-
 #include "cimgui.h"
 #include "cimgui_impl.h"
 #include <SDL_gpu.h>
@@ -8,11 +7,6 @@ typedef struct {
    SDL_GPUTextureFormat ColorTargetFormat;
    SDL_GPUSampleCount MSAASamples;
 } ImGui_ImplSDLGPU3_InitInfo;
-
-//#type
-//  #struct_SDL_Renderer {.incompleteStruct.} = object
-//  #SDL_Renderer = structsdlrenderer
-//  #ImDrawData*  {.incompleteStruct.} = object
 
 bool ImGui_ImplSDLGPU3_Init(ImGui_ImplSDLGPU3_InitInfo* info);
 void ImGui_ImplSDLGPU3_Shutdown();

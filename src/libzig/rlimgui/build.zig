@@ -23,7 +23,7 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/raylib/win/include"));
     step.addIncludePath(b.path("../../libc/cimgui/imgui"));
     step.defineCMacro("NO_FONT_AWESOME", "");
-    //
+
     const mod = step.addModule(mod_name);
     mod.addIncludePath(b.path("../../libc/rlimgui"));
     mod.addIncludePath(b.path("../../libc/raylib/win/include"));
