@@ -35,7 +35,7 @@ fn testDrawText() !void {
 // gui_main()
 //-----------
 pub fn gui_main() !void {
-    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true});              //  Enable VSYNC
+    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true, .window_hidden = true});              //  Enable VSYNC
     rl.initWindow(MainWinWidth, MainWinHeight, "Zig: Dear ImGui + Raylib + rlImGui");
     defer rl.closeWindow();
 
@@ -70,6 +70,8 @@ pub fn gui_main() !void {
 
     var mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
     const pio = ig.igGetIO_Nil();
+
+    var delayShowWindow: i32 = 1;
 
     //---------------
     // main loop GUI
@@ -126,6 +128,13 @@ pub fn gui_main() !void {
             rl.drawText(str, 10, 10, 20, .gray);
 
             rl.drawText("ImGui + Raylib + rlImGui", 50, 250, 20, .ray_white);
+        }
+
+        if (delayShowWindow == 0) {
+            rl.clearWindowState(rl.ConfigFlags { .window_hidden = true });
+        }
+        if (delayShowWindow >= 0) {
+            delayShowWindow -= 1;
         }
     } // end while loop
 }

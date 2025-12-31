@@ -17,7 +17,7 @@ pub fn main() anyerror!void {
     const screenWidth = 800;
     const screenHeight = 600;
 
-    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true});              //  Enable VSYNC
+    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true, .window_hidden = true});              //  Enable VSYNC
     rl.initWindow(screenWidth, screenHeight, "Raylib Zig CJK Font");
     defer rl.closeWindow();
 
@@ -60,6 +60,8 @@ pub fn main() anyerror!void {
     defer {
         if (texture) |tex| rl.unloadTexture(tex);
     }
+
+    var delayShowWindow: i32 = 1;
 
     while (!rl.windowShouldClose()) {
         // Zoom operation (mouse wheel)
@@ -135,5 +137,12 @@ pub fn main() anyerror!void {
         }
 
         rl.drawFPS(10, screenHeight - 30);
+
+        if (delayShowWindow == 0) {
+            rl.clearWindowState(rl.ConfigFlags { .window_hidden = true });
+        }
+        if (delayShowWindow >= 0) {
+            delayShowWindow -= 1;
+        }
     }
 }

@@ -32,7 +32,7 @@ fn testDrawText() !void {
 // main()
 //--------
 pub fn main() !void {
-    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true});              //  Enable VSYNC
+    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true, .window_hidden = true});              //  Enable VSYNC
     rl.initWindow(MainWinWidth, MainWinHeight, "raylib [core] example - basic window");
     defer rl.closeWindow();                                                          // Close window and OpenGL context
 
@@ -66,6 +66,8 @@ pub fn main() !void {
 
     const mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
 
+    var delayShowWindow: i32 = 1;
+
     while (!rl.windowShouldClose()) {
         // Update
         rl.updateCamera(&camera, .orbital);                                          // Set an orbital camera mode
@@ -94,6 +96,13 @@ pub fn main() !void {
             rl.drawText(str, 10, 10, 20, .gray);
 
             rl.drawText("Raylib with Zig", 50, 250, 20, .ray_white);
+        }
+
+        if (delayShowWindow == 0) {
+            rl.clearWindowState(rl.ConfigFlags { .window_hidden = true });
+        }
+        if (delayShowWindow >= 0) {
+            delayShowWindow -= 1;
         }
     } // while end
 }
