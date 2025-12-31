@@ -5,10 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const allocator = b.allocator;
-    const current_dir_abs = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(current_dir_abs);
-    const mod_name = std.fs.path.basename(current_dir_abs);
+    const mod_name = "imcolortextedit";
 
     // -------
     // module
@@ -41,4 +38,11 @@ pub fn build(b: *std.Build) void {
             "../../libc/cimCTE/ImGuiColorTextEdit/UnitTests.cpp",
         },
     });
+
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = mod_name,
+        .root_module = mod,
+    });
+    b.installArtifact(lib);
 }

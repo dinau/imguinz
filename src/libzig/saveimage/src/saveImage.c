@@ -3,8 +3,10 @@
 //#     https://npal-shared.hatenablog.com/entry/20121107/1352284053
 #include "saveImage.h"
 
-#define STB_IMAGE_STATIC
-#define STB_IMAGE_WRITE_IMPLEMENTATION
+//#define STB_IMAGE_STATIC
+#if !defined(STB_IMAGE_WRITE_IMPLEMENTATION)
+#     define STB_IMAGE_WRITE_IMPLEMENTATION
+#endif
 #include "stb_image_write.h"
 
 int even(int x) {

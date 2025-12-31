@@ -1,5 +1,5 @@
 #
-#OPT += --release=fast
+OPT += --release=fast
 #OPT += --release=small
 #OPT += --release=safe
 

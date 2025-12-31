@@ -13,11 +13,11 @@ pub fn zoomGlass(pTextureId: *u32, itemWidth: i32, itemPosTop: ig.ImVec2, itemPo
         const my_tex_w: f32 = @floatFromInt(itemWidth);
         const my_tex_h: f32 = @floatFromInt(itemHeight);
         //const wkSize = ig.igGetMainViewport().*.WorkSize;
-        if (capture){
-        //    img_ld.LoadTextureFromMemory(pTextureId //# TextureID
-        //        , @intFromFloat(itemPosTop.x) //# x start pos
-        //        , @intFromFloat(wkSize.y - itemPosEnd.y) //# y start pos
-        //        , itemWidth, itemHeight); //# Image width and height must be 2^n.
+        if (capture) {
+            //    img_ld.LoadTextureFromMemory(pTextureId //# TextureID
+            //        , @intFromFloat(itemPosTop.x) //# x start pos
+            //        , @intFromFloat(wkSize.y - itemPosEnd.y) //# y start pos
+            //        , itemWidth, itemHeight); //# Image width and height must be 2^n.
         }
         //#igText("lbp: (%.2f, %.2f)", pio.MousePos.x, pio.MousePos.y)
         const pio = ig.igGetIO_Nil();
@@ -38,6 +38,6 @@ pub fn zoomGlass(pTextureId: *u32, itemWidth: i32, itemPosTop: ig.ImVec2, itemPo
         const uv0 = ig.ImVec2{ .x = region_x / my_tex_w, .y = region_y / my_tex_h };
         const uv1 = ig.ImVec2{ .x = (region_x + region_sz) / my_tex_w, .y = (region_y + region_sz) / my_tex_h };
         ig.igText(ifa.ICON_FA_MAGNIFYING_GLASS ++ "  4 x");
-        ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = @intFromPtr(pTextureId)}, .{ .x = region_sz * zoom, .y = region_sz * zoom }, uv0, uv1);
+        ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = @intFromPtr(pTextureId) }, .{ .x = region_sz * zoom, .y = region_sz * zoom }, uv0, uv1);
     }
 }

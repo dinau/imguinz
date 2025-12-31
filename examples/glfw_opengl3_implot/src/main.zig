@@ -3,8 +3,9 @@ const ipz = @import("zimplot.zig");
 const app = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
-const c   = app.clib;
 
+// From C standard libraries
+pub extern fn rand() c_int;
 
 const IMGUI_HAS_DOCK = false;    // Docking feature
 
@@ -76,7 +77,7 @@ fn imPlotWindow(fshow: *bool) void {
     if (st.initReq) {
         st.initReq = false;
         for (0..numx) |i| {
-            st.bar_data[i] = @mod(c.rand(), numx * numx);
+            st.bar_data[i] = @mod(rand(), numx * numx);
             st.x_data[i] = @intCast(i);
             st.y_data[i] = @intCast(i * i);
         }
@@ -107,7 +108,7 @@ fn imPlotWindow2(fshow: *bool) void {
     if (st.initReq) {
         st.initReq = false;
         for (0..numx) |i| {
-            st.bar_data[i] = @mod(c.rand(), numx * numx);
+            st.bar_data[i] = @mod(rand(), numx * numx);
             st.x_data[i] = @intCast(i);
             st.y_data[i] = @intCast(i * i);
         }

@@ -1,7 +1,7 @@
 .{
     .name = .imguizmo,
     .version = "0.0.1",
-    .fingerprint = 0x763225adfe92a424 , // Changing this has security and trust implications.
+    .fingerprint = 0x763225adfe92a424, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{

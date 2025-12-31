@@ -6,11 +6,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // Get executable name from current directory name
-    const allocator = b.allocator;
-    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(abs_path);
-    const exe_name = std.fs.path.basename(abs_path);
+    const exe_name = "sdl3_sdlgpu3";
 
     const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
@@ -40,7 +36,6 @@ pub fn build(b: *std.Build) void {
     //------
     // Libs
     //------
-    exe.root_module.linkSystemLibrary("glfw3", .{});
     if (builtin.target.os.tag == .windows) {
         exe.root_module.linkSystemLibrary("gdi32", .{});
         exe.root_module.linkSystemLibrary("imm32", .{});
@@ -88,13 +83,15 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
-        .source_dir = b.path("resources"),        // base: assets folder
-        .install_dir = .bin,                      // bin folder
-        .install_subdir = "resources",            // destination: bin/resources/
+        .source_dir = b.path("resources"), // base: assets folder
+        .install_dir = .bin, // bin folder
+        .install_subdir = "resources", // destination: bin/resources/
     });
     exe.step.dependOn(&install_resources.step);
 
-    const resBin = [_][]const u8{ "imgui.ini", };
+    const resBin = [_][]const u8{
+        "imgui.ini",
+    };
 
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);

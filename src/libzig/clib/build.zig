@@ -4,11 +4,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // Get executable name from current directory name
-    const allocator = b.allocator;
-    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(abs_path);
-    const mod_name = std.fs.path.basename(abs_path);
+    const mod_name = "clib";
 
     // clib
     const step = b.addTranslateC(.{

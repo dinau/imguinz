@@ -49,7 +49,7 @@ const ranges_icon_fonts = [_]ig.ImWchar{ ICON_MIN_FA, ICON_MAX_FA, 0 };
 var config: *ig.ImFontConfig = undefined;
 
 /// Setup fonts for ImGui
-pub fn setupFonts() ?*ig.ImFont {
+pub export  fn setupFonts() ?*ig.ImFont {
     const pio = ig.igGetIO_Nil();
     var font: ?*ig.ImFont = null;
     config = ig.ImFontConfig_ImFontConfig() orelse return null;

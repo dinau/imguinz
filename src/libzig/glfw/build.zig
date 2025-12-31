@@ -5,10 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const allocator = b.allocator;
-    const current_dir_abs = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(current_dir_abs);
-    const mod_name = std.fs.path.basename(current_dir_abs);
+    const mod_name = "glfw";
 
     const glfw_path = b.fmt("{s}", .{"../../libc/glfw/glfw-3.4.bin.WIN64"});
 
@@ -36,4 +33,6 @@ pub fn build(b: *std.Build) void {
         // .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
         else => {},
     }
+
+    b.installArtifact(lib);
 }

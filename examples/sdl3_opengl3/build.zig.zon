@@ -4,34 +4,15 @@
     .fingerprint = 0x9d14420befc33bf5, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
-        .appimgui  =  .{
-            .path = "../../src/libzig/appimgui"
-        },
-        .cimgui  =  .{
-            .path = "../../src/libzig/cimgui"
-        },
-        .fonticon =  .{
-            .path = "../../src/libzig/fonticon"
-        },
-        .glfw = .{ .path = "../../src/libzig/glfw" },
-        .impl_opengl3 =  .{
-            .path = "../../src/libzig/impl_opengl3"
-        },
-        .impl_sdl3 =  .{
-            .path = "../../src/libzig/impl_sdl3"
-        },
-        .loadimage =  .{
-            .path = "../../src/libzig/loadimage"
-        },
-        .setupfont = .{
-            .path = "../../src/libzig/setupfont"
-        },
-        .utils = .{
-            .path = "../../src/libzig/utils"
-        },
-        .sdl3 = .{
-            .path = "../../src/libzig/sdl3"
-        },
+        .appimgui = .{ .path = "../../src/libzig/appimgui" },
+        .cimgui = .{ .path = "../../src/libzig/cimgui" },
+        .fonticon = .{ .path = "../../src/libzig/fonticon" },
+        .impl_opengl3 = .{ .path = "../../src/libzig/impl_opengl3" },
+        .impl_sdl3 = .{ .path = "../../src/libzig/impl_sdl3" },
+        .loadimage = .{ .path = "../../src/libzig/loadimage" },
+        .setupfont = .{ .path = "../../src/libzig/setupfont" },
+        .utils = .{ .path = "../../src/libzig/utils" },
+        .sdl3 = .{ .path = "../../src/libzig/sdl3" },
     },
     .paths = .{
         "build.zig",

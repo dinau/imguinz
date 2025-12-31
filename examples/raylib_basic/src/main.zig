@@ -36,6 +36,10 @@ pub fn main() !void {
     rl.initWindow(MainWinWidth, MainWinHeight, "raylib [core] example - basic window");
     defer rl.closeWindow();                                                          // Close window and OpenGL context
 
+    const title_bar_icon = try rl.loadImage("./resources/z.png");
+    rl.setWindowIcon(title_bar_icon);
+    rl.unloadImage(title_bar_icon);
+
     // Define our custom camera to look into our 3d world
     var camera = rl.Camera3D{
         .position = rl.Vector3{ .x = 18, .y = 18, .z = 18 },                         // Camera position

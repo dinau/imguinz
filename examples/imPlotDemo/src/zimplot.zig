@@ -30,7 +30,7 @@ pub fn ImPlot_PlotLineXy(label: anytype, xs: anytype, ys: anytype, count: c_int)
 // ImPlot_PlotLineXyEx()
 //-------------------------------
 pub fn ImPlot_PlotLineXyEx(label: anytype, xs: anytype, ys: anytype, count: c_int, flags: c_int, offset: c_int, stride: c_int) void {
-    const typ = @TypeOf(xs[0]);
+  const typ =  @TypeOf(xs[0]);
     const tsize = @sizeOf(typ);
     _ = &tsize;
     switch (typ) {

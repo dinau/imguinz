@@ -4,9 +4,10 @@
 //      This program is under ./LICENSE.raylib.txt.
 //
 const std = @import("std");
-const app = @import("appimgui");
+const app  = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
+const stf = app.stf;
 const rl  = @import("raylib");
 const rlig    = @import("rlimgui");
 const builtin = @import("builtin");
@@ -38,6 +39,10 @@ pub fn gui_main() !void {
     rl.initWindow(MainWinWidth, MainWinHeight, "Zig: Dear ImGui + Raylib + rlImGui");
     defer rl.closeWindow();
 
+    const title_bar_icon = try rl.loadImage("./resources/z.png");
+    rl.setWindowIcon(title_bar_icon);
+    rl.unloadImage(title_bar_icon);
+
     // Define our custom camera to look into our 3d world
     var camera = rl.Camera3D{
         .position = rl.Vector3{ .x = 18, .y = 18, .z = 18 },                         // Camera position
@@ -61,7 +66,7 @@ pub fn gui_main() !void {
 
     rl.setTargetFPS(60);                                                             // Set our game to run at 60 frames-per-second
     rlig.rlImGuiSetup(true);
-    const font = app.stf.setupFonts();                                                                // Setup CJK fonts and Icon fonts
+    const font = stf.setupFonts();                                                                // Setup CJK fonts and Icon fonts
 
     var mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
     const pio = ig.igGetIO_Nil();

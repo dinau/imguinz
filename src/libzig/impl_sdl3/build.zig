@@ -5,10 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const allocator = b.allocator;
-    const current_dir_abs = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(current_dir_abs);
-    const mod_name = std.fs.path.basename(current_dir_abs);
+    const mod_name = "impl_sdl3";
 
     const sdl_path = "../../libc/sdl/SDL3/x86_64-w64-mingw32";
     // -------
@@ -20,8 +17,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-    step.defineCMacro("CIMGUI_USE_SDL3","");
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    step.defineCMacro("CIMGUI_USE_SDL3", "");
+    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
 
@@ -52,4 +49,11 @@ pub fn build(b: *std.Build) void {
             "../../libc/cimgui/imgui/backends/imgui_impl_sdl3.cpp",
         },
     });
+
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = mod_name,
+        .root_module = mod,
+    });
+    b.installArtifact(lib);
 }

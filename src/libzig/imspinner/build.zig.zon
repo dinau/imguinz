@@ -1,7 +1,7 @@
 .{
     .name = .imspinner,
     .version = "0.0.1",
-    .fingerprint =0x2096ad9822a16ab9 , // Changing this has security and trust implications.
+    .fingerprint = 0x2096ad9822a16ab9, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{

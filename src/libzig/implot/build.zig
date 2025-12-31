@@ -5,10 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const allocator = b.allocator;
-    const current_dir_abs = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(current_dir_abs);
-    const mod_name = std.fs.path.basename(current_dir_abs);
+    const mod_name = "implot";
 
     // -------
     // module
@@ -30,12 +27,19 @@ pub fn build(b: *std.Build) void {
     mod.addCMacro("ImDrawIdx", "unsigned int");
     mod.addCSourceFiles(.{
         .files = &.{
-        // ImPlot
-        "../../libc/cimplot/implot/implot.cpp",
-        "../../libc/cimplot/implot/implot_demo.cpp",
-        "../../libc/cimplot/implot/implot_items.cpp",
-        // CImPlot
-        "../../libc/cimplot/cimplot.cpp",
+            // ImPlot
+            "../../libc/cimplot/implot/implot.cpp",
+            "../../libc/cimplot/implot/implot_demo.cpp",
+            "../../libc/cimplot/implot/implot_items.cpp",
+            // CImPlot
+            "../../libc/cimplot/cimplot.cpp",
         },
     });
+
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = mod_name,
+        .root_module = mod,
+    });
+    b.installArtifact(lib);
 }

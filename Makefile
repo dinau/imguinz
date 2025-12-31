@@ -17,12 +17,13 @@ EXAMPLE_DIRS := \
 							examples/raylib_basic \
 							examples/raylib_cjk \
 							examples/rlimgui_basic\
-							examples/imPlotDemo \
-							src/libc/win32_dx11
+							examples/imPlotDemo
+
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
 								examples/sdl3_opengl3 \
-								examples/sdl3_sdlgpu3
+								examples/sdl3_sdlgpu3 \
+							  examples/win32_dx11
 endif
 
 all:
@@ -43,12 +44,15 @@ cleanall: clean cleanexe
 cleanexe:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanexe ))
 
+cleancache:
+	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleancache ))
+
 gen: copylibs
 
 #
 define def_make
 	@echo ==== Enter: $(1) ====
-	@$(MAKE) -C  $(1) $(2)
+	@-$(MAKE) -C  $(1) $(2)
 	@#$(MAKE) -C  $(1) cleancache
 
 endef

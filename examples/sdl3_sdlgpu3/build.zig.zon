@@ -7,7 +7,6 @@
         .appimgui = .{ .path = "../../src/libzig/appimgui" },
         .cimgui = .{ .path = "../../src/libzig/cimgui" },
         .fonticon = .{ .path = "../../src/libzig/fonticon" },
-        .glfw = .{ .path = "../../src/libzig/glfw" },
         .impl_sdl3 = .{ .path = "../../src/libzig/impl_sdl3" },
         .impl_sdlgpu3 = .{ .path = "../../src/libzig/impl_sdlgpu3" },
         .loadimage_sdlgpu3 = .{ .path = "../../src/libzig/loadimage_sdlgpu3" },

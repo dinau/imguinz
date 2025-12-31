@@ -1,7 +1,7 @@
 .{
     .name = .imnodes,
     .version = "0.0.1",
-    .fingerprint =0xec37382dc62226a0, // Changing this has security and trust implications.
+    .fingerprint = 0xec37382dc62226a0, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{},
     .paths = .{

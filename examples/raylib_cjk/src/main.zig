@@ -21,6 +21,10 @@ pub fn main() anyerror!void {
     rl.initWindow(screenWidth, screenHeight, "Raylib Zig CJK Font");
     defer rl.closeWindow();
 
+    const title_bar_icon = try rl.loadImage("./resources/z.png");
+    rl.setWindowIcon(title_bar_icon);
+    rl.unloadImage(title_bar_icon);
+
     rl.setTargetFPS(60);
     const charset =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ++

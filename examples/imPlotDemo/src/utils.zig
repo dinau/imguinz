@@ -1,12 +1,16 @@
 const std = @import("std");
 const math = @import("std").math;
 const app = @import("appimgui");
-const c   = app.clib;
 const ifa = app.ifa;
 const ig  = app.ig;
 const ip  = @import("implot");
 const ipz = @import("zimplot.zig");
 
+// From C standard libraries
+pub const RAND_MAX = @as(c_int, 0x7fff);
+pub extern fn rand() c_int;
+
+pub const IMPLOT_AUTO_COL =  ip.ImVec4{.x = 0, .y = 0, .z = 0, .w = -1};
 pub const IMPLOT_AUTO: f32 = -1;
 pub const INFINITY_f32 = std.math.inf(f32);
 pub const INFINITY_f64 = std.math.inf(f64);
@@ -94,7 +98,7 @@ pub const ImPlotPoint = struct {
 // Helper function to get random float between min and max.
 pub fn RandomRange(min: f32, max: f32) f32 {
     //return randomFloat(min, max);
-    return min +  @as(f32,@floatFromInt(c.rand())) * ( max - min) / (@as(f32,@floatFromInt(c.RAND_MAX)));
+    return min +  @as(f32,@floatFromInt(rand())) * ( max - min) / (@as(f32,@floatFromInt(RAND_MAX)));
 }
 
 // Returns a random color.
@@ -118,8 +122,8 @@ pub fn RandomGauss() f64 {
         var U1: f64 = 0;
         var U2: f64 = 0;
         while (true) {
-            U1 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
-            U2 =  @as(f64,@floatFromInt(c.rand())) / c.RAND_MAX;
+            U1 =  @as(f64,@floatFromInt(rand())) / RAND_MAX;
+            U2 =  @as(f64,@floatFromInt(rand())) / RAND_MAX;
             //U1 =  @as(f64, randomFloat(0.0, 1.0));
             //U2 =  @as(f64, randomFloat(0.0, 1.0));
             V1 = 2 * U1 - 1;

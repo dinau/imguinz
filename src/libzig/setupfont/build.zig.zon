@@ -5,7 +5,6 @@
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
         .cimgui = .{ .path = "../cimgui" },
-        .fonticon = .{ .path = "../fonticon" },
     },
     .paths = .{
         "build.zig",

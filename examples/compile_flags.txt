@@ -2,15 +2,25 @@
 -I../libs/sdl/sdl3/32/SDL3-2024-06-02/SDL3/include
 -I../libs/cimplot
 
--Icimgui
--Ilibs/cimgui
 -I../libs/cimgui
 -I../../libs/cimgui
+
+
+-I../src/libc/cimgui
+-I../src/libc/cimgui/backends
+-I../src/libc/cimgui/imgui
+-I../src/libc/cimgui/imgui/backends
+-I../src/libc/rlimgui
+-I../src/libc/raylib/windows/include
+-I../src/libc/raylib/linux/include
+
+-I../src/libzig/setupfont/src
+-I../src/libzig/loadicon/src
+-I../src/libc/fonticon
 
 -I../libs/cimplot/implot
 -I../libs/cimgui_toggle/
 
--I../src/libc/raylib/include
 
 
 -Wno-stringop-overflow

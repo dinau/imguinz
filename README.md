@@ -54,10 +54,11 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
-   |                    | GLFW   | SDL3                                                                                 |
-   | ---                | :----: | :----:                                                                               |
-   | OpenGL3<br>backend | YES    | YES                                                                                  |
-   | SDLGPU3<br>backend | -      | [YES](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) |
+   |                       | GLFW   | SDL3                                                                                 | Win32  |
+   | ---                   | :----: | :----:                                                                               | :----:
+   | OpenGL3<br>backend    | YES    | YES                                                                                  | -
+   | SDLGPU3<br>backend    | -      | [YES](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) | -
+   | DirectX 11<br>backend | -      | -                                                                                    | YES
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -170,9 +171,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    pwd
    myapp
 
-   zig build
-   cd zig-out/bin
-   ./myapp.exe
+   zig build run
    ```
    
    ![myapp.png](img/myapp.png)

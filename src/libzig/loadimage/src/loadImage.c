@@ -9,8 +9,10 @@
 #include <GLFW/glfw3.h>
 #endif
 
-#define STB_IMAGE_STATIC
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_STATIC
+#if !defined(STB_IMAGE_IMPLEMENTATION)
+#     define STB_IMAGE_IMPLEMENTATION
+#endif
 #include "stb_image.h"
 
 #include "loadImage.h"

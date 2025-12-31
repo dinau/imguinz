@@ -5,11 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // Get executable name from current directory name
-    const allocator = b.allocator;
-    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(abs_path);
-    const exe_name = std.fs.path.basename(abs_path);
+    const exe_name = "glfw_opengl3_implot";
 
     const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
@@ -48,7 +44,7 @@ pub fn build(b: *std.Build) void {
     exe.step.dependOn(&install_resources.step);
 
     const resBin = [_][]const u8{ "imgui.ini", };
-  
+
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);

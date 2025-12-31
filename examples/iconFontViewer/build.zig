@@ -5,11 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // Get executable name from current directory name
-    const allocator = b.allocator;
-    const abs_path = b.build_root.handle.realpathAlloc(allocator, ".") catch unreachable;
-    defer allocator.free(abs_path);
-    const exe_name = std.fs.path.basename(abs_path);
+    const exe_name = "iconFontViewer";
 
     const main_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),

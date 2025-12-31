@@ -6,10 +6,10 @@ OPT += --release=fast
 
 COPY_TARGET_INI = false
 
-include ../../../examples/makefile.common.header.mk
+include ../makefile.common.header.mk
 
 
 #AFTER_BUILD_CMD = strip $(TARGET_EXE)
 
 
-include ../../../examples/makefile.common.mk
+include ..//makefile.common.mk

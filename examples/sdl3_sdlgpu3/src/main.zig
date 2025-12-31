@@ -137,21 +137,21 @@ pub fn main() !void {
         {
             _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui in Zig: SDLGPU3 ", null, 0);
             defer ig.igEnd();
-            ig.igText("%s",ifa.ICON_FA_COMMENT ++ " SDL3 v");
+            ig.igText("%s", ifa.ICON_FA_COMMENT ++ " SDL3 v");
             ig.igSameLine(0, -1.0);
             ig.igText("[%d],[%s]", sdl.SDL_GetVersion(), sdl.SDL_GetRevision());
-            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
+            ig.igText("%s", ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",ig.igGetVersion());
-            ig.igText("%s",ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
+            ig.igText("%s", ig.igGetVersion());
+            ig.igText("%s", ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",builtin.zig_version_string);
+            ig.igText("%s", builtin.zig_version_string);
 
             ig.igSpacing();
             _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
-            ig.igText("%s","Input result:");
+            ig.igText("%s", "Input result:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",&sTextInuputBuf);
+            ig.igText("%s", &sTextInuputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);
@@ -166,10 +166,10 @@ pub fn main() !void {
             ig.igText("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
             // Show icon fonts
             ig.igSeparatorText(ifa.ICON_FA_WRENCH ++ " Icon font test ");
-            ig.igText("%s",ifa.ICON_FA_TRASH_CAN ++ " Trash");
+            ig.igText("%s", ifa.ICON_FA_TRASH_CAN ++ " Trash");
 
             ig.igSpacing();
-            ig.igText("%s",ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ ifa.ICON_FA_POWER_OFF ++ " " ++ ifa.ICON_FA_MICROPHONE ++ " " ++ ifa.ICON_FA_MICROCHIP ++ " " ++ ifa.ICON_FA_VOLUME_HIGH ++ " " ++ ifa.ICON_FA_SCISSORS ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ ifa.ICON_FA_BLOG);
+            ig.igText("%s", ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ ifa.ICON_FA_POWER_OFF ++ " " ++ ifa.ICON_FA_MICROPHONE ++ " " ++ ifa.ICON_FA_MICROCHIP ++ " " ++ ifa.ICON_FA_VOLUME_HIGH ++ " " ++ ifa.ICON_FA_SCISSORS ++ " " ++ ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ ifa.ICON_FA_BLOG);
         } // end main window
 
         //---------------------
@@ -178,7 +178,7 @@ pub fn main() !void {
         if (showAnotherWindow) {
             _ = ig.igBegin("Another Window", &showAnotherWindow, 0);
             defer ig.igEnd();
-            ig.igText("%s","Hello from another window!");
+            ig.igText("%s", "Hello from another window!");
             if (ig.igButton("Close Me", .{ .x = 0.0, .y = 0.0 })) showAnotherWindow = false;
         }
 
@@ -198,7 +198,7 @@ pub fn main() !void {
             ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = @intFromPtr(pTextureId) }, size, uv0, uv1);
             ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-                zmg.zoomGlass(@alignCast(@ptrCast(pTextureId)), textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
+                zmg.zoomGlass(@ptrCast(@alignCast(pTextureId)), textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }
         }
         //-----------

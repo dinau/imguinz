@@ -9,7 +9,6 @@ pub const img_ld = @import("loadimage");
 pub const icon = @import("loadicon");
 pub const stf = @import("setupfont");
 pub const utils = @import("utils");
-pub const clib = @import("clib");
 
 //---------------------
 // glfw_error_callback

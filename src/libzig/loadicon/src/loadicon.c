@@ -9,7 +9,9 @@
 
 
 //#define STB_IMAGE_STATIC
-#define STB_IMAGE_IMPLEMENTATION
+//#if !defined(STB_IMAGE_IMPLEMENTATION)
+//#     define STB_IMAGE_IMPLEMENTATION
+//#endif
 #include "stb_image.h"
 
 #include "loadicon.h"

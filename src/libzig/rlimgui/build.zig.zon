@@ -1,7 +1,7 @@
 .{
     .name = .rlimgui,
     .version = "0.0.1",
-    .fingerprint = 0xef7d62554ee3ee3f , // Changing this has security and trust implications.
+    .fingerprint = 0xef7d62554ee3ee3f, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.2",
     .dependencies = .{},
     .paths = .{
