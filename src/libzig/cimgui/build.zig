@@ -19,7 +19,6 @@ pub fn build(b: *std.Build) void {
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     const mod = step.addModule(mod_name);
     mod.link_libcpp = true;
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     mod.addIncludePath(b.path("../../libc/cimgui"));

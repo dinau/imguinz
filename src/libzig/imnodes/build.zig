@@ -20,7 +20,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimnodes/cimnodes"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addCMacro("IMNODES_NAMESPACE", "imnodes"); // for imnodes
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));

@@ -7,17 +7,17 @@ const IconFontPath = "resources/fonticon/fa6/fa-solid-900.ttf";
 var sBufFontPath: [MAX_PATH]u8 = undefined;
 
 const WinFontNameTbl = [_][]const u8{
-    "meiryo.ttc",    // Windows 7,8
-    "YuGothM.ttc",   // Windows 10
-    "segoeui.ttf",   // English standard
+    "meiryo.ttc", // Windows 7,8
+    "YuGothM.ttc", // Windows 10
+    "segoeui.ttf", // English standard
 };
 
 const LinuxFontNameTbl = [_][]const u8{
-    "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf",               // Debian jp
-    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",          // JP
-    "/usr/share/fonts/opentype/ipafont-gothic/ipam.ttf",               // Debian jp
+    "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf", // Debian jp
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc", // JP
+    "/usr/share/fonts/opentype/ipafont-gothic/ipam.ttf", // Debian jp
     "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf", // Linux Mint English
-    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",             // English region standard font
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", // English region standard font
 };
 
 /// Check if file exists
@@ -49,7 +49,7 @@ const ranges_icon_fonts = [_]ig.ImWchar{ ICON_MIN_FA, ICON_MAX_FA, 0 };
 var config: *ig.ImFontConfig = undefined;
 
 /// Setup fonts for ImGui
-pub export  fn setupFonts() ?*ig.ImFont {
+pub export fn setupFonts() ?*ig.ImFont {
     const pio = ig.igGetIO_Nil();
     var font: ?*ig.ImFont = null;
     config = ig.ImFontConfig_ImFontConfig() orelse return null;
@@ -57,7 +57,13 @@ pub export  fn setupFonts() ?*ig.ImFont {
     for (WinFontNameTbl) |fontName| {
         if (getWinFontPath(&sBufFontPath, fontName)) |fontPath| {
             if (existsFile(fontPath)) {
-                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(14.5), config, null,);
+                font = ig.ImFontAtlas_AddFontFromFileTTF(
+                    pio.*.Fonts,
+                    fontPath.ptr,
+                    point2px(14.5),
+                    config,
+                    null,
+                );
                 std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
                 break;
             }
@@ -68,7 +74,13 @@ pub export  fn setupFonts() ?*ig.ImFont {
     if (font == null) {
         for (LinuxFontNameTbl) |fontPath| {
             if (existsFile(fontPath)) {
-                font = ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, fontPath.ptr, point2px(13.0), config, null,);
+                font = ig.ImFontAtlas_AddFontFromFileTTF(
+                    pio.*.Fonts,
+                    fontPath.ptr,
+                    point2px(13.0),
+                    config,
+                    null,
+                );
                 std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
                 break;
             }
@@ -84,5 +96,11 @@ pub export  fn setupFonts() ?*ig.ImFont {
 
     // Merge IconFont
     config.*.MergeMode = true;
-    return ig.ImFontAtlas_AddFontFromFileTTF( pio.*.Fonts, IconFontPath, point2px(11.0), config, &ranges_icon_fonts,);
+    return ig.ImFontAtlas_AddFontFromFileTTF(
+        pio.*.Fonts,
+        IconFontPath,
+        point2px(11.0),
+        config,
+        &ranges_icon_fonts,
+    );
 }

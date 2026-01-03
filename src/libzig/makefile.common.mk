@@ -6,4 +6,4 @@ clean:
 
 
 fmt:
-	@-zig fmt build.zig build.zig.zon
+	@-zig fmt .

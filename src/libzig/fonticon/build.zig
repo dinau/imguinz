@@ -17,7 +17,6 @@ pub fn build(b: *std.Build) void {
         //.link_libc = true,
     });
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

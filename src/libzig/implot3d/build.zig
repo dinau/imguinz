@@ -20,7 +20,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimplot3d/cimplot3d"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimplot3d/implot3d"));

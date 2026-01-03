@@ -21,7 +21,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

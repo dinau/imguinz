@@ -48,5 +48,11 @@ pub fn build(b: *std.Build) void {
             "src/loadImage_sdlgpu3.c",
         },
     });
-    mod.addImport(mod_name, mod);
+
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = mod_name,
+        .root_module = mod,
+    });
+    b.installArtifact(lib);
 }

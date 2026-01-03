@@ -14,10 +14,8 @@ pub const utils = @import("utils");
 // glfw_error_callback
 //---------------------
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void {
-    if (builtin.mode == .Debug) {
         std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
     }
-}
 
 pub const Theme = enum {
     light,
@@ -86,12 +84,21 @@ pub const Window = struct {
         //-------------------------
         var glsl_version: [:0]u8 = undefined;
         var glsl_version_buf: [30]u8 = undefined;
-        var versions = [_][2]u16{ [_]u16{ 4, 6 }, [_]u16{ 4, 5 }, [_]u16{ 4, 4 }, [_]u16{ 4, 3 }, [_]u16{ 4, 2 }, [_]u16{ 4, 1 }, [_]u16{ 4, 0 }, [_]u16{ 3, 3 } };
+        var versions = [_][2]u16{
+            [_]u16{ 4, 6 },
+            [_]u16{ 4, 5 },
+            [_]u16{ 4, 4 },
+            [_]u16{ 4, 3 },
+            [_]u16{ 4, 2 },
+            [_]u16{ 4, 1 },
+            [_]u16{ 4, 0 },
+            [_]u16{ 3, 3 },
+        };
         switch (builtin.target.os.tag) {
             .linux => {
-                      versions[0][0] = 3;
-                      versions[0][1] = 3;
-                      },
+                versions[0][0] = 3;
+                versions[0][1] = 3;
+            },
             else => {},
         }
         for (versions) |ver| {
@@ -110,9 +117,9 @@ pub const Window = struct {
                 win.handle = pointer;
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 std.debug.print("{s} \n", .{glsl_version});
-                std.debug.print("w = {d}, h = {d} \n", .{win.ini.window.viewportWidth, win.ini.window.viewportHeight});
+                std.debug.print("w = {d}, h = {d} \n", .{ win.ini.window.viewportWidth, win.ini.window.viewportHeight });
                 break;
-            } else{
+            } else {
                 std.debug.print("Error!: Failed: glfwCrateWindow() \n", .{});
             }
         } else {
@@ -236,13 +243,12 @@ pub const Window = struct {
     // isIconified
     //-------------
     pub fn isIconified(win: *Window) bool {
-       if( 0 != glfw.glfwGetWindowAttrib(win.handle, glfw.GLFW_ICONIFIED)){
-           impl_glfw.ImGui_ImplGlfw_Sleep(10);
-           return true;
-       }
-       else {
-           return false;
-       }
+        if (0 != glfw.glfwGetWindowAttrib(win.handle, glfw.GLFW_ICONIFIED)) {
+            impl_glfw.ImGui_ImplGlfw_Sleep(10);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //-------------
@@ -258,9 +264,13 @@ pub const Window = struct {
     pub fn pollEvents(win: Window) void {
         switch (win.eventLoadVar) {
             // https://www.glfw.org/docs/3.3/group__window.html#ga605a178db92f1a7f1a925563ef3ea2cf
-            Window.eventLoad.low => {glfw.glfwWaitEventsTimeout(1.0 / 60.0);},
+            Window.eventLoad.low => {
+                glfw.glfwWaitEventsTimeout(1.0 / 60.0);
+            },
             // https://www.glfw.org/docs/3.3/group__window.html#ga37bd57223967b4211d60ca1a0bf3c832
-            Window.eventLoad.standard => {glfw.glfwPollEvents();}, // Depends on glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
+            Window.eventLoad.standard => {
+                glfw.glfwPollEvents();
+            }, // Depends on glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
         }
     }
     pub fn eventLoadLow(win: *Window) void {
@@ -432,29 +442,34 @@ pub fn loadIni(win: *Window) !void {
 }
 
 //---------
-// saveIni   TODO for zig-0.15.1
+// saveIni  
 //---------
 pub fn saveIni(win: *Window) !void {
     // Window pos
-     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
-//
-//    // Window size
-//    const ws = ig.igGetMainViewport().*.WorkSize;
-//    win.ini.window.viewportWidth = @intFromFloat(ws.x);
-//    win.ini.window.viewportHeight = @intFromFloat(ws.y);
-//
-//    // Save to ini file
-//    const allocator = std.heap.page_allocator;
-//    const exe_path = try std.fs.selfExePathAlloc(allocator);
-//    defer allocator.free(exe_path);
-//
-//    const filename = try changeExtension(exe_path, "ini");
-//    std.debug.print("Write ini: {s}\n", .{filename});
-//
-//    var file = try std.fs.cwd().createFile(filename, .{});
-//    defer file.close();
+    glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
-//    var writer = file.writer(&.{}).interface;
- //   try std.json.Stringify.value(win.ini, .{ .whitespace = .indent_2 }, &writer);
-    //try file.writeAll(json_string.items);
+        // Window size
+        const ws = ig.igGetMainViewport().*.WorkSize;
+        win.ini.window.viewportWidth = @intFromFloat(ws.x);
+        win.ini.window.viewportHeight = @intFromFloat(ws.y);
+
+        // Save to ini file
+        const allocator = std.heap.page_allocator;
+        const exe_path = try std.fs.selfExePathAlloc(allocator);
+        defer allocator.free(exe_path);
+
+        const filename = try changeExtension(exe_path, "ini");
+        std.debug.print("Write ini: {s}\n", .{filename});
+
+        var file = try std.fs.cwd().createFile(filename, .{});
+        defer file.close();
+
+        var buffer: [4096]u8 = undefined;
+        var writer: std.io.Writer = .fixed(&buffer);
+        var jw: std.json.Stringify = .{
+            .writer = &writer,
+            .options = .{ .whitespace = .indent_2 },
+        };
+        try jw.write(win.ini);
+        try file.writeAll(writer.buffered());
 }

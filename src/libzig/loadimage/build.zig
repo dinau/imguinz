@@ -30,7 +30,6 @@ pub fn build(b: *std.Build) void {
             "src/loadImage.c",
         },
     });
-    //mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

@@ -23,8 +23,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
-
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     mod.addCMacro("ImDrawIdx", "unsigned int");

@@ -15,10 +15,19 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    mod.addImport(mod_name, mod);
+
     // import modules
-    const modules = [_][]const u8{ "cimgui", "loadimage", "saveimage", "loadicon", "zoomglass" };
+    const modules = [_][]const u8{
+        "cimgui",
+        "loadimage",
+        "saveimage",
+        "loadicon",
+        "zoomglass",
+    };
     for (modules) |module| {
+        if (mod.import_table.get(module)) |_| {
+            continue;
+        }
         const mod_dep = b.dependency(module, .{});
         mod.addImport(module, mod_dep.module(module));
     }

@@ -14,19 +14,23 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    mod.addImport(mod_name, mod);
+
     // import modules
-    const modules = [_][]const u8{ "cimgui"
-                                 , "fonticon"
-                                 , "loadicon"
-                                 , "loadimage"
-                                 , "glfw"
-                                 , "impl_glfw"
-                                 , "impl_opengl3"
-                                 , "setupfont"
-                                 , "utils"
-                                 };
+    const modules = [_][]const u8{
+        "cimgui",
+        "fonticon",
+        "loadicon",
+        "loadimage",
+        "glfw",
+        "impl_glfw",
+        "impl_opengl3",
+        "setupfont",
+        "utils",
+    };
     for (modules) |module| {
+        if (mod.import_table.get(module)) |_| {
+            continue;
+        }
         const mod_dep = b.dependency(module, .{});
         mod.addImport(module, mod_dep.module(module));
     }

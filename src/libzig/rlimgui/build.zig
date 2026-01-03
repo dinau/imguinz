@@ -44,7 +44,6 @@ pub fn build(b: *std.Build) void {
             "-fno-sanitize=undefined",
         },
     });
-    mod.addImport(mod_name, mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

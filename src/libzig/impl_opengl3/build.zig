@@ -23,7 +23,6 @@ pub fn build(b: *std.Build) void {
     step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
 
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),

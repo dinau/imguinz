@@ -14,8 +14,11 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
     // import modules
-    const modules = [_][]const u8{ "cimgui"};
+    const modules = [_][]const u8{
+        "cimgui",
+    };
     for (modules) |module| {
         if (mod.import_table.get(module) == null) {
             const mod_dep = b.dependency(module, .{});

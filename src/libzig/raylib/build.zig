@@ -34,7 +34,6 @@ pub fn build(b: *std.Build) void {
             //"../../libc/raylib/windows/include/raylib.h",
         },
     });
-    mod.addImport(mod_name, mod);
 
     switch (builtin.target.os.tag) {
         //.windows => mod.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.a" }))),
