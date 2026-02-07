@@ -16,5 +16,11 @@ pub fn build(b: *std.Build) void {
 
     // Module
     const mod = step.addModule(mod_name);
-    mod.addImport(mod_name, mod);
+
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = mod_name,
+        .root_module = mod,
+    });
+    b.installArtifact(lib);
 }

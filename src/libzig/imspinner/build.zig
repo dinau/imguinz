@@ -11,7 +11,7 @@ pub fn build(b: *std.Build) void {
     // module
     // -------
     const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/cimspinner_header.h"),
+        .root_source_file = b.path("src/impl_imspinner.h"),
         .target = target,
         .optimize = optimize,
     });

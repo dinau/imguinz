@@ -212,15 +212,13 @@ pub fn main() !void {
         {
             _ = ig.igBegin("Image load test", null, 0);
             defer ig.igEnd();
-            var imageBoxPosTop: ig.ImVec2 = undefined;
-            var imageBoxPosEnd: ig.ImVec2 = undefined;
             // Load image
             const size = ig.ImVec2{ .x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight) };
             const uv0 = ig.ImVec2{ .x = 0, .y = 0 };
             const uv1 = ig.ImVec2{ .x = 1, .y = 1 };
-            ig.igGetCursorScreenPos(&imageBoxPosTop); // # Get absolute pos.
+            const imageBoxPosTop  = ig.igGetCursorScreenPos(); // # Get absolute pos.
             ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size, uv0, uv1);
-            ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
+            const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }

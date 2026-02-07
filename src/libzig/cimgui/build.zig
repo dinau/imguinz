@@ -6,18 +6,29 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const mod_name = "cimgui";
+    var mod: *std.Build.Module = undefined;
+
+    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
 
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("../../libc/cimgui/cimgui.h"),
-        .target = target,
-        .optimize = optimize,
-    });
+    if (!gen_option) {
+        mod = b.addModule(mod_name, .{
+            .root_source_file = b.path("src/impl_cimgui.zig"),
+            .target = target,
+            .optimize = optimize,
+        });
+    }else{
+        const step = b.addTranslateC(.{
+            .root_source_file = b.path("../../libc/cimgui/cimgui.h"),
+            .target = target,
+            .optimize = optimize,
+        });
 
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    const mod = step.addModule(mod_name);
+        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+        mod = step.addModule(mod_name);
+    }
     mod.link_libcpp = true;
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
@@ -45,6 +56,9 @@ pub fn build(b: *std.Build) void {
             "../../libc/cimgui/cimgui_impl.cpp",
             // ImGui GLFW and OpenGL interface
             //"../utils/themeGold.cpp",
+        },
+        .flags = &.{
+            "-O2",
         },
     });
 

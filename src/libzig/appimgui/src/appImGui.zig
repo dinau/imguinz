@@ -9,6 +9,8 @@ pub const img_ld = @import("loadimage");
 pub const icon = @import("loadicon");
 pub const stf = @import("setupfont");
 pub const utils = @import("utils");
+const is_devel_api = builtin.zig_version.minor >= 16;
+const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
 
 //---------------------
 // glfw_error_callback
@@ -143,8 +145,22 @@ pub const Window = struct {
         var gpa = std.heap.GeneralPurposeAllocator(.{}){};
         defer _ = gpa.deinit();
         const allocator = gpa.allocator();
-        const exe_path = try std.fs.selfExePathAlloc(allocator);
-        defer allocator.free(exe_path);
+
+        var sBuf: [std.fs.max_path_bytes]u8 = undefined;
+        const exe_path: []u8 = if (is_devel_api) blk: {
+            const exe_len = try std.process.executablePath(io, &sBuf);
+            break :blk sBuf[0..exe_len];
+        } else blk: {
+            break :blk try std.fs.selfExePathAlloc(allocator);
+        };
+        defer {
+            if (is_devel_api) {
+                // NA
+            } else {
+                allocator.free(exe_path);
+            }
+        }
+
         const option_exe_dir = std.fs.path.dirname(exe_path);
         if (option_exe_dir) |exe_dir| {
             var paths = [_][]const u8{ exe_dir, TitleBarIconName };
@@ -371,31 +387,56 @@ fn changeExtension(filename: []const u8, new_ext: []const u8) ![]const u8 {
 //---------
 pub fn loadIni(win: *Window) !void {
     //
-    const allocator = std.heap.page_allocator;
-    const exe_path = try std.fs.selfExePathAlloc(allocator);
-    defer allocator.free(exe_path);
+    var sBuf: [std.fs.max_path_bytes]u8 = undefined;
+    const exe_path: []u8 = if (is_devel_api) blk: {
+        const exe_len = try std.process.executablePath(io, &sBuf);
+        break :blk sBuf[0..exe_len];
+    } else blk: {
+        break :blk try std.fs.selfExePathAlloc(std.heap.page_allocator);
+    };
 
     const filename = try changeExtension(exe_path, "ini");
 
     var data: TIni = undefined;
-    if (std.fs.cwd().openFile(filename, .{})) |file| {
-        defer file.close();
+
+    const file = if (is_devel_api) blk: {
+        break :blk try std.Io.Dir.cwd().openFile(io, filename, .{});
+    } else blk: {
+        break :blk try std.fs.cwd().openFile(filename, .{});
+    };
+    defer {
+        if (is_devel_api) {
+            file.close(io);
+        } else {
+            file.close();
+        }
+    }
+
         std.debug.print("Read ini: {s}\n", .{filename});
 
-        const file_size = try file.getEndPos();
+    const file_size = if (is_devel_api)
+        try file.length(io)
+    else
+        try file.getEndPos();
+
+    const allocator = std.heap.page_allocator;
         const buffer = try allocator.alloc(u8, file_size);
         defer allocator.free(buffer);
+    if (is_devel_api) {
+        _ = try file.readStreaming(io, &.{buffer});
+    } else {
         _ = try file.read(buffer);
+    }
 
         const parsed_data = try std.json.parseFromSlice(TIni, allocator, buffer, .{});
         defer parsed_data.deinit();
         data = parsed_data.value;
-    } else |_| {
-        std.debug.print("*.ini file not found: set \"DefaultIni\" values\n", .{});
-        const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
-        defer parsed_data.deinit();
-        data = parsed_data.value;
-    }
+    //} else |_| {
+    //    std.debug.print("*.ini file not found: set \"DefaultIni\" values\n", .{});
+    //    const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
+    //    defer parsed_data.deinit();
+    //    data = parsed_data.value;
+    //}
 
     // Window pos
     win.ini.window.startupPosX = data.window.startupPosX;
@@ -455,21 +496,104 @@ pub fn saveIni(win: *Window) !void {
 
         // Save to ini file
         const allocator = std.heap.page_allocator;
-        const exe_path = try std.fs.selfExePathAlloc(allocator);
-        defer allocator.free(exe_path);
+    var exe_path: []u8 = undefined;
+    var exe_buf: [std.fs.max_path_bytes]u8 = undefined;
+    if (@hasDecl(std.process, "executablePath")) {
+        const exe_len = try std.process.executablePath(io, &exe_buf);
+        exe_path = exe_buf[0..exe_len];
+    } else if (@hasDecl(std.fs, "selfExePathAlloc")) {
+        exe_path = try std.fs.selfExePathAlloc(allocator);
+    }
 
         const filename = try changeExtension(exe_path, "ini");
         std.debug.print("Write ini: {s}\n", .{filename});
 
-        var file = try std.fs.cwd().createFile(filename, .{});
-        defer file.close();
+    const file = if (is_devel_api) blk: {
+        break :blk try std.Io.Dir.cwd().createFile(io, filename, .{});
+    } else blk: {
+        break :blk try std.fs.cwd().createFile(filename, .{});
+    };
+    defer if (is_devel_api) file.close(io) else file.close();
 
         var buffer: [4096]u8 = undefined;
-        var writer: std.io.Writer = .fixed(&buffer);
+
+    var writer = if (is_devel_api)
+        std.Io.Writer.fixed(&buffer)
+    else
+        std.io.Writer.fixed(&buffer);
+
         var jw: std.json.Stringify = .{
             .writer = &writer,
             .options = .{ .whitespace = .indent_2 },
         };
         try jw.write(win.ini);
+    if (is_devel_api){
+        try file.writeStreamingAll(io, writer.buffered());
+    }else{
         try file.writeAll(writer.buffered());
+    }
+}
+
+//==============================================
+// C Export Functions
+//==============================================
+export fn createImGui_c(w: i32, h: i32, title: [*c]const u8) ?*Window {
+    const allocator = std.heap.c_allocator;
+    const win_ptr = allocator.create(Window) catch return null;
+    win_ptr.* = Window.createImGui(w, h, title) catch {
+        allocator.destroy(win_ptr);
+        return null;
+    };
+    return win_ptr;
+}
+
+export fn destroyImGui_c(win: ?*Window) void {
+    if (win) |w| {
+        w.destroyImGui();
+        std.heap.c_allocator.destroy(w);
+    }
+}
+
+export fn render_c(win: ?*Window) void {
+    if (win) |w| {
+        w.render();
+    }
+}
+
+export fn frame_c(win: ?*Window) void {
+    if (win) |w| {
+        w.frame();
+    }
+}
+
+export fn shouldClose_c(win: ?*Window) bool {
+    if (win) |w| {
+        return w.shouldClose();
+    }
+    return true;
+}
+
+export fn pollEvents_c(win: ?*Window) void {
+    if (win) |w| {
+        w.pollEvents();
+    }
+}
+
+export fn isIconified_c(win: ?*Window) bool {
+    if (win) |w| {
+        return w.isIconified();
+    }
+    return false;
+}
+
+export fn showInfoWindow_c(win: ?*Window) void {
+    if (win) |w| {
+        w.showInfoWindow();
+    }
+}
+
+export fn setTheme_c(theme: i32) i32 {
+    const theme_enum: Theme = @enumFromInt(theme);
+    const result = setTheme(theme_enum);
+    return @intFromEnum(result);
 }

@@ -33,11 +33,21 @@ pub fn build(b: *std.Build) void {
         .name = "win32_dx11",
         .root_module = mod,
     });
-    const modules = [_][]const u8{ "cimgui", "impl_win32", "impl_dx11", "setupfont", "loadicon" };
+    const modules = [_][]const u8{
+        "cimgui",
+        "impl_win32",
+        "impl_dx11",
+        "setupfont",
+        "loadicon",
+    };
     for (modules) |module| {
-        const mod_dep = b.dependency(module, .{.target = target, .optimize = optimize,});
-            exe.linkLibrary(mod_dep.artifact(module));
-        }
+        const mod_dep = b.dependency(module, .{
+            .target = target,
+            .optimize = optimize,
+        });
+        exe.root_module.linkLibrary(mod_dep.artifact(module));
+    }
+
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
@@ -57,7 +67,7 @@ pub fn build(b: *std.Build) void {
     }
 
     exe.subsystem = .Windows; // Hide console window
-    exe.linkLibC();
+    exe.root_module.link_libc = true;
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
@@ -67,7 +77,9 @@ pub fn build(b: *std.Build) void {
     });
     exe.step.dependOn(&install_resources.step);
 
-    const resBin = [_][]const u8{ "imgui.ini", };
+    const resBin = [_][]const u8{
+        "imgui.ini",
+    };
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
         b.getInstallStep().dependOn(&res.step);

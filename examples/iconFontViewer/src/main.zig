@@ -70,13 +70,11 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igInputText("##ipttxt1", sBuf[0..], sBuf.len, ig.ImGuiTextFlags_None, null, null);
 
             //# Show ListBox main
-            var listBoxPosTop: ig.ImVec2 = undefined;
-            var listBoxPosEnd: ig.ImVec2 = undefined;
             ig.igNewLine();
-            ig.igGetCursorScreenPos(&listBoxPosTop); //# Get absolute pos.
+            const listBoxPosTop = ig.igGetCursorScreenPos(); //# Get absolute pos.
             ig.igSetNextItemWidth(listBoxWidth);
             _ = ig.igListBox_Str_arr("##listbox1", @ptrCast(&item_current), &ift.iconFontsTbl, ift.iconFontsTbl.len, 34);
-            ig.igGetCursorScreenPos(&listBoxPosEnd); // # Get absolute pos.
+            const listBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
             // # Show magnifying glass (Zooming in Toolchip)
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 if ((pio.*.MousePos.x - listBoxPosTop.x) < 50) {

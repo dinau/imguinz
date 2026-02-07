@@ -2,7 +2,7 @@
 //   Leaving any ImVec4 as default (zero) will allow the theme color to be used for that member.
 #pragma once
 
-#include "cimgui.h"
+//#include "cimgui.h"
 
 typedef struct ImGuiTogglePalette
 {

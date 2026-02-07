@@ -997,8 +997,7 @@ fn demo_Histogram2D() !void {
     var max_count: f64 = 0;
     const flags = ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_Foreground;
     ip.ImPlot_PushColormap_Str("Hot");
-    var regn: ig.ImVec2 = undefined;
-    ig.igGetContentRegionAvail(&regn);
+    const regn = ig.igGetContentRegionAvail();
     const vec2: ig.ImVec2 = .{ .x = regn.x - 100 - ig.igGetStyle().*.ItemSpacing.x, .y = 0 };
     if (ip.ImPlot_BeginPlot("##Hist2D", .{.x = vec2.x, .y = vec2.y}, 0)) {
         ip.ImPlot_SetupAxes(null, null, flags, flags);

@@ -84,9 +84,8 @@ pub fn gui_main(window: *app.Window) !void {
                 if (ig.igIsWindowFocused(ig.ImGuiFocusedFlags_RootAndChildWindows) and imnodes.imnodes_IsEditorHovered() and ig.igIsKeyReleased_Nil(ig.ImGuiKey_A)) {
                     obj.current_id += 1;
                     const node_id = obj.current_id;
-                    var pos: imnodes.ImVec2 = undefined;
-                    ig.igGetMousePos(@ptrCast(&pos));
-                    imnodes.imnodes_SetNodeScreenSpacePos(node_id, pos);
+                    const pos = ig.igGetMousePos();
+                    imnodes.imnodes_SetNodeScreenSpacePos(node_id, .{.x = pos.x, .y = pos.y});
                     try obj.nodes.append(allocator, .{ .id = node_id, .value = 0 });
                 }
                 for (obj.nodes.items, 0..) |*node, nodeN| {
@@ -112,10 +111,8 @@ pub fn gui_main(window: *app.Window) !void {
                     {
                         imnodes.imnodes_BeginOutputAttribute(node.id << 24, imnodes.ImNodesPinShape_CircleFilled);
                         defer imnodes.imnodes_EndOutputAttribute();
-                        var wOut: ig.ImVec2 = undefined;
-                        var wVal: ig.ImVec2 = undefined;
-                        ig.igCalcTextSize(&wOut, "output", null, false, -1.0);
-                        ig.igCalcTextSize(&wVal, "value", null, false, -1.0);
+                        const wOut = ig.igCalcTextSize("output", null, false, -1.0);
+                        const wVal = ig.igCalcTextSize("value", null, false, -1.0);
                         ig.igIndent(120 + wVal.x - wOut.x);
                         ig.igTextUnformatted("output", null);
                     }

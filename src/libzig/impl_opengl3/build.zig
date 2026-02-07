@@ -6,23 +6,34 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const mod_name = "impl_opengl3";
+    var mod: *std.Build.Module = undefined;
+
+    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
 
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_opengl3.h"),
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-    });
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    step.defineCMacro("CIMGUI_USE_OPENGL3", "");
-    step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimgui/imgui"));
-    step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
+    if (!gen_option) {
+        mod = b.addModule(mod_name, .{
+            .root_source_file = b.path("src/impl_opengl3.zig"),
+            .target = target,
+            .optimize = optimize,
+        });
+    }else{
+        const step = b.addTranslateC(.{
+            .root_source_file = b.path("src/impl_opengl3.h"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
+        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+        step.defineCMacro("CIMGUI_USE_OPENGL3", "");
+        step.addIncludePath(b.path("../../libc/cimgui"));
+        step.addIncludePath(b.path("../../libc/cimgui/imgui"));
+        step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
 
-    const mod = step.addModule(mod_name);
+        mod = step.addModule(mod_name);
+    }
     switch (builtin.target.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),

@@ -141,16 +141,14 @@ pub fn gui_main(window: *app.Window) !void {
         {
             _ = ig.igBegin("Image load test", null, 0);
             defer ig.igEnd();
-            var imageBoxPosTop: ig.ImVec2 = undefined;
-            var imageBoxPosEnd: ig.ImVec2 = undefined;
             // Load image
             const size = app.utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight) );
             const uv0  = app.utils.vec2(0, 0);
             const uv1  = app.utils.vec2(1, 1);
-            ig.igGetCursorScreenPos(&imageBoxPosTop); // # Get absolute pos.
+            const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
 
             ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
-            ig.igGetCursorScreenPos(&imageBoxPosEnd); // # Get absolute pos.
+            const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 app.utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
             }

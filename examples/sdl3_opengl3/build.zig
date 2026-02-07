@@ -1,6 +1,5 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const blib = @import("./build_lib.zig");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -14,13 +13,27 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    // Register external module from "./build.zig.zon" file.
-    blib.addExternalModule(b, main_mod);
-
     const exe = b.addExecutable(.{
         .name = exe_name,
         .root_module = main_mod,
     });
+
+    const imguinz = b.dependency("imguinz", .{});
+    const dependencies = .{
+        "cimgui",
+        "fonticon",
+        "impl_sdl3",
+        "impl_opengl3",
+        "loadimage",
+        "sdl3",
+        "setupfont",
+        "utils",
+        // "another_lib",
+    };
+    inline for (dependencies) |dep_name| {
+        const dep = imguinz.builder.dependency(dep_name, .{});
+        exe.root_module.addImport(dep_name, dep.module(dep_name));
+    }
 
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
@@ -61,7 +74,7 @@ pub fn build(b: *std.Build) void {
         exe.root_module.linkSystemLibrary("shell32", .{});
         exe.root_module.linkSystemLibrary("user32", .{});
         // Static link
-        exe.addObjectFile(b.path(b.pathJoin(&.{ sdlPath, "lib", "libSDL3.dll.a" })));
+        exe.root_module.addObjectFile(b.path(b.pathJoin(&.{ sdlPath, "lib", "libSDL3.dll.a" })));
     } else if (builtin.target.os.tag == .linux) {
         exe.root_module.linkSystemLibrary("GL", .{});
         exe.root_module.linkSystemLibrary("SDL3", .{});

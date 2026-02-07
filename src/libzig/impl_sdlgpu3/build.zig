@@ -6,32 +6,43 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const mod_name = "impl_sdlgpu3";
+    var mod: *std.Build.Module = undefined;
+
+    const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
 
     const sdl_path = "../../libc/sdl/SDL3/x86_64-w64-mingw32";
 
     // -------
     // module
     // -------
-    const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/impl_sdlgpu3.h"),
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-    });
-    step.defineCMacro("CIMGUI_USE_SDLGPU3", "");
-    step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    step.addIncludePath(b.path("../../libc/cimgui"));
-    step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
-    switch (builtin.target.os.tag) {
-        .windows => {
-            step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
-            step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
-        },
-        .linux => step.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
-        else => {},
-    }
+    if (!gen_option) {
+        mod = b.addModule(mod_name, .{
+            .root_source_file = b.path("src/impl_sdlgpu3.zig"),
+            .target = target,
+            .optimize = optimize,
+        });
+    } else { // Generate original_temp_zig in zig-out
+        const step = b.addTranslateC(.{
+            .root_source_file = b.path("src/impl_sdlgpu3.h"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
+        step.defineCMacro("CIMGUI_USE_SDLGPU3", "");
+        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+        step.addIncludePath(b.path("../../libc/cimgui"));
+        step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
+        switch (builtin.target.os.tag) {
+            .windows => {
+                step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
+                step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
+            },
+            .linux => step.addIncludePath(.{ .cwd_relative = "/usr/include/SDL3" }),
+            else => {},
+        }
 
-    const mod = step.addModule(mod_name);
+        mod = step.addModule(mod_name);
+    }
     switch (builtin.target.os.tag) {
         .windows => {
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
@@ -55,7 +66,7 @@ pub fn build(b: *std.Build) void {
         .files = &.{
             "../../libc/cimgui/imgui/backends/imgui_impl_sdlgpu3.cpp",
         },
-    });
+        });
 
     const lib = b.addLibrary(.{
         .linkage = .static,

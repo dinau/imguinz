@@ -50,7 +50,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
 Raylib, rlImGui and many other libaries and examples in Zig with less external dependencies.
 
-- ImGui / CImGui version **1.92.4 dock** (2025/11)
+- ImGui / CImGui version **1.92.5 dock** (2026/02)
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
@@ -64,9 +64,9 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
    - Included GLFW 3.4.0 static library (for Windows)
-   - Included SDL3 libraries (for Windows)
+   - Included SDL3.4.x libraries (for Windows)
    - Included STB libraries (only stb_image) for Load / Save images
-   - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) with `ImDrawIdx="unsigned int"`
+   - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) / ImPlot3D with `ImDrawIdx="unsigned int"`
    - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
 
 ### Zig fetch 
@@ -141,12 +141,12 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
            ig.igShowDemoWindow(null); // Show demo window
                                       //
            ig.igSetNextWindowSize(.{ .x = 0.0, .y = 0.0 }, 0); // Fit window size depending on the size of the widgets
-           _ = ig.igBegin("Spinner", null, 0); // Show Spinner window
+           _ = ig.igBegin("imguinz", null, 0); // Show Spinner window
            spinner.SpinnerAtomEx("atom", 16, 2, spn_col, speed, 3);
            ig.igSameLine(0.0, -1.0);
            _ = tgl.Toggle("Speed", &fspd, .{ .x = 0.0, .y = 0.0 });
            if (fspd) speed = 6.0 else speed = 2.0;
-           if (knobs.IgKnobFloat("Mix", &col, -1.0, 1.0, 0.1, "%.1f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
+           if (knobs.IgKnobFloat("Color", &col, -1.0, 1.0, 0.1, "%.1f", knobs.IgKnobVariant_Stepped, 0, 0, 10, -1, -1)) {
                spn_col.Value.x = col;
            }
            ig.igEnd();
@@ -156,7 +156,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    }
    
    pub fn main() !void {
-       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig lang.");
+       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig");
        defer window.destroyImGui();
    
        _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
@@ -174,7 +174,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    zig build run
    ```
    
-   ![myapp.png](img/myapp.png)
+   ![alt](img/myapp.gif)
 
 ### Prerequisites
 
@@ -184,6 +184,10 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
+   - Devel version  
+   Not all example codes can be compiled.
+       - [zig-x86_64-windows-0.16.0-dev.2490+fce7878a9.zip](https://ziglang.org/builds/zig-x86_64-windows-0.16.0-dev.2490+fce7878a9.zip)
+       - [zig-x86_64-linux-0.16.0-dev.2490+fce7878a9.tar.xz](https://ziglang.org/builds/zig-x86_64-linux-0.16.0-dev.2490+fce7878a9.tar.xz)
 
 - WindowsOS
    - Windows11
@@ -200,13 +204,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
   ```
 
    - SDL3  
-   If you are using Debian13 Trixie, add sdl3 library,
-   
-      ```sh
-      sudo apt install libsdl3-dev
-      ```
-
-      otherwise [install SDL3 manually](https://github.com/dinau/sdl3_nim#for-linux-os)
+      [install SDL3 manually](https://github.com/dinau/sdl3_nim#for-linux-os)
 
 ### Build and run
 

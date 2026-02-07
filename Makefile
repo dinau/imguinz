@@ -1,24 +1,5 @@
 # All examples will be built at a time.
 #
-EXAMPLE_DIRS := \
-							examples/glfw_opengl3 \
-							examples/glfw_opengl3_image_load \
-							examples/glfw_opengl3_imfileopendialog \
-							examples/glfw_opengl3_imgui_toggle \
-							examples/glfw_opengl3_imguicolortextedit \
-							examples/glfw_opengl3_imknobs \
-							examples/glfw_opengl3_imnodes \
-							examples/glfw_opengl3_imguizmo \
-							examples/glfw_opengl3_implot \
-							examples/glfw_opengl3_implot3d \
-							examples/glfw_opengl3_imspinner \
-							examples/glfw_opengl3_jp \
-							examples/iconFontViewer \
-							examples/raylib_basic \
-							examples/raylib_cjk \
-							examples/rlimgui_basic\
-							examples/imPlotDemo
-
 ifeq ($(OS),Windows_NT)
 	EXAMPLE_DIRS += \
 								examples/sdl3_opengl3 \
@@ -26,9 +7,37 @@ ifeq ($(OS),Windows_NT)
 							  examples/win32_dx11
 endif
 
-all:
+EXAMPLE_DIRS += \
+							examples/glfw_opengl3 \
+							examples/glfw_opengl3_image_load \
+							examples/glfw_opengl3_imfileopendialog \
+							examples/glfw_opengl3_imgui_toggle \
+							examples/glfw_opengl3_imknobs \
+							examples/glfw_opengl3_imspinner \
+							examples/glfw_opengl3_jp \
+							examples/iconFontViewer \
+							examples/glfw_opengl3_implot \
+							examples/glfw_opengl3_implot3d \
+							examples/glfw_opengl3_imguizmo \
+							examples/glfw_opengl3_imnodes \
+							examples/glfw_opengl3_imguicolortextedit \
+							examples/imPlotDemo
+
+EXAMPLE_DIRS_RAYLIB := \
+							examples/raylib_basic \
+							examples/raylib_cjk \
+							examples/rlimgui_basic
+
+
+all: std raylib
+
+std:
 	@echo $(shell zig version)
-	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),$@ ))
+	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),all ))
+
+raylib:
+	@echo $(shell zig version)
+	$(foreach exdir,$(EXAMPLE_DIRS_RAYLIB), $(call def_make,$(exdir),all ))
 
 .PHONY: test clean gen cleanexe
 
@@ -38,6 +47,7 @@ sdl:
 
 clean:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanall ))
+	$(foreach exdir,$(EXAMPLE_DIRS_RAYLIB), $(call def_make,$(exdir),cleanall ))
 	$(MAKE) -C src/libzig $@
 
 cleanall: clean cleanexe
@@ -62,9 +72,9 @@ MAKEFLAGS += --no-print-directory
 #-------------------------
 # Copy external libraries
 #-------------------------
-EXT_LIB_DIR = ../../imguin_git/libs
+EXT_LIB_DIR = ../000imguin_dev/imguin_git/libs
 TARGET_DIR = src/libc
-copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d imspinner imCTE imgui-knobs
+copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d cpimspinner imCTE imgui-knobs
 
 # ImGuiColorTextEdit
 imCTE:
@@ -122,11 +132,10 @@ implot3d:
 	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}            $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
-imspinner:
+cpimspinner:
 	@echo copying [ $(EXT_LIB_DIR)/$@] to $(TARGET_DIR)/
-	@-mkdir -p $(TARGET_DIR)/c$@
+	@-mkdir -p $(TARGET_DIR)/$@
 	@cp -f $(EXT_LIB_DIR)/$@/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/c$@/
-	@#echo "" >  $(TARGET_DIR)/c$@/$@/cimspinner_config.h
 
 imgui-knobs:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
@@ -141,7 +150,7 @@ imgui-knobs:
 
 .PHONY: cimgui cimplot cimnodes cimguizmo cimguifiledialog cimgui_toggle cimCTE
 
-clonelibs: libs cimgui cimplot cimnodes cimguizmo cimgui_toggle cimplot3d cimspinner cimCTE cimgui-knobs
+clonelibs: libs cimgui cimplot cimnodes cimguizmo cimgui_toggle cimplot3d imspinner cimCTE cimgui-knobs
 
 cimgui:
 	git clone --recurse-submodules https://github.com/$@/$@      ../libs/$@
@@ -157,18 +166,9 @@ cimgui_toggle:
 	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@
 cimplot3d:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
-cimspinner:
+imspinner:
 	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@
 cimCTE:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
 cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
-
-
-copyblib:
-	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_copylib,$(exdir)))
-
-define def_copylib
-	cp -f examples/build_lib.zig $(1)/
-
-endef

@@ -11,7 +11,7 @@ pub fn build(b: *std.Build) void {
     // module
     // -------
     const step = b.addTranslateC(.{
-        .root_source_file = b.path("src/toggle.h"),
+        .root_source_file = b.path("src/impl_imtoggle.h"),
         .target = target,
         .optimize = optimize,
     });
