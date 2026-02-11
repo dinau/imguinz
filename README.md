@@ -184,10 +184,8 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
-   - Devel version  
-   Not all example codes can be compiled.
-       - [zig-x86_64-windows-0.16.0-dev.2490+fce7878a9.zip](https://ziglang.org/builds/zig-x86_64-windows-0.16.0-dev.2490+fce7878a9.zip)
-       - [zig-x86_64-linux-0.16.0-dev.2490+fce7878a9.tar.xz](https://ziglang.org/builds/zig-x86_64-linux-0.16.0-dev.2490+fce7878a9.tar.xz)
+   - Devel version: zig-016.0-dev.2535 (2026/02/07)  
+        Not all example codes can be compiled.
 
 - WindowsOS
    - Windows11

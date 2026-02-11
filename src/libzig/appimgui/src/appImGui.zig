@@ -16,8 +16,8 @@ const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else un
 // glfw_error_callback
 //---------------------
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void {
-        std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
-    }
+    std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
+}
 
 pub const Theme = enum {
     light,
@@ -70,7 +70,6 @@ pub const Window = struct {
         _ = w;
         _ = h;
         var win: Window = undefined;
-        try loadIni(&win);
 
         //-------------------
         // GLFW initializing
@@ -115,20 +114,23 @@ pub const Window = struct {
             //---------------------------------------------
             // Create GLFW window and activate OpenGL libs
             //---------------------------------------------
-            if (glfw.glfwCreateWindow(win.ini.window.viewportWidth, win.ini.window.viewportHeight, title, null, null)) |pointer| {
+            if (glfw.glfwCreateWindow(800, 600, title, null, null)) |pointer| {
                 win.handle = pointer;
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 std.debug.print("{s} \n", .{glsl_version});
-                std.debug.print("w = {d}, h = {d} \n", .{ win.ini.window.viewportWidth, win.ini.window.viewportHeight });
                 break;
             } else {
                 std.debug.print("Error!: Failed: glfwCrateWindow() \n", .{});
+                return error.glfwCreateWindowFailure1;
             }
         } else {
             glfw.glfwTerminate();
-            return error.glfwCreateWindowFailure;
+            return error.glfwCreateWindowFailure2;
         }
 
+        try loadIni(&win);
+        std.debug.print("w = {d}, h = {d} \n", .{ win.ini.window.viewportWidth, win.ini.window.viewportHeight });
+        glfw.glfwSetWindowSize(win.handle, win.ini.window.viewportWidth,win.ini.window.viewportHeight);
         win.eventLoadVar = eventLoad.low;
         win.showWindowDelay = 1;
         win.clearColor = [_]f32{ win.ini.window.colBGx, win.ini.window.colBGy, win.ini.window.colBGz, 1.0 };
@@ -386,7 +388,7 @@ fn changeExtension(filename: []const u8, new_ext: []const u8) ![]const u8 {
 // loadIni
 //---------
 pub fn loadIni(win: *Window) !void {
-    //
+   // std.debug.print("loadIni():\n", .{});
     var sBuf: [std.fs.max_path_bytes]u8 = undefined;
     const exe_path: []u8 = if (is_devel_api) blk: {
         const exe_len = try std.process.executablePath(io, &sBuf);
@@ -412,7 +414,7 @@ pub fn loadIni(win: *Window) !void {
         }
     }
 
-        std.debug.print("Read ini: {s}\n", .{filename});
+    //std.debug.print("Read ini: {s}\n", .{filename});
 
     const file_size = if (is_devel_api)
         try file.length(io)
@@ -420,17 +422,17 @@ pub fn loadIni(win: *Window) !void {
         try file.getEndPos();
 
     const allocator = std.heap.page_allocator;
-        const buffer = try allocator.alloc(u8, file_size);
-        defer allocator.free(buffer);
+    const buffer = try allocator.alloc(u8, file_size);
+    defer allocator.free(buffer);
     if (is_devel_api) {
         _ = try file.readStreaming(io, &.{buffer});
     } else {
         _ = try file.read(buffer);
     }
 
-        const parsed_data = try std.json.parseFromSlice(TIni, allocator, buffer, .{});
-        defer parsed_data.deinit();
-        data = parsed_data.value;
+    const parsed_data = try std.json.parseFromSlice(TIni, allocator, buffer, .{});
+    defer parsed_data.deinit();
+    data = parsed_data.value;
     //} else |_| {
     //    std.debug.print("*.ini file not found: set \"DefaultIni\" values\n", .{});
     //    const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
@@ -441,6 +443,8 @@ pub fn loadIni(win: *Window) !void {
     // Window pos
     win.ini.window.startupPosX = data.window.startupPosX;
     win.ini.window.startupPosY = data.window.startupPosY;
+    //std.debug.print("data.window.startupPosX = {d}\n", .{data.window.startupPosX});
+    //std.debug.print("data.window.startupPosY = {d}\n", .{data.window.startupPosY});
     if (10 > win.ini.window.startupPosX) {
         win.ini.window.startupPosX = 10;
     }
@@ -457,6 +461,8 @@ pub fn loadIni(win: *Window) !void {
     // Window size
     win.ini.window.viewportWidth = data.window.viewportWidth;
     win.ini.window.viewportHeight = data.window.viewportHeight;
+    //std.debug.print("data.window.viewportWidth = {d}\n", .{data.window.viewportWidth});
+    //std.debug.print("data.window.viewportHeight = {d}\n", .{data.window.viewportHeight});
     if (win.ini.window.viewportWidth < 100) {
         win.ini.window.viewportWidth = 100;
     }
@@ -483,19 +489,22 @@ pub fn loadIni(win: *Window) !void {
 }
 
 //---------
-// saveIni  
+// saveIni
 //---------
 pub fn saveIni(win: *Window) !void {
+    //std.debug.print("saveIni():\n", .{});
     // Window pos
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
-        // Window size
-        const ws = ig.igGetMainViewport().*.WorkSize;
-        win.ini.window.viewportWidth = @intFromFloat(ws.x);
-        win.ini.window.viewportHeight = @intFromFloat(ws.y);
+    // Window size
+    const ws = ig.igGetMainViewport().*.WorkSize;
+    win.ini.window.viewportWidth = @intFromFloat(ws.x);
+    win.ini.window.viewportHeight = @intFromFloat(ws.y);
+    //std.debug.print("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
+    //std.debug.print("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
 
-        // Save to ini file
-        const allocator = std.heap.page_allocator;
+    // Save to ini file
+    const allocator = std.heap.page_allocator;
     var exe_path: []u8 = undefined;
     var exe_buf: [std.fs.max_path_bytes]u8 = undefined;
     if (@hasDecl(std.process, "executablePath")) {
@@ -505,8 +514,8 @@ pub fn saveIni(win: *Window) !void {
         exe_path = try std.fs.selfExePathAlloc(allocator);
     }
 
-        const filename = try changeExtension(exe_path, "ini");
-        std.debug.print("Write ini: {s}\n", .{filename});
+    const filename = try changeExtension(exe_path, "ini");
+    std.debug.print("Write ini: {s}\n", .{filename});
 
     const file = if (is_devel_api) blk: {
         break :blk try std.Io.Dir.cwd().createFile(io, filename, .{});
@@ -515,21 +524,21 @@ pub fn saveIni(win: *Window) !void {
     };
     defer if (is_devel_api) file.close(io) else file.close();
 
-        var buffer: [4096]u8 = undefined;
+    var buffer: [4096]u8 = undefined;
 
     var writer = if (is_devel_api)
         std.Io.Writer.fixed(&buffer)
     else
         std.io.Writer.fixed(&buffer);
 
-        var jw: std.json.Stringify = .{
-            .writer = &writer,
-            .options = .{ .whitespace = .indent_2 },
-        };
-        try jw.write(win.ini);
-    if (is_devel_api){
+    var jw: std.json.Stringify = .{
+        .writer = &writer,
+        .options = .{ .whitespace = .indent_2 },
+    };
+    try jw.write(win.ini);
+    if (is_devel_api) {
         try file.writeStreamingAll(io, writer.buffered());
-    }else{
+    } else {
         try file.writeAll(writer.buffered());
     }
 }
