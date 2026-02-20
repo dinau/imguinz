@@ -74,7 +74,7 @@ MAKEFLAGS += --no-print-directory
 #-------------------------
 EXT_LIB_DIR = ../000imguin_dev/imguin_git/libs
 TARGET_DIR = src/libc
-copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d cpimspinner imCTE imgui-knobs
+copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d copy_imspinner imCTE imgui-knobs
 
 # ImGuiColorTextEdit
 imCTE:
@@ -132,10 +132,10 @@ implot3d:
 	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}            $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
-cpimspinner:
-	@echo copying [ $(EXT_LIB_DIR)/$@] to $(TARGET_DIR)/
-	@-mkdir -p $(TARGET_DIR)/$@
-	@cp -f $(EXT_LIB_DIR)/$@/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/c$@/
+copy_imspinner:
+	@echo copying [ $(EXT_LIB_DIR)/imspinner] to $(TARGET_DIR)/
+	@-mkdir -p $(TARGET_DIR)/imspinner
+	@cp -f $(EXT_LIB_DIR)/imspinner/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/
 
 imgui-knobs:
 	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
@@ -167,7 +167,7 @@ cimgui_toggle:
 cimplot3d:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
 imspinner:
-	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@
+	git clone --recurse-submodules https://github.com/dalerank/$@  ../libs/$@
 cimCTE:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
 cimgui-knobs:

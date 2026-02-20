@@ -134,8 +134,7 @@ fn demo_SubplotsSizing() !void {
                 ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_NoDecorations);
                  var fi = 0.01 * (@as(f32,@floatFromInt(i)) + 1);
                 if (st.rows*st.cols > 1) {
-                    var vec4: ip.ImVec4 = undefined;
-                    ip.ImPlot_SampleColormap(@ptrCast(&vec4), @as(f32,@floatFromInt(i)) / @as(f32,@floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
+                    const vec4 = ip.ImPlot_SampleColormap(@as(f32,@floatFromInt(i)) / @as(f32,@floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
                     ip.ImPlot_SetNextLineStyle(vec4, utils_ip.IMPLOT_AUTO);
                 }
                 var label:[16]u8 = undefined;
@@ -178,8 +177,7 @@ fn demo_SubplotItemSharing() !void {
                         if (ip.ImPlot_BeginDragDropSourceItem(slLabel.ptr, 0)) {
                             st.curj = @intCast(j);
                             _ = ig.igSetDragDropPayload("MY_DND", null, 0, 0);
-                            var vec4: ip.ImVec4 = undefined;
-                            ip.ImPlot_GetLastItemColor(@ptrCast(&vec4));
+                            const vec4 =  ip.ImPlot_GetLastItemColor();
                             ip.ImPlot_ItemIcon_Vec4(vec4); ig.igSameLine(0, -1.0);
                             ig.igTextUnformatted(slLabel.ptr, "\n");
                             ip.ImPlot_EndDragDropSource();
@@ -1190,13 +1188,12 @@ fn demo_ErrorBars() !void {
         ip.ImPlot_SetupAxesLimits(0, 6, 0, 10, ip.ImPlotCond_Once);
         ipz.ImPlot_PlotBarsXyEx( "Bar", &xs, &bar, 5, 0.5,1, 0, utils_ip.stride(xs[0]));
         ipz.ImPlot_PlotErrorBars("Bar", &xs, &bar, &err1, 5);
-        var vec4: ip.ImVec4 = undefined;
-        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 1, utils_ip.IMPLOT_AUTO);
+        var vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_SetNextErrorBarStyle(vec4, 0, utils_ip.IMPLOT_AUTO);
         ipz.ImPlot_PlotErrorBarsNeg("Line", &xs, &lin1, &err1, &err2, 5);
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         ipz.ImPlot_PlotLineXy(      "Line", &xs, &lin1, 5);
-        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 2, utils_ip.IMPLOT_AUTO);
+        vec4 = ip.ImPlot_GetColormapColor(2, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_ErrorBar, vec4);
         ipz.ImPlot_PlotErrorBars(     "Scatter", &xs, &lin2, &err2, 5);
         ipz.ImPlot_PlotErrorBarsNegEx("Scatter", &xs, &lin2, &err3, &err4, 5, ip.ImPlotErrorBarsFlags_Horizontal, 0, utils_ip.stride(xs[0]));
@@ -1409,8 +1406,7 @@ fn demo_ScatterPlots() !void {
         ipz.ImPlot_PlotScatterXy("Data 1", &xs1, &ys1, 100);
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
 
-        var vec4: ip.ImVec4 = undefined;
-        ip.ImPlot_GetColormapColor(@ptrCast(&vec4), 1, utils_ip.IMPLOT_AUTO);
+        const vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, 6
                                    , vec4
                                    , utils_ip.IMPLOT_AUTO
@@ -1493,10 +1489,9 @@ fn demo_Tables() !void {
             ig.igText("%.3f V", st.data[st.offset]);
             _ = ig.igTableSetColumnIndex(2);
             ig.igPushID_Int(@intCast(row));
-            var vec4: ig.ImVec4 = undefined;
-            ip.ImPlot_GetColormapColor(@ptrCast(&vec4), @intCast(row), utils_ip.IMPLOT_AUTO);
+            const vec4 = ip.ImPlot_GetColormapColor(@intCast(row), utils_ip.IMPLOT_AUTO);
             utils_ip.Sparkline("##spark", &st.data, dtSize, 0, 11.0, @intCast(st.offset)
-              , vec4
+              , .{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w}
               , .{ .x = -1, .y = 35 });
             ig.igPopID();
         }

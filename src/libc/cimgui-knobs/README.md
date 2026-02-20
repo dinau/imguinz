@@ -24,7 +24,7 @@ imgui-knobs.h
 
 to your project and include `cimgui-knobs.h` in some source file.
 
-### Building and runiing demo in C language
+### Build and run demo in C 
 
 ---
 
@@ -32,7 +32,7 @@ to your project and include `cimgui-knobs.h` in some source file.
 
 ---
 
-- Windows10 OS or later 
+- Windows11 OS or later 
    - [Msys2/MinGW](https://www.msys2.org/) tools installed. (gcc, make, etc)
 
       ```sh
@@ -48,7 +48,7 @@ to your project and include `cimgui-knobs.h` in some source file.
    ```
 
 
-#### Building and running demo 
+#### Build and run demo 
 
 ---
 

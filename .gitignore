@@ -1,3 +1,6 @@
+toolsx/
+imgui_impl_null.*
+zig-pkg/
 NG.md
 compile-memo.md
 *.org

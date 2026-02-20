@@ -50,7 +50,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
 Raylib, rlImGui and many other libaries and examples in Zig with less external dependencies.
 
-- ImGui / CImGui version **1.92.5 dock** (2026/02)
+- ImGui / CImGui version **1.92.6 dock** (2026/02)
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
