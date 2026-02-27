@@ -1,7 +1,10 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
+const is_devel_api = builtin.zig_version.minor >= 16;
+const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
 
 const cte = @import("imcolortextedit");
 
@@ -25,16 +28,36 @@ pub fn gui_main(window: *app.Window) !void {
     const fileName = "./resources/main.cpp";
 
     const allocator = std.heap.page_allocator;
-    const file = try std.fs.cwd().openFile(fileName, .{});
-    defer file.close();
 
-    const stat = try file.stat();
+    const file = if (is_devel_api) blk: {
+        break :blk try std.Io.Dir.cwd().openFile(io, fileName, .{});
+    } else blk: {
+        break :blk try std.fs.cwd().openFile(fileName, .{});
+    };
+    defer {
+        if (is_devel_api) {
+            file.close(io);
+        } else {
+            file.close();
+        }
+    }
+
+    const stat = if (is_devel_api) blk: {
+        break :blk try file.stat(io);
+    } else blk: {
+        break :blk try file.stat();
+    };
+
     const file_size = stat.size;
 
     const sBuffer = try allocator.alloc(u8, file_size);
     defer allocator.free(sBuffer);
 
-    _ = try file.readAll(sBuffer);
+    if (is_devel_api)  {
+        _ = try file.readStreaming(io, &.{sBuffer});
+    } else {
+        _ = try file.readAll(sBuffer);
+    }
 
     const editor = cte.TextEditor_TextEditor();
     cte.TextEditor_SetLanguageDefinition(editor, cte.Cpp);

@@ -1,7 +1,10 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
+const is_devel_api = builtin.zig_version.minor >= 16;
+const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
 
 const imnodes = @import("imnodes");
 
@@ -160,24 +163,72 @@ fn saveObj(alloc: std.mem.Allocator, this: *recObj) !void {
     //-- Save the internal imnodes state
     imnodes.imnodes_SaveCurrentEditorStateToIniFile("save_load.ini");
     //-- Dump our editor state as bytes into a file
-    const fout = try std.fs.cwd().createFile("save_load.bytes", .{});
-    defer fout.close();
+    const fout = if (is_devel_api) blk: {
+        break :blk try std.Io.Dir.cwd().createFile(io, "save_load.bytes", .{});
+    } else blk: {
+        break :blk try std.fs.cwd().createFile("save_load.bytes", .{});
+    };
+    defer {
+        if (is_devel_api) {
+            fout.close(io);
+        } else {
+            fout.close();
+        }
+    }
+
+    var current_offset: u64 = 0;
+
     //-- Copy the vector: nodes to the file
-    try fout.writeAll(std.mem.asBytes(&this.nodes.items.len)); //   -- save vector:nodes size
+    if (is_devel_api) {
+        try fout.writePositionalAll(io, std.mem.asBytes(&this.nodes.items.len), current_offset);
+        current_offset += @sizeOf(usize);
+    } else {
+        try fout.writeAll(std.mem.asBytes(&this.nodes.items.len));
+    }
+
     for (this.nodes.items) |nd| {
-        try fout.writeAll(std.mem.asBytes(&nd.id));
-        try fout.writeAll(std.mem.asBytes(&nd.value));
+        if (is_devel_api) {
+            try fout.writePositionalAll(io, std.mem.asBytes(&nd.id), current_offset);
+            current_offset += @sizeOf(c_int);
+            try fout.writePositionalAll(io, std.mem.asBytes(&nd.value), current_offset);
+            current_offset += @sizeOf(f32);
+        } else {
+            try fout.writeAll(std.mem.asBytes(&nd.id));
+            try fout.writeAll(std.mem.asBytes(&nd.value));
+        }
     }
+
     //-- Copy the vector: links to the file
-    try fout.writeAll(std.mem.asBytes(&this.links.items.len)); //   -- save vector:links size
-    for (this.links.items) |lk| {
-        try fout.writeAll(std.mem.asBytes(&lk.id));
-        try fout.writeAll(std.mem.asBytes(&lk.start_attr));
-        try fout.writeAll(std.mem.asBytes(&lk.end_attr));
+    if (is_devel_api) {
+        try fout.writePositionalAll(io, std.mem.asBytes(&this.links.items.len), current_offset);
+        current_offset += @sizeOf(usize);
+    } else {
+        try fout.writeAll(std.mem.asBytes(&this.links.items.len));
     }
+
+    for (this.links.items) |lk| {
+        if (is_devel_api) {
+            try fout.writePositionalAll(io, std.mem.asBytes(&lk.id), current_offset);
+            current_offset += @sizeOf(c_int);
+            try fout.writePositionalAll(io, std.mem.asBytes(&lk.start_attr), current_offset);
+            current_offset += @sizeOf(c_int);
+            try fout.writePositionalAll(io, std.mem.asBytes(&lk.end_attr), current_offset);
+            current_offset += @sizeOf(c_int);
+        } else {
+            try fout.writeAll(std.mem.asBytes(&lk.id));
+            try fout.writeAll(std.mem.asBytes(&lk.start_attr));
+            try fout.writeAll(std.mem.asBytes(&lk.end_attr));
+        }
+    }
+
     //-- Copy the current_id to the file
-    try fout.writeAll(std.mem.asBytes(&this.current_id));
+    if (is_devel_api) {
+        try fout.writePositionalAll(io, std.mem.asBytes(&this.current_id), current_offset);
+    } else {
+        try fout.writeAll(std.mem.asBytes(&this.current_id));
+    }
 }
+
 
 //---------
 // loadObj
@@ -186,35 +237,105 @@ fn loadObj(alloc: std.mem.Allocator, this: *recObj) !void {
     //-- Load the internal imnodes state
     imnodes.imnodes_LoadCurrentEditorStateFromIniFile("save_load.ini");
     //-- Load our editor state into memory
-    const fin = std.fs.cwd().openFile("save_load.bytes", .{}) catch return;
-    defer fin.close();
+    //
+    const fileName = "save_load.bytes";
+    const fin = if (is_devel_api) blk: {
+        break :blk try std.Io.Dir.cwd().openFile(io, fileName, .{});
+    } else blk: {
+        break :blk try std.fs.cwd().openFile(fileName, .{});
+    };
+    defer {
+        if (is_devel_api) {
+            fin.close(io);
+        } else {
+            fin.close();
+        }
+    }
+
     //-- Load nodes into memory
     var sz: usize = undefined;
-    _ = try fin.readAll(std.mem.asBytes(&sz));
+    if (is_devel_api) {
+        const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&sz), 0);
+        if (bytes_read != @sizeOf(usize)) return error.UnexpectedEof;
+    } else {
+        _ = try fin.readAll(std.mem.asBytes(&sz));
+    }
+    var current_offset: u64 = @sizeOf(usize);
+
     if (sz == 0) {
         return;
     }
+
     for (0..sz) |_| {
         var id: c_int = undefined;
-        _ = try fin.readAll(std.mem.asBytes(&id));
+        if (is_devel_api) {
+            const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&id), current_offset);
+            if (bytes_read != @sizeOf(c_int)) return error.UnexpectedEof;
+            current_offset += @sizeOf(c_int);
+        } else {
+            _ = try fin.readAll(std.mem.asBytes(&id));
+        }
+
         var value: f32 = undefined;
-        _ = try fin.readAll(std.mem.asBytes(&value));
+        if (is_devel_api) {
+            const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&value), current_offset);
+            if (bytes_read != @sizeOf(f32)) return error.UnexpectedEof;
+            current_offset += @sizeOf(f32);
+        } else {
+            _ = try fin.readAll(std.mem.asBytes(&value));
+        }
+
         try this.nodes.append(alloc, .{ .id = id, .value = value });
     }
+
     //-- Load links into memory
-    _ = try fin.readAll(std.mem.asBytes(&sz));
+    if (is_devel_api) {
+        const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&sz), current_offset);
+        if (bytes_read != @sizeOf(usize)) return error.UnexpectedEof;
+        current_offset += @sizeOf(usize);
+    } else {
+        _ = try fin.readAll(std.mem.asBytes(&sz));
+    }
+
     for (0..sz) |_| {
         var id: c_int = undefined;
-        _ = try fin.readAll(std.mem.asBytes(&id));
+        if (is_devel_api) {
+            const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&id), current_offset);
+            if (bytes_read != @sizeOf(c_int)) return error.UnexpectedEof;
+            current_offset += @sizeOf(c_int);
+        } else {
+            _ = try fin.readAll(std.mem.asBytes(&id));
+        }
+
         var start_attr: c_int = undefined;
-        _ = try fin.readAll(std.mem.asBytes(&start_attr));
+        if (is_devel_api) {
+            const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&start_attr), current_offset);
+            if (bytes_read != @sizeOf(c_int)) return error.UnexpectedEof;
+            current_offset += @sizeOf(c_int);
+        } else {
+            _ = try fin.readAll(std.mem.asBytes(&start_attr));
+        }
+
         var end_attr: c_int = undefined;
-        _ = try fin.readAll(std.mem.asBytes(&end_attr));
+        if (is_devel_api) {
+            const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&end_attr), current_offset);
+            if (bytes_read != @sizeOf(c_int)) return error.UnexpectedEof;
+            current_offset += @sizeOf(c_int);
+        } else {
+            _ = try fin.readAll(std.mem.asBytes(&end_attr));
+        }
+
         try this.links.append(alloc, .{ .id = id, .start_attr = start_attr, .end_attr = end_attr });
     }
+
     //-- copy current_id into memory
     var current_id: c_int = undefined;
-    _ = try fin.readAll(std.mem.asBytes(&current_id));
+    if (is_devel_api) {
+        const bytes_read = try fin.readPositionalAll(io, std.mem.asBytes(&current_id), current_offset);
+        if (bytes_read != @sizeOf(c_int)) return error.UnexpectedEof;
+    } else {
+        _ = try fin.readAll(std.mem.asBytes(&current_id));
+    }
     this.current_id = current_id;
 }
 

@@ -103,11 +103,6 @@ fn point2px(point: f32) f32 {
     return (point * 96.0) / 72.0;
 }
 
-const ICON_MIN_FA: c_int = 0xf000;
-const ICON_MAX_FA: c_int = 0xf8ff;
-
-const ranges_icon_fonts = [_]ig.ImWchar{ ICON_MIN_FA, ICON_MAX_FA, 0 };
-
 var config: *ig.ImFontConfig = undefined;
 
 /// Setup fonts for ImGui
@@ -163,6 +158,6 @@ pub export fn setupFonts() ?*ig.ImFont {
         IconFontPath,
         point2px(11.0),
         config,
-        &ranges_icon_fonts,
+        null,
     );
 }
