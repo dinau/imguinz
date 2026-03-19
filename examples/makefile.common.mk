@@ -33,7 +33,7 @@ gen:
 clean: cleanall
 
 cleanall:
-	@-rm -fr zig-out .zig-cache
+	@-rm -fr zig-out .zig-cache zig-pkg
 
 cleanexe:
 	@-rm -fr zig-out

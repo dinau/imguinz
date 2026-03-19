@@ -176,6 +176,8 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    
    ![alt](img/myapp.gif)
 
+[^except_raylib]: Except Raylib examples
+
 ### Prerequisites
 
 ---
@@ -184,8 +186,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
-   - Devel version: zig-016.0-dev.2670 (2026/02/26)  
-        Not all example codes can be compiled.
+   - Devel version: zig-016.0-dev.2915 (2026/03/18)[^except_raylib]
 
 - WindowsOS
    - Windows11
@@ -538,8 +539,8 @@ Notes:
 - ImPlot is compiled from source (implot.h / implot.cpp)
 
 
+Developer_mode: Windows11  
 
-
-[^developer_mode]
-[^developer_mode]: Windows11  
+```txt
 [Settings] - [Privacy & Security] - [For developers] - [Developer Mode]: [ON]
+```

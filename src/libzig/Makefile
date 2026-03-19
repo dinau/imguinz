@@ -8,10 +8,12 @@ DIRS = \
 	imguizmo \
 	imknobs \
 	imnodes \
+	impl_dx11 \
 	impl_glfw \
 	impl_opengl3 \
 	impl_sdl3 \
 	impl_sdlgpu3 \
+	impl_win32 \
 	implot \
 	implot3d \
 	imspinner \
