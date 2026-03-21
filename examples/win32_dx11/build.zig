@@ -53,14 +53,15 @@ pub fn build(b: *std.Build) void {
 
     const libs = .{
         "d3d11",
-        "dxgi",
-        "dwmapi",
         "d3dcompiler_47",
-        // optional
-        "user32",
-        "gdi32",
-        "imm32", // for CJK IME
+        "dwmapi",
+        "dxgi",
         "dxguid",
+        "gdi32",
+        "user32",
+        "ws2_32",
+        // optional
+        "imm32", // for CJK IME
     };
     inline for (libs) |lib| {
         exe.root_module.linkSystemLibrary(lib, .{});

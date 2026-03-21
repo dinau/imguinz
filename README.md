@@ -186,7 +186,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
-   - Devel version: zig-016.0-dev.2915 (2026/03/18)[^except_raylib]
+   - Devel version: zig-016.0-dev.2960 (2026/03/19)[^except_raylib]
 
 - WindowsOS
    - Windows11
@@ -510,13 +510,11 @@ https://github.com/libsdl-org/SDL/releases
 | **Zig**, C lang.     | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
 | **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                                     |
 
-
 #### SDL game tutorial Platfromer
 
 ---
 
 ![ald](https://github.com/dinau/nelua-platformer/raw/main/img/platformer-nelua-sdl2.gif)
-
 
 | Language             |          | SDL         | Project                                                                                                                                               |
 | -------------------: | :---:    | :---:       | :----------------------------------------------------------------:                                                                                    |
@@ -525,8 +523,6 @@ https://github.com/libsdl-org/SDL/releases
 | **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
 | **Zig**              | Compiler | SDL2        | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
-
-
 
 Notes: 
 
