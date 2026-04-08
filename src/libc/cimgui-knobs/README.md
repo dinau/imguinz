@@ -4,8 +4,8 @@
 ![alt](https://github.com/dinau/cimgui-knobs/actions/workflows/windows.yml/badge.svg)
 ![alt](https://github.com/dinau/cimgui-knobs/actions/workflows/linux.yml/badge.svg) 
 
-This is a port/adaptation of [ImGui-Knobs](https://github.com/altschuler/imgui-knobs), for C language (contributed to [ImGuin](http://github.com/dinau/imguin) project)  by [system64MC](https://github.com/system64MC) at [2024/12](https://github.com/dinau/imguin/issues/16#issuecomment-2538066999).  
-I've just isolated the sources from ImGuin project for maintenance and convenience and added [a simple demo program in C language](demo/c/main.c).
+This is a port/adaptation of [ImGui-Knobs](https://github.com/altschuler/imgui-knobs), for C (contributed to [ImGuin](http://github.com/dinau/imguin) project)  by [system64MC](https://github.com/system64MC) at [2024/12](https://github.com/dinau/imguin/issues/16#issuecomment-2538066999).  
+I've just isolated the sources from ImGuin project for maintenance and convenience and added [a simple demo program in C](demo/c/main.c).
 
 ![alt](img/cimgui-knobs.png)
 

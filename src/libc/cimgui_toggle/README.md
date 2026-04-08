@@ -5,7 +5,7 @@
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Custom window](#custom-window)
-  - [Using this project](#using-this-project)
+  - [Projects that use cimgui_toggle](#projects-that-use-cimgui_toggle)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -19,7 +19,7 @@
 
 `cimgui_toggle` is C wrapper for [imgui_toggle](https://github.com/cmdwtf/imgui_toggle) library 
 
-ImGui / CImGui : 1.92.5 (2026/02)
+ImGui / CImGui : 1.92.6 (2026/02)
 
 ![alt](img/simple.png)
 
@@ -73,13 +73,13 @@ ImGui / CImGui : 1.92.5 (2026/02)
 ![alt](img/custom.png)
 
 
-### Using this project
+### Projects that use cimgui_toggle
 
 ---
 
-| Language             |          | Project                                                             |
-| -------------------: | :---:    | :----------------------------------------------------------------:  |
-| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui)                   |
-| **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin)                           |
-| **Zig**, C           | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build) |
-| **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                         |
+| Language             |          | Project                                                                                                 |
+| -------------------: | :---:    | :----------------------------------------------------------------:                                      |
+| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui) / [NeLuaImGui2](https://github.com/dinau/neluaImGui2) |
+| **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin)                                                               |
+| **Zig**, C           | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                     |
+| **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                                                             |

@@ -50,7 +50,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
 Raylib, rlImGui and many other libaries and examples in Zig with less external dependencies.
 
-- ImGui / CImGui version **1.92.6 dock** (2026/02)
+- ImGui / CImGui version **1.92.7 dock** (2026/04)
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
@@ -176,7 +176,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    
    ![alt](img/myapp.gif)
 
-[^except_raylib]: Except Raylib examples
+[^except_raylib]: Except Raylib examples and ImGui_Toggle
 
 ### Prerequisites
 
@@ -186,7 +186,7 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
-   - Devel version: zig-016.0-dev.2960 (2026/03/19)[^except_raylib]
+   - Devel version: zig-016.0-dev.3133 (2026/04/07)[^except_raylib]
 
 - WindowsOS
    - Windows11

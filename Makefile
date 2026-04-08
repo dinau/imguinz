@@ -1,26 +1,20 @@
 # All examples will be built at a time.
 #
-ifeq ($(OS),Windows_NT)
-	EXAMPLE_DIRS += \
-								examples/sdl3_opengl3 \
-								examples/sdl3_sdlgpu3 \
-							  examples/win32_dx11
-endif
 
 EXAMPLE_DIRS += \
 							examples/glfw_opengl3 \
 							examples/glfw_opengl3_image_load \
 							examples/glfw_opengl3_imfileopendialog \
 							examples/glfw_opengl3_imgui_toggle \
+							examples/glfw_opengl3_imguicolortextedit \
+							examples/glfw_opengl3_imguizmo \
 							examples/glfw_opengl3_imknobs \
+							examples/glfw_opengl3_imnodes \
+							examples/glfw_opengl3_implot \
+							examples/glfw_opengl3_implot3d \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/iconFontViewer \
-							examples/glfw_opengl3_implot \
-							examples/glfw_opengl3_implot3d \
-							examples/glfw_opengl3_imguizmo \
-							examples/glfw_opengl3_imnodes \
-							examples/glfw_opengl3_imguicolortextedit \
 							examples/imPlotDemo
 
 EXAMPLE_DIRS_RAYLIB := \
@@ -28,6 +22,12 @@ EXAMPLE_DIRS_RAYLIB := \
 							examples/raylib_cjk \
 							examples/rlimgui_basic
 
+ifeq ($(OS),Windows_NT)
+	EXAMPLE_DIRS += \
+								examples/sdl3_opengl3 \
+								examples/sdl3_sdlgpu3 \
+							  examples/win32_dx11
+endif
 
 all: std raylib
 
@@ -61,8 +61,9 @@ gen: copylibs
 
 #
 define def_make
-	@echo ==== Enter: $(1) ====
+	@echo ==== $(1) ====
 	@-$(MAKE) -C  $(1) $(2)
+	@echo ""
 	@#$(MAKE) -C  $(1) cleancache
 
 endef
@@ -78,7 +79,7 @@ copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d co
 
 # ImGuiColorTextEdit
 imCTE:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/ImGuiColorTextEdit
 	@-mkdir -p $(TARGET_DIR)/c$@/ImGuiColorTextEdit/vendor/regex
 	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}                            $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/ImGuiColorTextEdit/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/ImGuiColorTextEdit/
@@ -86,7 +87,7 @@ imCTE:
 	@cp -rf $(EXT_LIB_DIR)/c$@/ImGuiColorTextEdit/vendor/regex/include         $(TARGET_DIR)/c$@/ImGuiColorTextEdit/vendor/regex/include
 
 imgui:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@/backends
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}        $(TARGET_DIR)/c$@/
@@ -94,13 +95,13 @@ imgui:
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/backends/{*.cpp,*.h}      	       $(TARGET_DIR)/c$@/$@/backends/
 
 imgui_toggle:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}         $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
 ImGuiFileDialog:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/C$@/libs/ImGuiFileDialog/dirent
 	@-mkdir -p $(TARGET_DIR)/C$@/libs/ImGuiFileDialog/stb
 	@cp -f $(EXT_LIB_DIR)/CImGuiFileDialog/{LICENSE,README.md,*.h} 	                           $(TARGET_DIR)/cimguifiledialog/
@@ -109,36 +110,36 @@ ImGuiFileDialog:
 	@cp -f $(EXT_LIB_DIR)/CImGuiFileDialog/libs/ImGuiFileDialog/stb/{LICENSE,*.h,README.md}    $(TARGET_DIR)/CImGuiFileDialog/libs/ImGuiFileDialog/stb/
 
 imguizmo:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/ImGuizmo
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}          $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/ImGuizmo/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/ImGuizmo/
 
 imnodes:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@cp -f $(EXT_LIB_DIR)/c$@/{README.md,*.cpp,*.h}               $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE.md,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
 implot:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}    $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
 implot3d:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/$@
 	@cp -f $(EXT_LIB_DIR)/c$@/{*.cpp,*.h,README.md}            $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/$@/
 
 copy_imspinner:
-	@echo copying [ $(EXT_LIB_DIR)/imspinner] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/imspinner] to $(TARGET_DIR)/imspinner
 	@-mkdir -p $(TARGET_DIR)/imspinner
-	@cp -f $(EXT_LIB_DIR)/imspinner/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/
+	@cp -f $(EXT_LIB_DIR)/imspinner/{*.cpp,*.h,LICENSE.txt,*.md}         $(TARGET_DIR)/imspinner
 
 imgui-knobs:
-	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
 	@-mkdir -p $(TARGET_DIR)/c$@/libs/$@
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}         $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/libs/$@/

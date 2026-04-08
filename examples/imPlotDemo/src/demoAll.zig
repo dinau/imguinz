@@ -1543,11 +1543,14 @@ fn demo_DragRects() !void {
         _ = ip.ImPlot_DragRect(0, &st.rect.X.Min, &st.rect.Y.Min, &st.rect.X.Max, &st.rect.Y.Max, .{ .x = 1, .y = 0, .z = 1, .w = 1 }, st.flags, &st.clicked, &st.hovered, &st.held);
         ip.ImPlot_EndPlot();
     }
-    const vec4 = ip.ImPlot_GetStyle().*.Colors[ip.ImPlotCol_PlotBg];
+    // For zig-0.16.0-dev.2905 (2026/03/13)
+    //const vec4 = ip.ImPlot_GetStyle().*.Colors[ip.ImPlotCol_PlotBg];
+    const colors_ptr = ip.ImPlot_GetStyle().*.Colors;
+    const vec4 = colors_ptr[ip.ImPlotCol_PlotBg];
     const bg_col: ip.ImVec4 =
       if (st.held) .{ .x = 0.5, .y = 0, .z = 0.5, .w = 1 }
       else if (st.hovered) .{ .x = 0.25, .y = 0, .z = 0.25, .w = 1 }
-      else .{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w};
+      else vec4;
     ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_PlotBg, bg_col);
     if (ip.ImPlot_BeginPlot("##rect", .{ .x = -1, .y = 150 }, ip.ImPlotFlags_CanvasOnly)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);

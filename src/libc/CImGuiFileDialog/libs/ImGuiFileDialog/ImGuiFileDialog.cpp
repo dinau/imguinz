@@ -3877,7 +3877,7 @@ bool IGFD::FileDialog::Display(const std::string& vKey, ImGuiWindowFlags vFlags,
                 m_CurrentDisplayedFlags = vFlags;
             } else {
                 auto win = ImGui::GetCurrentWindowRead();
-                if (win->Viewport->Idx != 0)
+                if (win && win->Viewport->Idx != 0)
                     m_CurrentDisplayedFlags |= ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar;
                 else
                     m_CurrentDisplayedFlags = vFlags;
@@ -3914,7 +3914,10 @@ bool IGFD::FileDialog::Display(const std::string& vKey, ImGuiWindowFlags vFlags,
             ImGui::EndChild();
 
             // for display in dialog center, the confirm to overwrite dlg
-            m_FileDialogInternal.dialogCenterPos = ImGui::GetCurrentWindowRead()->ContentRegionRect.GetCenter();
+            auto* win = ImGui::GetCurrentWindowRead();
+            if(win){
+                m_FileDialogInternal.dialogCenterPos = win->ContentRegionRect.GetCenter();
+            }
 
             // when the confirm to overwrite dialog will appear we need to
             // disable the modal mode of the main file dialog
@@ -4419,7 +4422,7 @@ void IGFD::FileDialog::m_DrawFileListView(ImVec2 vSize) {
 
             int column_id = 0;
             bool _rowHovered = false;
-            m_FileListClipper.Begin((int)fdi.GetFilteredListSize(), ImGui::GetTextLineHeightWithSpacing() + ImGui::GetStyle().CellPadding.y);
+            m_FileListClipper.Begin((int)fdi.GetFilteredListSize(), ImGui::GetTextLineHeight() + 2.f * ImGui::GetStyle().CellPadding.y);
             while (m_FileListClipper.Step()) {
                 for (int i = m_FileListClipper.DisplayStart; i < m_FileListClipper.DisplayEnd; i++) {
                     if (i < 0) {
