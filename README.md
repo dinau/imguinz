@@ -3,6 +3,7 @@
 
 - [ImGuinZ](#imguinz)
   - [Zig fetch](#zig-fetch)
+    - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
