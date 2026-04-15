@@ -83,7 +83,8 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    zig fetch --save git+https://github.com/dinau/imguinz
    ```
 
-1. Add dependencies to `build.zig`
+1. Add dependencies to `build.zig`  
+Please insert the following lines above `b.installArtifact(exe);`.
 
    ```zig
    const imguinz = b.dependency("imguinz", .{});
@@ -176,18 +177,21 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
    
    ![alt](img/myapp.gif)
 
-[^except_raylib]: Except Raylib examples and ImGui_Toggle
+#### Try Wasm demo in your browser
 
+---
+
+Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
+![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
+ 
 ### Prerequisites
 
 ---
 
 - Zig compiler version confirmed
 
-   - Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip) [^except_raylib]
-   - Linux:     [zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)[^except_raylib]
-   - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
-   - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
+   - Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)
+   - Linux:     [zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
 - WindowsOS
    - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
