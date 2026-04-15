@@ -1,20 +1,22 @@
 const std = @import("std");
 const ig = @import("cimgui");
 
+pub extern "c" fn existsFile(fname: [*c]const u8) bool;
+
 //---------------
 //--- existsFile
 //---------------
-pub fn existsFile(fname: []const u8) !bool {
-    var file = std.fs.cwd().createFile(fname, .{ .exclusive = true }) catch |e|
-        switch (e) {
-            error.PathAlreadyExists => {
-                return true;
-            },
-            else => return e,
-        };
-    defer file.close();
-    return false;
-}
+//pub fn existsFile(fname: []const u8) bool {
+//    var file = std.fs.cwd().createFile(fname, .{ .exclusive = true }) catch |e|
+//        switch (e) {
+//            error.PathAlreadyExists => {
+//                return true;
+//            },
+//            else => return false,
+//        };
+//    defer file.close();
+//    return false;
+//}
 
 //---------------
 //--- setTooltip

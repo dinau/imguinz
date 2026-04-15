@@ -15,6 +15,14 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    mod.addCSourceFiles(.{
+        .files = &.{
+            "src/utils.c",
+        },
+        .flags = &.{
+            "-O2",
+        },
+    });
 
     // import modules
     const modules = [_][]const u8{

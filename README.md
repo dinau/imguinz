@@ -184,10 +184,10 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 
 - Zig compiler version confirmed
 
+   - Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip) [^except_raylib]
+   - Linux:     [zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)[^except_raylib]
    - Windows: [zig-x86_64-windows-0.15.2.zip](https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip)
    - Linux:   [zig-x86_64-linux-0.15.2.tar.xz](https://ziglang.org/download/0.15.2/zig-x86_64-linux-0.15.2.tar.xz)
-   - Devel version: zig-016.0-dev.3133 (2026/04/07)[^except_raylib]
-
 - WindowsOS
    - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
