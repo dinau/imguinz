@@ -1,8 +1,8 @@
-const ip = @import("implot");
-const ipz = @import("zimplot.zig");
 const app = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
+const ip = @import("implot");
+const ipz = @import("zimplot.zig");
 
 // From C standard libraries
 pub extern fn rand() c_int;
@@ -88,8 +88,17 @@ fn imPlotWindow(fshow: *bool) void {
         if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
             defer ip.ImPlot_EndPlot();
             // Using "./zimplot.zig"
-            ipz.ImPlot_PlotBars("My Bar Plot", &st.bar_data, st.bar_data.len);
-            ipz.ImPlot_PlotLineXy("My Line Plot", &st.x_data, &st.y_data, st.x_data.len);
+            ipz.ImPlot_PlotBars(.{
+                .label = "My Bar Plot",
+                .values = &st.bar_data,
+                .count = st.bar_data.len,
+            });
+            ipz.ImPlot_PlotLine(.{
+                .label = "My Line Plot",
+                .xs = &st.x_data,
+                .ys = &st.y_data,
+                .count = st.x_data.len,
+            });
         }
     }
 }
@@ -97,6 +106,7 @@ fn imPlotWindow(fshow: *bool) void {
 //---------------
 // imPlotWindow2
 //---------------
+// Not using "./zimplot.zig"
 fn imPlotWindow2(fshow: *bool) void {
     const numx = 20;
     const st = struct {
@@ -118,20 +128,12 @@ fn imPlotWindow2(fshow: *bool) void {
         defer ig.igEnd();
         if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
             defer ip.ImPlot_EndPlot();
-            // Not using "./zimplot.zig"
-            ip.ImPlot_PlotBars_S32PtrInt("My Bar Plot"
-                                    ,&st.bar_data
-                                    ,st.bar_data.len
-                                    ,0.67 // bar_size
+            ip.ImPlot_PlotBars_S32PtrInt("My Bar Plot", &st.bar_data, st.bar_data.len, 0.67 // bar_size
                                     ,0.0  // shift
                                     ,0    // ImPlotFlags
                                     ,0    // offset
                                     ,@sizeOf(ig.ImS32)); // stride
-            ip.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot"
-                                    ,&st.x_data
-                                    ,&st.y_data
-                                    ,st.x_data.len
-                                    ,0    // ImPlotFlags
+            ip.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot", &st.x_data, &st.y_data, st.x_data.len, 0 // ImPlotFlags
                                     ,0    // offset
                                     ,@sizeOf(ig.ImS32)); // stride
         }
@@ -142,7 +144,7 @@ fn imPlotWindow2(fshow: *bool) void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
     defer window.destroyImGui();
 
     _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft

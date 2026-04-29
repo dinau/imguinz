@@ -1,7 +1,7 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [ImGuinZ](#imguinz)
+- [ImGuinz](#imguinz)
   - [Zig fetch](#zig-fetch)
     - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
   - [Prerequisites](#prerequisites)
@@ -23,7 +23,8 @@
     - [Showing CJK multi byte fonts and input UTF-8 text](#showing-cjk-multi-byte-fonts-and-input-utf-8-text)
     - [Icon font viewer](#icon-font-viewer)
     - [Image load / save](#image-load--save)
-    - [glfw_opengl3_implot](#glfw_opengl3_implot)
+    - [ImPlot](#implot)
+    - [imgui_zoomable_image](#imgui_zoomable_image)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
     - [ImPlot demo source in Zig lang.](#implot-demo-source-in-zig-lang)
@@ -45,11 +46,11 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## ImGuinZ 
+## ImGuinz 
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
-Raylib, rlImGui and many other libaries and examples in Zig with less external dependencies.
+Raylib, rlImGui and many other libaries and examples in [Zig](https://ziglang.org/) with less external dependencies.
 
 - ImGui / CImGui version **1.92.7 dock** (2026/04)
 - OS: Windows11 and Linux
@@ -73,6 +74,8 @@ Raylib, rlImGui and many other libaries and examples in Zig with less external d
 ### Zig fetch 
 
 ---
+
+Use zig-0.16.0 or later
 
 1. Zig fetch `imguinz`
 
@@ -190,9 +193,11 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
 ---
 
 - Zig compiler version confirmed
-
-   - Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)
-   - Linux:     [zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
+   - [x] zig-0.16.0  
+      Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
+      Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
+   - [x] zig-0.17.0-dev.135 
+   - [x] \(zig-0.15.2\): Deprecated 
 - WindowsOS
    - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
@@ -237,6 +242,9 @@ Library name / C lang. wrapper
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle) (2025/05)
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) (2025/05)
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/07)
+- [x] [imgui_zoomable_image](https://github.com/danielm5/imgui_zoomable_image) / [cimgui_zoomable_image](https://github.com/dinau/cimgui_zoomable_image) (2026/04)
+- [x] https://github.com/nothings/stb
+- [x] https://github.com/FortAwesome/Font-Awesome
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) (2025/09) WIP 
 
 Additional examples
@@ -400,13 +408,24 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_image_load.png)  
 
-#### glfw_opengl3_implot
+#### ImPlot
 
 ---
 
 [main.zig](https://github.com/dinau/imguinz/blob/main/examples/glfw_opengl3_implot/src/main.zig)
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_implot.png)
+
+
+
+#### imgui_zoomable_image
+
+---
+
+Try Wasm live demo in your browser  
+Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_image/wasm/)  
+
+![alt](https://github.com/dinau/cimgui_zoomable_image/raw/main/img/snapshot.png)
 
 ### ImPlot Demo written in Zig lang.
 
@@ -477,7 +496,6 @@ make run   # or zig build --release=fast run
 ---
 
 ![alt](https://github.com/dinau/imguinz/raw/main/examples/imPlotDemo/img/DragRects.png)
-
 
 ### Show / Hide console window
 

@@ -241,10 +241,10 @@ fn demo_LogScale() !void {
     if (ip.ImPlot_BeginPlot("Log Plot", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_Log10);
         ip.ImPlot_SetupAxesLimits(0.1, 100, 0, 10, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotLineXy("f(x) = x",        &xs, &xs,  1001);
-        ipz.ImPlot_PlotLineXy("f(x) = sin(x)+1", &xs, &ys1, 1001);
-        ipz.ImPlot_PlotLineXy("f(x) = log(x)",   &xs, &ys2, 1001);
-        ipz.ImPlot_PlotLineXy("f(x) = 10^x",     &xs, &ys3, 21);
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = x",        .xs = &xs, .ys = &xs,  .count = 1001});
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = sin(x)+1", .xs = &xs, .ys = &ys1, .count = 1001});
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = log(x)",   .xs = &xs, .ys = &ys2, .count = 1001});
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = 10^x",     .xs = &xs, .ys = &ys3, .count = 21  });
         ip.ImPlot_EndPlot();
     }
 }
@@ -263,8 +263,8 @@ fn demo_SymmetricLogScale() !void {
     }
     if (ip.ImPlot_BeginPlot("SymLog Plot", .{.x=-1, .y=0} ,0)) {
         ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_SymLog);
-        ipz.ImPlot_PlotLineXy("f(x) = a*x+b"       ,&xs, &ys2,1001);
-        ipz.ImPlot_PlotLineXy("f(x) = math.sin(x)" ,&xs, &ys1,1001);
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = a*x+b"       , .xs = &xs, .ys = &ys2, .count = 1001});
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x)" , .xs = &xs, .ys = &ys1, .count = 1001});
         ip.ImPlot_EndPlot();
     }
 }
@@ -292,7 +292,7 @@ fn demo_CustomScale() !void {
         ip.ImPlot_SetupAxis(ip.ImAxis_Y1, "Sqrt", 0);
         ip.ImPlot_SetupAxisScale_PlotTransform(ip.ImAxis_Y1, TransformForward_Sqrt, TransformInverse_Sqrt, null);
         ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_Y1, 0, utils_ip.INFINITY_f64);
-        ipz.ImPlot_PlotLineXy("##data" ,&v ,&v ,100);
+        ipz.ImPlot_PlotLine(.{.label = "##data" , .xs = &v, .ys = &v, .count = 100});
         ip.ImPlot_EndPlot();
     }
 }
@@ -345,18 +345,18 @@ fn demo_MultipleAxes() !void {
             ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y3, 0, 300, ip.ImPlotCond_Once);
         }
 
-        ipz.ImPlot_PlotLineXy("f(x) = x", &xs, &xs, 1001);
+        ipz.ImPlot_PlotLine(.{.label = "f(x) = x", .xs = &xs, .ys = &xs, .count = 1001});
         if (st.x2_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y1);
-            ipz.ImPlot_PlotLineXy("f(x) = math.sin(x)*3+1", &xs2, &ys1, 1001);
+            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x)*3+1", .xs = &xs2, .ys = &ys1, .count = 1001});
         }
         if (st.y2_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X1, ip.ImAxis_Y2);
-            ipz.ImPlot_PlotLineXy("f(x) = math.cos(x)*.2+.5", &xs, &ys2, 1001);
+            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.cos(x)*.2+.5", .xs = &xs, .ys = &ys2, .count = 1001});
         }
         if (st.x2_axis and st.y3_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y3);
-            ipz.ImPlot_PlotLineXy("f(x) = math.sin(x+.5)*100+200 ", &xs2, &ys3, 1001);
+            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x+.5)*100+200 ", .xs = &xs2, .ys = &ys3, .count = 1001});
         }
         ip.ImPlot_EndPlot();
     }
@@ -444,13 +444,13 @@ fn demo_LinkedAxes() !void {
         if (ip.ImPlot_BeginPlot("Plot A", .{ .x = -1, .y = 0 }, 0)) {
             ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1 , if(st.linkx) &st.lims.X.Min else null, if(st.linkx) &st.lims.X.Max else null);
             ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1 , if(st.linky) &st.lims.Y.Min else null, if(st.linky) &st.lims.Y.Max else null);
-            ipz.ImPlot_PlotLine("Line", &data, 2);
+            ipz.ImPlot_PlotLine(.{.label = "Line", .values = &data, .count = 2});
             ip.ImPlot_EndPlot();
         }
         if (ip.ImPlot_BeginPlot("Plot B", .{ .x = -1, .y = 0 }, 0)) {
             ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1 , if(st.linkx) &st.lims.X.Min else null, if(st.linkx) &st.lims.X.Max else null);
             ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1 , if(st.linky) &st.lims.Y.Min else null, if(st.linky) &st.lims.Y.Max else null);
-            ipz.ImPlot_PlotLine("Line", &data, 2);
+            ipz.ImPlot_PlotLine(.{.label = "Line", .values = &data, .count = 2});
             ip.ImPlot_EndPlot();
         }
         ip.ImPlot_EndAlignedPlots();
@@ -495,9 +495,9 @@ fn demo_EqualAxes() !void {
     if (ip.ImPlot_BeginPlot("##EqualAxes",.{.x=-1, .y=0},ip.ImPlotFlags_Equal)) {
         ip.ImPlot_SetupAxis(ip.ImAxis_X2, null, ip.ImPlotAxisFlags_AuxDefault);
         ip.ImPlot_SetupAxis(ip.ImAxis_Y2, null, ip.ImPlotAxisFlags_AuxDefault);
-        ipz.ImPlot_PlotLineXy("Circle",&xs1,&ys1,360);
+        ipz.ImPlot_PlotLine(.{.label = "Circle", .xs = &xs1, .ys = &ys1, .count = 360});
         ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y2);
-        ipz.ImPlot_PlotLineXy("Diamond",&xs2,&ys2,5);
+        ipz.ImPlot_PlotLine(.{.label = "Diamond", .xs = &xs2, .ys = &ys2, .count = 5});
         ip.ImPlot_EndPlot();
     }
 }
@@ -529,8 +529,8 @@ fn demo_AutoFittingData() !void {
 
     if (ip.ImPlot_BeginPlot("##DataFitting", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("X", "Y", st.xflags, st.yflags);
-        ipz.ImPlot_PlotLine("Line",  &data,101);
-        ipz.ImPlot_PlotStems("Stems",&data,101);
+        ipz.ImPlot_PlotLine(.{.label = "Line",  .values = &data, .count = 101});
+        ipz.ImPlot_PlotStems(.{.label = "Stems", .values = &data, .count = 101});
         ip.ImPlot_EndPlot();
     }
 }
@@ -566,13 +566,13 @@ fn demo_OffsetAndStride() !void {
         var buff:[32]u8 = undefined;
         for (0..k_circles)|ci| {
             _= snprintf(&buff, buff.len, "Circle %d", ci);
-            ipz.ImPlot_PlotLineXyEx(&buff
-              , interleaved_data[ci * 2 + 0..].ptr
-              , interleaved_data[ci * 2 + 1..].ptr
-              , k_points_per
-              , 0
-              , st.offset
-              , 2 * k_circles * @sizeOf(@TypeOf(interleaved_data[0])));
+            ipz.ImPlot_PlotLine(.{.label = &buff
+              , .xs = interleaved_data[ci * 2 + 0..].ptr
+              , .ys = interleaved_data[ci * 2 + 1..].ptr
+              , .count = k_points_per
+              , .flags = 0
+              , .offset = st.offset
+              , .stride = 2 * k_circles * @sizeOf(@TypeOf(interleaved_data[0]))});
         }
         ip.ImPlot_EndPlot();
         ip.ImPlot_PopColormap(1);
@@ -621,11 +621,11 @@ fn demo_DragPoints() !void {
         }
 
         ip.ImPlot_SetNextLineStyle(.{.x=1, .y=0.5, .z=1, .w=1}, if (st.hovered[1] or st.held[1]) 2.0 else 1.0);
-        ipz.ImPlot_PlotLineXyEx("##h1", @as([*c]f64,@ptrCast(&st.P[0].x)), @as([*c]f64,@ptrCast(&st.P[0].y)), 2, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ipz.ImPlot_PlotLine(.{.label = "##h1", .xs = @as([*c]f64,@ptrCast(&st.P[0].x)), .ys = @as([*c]f64,@ptrCast(&st.P[0].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
         ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.5, .z=1, .w=1}, if (st.hovered[2] or st.held[2]) 2.0 else 1.0);
-        ipz.ImPlot_PlotLineXyEx("##h2",@as([*c]f64,@ptrCast(&st.P[2].x)), @as([*c]f64,@ptrCast(&st.P[2].y)), 2, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ipz.ImPlot_PlotLine(.{.label = "##h2", .xs = @as([*c]f64,@ptrCast(&st.P[2].x)), .ys = @as([*c]f64,@ptrCast(&st.P[2].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
         ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.9, .z=0, .w=1}, if (st.hovered[0] or st.held[0] or st.hovered[3] or st.held[3])  3.0 else 2.0);
-        ipz.ImPlot_PlotLineXyEx("##bez",@as([*c]f64,@ptrCast(&B[0].x)), @as([*c]f64,@ptrCast(&B[0].y)), 100, 0, 0, @sizeOf(ip.ImPlotPoint));
+        ipz.ImPlot_PlotLine(.{.label = "##bez", .xs = @as([*c]f64,@ptrCast(&B[0].x)), .ys = @as([*c]f64,@ptrCast(&B[0].y)), .count = 100, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
         ip.ImPlot_EndPlot();
     }
 }
@@ -652,7 +652,7 @@ fn demo_Config() !void {
             const x = [2]f64{now, now + 24*3600};
             const y = [2]f64{0, @as(f64,@floatFromInt(i)) / 9.0};
             ig.igPushID_Int(@intCast(i));
-            ipz.ImPlot_PlotLineXy("##Line",&x,&y,2);
+            ipz.ImPlot_PlotLine(.{.label = "##Line", .xs = &x, .ys = &y, .count = 2});
             ig.igPopID();
         }
         ip.ImPlot_EndPlot();
@@ -699,8 +699,8 @@ fn demo_Help() !void {
 fn demo_BarPlots() !void {
     const data = [10]ig.ImS8{1,2,3,4,5,6,7,8,9,10};
     if (ip.ImPlot_BeginPlot("Bar Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ipz.ImPlot_PlotBarsEx("Vertical",  &data,10,0.7,1, 0, 0, utils_ip.stride(data[0]));
-        ipz.ImPlot_PlotBarsEx("Horizontal",&data,10,0.4,1,ip.ImPlotBarsFlags_Horizontal, 0, utils_ip.stride(data[0]));
+        ipz.ImPlot_PlotBars(.{.label = "Vertical",  .values = &data, .count = 10, .bar_size = 0.7, .shift = 1, .flags =  0, .offset = 0, .stride = utils_ip.stride(data[0])});
+        ipz.ImPlot_PlotBars(.{.label = "Horizontal",.values = &data, .count = 10, .bar_size = 0.4, .shift = 1, .flags = ip.ImPlotBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(data[0])});
         ip.ImPlot_EndPlot();
     }
 }
@@ -737,11 +737,11 @@ fn demo_BarGroups() !void {
         if (st.horz) {
             ip.ImPlot_SetupAxes("Score", "Student", ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
             ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y1, &st.positions, st.groups, &st.glabels, false);
-            ipz.ImPlot_PlotBarGroupsEx(&st.ilabels, &st.data, st.items, st.groups, st.size, 0, st.flags | ip.ImPlotBarGroupsFlags_Horizontal);
+            ipz.ImPlot_PlotBarGroups(.{.labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags | ip.ImPlotBarGroupsFlags_Horizontal});
         } else {
             ip.ImPlot_SetupAxes("Student", "Score", ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
             ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_X1, &st.positions, st.groups, &st.glabels, false);
-            ipz.ImPlot_PlotBarGroupsEx(&st.ilabels, &st.data, st.items, st.groups, st.size, 0, st.flags);
+            ipz.ImPlot_PlotBarGroups(.{.labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags});
         }
         ip.ImPlot_EndPlot();
     }
@@ -789,10 +789,10 @@ fn demo_BarStacks() !void {
         ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_AutoFit |  ip.ImPlotAxisFlags_Invert);
         ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1,0,19,20, &politicians,false);
         if (st.diverging){
-            ipz.ImPlot_PlotBarGroupsEx(&labels_div,&data_div,9,20,0.75,0,ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal);
+          ipz.ImPlot_PlotBarGroups(.{.labels = &labels_div, .values = &data_div, .item_count = 9, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal});
         }
         else{
-         ipz.ImPlot_PlotBarGroupsEx(&labels_reg,&data_reg,6,20,0.75,0,ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal);
+          ipz.ImPlot_PlotBarGroups(.{.labels = &labels_reg, .values = &data_reg, .item_count = 6, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal});
         }
         ip.ImPlot_EndPlot();
     }
@@ -842,7 +842,7 @@ fn demo_Heatmaps() !void {
         ip.ImPlot_SetupAxes(null, null, st2.axes_flags, st2.axes_flags);
         ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_X1, 0 + 1.0 / 14.0, 1 - 1.0 / 14.0, 7, &st.xlabels, false);
         ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1, 1 - 1.0 / 14.0, 0 + 1.0 / 14.0, 7, &st.ylabels, false);
-        ip.ImPlot_PlotHeatmap_FloatPtr("heat", &st.values1[0], 7, 7, st.scale_min, st.scale_max, "%g", .{ .x = 0, .y = 0 }, .{ .x = 1, .y = 1 }, st2.hm_flags);
+        ipz.ImPlot_PlotHeatmap(.{.label = "heat", .values = &st.values1[0], .rows = 7, .cols = 7, .scale_min = st.scale_min, .scale_max = st.scale_max, .label_fmt = "%g", .flags = st2.hm_flags});
         ip.ImPlot_EndPlot();
     }
     ig.igSameLine(0, -1.0);
@@ -862,8 +862,8 @@ fn demo_Heatmaps() !void {
     if (ip.ImPlot_BeginPlot("##Heatmap2", .{ .x = 225, .y = 225 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(-1, 1, -1, 1, ip.ImPlotCond_Once);
-        ip.ImPlot_PlotHeatmap_doublePtr("heat1", &st3.values2, size, size, 0, 1, null, .{ .x = 0, .y = 0 }, .{ .x = 1, .y = 1 }, 0);
-        ip.ImPlot_PlotHeatmap_doublePtr("heat2", &st3.values2, size, size, 0, 1, null, .{ .x = -1, .y = -1 }, .{ .x = 0, .y = 0 }, 0);
+        ipz.ImPlot_PlotHeatmap(.{.label= "heat1", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null});
+        ipz.ImPlot_PlotHeatmap(.{.label= "heat2", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null, .bound_min = ip.ImPlotPoint{ .x = -1, .y = -1 }});
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopColormap(1);
@@ -950,15 +950,15 @@ fn demo_Histogram() !void {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
         ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.5);
         if (st.range) { // TODO
-            _ = ipz.ImPlot_PlotHistogramEx("Empirical", &st.dist, 10000, st.bins, 1.0, .{ .Min = st.rmin, .Max = rmax }, st.hist_flags);
+            _ = ipz.ImPlot_PlotHistogram(.{.label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = st.rmin, .Max = rmax }, .flags = st.hist_flags});
         } else {
-            _ = ipz.ImPlot_PlotHistogramEx("Empirical", &st.dist, 10000, st.bins, 1.0, .{ .Min = 0, .Max = 0 }, st.hist_flags);
+            _ = ipz.ImPlot_PlotHistogram(.{.label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = 0, .Max = 0 }, .flags = st.hist_flags});
         }
         if ((0 != (st.hist_flags & ip.ImPlotHistogramFlags_Density)) and (0 == (st.hist_flags & ip.ImPlotHistogramFlags_NoOutliers))) {
             if ((0 != st.hist_flags & ip.ImPlotHistogramFlags_Horizontal)) {
-                ipz.ImPlot_PlotLineXy("Theoretical", &y, &x, 100);
+                ipz.ImPlot_PlotLine(.{.label = "Theoretical",  .xs = &y, .ys = &x, .count = 100});
             } else {
-                ipz.ImPlot_PlotLineXy("Theoretical", &x, &y, 100);
+                ipz.ImPlot_PlotLine(.{.label = "Theoretical", .xs = &x, .ys = &y, .count = 100});
             }
         }
         ip.ImPlot_EndPlot();
@@ -1000,7 +1000,14 @@ fn demo_Histogram2D() !void {
     if (ip.ImPlot_BeginPlot("##Hist2D", .{.x = vec2.x, .y = vec2.y}, 0)) {
         ip.ImPlot_SetupAxes(null, null, flags, flags);
         ip.ImPlot_SetupAxesLimits(-6, 6, -6, 6, ip.ImPlotCond_Once);
-        max_count = ipz.ImPlot_PlotHistogram2DEx("Hist2D", &st.dist1, &st.dist2, st.count, st.xybins[0], st.xybins[1], .{ .X = .{ .Min = -6, .Max = 6 }, .Y = .{ .Min = -6, .Max = 6 } }, st.hist_flags);
+        max_count = ipz.ImPlot_PlotHistogram2D(.{.label = "Hist2D"
+                                              , .xs = &st.dist1
+                                              , .ys = &st.dist2
+                                              , .count = st.count
+                                              , .x_bins = st.xybins[0]
+                                              , .y_bins = st.xybins[1]
+                                              , .range = ip.ImPlotRect{ .X = .{ .Min = -6, .Max = 6 } , .Y = .{ .Min = -6, .Max = 6 } }
+                                              , .flags = st.hist_flags});
         ip.ImPlot_EndPlot();
     }
     ig.igSameLine(0, -1.0);
@@ -1085,7 +1092,7 @@ fn demo_MarkersAndText() !void {
         for (0..@intCast(ip.ImPlotMarker_COUNT))|m| {
             ig.igPushID_Int(@intCast(m));
             ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x = 0, .y = 0, .z = 0, .w = -1}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
-            ipz.ImPlot_PlotLineXy("##Filled", &xs, &ys, 2);
+            ipz.ImPlot_PlotLine(.{.label = "##Filled", .xs = &xs, .ys = &ys, .count = 2});
             ig.igPopID();
             ys[0] -= 1; ys[1]  -= 1;
         }
@@ -1095,7 +1102,7 @@ fn demo_MarkersAndText() !void {
         for (0..ip.ImPlotMarker_COUNT)|m| {
             ig.igPushID_Int(@intCast(m));
             ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x=0, .y=0, .z=0, .w=0}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
-            ipz.ImPlot_PlotLineXy("##Open", &xs, &ys, 2);
+            ipz.ImPlot_PlotLine(.{.label = "##Open", .xs = &xs, .ys = &ys, .count = 2});
             ig.igPopID();
             ys[0] -= 1; ys[1]  -= 1;
         }
@@ -1133,8 +1140,8 @@ fn demo_NaNValues() !void {
 
     if (ip.ImPlot_BeginPlot("##NaNValues", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotLineXyEx("line", &data1, &data2, 5, st.flags, 0, utils_ip.stride(data1[0]));
-        ipz.ImPlot_PlotBars("bars", &data1, 5);
+        ipz.ImPlot_PlotLine(.{.label = "line", .xs = &data1, .ys = &data2, .count = 5, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(data1[0])});
+        ipz.ImPlot_PlotBars(.{.lable = "bars", .values = &data1, .count = 5});
         ip.ImPlot_EndPlot();
     }
 }
@@ -1159,14 +1166,14 @@ fn demo_LinePlots() !void {
     }
     if (ip.ImPlot_BeginPlot("Line Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("x", "y", 0, 0);
-        ipz.ImPlot_PlotLineXy("f(x)", &st.xs1, &st.ys1, 1001);
+        ipz.ImPlot_PlotLine(.{.label = "f(x)", .xs = &st.xs1, .ys = &st.ys1, .count = 1001});
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle
           , utils_ip.IMPLOT_AUTO
          , .{.x = 0, .y = 0, .z = 0, .w = -1}
           , utils_ip.IMPLOT_AUTO
          , utils_ip.IMPLOT_AUTO_COL
           );
-        ipz.ImPlot_PlotLineXyEx("g(x)", &st.xs2, &st.ys2, 20, ip.ImPlotLineFlags_Segments, 0, utils_ip.stride((st.xs2[0])));
+        ipz.ImPlot_PlotLine(.{.label = "g(x)", .xs = &st.xs2, .ys = &st.ys2, .count = 20, .flags = ip.ImPlotLineFlags_Segments, .offset = 0, .stride = utils_ip.stride((st.xs2[0]))});
         ip.ImPlot_EndPlot();
     }
 }
@@ -1186,19 +1193,19 @@ fn demo_ErrorBars() !void {
 
     if (ip.ImPlot_BeginPlot("##ErrorBars", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxesLimits(0, 6, 0, 10, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotBarsXyEx( "Bar", &xs, &bar, 5, 0.5,1, 0, utils_ip.stride(xs[0]));
-        ipz.ImPlot_PlotErrorBars("Bar", &xs, &bar, &err1, 5);
+        ipz.ImPlot_PlotBars(.{.label =  "Bar", .xs = &xs, .ys = &bar, .count = 5, .bar_size = 0.5, .flags = 1, .offset = 0, .stride = utils_ip.stride(xs[0])});
+        ipz.ImPlot_PlotErrorBars(.{.label = "Bar", .xs = &xs, .ys = &bar, .err = &err1, .count = 5});
         var vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_SetNextErrorBarStyle(vec4, 0, utils_ip.IMPLOT_AUTO);
-        ipz.ImPlot_PlotErrorBarsNeg("Line", &xs, &lin1, &err1, &err2, 5);
+        ipz.ImPlot_PlotErrorBars(.{.label = "Line", .xs = &xs, .ys = &lin1, .neg = &err1, .pos = &err2, .count = 5});
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotLineXy(      "Line", &xs, &lin1, 5);
+        ipz.ImPlot_PlotLine(.{.label = "Line", .xs = &xs, .ys = &lin1, .count = 5});
         vec4 = ip.ImPlot_GetColormapColor(2, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_ErrorBar, vec4);
-        ipz.ImPlot_PlotErrorBars(     "Scatter", &xs, &lin2, &err2, 5);
-        ipz.ImPlot_PlotErrorBarsNegEx("Scatter", &xs, &lin2, &err3, &err4, 5, ip.ImPlotErrorBarsFlags_Horizontal, 0, utils_ip.stride(xs[0]));
+        ipz.ImPlot_PlotErrorBars(.{.label = "Scatter", .xs = &xs, .ys = &lin2, .err = &err2, .count = 5});
+        ipz.ImPlot_PlotErrorBars(.{.label = "Scatter", .xs = &xs, .ys = &lin2, .neg = &err3, .pos = &err4, .count = 5, .flags = ip.ImPlotErrorBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(xs[0])});
         ip.ImPlot_PopStyleColor(1);
-        ipz.ImPlot_PlotScatterXy("Scatter", &xs, &lin2, 5);
+        ipz.ImPlot_PlotScatter(.{.lable = "Scatter", .xs = &xs, .ys = &lin2, .count = 5});
         ip.ImPlot_EndPlot();
     }
 }
@@ -1218,9 +1225,9 @@ fn demo_StemPlots() !void {
     if (ip.ImPlot_BeginPlot("Stem Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1,0,1.0, ip.ImPlotCond_Once);
         ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y1,0,1.6, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotStemsXy("Stems 1", &xs, &ys1, 51);
+        ipz.ImPlot_PlotStems(.{.label = "Stems 1", .xs = &xs, .ys = &ys1, .count = 51});
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotStemsXy("Stems 2", &xs, &ys2, 51);
+        ipz.ImPlot_PlotStems(.{.label = "Stems 2", .xs = &xs, .ys = &ys2, .count = 51});
         ip.ImPlot_EndPlot();
     }
 }
@@ -1232,8 +1239,8 @@ fn demo_InfiniteLines() !void {
     const vals = [_]f64{0.25, 0.5, 0.75};
     if (ip.ImPlot_BeginPlot("##Infinite", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoInitialFit,ip.ImPlotAxisFlags_NoInitialFit);
-        _ = ipz.ImPlot_PlotInfLines("Vertical",    &vals,3);
-        _ = ipz.ImPlot_PlotInfLinesEx("Horizontal",&vals,3,ip.ImPlotInfLinesFlags_Horizontal,0,utils_ip.stride(vals[0]));
+        _ = ipz.ImPlot_PlotInfLines(.{.label = "Vertical",   .values = &vals, .count = 3});
+        _ = ipz.ImPlot_PlotInfLines(.{.label = "Horizontal", .values = &vals, .count = 3, .flags = ip.ImPlotInfLinesFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(vals[0])});
         ip.ImPlot_EndPlot();
     }
 }
@@ -1257,7 +1264,7 @@ fn demo_PieCharts() !void {
     if (ip.ImPlot_BeginPlot("##Pie1", .{.x=250, .y=250}, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotPieChartEx(&labels1, &st.data1, 4, 0.5, 0.5, 0.4, "%.2f", 90, st.flags);
+        ipz.ImPlot_PlotPieChart(.{.labels = &labels1, .values = &st.data1, .count = 4, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.2f",  .angle0 = 90, .flags = st.flags});
         ip.ImPlot_EndPlot();
     }
 
@@ -1270,7 +1277,7 @@ fn demo_PieCharts() !void {
     if (ip.ImPlot_BeginPlot("##Pie2", .{.x=250, .y=250}, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotPieChartEx(&labels2, &data2, 5, 0.5, 0.5, 0.4, "%.0f", 180, st.flags);
+        ipz.ImPlot_PlotPieChart(.{.labels = &labels2, .values = &data2, .count = 5, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.0f", .angle0 = 180, .flags = st.flags});
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopColormap(1);
@@ -1322,24 +1329,15 @@ fn demo_FilledLinePlots() !void {
         ip.ImPlot_SetupAxesLimits(0,100,0,500, ip.ImPlotCond_Once);
         if (st.show_fills) {
             ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
-            ipz.ImPlot_PlotShadedXyRefEx("Stock 1", &xs1, &ys1, 101,
-                                  if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32
-                                  else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref)
-                                , flags, 0, utils_ip.stride(xs1[0]));
-            ipz.ImPlot_PlotShadedXyRefEx("Stock 2", &xs1, &ys2, 101,
-                                  if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32
-                                  else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref)
-                                , flags, 0, utils_ip.stride(xs1[0]));
-            ipz.ImPlot_PlotShadedXyRefEx("Stock 3", &xs1, &ys3, 101,
-                                  if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32
-                                  else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref)
-                                , flags, 0, utils_ip.stride(xs1[0]));
+            ipz.ImPlot_PlotShaded(.{.lable = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
+            ipz.ImPlot_PlotShaded(.{.label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
+            ipz.ImPlot_PlotShaded(.{.label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
             ip.ImPlot_PopStyleVar(1);
         }
         if (st.show_lines) {
-            ipz.ImPlot_PlotLineXy("Stock 1", &xs1, &ys1, 101);
-            ipz.ImPlot_PlotLineXy("Stock 2", &xs1, &ys2, 101);
-            ipz.ImPlot_PlotLineXy("Stock 3", &xs1, &ys3, 101);
+            ipz.ImPlot_PlotLine(.{.label = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101});
+            ipz.ImPlot_PlotLine(.{.label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101});
+            ipz.ImPlot_PlotLine(.{.label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101});
         }
         ip.ImPlot_EndPlot();
     }
@@ -1373,11 +1371,11 @@ fn demo_ShadedPlots() !void {
 
     if (ip.ImPlot_BeginPlot("Shaded Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, st.alpha);
-        ipz.ImPlot_PlotShadedXyy("Uncertain Data", &xs, &ys1, &ys2, MAX_N);
-        ipz.ImPlot_PlotLineXy("Uncertain Data",    &xs, &ys,  MAX_N);
-        ipz.ImPlot_PlotShadedXyy("Overlapping",    &xs, &ys3, &ys4, MAX_N);
-        ipz.ImPlot_PlotLineXy("Overlapping",       &xs, &ys3, MAX_N);
-        ipz.ImPlot_PlotLineXy("Overlapping",       &xs, &ys4, MAX_N);
+        ipz.ImPlot_PlotShaded(.{.lable = "Uncertain Data", .xs = &xs, .ys = &ys1, .ys2 = &ys2, .count = MAX_N});
+        ipz.ImPlot_PlotLine(.{.label = "Uncertain Data",    .xs = &xs, .ys = &ys,  .count = MAX_N});
+        ipz.ImPlot_PlotShaded(.{.lable = "Overlapping",    .xs = &xs, .ys = &ys3, .ys2 = &ys4, .count = MAX_N});
+        ipz.ImPlot_PlotLine(.{.label = "Overlapping",       .xs = &xs, .ys = &ys3, .count = MAX_N});
+        ipz.ImPlot_PlotLine(.{.label = "Overlapping",       .xs = &xs, .ys = &ys4, .count = MAX_N});
         ip.ImPlot_PopStyleVar(1);
         ip.ImPlot_EndPlot();
     }
@@ -1403,7 +1401,7 @@ fn demo_ScatterPlots() !void {
     }
 
     if (ip.ImPlot_BeginPlot("Scatter Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ipz.ImPlot_PlotScatterXy("Data 1", &xs1, &ys1, 100);
+        ipz.ImPlot_PlotScatter(.{.label = "Data 1", .xs = &xs1, .ys = &ys1, .count = 100});
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
 
         const vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
@@ -1411,7 +1409,7 @@ fn demo_ScatterPlots() !void {
                                    , vec4
                                    , utils_ip.IMPLOT_AUTO
                                    , vec4);
-        ipz.ImPlot_PlotScatterXy("Data 2", &xs2, &ys2, 50);
+        ipz.ImPlot_PlotScatter(.{.lable = "Data 2", .xs = &xs2, .ys = &ys2, .count = 50});
         ip.ImPlot_PopStyleVar(1);
         ip.ImPlot_EndPlot();
     }
@@ -1436,16 +1434,16 @@ fn demo_StairstepPlots() !void {
         ip.ImPlot_SetupAxesLimits(0,1,0,1, ip.ImPlotCond_Once);
 
         ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_Line, .{.x = 0.5,.y = 0.5,.z = 0.5, .w = 1.0});
-        ipz.ImPlot_PlotLineEx("##1",&ys1,21,0.05, 0, 0, 0, utils_ip.stride(ys1[0]));
-        ipz.ImPlot_PlotLineEx("##2",&ys2,21,0.05, 0, 0, 0, utils_ip.stride(ys2[0]));
+        ipz.ImPlot_PlotLine(.{.label = "##1", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys1[0])});
+        ipz.ImPlot_PlotLine(.{.label = "##2", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys2[0])});
         ip.ImPlot_PopStyleColor(1);
 
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
-        ipz.ImPlot_PlotStairsEx("Post Step (default)", &ys1, 21, 0.05, 0, st.flags, 0, utils_ip.stride(ys1[0]));
+        ipz.ImPlot_PlotStairs(.{.label = "Post Step (default)", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(ys1[0])});
         ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
         ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
-        ipz.ImPlot_PlotStairsEx("Pre Step", &ys2, 21, 0.05, 0, st.flags | ip.ImPlotStairsFlags_PreStep, 0, utils_ip.stride(ys1[0]));
+        ipz.ImPlot_PlotStairs(.{.label = "Pre Step", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags | ip.ImPlotStairsFlags_PreStep, .offset = 0, .stride = utils_ip.stride(ys1[0])});
 
         ip.ImPlot_EndPlot();
     }
@@ -1537,9 +1535,9 @@ fn demo_DragRects() !void {
     if (ip.ImPlot_BeginPlot("##Main", .{ .x = -1, .y = 150 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoTickLabels, ip.ImPlotAxisFlags_NoTickLabels);
         ip.ImPlot_SetupAxesLimits(0, 0.01, -1, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotLineXy("Signal 1", &x_data, &y_data1, 512);
-        ipz.ImPlot_PlotLineXy("Signal 2", &x_data, &y_data2, 512);
-        ipz.ImPlot_PlotLineXy("Signal 3", &x_data, &y_data3, 512);
+        ipz.ImPlot_PlotLine(.{.label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512});
+        ipz.ImPlot_PlotLine(.{.label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512});
+        ipz.ImPlot_PlotLine(.{.label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512});
         _ = ip.ImPlot_DragRect(0, &st.rect.X.Min, &st.rect.Y.Min, &st.rect.X.Max, &st.rect.Y.Max, .{ .x = 1, .y = 0, .z = 1, .w = 1 }, st.flags, &st.clicked, &st.hovered, &st.held);
         ip.ImPlot_EndPlot();
     }
@@ -1555,9 +1553,9 @@ fn demo_DragRects() !void {
     if (ip.ImPlot_BeginPlot("##rect", .{ .x = -1, .y = 150 }, ip.ImPlotFlags_CanvasOnly)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(st.rect.X.Min, st.rect.X.Max, st.rect.Y.Min, st.rect.Y.Max, ig.ImGuiCond_Always);
-        ipz.ImPlot_PlotLineXy("Signal 1", &x_data, &y_data1, 512);
-        ipz.ImPlot_PlotLineXy("Signal 2", &x_data, &y_data2, 512);
-        ipz.ImPlot_PlotLineXy("Signal 3", &x_data, &y_data3, 512);
+        ipz.ImPlot_PlotLine(.{.label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512});
+        ipz.ImPlot_PlotLine(.{.label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512});
+        ipz.ImPlot_PlotLine(.{.label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512});
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopStyleColor(1);

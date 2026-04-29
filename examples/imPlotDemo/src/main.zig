@@ -71,7 +71,7 @@ pub fn gui_main(window: *app.Window) !void {
 //-------------------
 fn imPlotDemoWindow() !void {
   {
-    _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig lang.", null, 0);
+    _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
     defer ig.igEnd();
     try demo.imPlotDemoTabs();
   }
@@ -81,7 +81,7 @@ fn imPlotDemoWindow() !void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
     defer window.destroyImGui();
 
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft

@@ -6,10 +6,6 @@ const app = @import("appimgui");
 const ig  = app.ig;
 const ifa = app.ifa;
 
-pub const c = @cImport({
-    @cInclude("stdlib.h");
-});
-
 const IMGUI_HAS_DOCK = false; // Docking feature
 
 const MainWinWidth: i32 = 1024;
@@ -192,7 +188,7 @@ pub fn gui_main(window: *app.Window) !void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig lang.");
+    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
     defer window.destroyImGui();
 
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft

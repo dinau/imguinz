@@ -8,6 +8,7 @@ EXAMPLE_DIRS += \
 							examples/glfw_opengl3_imgui_toggle \
 							examples/glfw_opengl3_imguicolortextedit \
 							examples/glfw_opengl3_imguizmo \
+							examples/glfw_opengl3_imgui_zoomable_image \
 							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imnodes \
 							examples/glfw_opengl3_implot \
@@ -75,7 +76,8 @@ MAKEFLAGS += --no-print-directory
 #-------------------------
 EXT_LIB_DIR = ../000imguin_dev/imguin_git/libs
 TARGET_DIR = src/libc
-copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d copy_imspinner imCTE imgui-knobs
+copylibs: imgui implot imnodes imguizmo ImGuiFileDialog imgui_toggle implot3d copy_imspinner imCTE imgui-knobs \
+	        imgui_zoomable_image
 
 # ImGuiColorTextEdit
 imCTE:
@@ -144,6 +146,11 @@ imgui-knobs:
 	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}         $(TARGET_DIR)/c$@/
 	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.cpp,*.h,README.md} $(TARGET_DIR)/c$@/libs/$@/
 
+imgui_zoomable_image:
+	@echo copying [ $(EXT_LIB_DIR)/c$@] to $(TARGET_DIR)/c$@
+	@-mkdir -p $(TARGET_DIR)/c$@/$@
+	@cp -f $(EXT_LIB_DIR)/c$@/{LICENSE,*.cpp,*.h,README.md}         $(TARGET_DIR)/c$@/
+	@cp -f $(EXT_LIB_DIR)/c$@/libs/$@/{LICENSE,*.h,*.md}            $(TARGET_DIR)/c$@/$@/
 
 #$(TARGET_DIR):
 #	-mkdir -p $@
@@ -151,7 +158,8 @@ imgui-knobs:
 
 .PHONY: cimgui cimplot cimnodes cimguizmo cimguifiledialog cimgui_toggle cimCTE
 
-clonelibs: libs cimgui cimplot cimnodes cimguizmo cimgui_toggle cimplot3d imspinner cimCTE cimgui-knobs
+clonelibs: libs cimgui cimplot cimnodes cimguizmo cimgui_toggle cimplot3d imspinner cimCTE cimgui-knobs \
+	        cimgui_zoomable_image
 
 cimgui:
 	git clone --recurse-submodules https://github.com/$@/$@      ../libs/$@
@@ -173,3 +181,5 @@ cimCTE:
 	git clone --recurse-submodules https://github.com/cimgui/$@  ../libs/$@
 cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
+cimgui_zoomable_image:
+	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@

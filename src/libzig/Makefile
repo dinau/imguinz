@@ -6,6 +6,7 @@ DIRS = \
 	imcolortextedit \
 	imfileopendialog \
 	imguizmo \
+	imguizoomableimage \
 	imknobs \
 	imnodes \
 	impl_dx11 \
