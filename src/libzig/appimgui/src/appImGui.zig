@@ -116,7 +116,11 @@ pub const Window = struct {
             //---------------------------------------------
             if (glfw.glfwCreateWindow(800, 600, title, null, null)) |pointer| {
                 win.handle = pointer;
-                glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
+                if (builtin.zig_version.minor >= 17){
+                    glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
+                }else{
+                    glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
+                }
                 std.debug.print("{s} \n", .{glsl_version});
                 break;
             } else {

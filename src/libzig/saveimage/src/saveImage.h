@@ -4,6 +4,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include <GL/gl.h>
 
+typedef unsigned int GLuint;
 void saveImage(const char* fname, GLuint xs, GLuint ys, int imageWidth, int imageHeight, int comp /* = RGB*/, int quality /* = 90*/);

@@ -2,6 +2,7 @@
 //#   OpenGLでの描画内容の画像化と保存(2012-11-07)
 //#     https://npal-shared.hatenablog.com/entry/20121107/1352284053
 #include "saveImage.h"
+#include <GL/gl.h>
 
 //#define STB_IMAGE_STATIC
 #if !defined(STB_IMAGE_WRITE_IMPLEMENTATION)

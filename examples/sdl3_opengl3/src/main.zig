@@ -60,7 +60,12 @@ pub fn main() !void {
 
         if (sdl.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags)) |pointer| {
             window = pointer;
-            glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
+
+            if (builtin.zig_version.minor >= 17){
+                glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
+            }else{
+                glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
+            }
             std.debug.print("{s} \n", .{glsl_version});
             break;
         }
@@ -123,7 +128,7 @@ pub fn main() !void {
     // Back ground color
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
-    var sTextInuputBuf = [_:0]u8{0} ** 200;
+    var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
     var showWindowDelay: i32 = 2; // TODO: Avoid flickering of window at startup.
 
     _ = stf.setupFonts();
@@ -172,10 +177,10 @@ pub fn main() !void {
             ig.igText("%s", builtin.zig_version_string);
 
             ig.igSpacing();
-            _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
+            _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInputBuf, sTextInputBuf.len, 0, null, null);
             ig.igText("%s", "Input result:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s", &sTextInuputBuf);
+            ig.igText("%s", &sTextInputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);

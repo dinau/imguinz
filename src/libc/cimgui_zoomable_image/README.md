@@ -13,10 +13,15 @@
 
 ---
 
-This project introduces C API for [Dear Imgui Zoomable Image Display(ImGuiImage)](https://github.com/danielm5/imgui_zoomable_image) to use it with other languages and
+[^langs]: Zig, Nim, Nelua, etc 
+
+This project introduces C API for [Dear Imgui Zoomable Image Display(ImGuiImage)](https://github.com/danielm5/imgui_zoomable_image) to use it with other languages[^langs] and
 a simple demo program in C.
 
-Link: [Dear ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui)
+- Link  
+[Dear ImGui](https://github.com/ocornut/imgui)  
+[CImGui](https://github.com/cimgui/cimgui)  
+[Dear Bindings](https://github.com/dearimgui/dear_bindings)
 
 #### Try Wasm live demo in your browser
 
@@ -57,15 +62,17 @@ See [Wasm example in Nim: glfw_opengl3_imgui_zoomable_image](https://github.com/
    ```sh
    git clone --recursive https://github.com/dinau/cimgui_zoomable_image
    ```
-1. Go to demo folder
+
+1. Go to demo with **CImGui** folder
 
    ```sh
-   cd cimgui_zoomable_image/demo/c
+   cd cimgui_zoomable_image/demo/cimui
    make run 
    ```
 
-#### Demo program 
+1. Go to demo with **Dear Bindings** folder
 
----
-
-[main.c](demo/c/main.c)
+   ```sh
+   cd cimgui_zoomable_image/demo/dcimui
+   make run 
+   ```

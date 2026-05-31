@@ -80,20 +80,19 @@ CIMGUI_API void TextEditor_Redo(TextEditor* self,int aSteps);
 CIMGUI_API bool TextEditor_CanUndo(TextEditor* self);
 CIMGUI_API bool TextEditor_CanRedo(TextEditor* self);
 CIMGUI_API int TextEditor_GetUndoIndex(TextEditor* self);
+CIMGUI_API void TextEditor_SetText(TextEditor* self,const char* aText);
+CIMGUI_API const char* TextEditor_GetText(TextEditor* self);
 CIMGUI_API bool TextEditor_Render(TextEditor* self,const char* aTitle,bool aParentIsFocused,const ImVec2_c aSize,bool aBorder);
+CIMGUI_API void TextEditor_ImGuiDebugPanel(TextEditor* self,const char* panelName);
 CIMGUI_API void TextEditor_UnitTests(TextEditor* self);
 
 
 ///////////////manual generated
-CIMGUI_API void TextEditor_SetText(TextEditor* self,const char* aText);
 //allocates new memory that must be freed with TextEditor_GetText_free
 CIMGUI_API char* TextEditor_GetText_alloc(TextEditor* self);
 CIMGUI_API void TextEditor_GetText_free(char* ptr);
 //returned value must be used to copy value before calling TextEditor_GetText_static again
 CIMGUI_API const char* TextEditor_GetText_static(TextEditor* self);
-//does as TextEditor_GetText_static
-CIMGUI_API const char* TextEditor_GetText(TextEditor* self);
-CIMGUI_API void TextEditor_ImGuiDebugPanel(TextEditor* self,const char* panelName);
 #endif //CIMGUICTE_INCLUDED
 
 

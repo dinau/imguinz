@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig = app.ig;
 
@@ -25,7 +26,7 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
     var counter: i32 = 0;
     // Input text buffer
-    var sTextInuputBuf = [_:0]u8{0} ** 200;
+    var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
 
     //------------
     // Load image
@@ -75,10 +76,10 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igBegin(app.ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui", null, 0);
             defer ig.igEnd();
 
-            _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
+            _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInputBuf, sTextInputBuf.len, 0, null, null);
             ig.igText("%s","Input result:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",&sTextInuputBuf);
+            ig.igText("%s",&sTextInputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);
@@ -93,7 +94,14 @@ pub fn gui_main(window: *app.Window) !void {
             const imageExt = ImgFormatTbl[cbItemIndex].ext;
             var svNameBuf: [200]u8 = undefined;
             var svBuf: [200]u8 = undefined;
-            const slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt });
+
+            var slszName:[:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17){
+                slszName = try std.fmt.bufPrintSentinel(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt }, 0);
+            }else{
+                slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt });
+            }
+
             if (ig.igButton("Save Image", sz)) {
                 const wkSize = ig.igGetMainViewport().*.WorkSize;
                 const sx: c_int = @intFromFloat(wkSize.x);
@@ -104,7 +112,14 @@ pub fn gui_main(window: *app.Window) !void {
             ig.igPopID();
 
             // Show tooltip help
-            const slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
+            //
+            var slszBuf:[:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17){
+                slszBuf = try std.fmt.bufPrintSentinel(&svBuf, "Save to {s}", .{slszName}, 0);
+            }else{
+                slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
+            }
+
             const green = app.utils.vec4(0.0, 1.0, 0.0, 1.0);
             app.utils.setTooltipEx(slszBuf, ig.ImGuiHoveredFlags_DelayNone, green);
             counter += 1;

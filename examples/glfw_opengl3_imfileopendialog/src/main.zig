@@ -24,10 +24,10 @@ pub fn gui_main(window: *app.Window) !void {
 
     setFileStyle(cfd.?);
 
-    var sFilePathName: [2048]u8 = .{0} ** 2048;
-    var sFileDirPath: [2048]u8 = .{0} ** 2048;
-    var sFilter: [2048]u8 = .{0} ** 2048;
-    var sDatas: [2048]u8 = .{0} ** 2048;
+    var sFilePathName: [2048]u8 = std.mem.zeroes([2048]u8);
+    var sFileDirPath: [2048]u8  = std.mem.zeroes([2048]u8);
+    var sFilter: [2048]u8       = std.mem.zeroes([2048]u8);
+    var sDatas: [2048]u8        = std.mem.zeroes([2048]u8);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 

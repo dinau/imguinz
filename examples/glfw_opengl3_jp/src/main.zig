@@ -1,3 +1,4 @@
+const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig  = app.ig;
@@ -16,7 +17,7 @@ pub fn gui_main(window: *app.Window) void {
     // Back ground color
     var clearColor = [_]f32{ 0.25, 0.55, 0.9, 1.0 };
     // Input text buffer
-    var sTextInuputBuf = [_:0]u8{0} ** 200;
+    var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -59,10 +60,10 @@ pub fn gui_main(window: *app.Window) void {
             ig.igText("%s", builtin.zig_version_string);
 
             ig.igSpacing();
-            _ = ig.igInputTextWithHint("テキスト入力", "ここに入力", &sTextInuputBuf, sTextInuputBuf.len, 0, null, null);
+            _ = ig.igInputTextWithHint("テキスト入力", "ここに入力", &sTextInputBuf, sTextInputBuf.len, 0, null, null);
             ig.igText("%s", "入力結果:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s", &sTextInuputBuf);
+            ig.igText("%s", &sTextInputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("デモ・ウインドウ", &showDemoWindow);

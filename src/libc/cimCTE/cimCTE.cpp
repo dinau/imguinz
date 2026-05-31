@@ -208,9 +208,22 @@ CIMGUI_API int TextEditor_GetUndoIndex(TextEditor* self)
 {
     return self->GetUndoIndex();
 }
+CIMGUI_API void TextEditor_SetText(TextEditor* self,const char* aText)
+{
+    return self->SetText(std::string(aText));
+}
+CIMGUI_API const char* TextEditor_GetText(TextEditor* self)
+{
+    static std::string str = self->GetText();
+    return str.c_str();
+}
 CIMGUI_API bool TextEditor_Render(TextEditor* self,const char* aTitle,bool aParentIsFocused,const ImVec2_c aSize,bool aBorder)
 {
     return self->Render(aTitle,aParentIsFocused,ConvertToCPP_ImVec2(aSize),aBorder);
+}
+CIMGUI_API void TextEditor_ImGuiDebugPanel(TextEditor* self,const char* panelName)
+{
+    return self->ImGuiDebugPanel(std::string(panelName));
 }
 CIMGUI_API void TextEditor_UnitTests(TextEditor* self)
 {
@@ -218,10 +231,6 @@ CIMGUI_API void TextEditor_UnitTests(TextEditor* self)
 }
 
 ////////////////manually generated
-CIMGUI_API void TextEditor_SetText(TextEditor* self,const char* aText)
-{
-    return self->SetText(std::string(aText));
-}
 CIMGUI_API char* TextEditor_GetText_alloc(TextEditor* self)
 {
     std::string str = self->GetText();
@@ -238,14 +247,6 @@ CIMGUI_API const char* TextEditor_GetText_static(TextEditor* self)
     static std::string str = self->GetText();
     return str.c_str();
 }
-CIMGUI_API const char* TextEditor_GetText(TextEditor* self)
-{
-    static std::string str = self->GetText();
-    return str.c_str();
-}
-CIMGUI_API void TextEditor_ImGuiDebugPanel(TextEditor* self,const char* panelName)
-{
-    return self->ImGuiDebugPanel(std::string(panelName));
-}
+
 
 
