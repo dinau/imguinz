@@ -25,7 +25,10 @@ pub fn build(b: *std.Build) void {
         // "another_lib",
     };
     inline for (dependencies) |dep_name| {
-        const dep = imguinz.builder.dependency(dep_name, .{ .target = target, .optimize = optimize, });
+        const dep = imguinz.builder.dependency(dep_name, .{
+            .target = target,
+            .optimize = optimize,
+        });
         exe.root_module.addImport(dep_name, dep.module(dep_name));
     }
 
@@ -37,16 +40,13 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
-        .source_dir = b.path("resources"),        // base: assets folder
-        .install_dir = .bin,                      // bin folder
-        .install_subdir = "resources",            // destination: bin/resources/
+        .source_dir = b.path("resources"), // base: assets folder
+        .install_dir = .bin, // bin folder
+        .install_subdir = "resources", // destination: bin/resources/
     });
     exe.step.dependOn(&install_resources.step);
 
-    const resBin = [_][]const u8{ "imgui.ini"
-                                 ,"save_load.bytes"
-                                 ,"save_load.ini" };
-
+    const resBin = [_][]const u8{ "imgui.ini", "save_load.bytes", "save_load.ini" };
 
     inline for (resBin) |file| {
         const res = b.addInstallFile(b.path(file), "bin/" ++ file);
@@ -67,8 +67,12 @@ pub fn build(b: *std.Build) void {
     // run
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+    if (builtin.zig_version.minor >= 17) {
+        run_cmd.addPassthruArgs();
+    } else {
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
+        }
     }
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);

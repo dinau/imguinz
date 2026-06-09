@@ -1,6 +1,6 @@
 const std = @import("std");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const fdlg = @import("imfileopendialog");
@@ -15,7 +15,7 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
 
     _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
-                        //
+    //
     //------------------------------
     // Create FileDialog object
     //------------------------------
@@ -25,20 +25,20 @@ pub fn gui_main(window: *app.Window) !void {
     setFileStyle(cfd.?);
 
     var sFilePathName: [2048]u8 = std.mem.zeroes([2048]u8);
-    var sFileDirPath: [2048]u8  = std.mem.zeroes([2048]u8);
-    var sFilter: [2048]u8       = std.mem.zeroes([2048]u8);
-    var sDatas: [2048]u8        = std.mem.zeroes([2048]u8);
+    var sFileDirPath: [2048]u8 = std.mem.zeroes([2048]u8);
+    var sFilter: [2048]u8 = std.mem.zeroes([2048]u8);
+    var sDatas: [2048]u8 = std.mem.zeroes([2048]u8);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -57,7 +57,7 @@ pub fn gui_main(window: *app.Window) !void {
         // Show main window
         //------------------
         {
-            _ = ig.igBegin(" Dear ImGui " ++ ifa.ICON_FA_DOG , null, 0);
+            _ = ig.igBegin(" Dear ImGui " ++ ifa.ICON_FA_DOG, null, 0);
             defer ig.igEnd();
             if (ig.igButton("FileOpen", .{ .x = 100, .y = 50 })) {
                 //themeGold();
@@ -112,7 +112,6 @@ pub fn gui_main(window: *app.Window) !void {
             ig.igText("Dir           = %s", &sFileDirPath);
             ig.igText("Filter        = %s", &sFilter);
             ig.igText("Datas         = %s", &sDatas);
-
         } // end igBegin
 
         // Rendering
@@ -163,7 +162,7 @@ fn setFileStyle(cfd: *fdlg.ImGuiFileDialog) void {
 
     //const clSteelblue = fdlg.ImVec4{.x = 70.0/255.0,   .y = 130.0/255.0, .z = 180.0/255.0, .w = 1};
 
-    const pFont:[*c]fdlg.ImFont = @ptrCast(ig.igGetDefaultFont());
+    const pFont: [*c]fdlg.ImFont = @ptrCast(ig.igGetDefaultFont());
     const byExt = fdlg.IGFD_FileStyleByExtention;
 
     fdlg.IGFD_SetFileStyle(cfd, byExt, ".bat", clCyan, ifa.ICON_FA_PERSON_RUNNING, pFont);

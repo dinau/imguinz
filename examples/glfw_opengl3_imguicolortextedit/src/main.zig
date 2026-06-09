@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 const is_devel_api = builtin.zig_version.minor >= 16;
 const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
@@ -53,7 +53,7 @@ pub fn gui_main(window: *app.Window) !void {
     const sBuffer = try allocator.alloc(u8, file_size);
     defer allocator.free(sBuffer);
 
-    if (is_devel_api)  {
+    if (is_devel_api) {
         _ = try file.readStreaming(io, &.{sBuffer});
     } else {
         _ = try file.readAll(sBuffer);
@@ -78,11 +78,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 

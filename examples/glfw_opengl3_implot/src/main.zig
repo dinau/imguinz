@@ -1,5 +1,5 @@
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 const ip = @import("implot");
 const ipz = @import("zimplot.zig");
@@ -7,7 +7,7 @@ const ipz = @import("zimplot.zig");
 // From C standard libraries
 pub extern fn rand() c_int;
 
-const IMGUI_HAS_DOCK = false;    // Docking feature
+const IMGUI_HAS_DOCK = false; // Docking feature
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
@@ -33,11 +33,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -85,7 +85,7 @@ fn imPlotWindow(fshow: *bool) void {
     {
         _ = ig.igBegin("Plot Window", fshow, 0);
         defer ig.igEnd();
-        if (ip.ImPlot_BeginPlot("My Plot", .{.x = 0, .y = 0}, 0)) {
+        if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
             defer ip.ImPlot_EndPlot();
             // Using "./zimplot.zig"
             ipz.ImPlot_PlotBars(.{
@@ -129,13 +129,13 @@ fn imPlotWindow2(fshow: *bool) void {
         if (ip.ImPlot_BeginPlot("My Plot", .{ .x = 0, .y = 0 }, 0)) {
             defer ip.ImPlot_EndPlot();
             ip.ImPlot_PlotBars_S32PtrInt("My Bar Plot", &st.bar_data, st.bar_data.len, 0.67 // bar_size
-                                    ,0.0  // shift
-                                    ,0    // ImPlotFlags
-                                    ,0    // offset
-                                    ,@sizeOf(ig.ImS32)); // stride
+                , 0.0 // shift
+                , 0 // ImPlotFlags
+                , 0 // offset
+                , @sizeOf(ig.ImS32)); // stride
             ip.ImPlot_PlotLine_S32PtrS32Ptr("My LiSe Plot", &st.x_data, &st.y_data, st.x_data.len, 0 // ImPlotFlags
-                                    ,0    // offset
-                                    ,@sizeOf(ig.ImS32)); // stride
+                , 0 // offset
+                , @sizeOf(ig.ImS32)); // stride
         }
     }
 }

@@ -188,6 +188,8 @@ Please insert the following lines above `b.installArtifact(exe);`.
 Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
  
+[^except_raylib]:Except Raylib examples
+
 ### Prerequisites
 
 ---
@@ -196,7 +198,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
    - [x] zig-0.16.0  
       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] zig-0.17.0-dev.420 (2026/05) 
+   - [x] zig-0.17.0-dev.813 (2026/06)[^except_raylib] 
    - [x] \(zig-0.15.2\): Deprecated 
 - WindowsOS
    - Windows11

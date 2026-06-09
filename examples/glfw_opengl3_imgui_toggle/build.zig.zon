@@ -1,10 +1,10 @@
 .{
     .name = .app_glfw_opegl3_imtoggle,
     .version = "0.0.1",
-    .fingerprint =0x3c615633baf546d3 , // Changing this has security and trust implications.
+    .fingerprint = 0x3c615633baf546d3, // Changing this has security and trust implications.
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
-        .imguinz  =  .{ .path = "../../" },
+        .imguinz = .{ .path = "../../" },
     },
     .paths = .{
         "build.zig",

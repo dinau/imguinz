@@ -96,9 +96,17 @@ pub fn build(b: *std.Build) void {
     const run_step = b.step("run", "Run the app");
     const run_cmd = b.addRunArtifact(exe);
     run_step.dependOn(&run_cmd.step);
-    run_cmd.setCwd(.{ .cwd_relative = b.getInstallPath(.bin, "") });
+    if (builtin.zig_version.minor >= 17) {
+        run_cmd.setCwd(.{ .relative = .{ .base = .install_prefix, .sub_path = "bin" } });
+    } else {
+        run_cmd.setCwd(.{ .cwd_relative = b.getInstallPath(.bin, "") });
+    }
     run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+    if (builtin.zig_version.minor >= 17) {
+        run_cmd.addPassthruArgs();
+    } else {
+        if (b.args) |args| {
+            run_cmd.addArgs(args);
+        }
     }
 }

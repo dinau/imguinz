@@ -33,11 +33,9 @@ endif
 all: std raylib
 
 std:
-	@echo $(shell zig version)
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),all ))
 
 raylib:
-	@echo $(shell zig version)
 	$(foreach exdir,$(EXAMPLE_DIRS_RAYLIB), $(call def_make,$(exdir),all ))
 
 .PHONY: test clean gen cleanexe
@@ -59,6 +57,13 @@ cleancache:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleancache ))
 
 gen: copylibs
+
+fmt:
+	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),fmt ))
+	$(foreach exdir,$(EXAMPLE_DIRS_RAYLIB), $(call def_make,$(exdir),fmt ))
+
+ver:
+	@echo $(shell zig version)
 
 #
 define def_make

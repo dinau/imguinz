@@ -50,11 +50,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -77,9 +77,9 @@ pub fn gui_main(window: *app.Window) !void {
             defer ig.igEnd();
 
             _ = ig.igInputTextWithHint("InputText", "Input text here", &sTextInputBuf, sTextInputBuf.len, 0, null, null);
-            ig.igText("%s","Input result:");
+            ig.igText("%s", "Input result:");
             ig.igSameLine(0, -1.0);
-            ig.igText("%s",&sTextInputBuf);
+            ig.igText("%s", &sTextInputBuf);
 
             ig.igSpacing();
             _ = ig.igCheckbox("Demo Window", &showDemoWindow);
@@ -95,10 +95,10 @@ pub fn gui_main(window: *app.Window) !void {
             var svNameBuf: [200]u8 = undefined;
             var svBuf: [200]u8 = undefined;
 
-            var slszName:[:0]u8 = undefined;
-            if (builtin.zig_version.minor >= 17){
+            var slszName: [:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17) {
                 slszName = try std.fmt.bufPrintSentinel(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt }, 0);
-            }else{
+            } else {
                 slszName = try std.fmt.bufPrintZ(&svNameBuf, "{s}_{}{s}", .{ SaveImageName, counter, imageExt });
             }
 
@@ -113,10 +113,10 @@ pub fn gui_main(window: *app.Window) !void {
 
             // Show tooltip help
             //
-            var slszBuf:[:0]u8 = undefined;
-            if (builtin.zig_version.minor >= 17){
+            var slszBuf: [:0]u8 = undefined;
+            if (builtin.zig_version.minor >= 17) {
                 slszBuf = try std.fmt.bufPrintSentinel(&svBuf, "Save to {s}", .{slszName}, 0);
-            }else{
+            } else {
                 slszBuf = try std.fmt.bufPrintZ(&svBuf, "Save to {s}", .{slszName});
             }
 
@@ -144,10 +144,10 @@ pub fn gui_main(window: *app.Window) !void {
 
             // Show icon fonts
             ig.igSeparatorText(app.ifa.ICON_FA_WRENCH ++ " Icon font test ");
-            ig.igText("%s",app.ifa.ICON_FA_TRASH_CAN ++ " Trash");
+            ig.igText("%s", app.ifa.ICON_FA_TRASH_CAN ++ " Trash");
 
             ig.igSpacing();
-            ig.igText("%s",app.ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ app.ifa.ICON_FA_POWER_OFF ++ " " ++ app.ifa.ICON_FA_MICROPHONE ++ " " ++ app.ifa.ICON_FA_MICROCHIP ++ " " ++ app.ifa.ICON_FA_VOLUME_HIGH ++ " " ++ app.ifa.ICON_FA_SCISSORS ++ " " ++ app.ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ app.ifa.ICON_FA_BLOG);
+            ig.igText("%s", app.ifa.ICON_FA_MAGNIFYING_GLASS_PLUS ++ " " ++ app.ifa.ICON_FA_POWER_OFF ++ " " ++ app.ifa.ICON_FA_MICROPHONE ++ " " ++ app.ifa.ICON_FA_MICROCHIP ++ " " ++ app.ifa.ICON_FA_VOLUME_HIGH ++ " " ++ app.ifa.ICON_FA_SCISSORS ++ " " ++ app.ifa.ICON_FA_SCREWDRIVER_WRENCH ++ " " ++ app.ifa.ICON_FA_BLOG);
         } // end main window
 
         //------------------------
@@ -157,12 +157,12 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igBegin("Image load test", null, 0);
             defer ig.igEnd();
             // Load image
-            const size = app.utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight) );
-            const uv0  = app.utils.vec2(0, 0);
-            const uv1  = app.utils.vec2(1, 1);
+            const size = app.utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
+            const uv0 = app.utils.vec2(0, 0);
+            const uv1 = app.utils.vec2(1, 1);
             const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
 
-            ig.igImage(ig.ImTextureRef{._TexData = null, ._TexID = textureId}, size, uv0, uv1);
+            ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size, uv0, uv1);
             const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 app.utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);

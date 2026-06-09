@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 //-----------

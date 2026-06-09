@@ -1,5 +1,5 @@
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const imguizmo = @import("imguizmo");
@@ -33,11 +33,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 

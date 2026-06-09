@@ -17,7 +17,7 @@ all:
 .PHONY: run gen cleanall cleanexe cleancache trans clean
 
 run: all
-	(cd $(ZIG_BIN_DIR); $(LOCAL_LIB_PATH) ./$(TARGET)$(EXE))
+	(cd $(ZIG_BIN_DIR) && $(LOCAL_LIB_PATH) ./$(TARGET)$(EXE))
 ifneq ($(COPY_IMGUI_INI),false)
 	@-cp $(ZIG_BIN_DIR)/imgui.ini .
 endif

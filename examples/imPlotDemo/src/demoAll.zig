@@ -3,7 +3,7 @@
 //
 const std = @import("std");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const math = @import("std").math;
@@ -93,8 +93,8 @@ pub fn imPlotDemoTabs() !void {
             try demo_Config();
         }
         if (ig.igBeginTabItem("Help", null, 0)) {
-          defer ig.igEndTabItem();
-          try demo_Help();
+            defer ig.igEndTabItem();
+            try demo_Help();
         }
     }
 }
@@ -110,34 +110,34 @@ fn demoHeader(label: anytype, demo: anytype) !void {
 //---------------------
 fn demo_SubplotsSizing() !void {
     const st = struct {
-      var flags = ip.ImPlotSubplotFlags_ShareItems | ip.ImPlotSubplotFlags_NoLegend;
-      var rows:c_int  = 3;
-      var cols:c_int  = 3;
-      var rratios = [_]f32{5,1,1,1,1,1};
-      var cratios = [_]f32{5,1,1,1,1,1};
+        var flags = ip.ImPlotSubplotFlags_ShareItems | ip.ImPlotSubplotFlags_NoLegend;
+        var rows: c_int = 3;
+        var cols: c_int = 3;
+        var rratios = [_]f32{ 5, 1, 1, 1, 1, 1 };
+        var cratios = [_]f32{ 5, 1, 1, 1, 1, 1 };
     };
     _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_NoResize", &st.flags, ip.ImPlotSubplotFlags_NoResize);
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_NoTitle",  &st.flags, ip.ImPlotSubplotFlags_NoTitle);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_NoTitle", &st.flags, ip.ImPlotSubplotFlags_NoTitle);
 
-    _ = ig.igSliderInt("Rows",&st.rows,1,5, "%d", 0);
-    _ = ig.igSliderInt("Cols",&st.cols,1,5, "%d", 0);
-    if ( (st.rows < 1) or (st.cols < 1)) {
-        ig.igTextColored(.{.x=1, .y=0, .z=0, .w=1}, "Nice try, but the number of rows and columns must be greater than 0!");
+    _ = ig.igSliderInt("Rows", &st.rows, 1, 5, "%d", 0);
+    _ = ig.igSliderInt("Cols", &st.cols, 1, 5, "%d", 0);
+    if ((st.rows < 1) or (st.cols < 1)) {
+        ig.igTextColored(.{ .x = 1, .y = 0, .z = 0, .w = 1 }, "Nice try, but the number of rows and columns must be greater than 0!");
         return;
     }
-    _ = ig.igDragScalarN("Row Ratios",ig.ImGuiDataType_Float,&st.rratios,st.rows,0.01,null,null,null,0);
-    _ = ig.igDragScalarN("Col Ratios",ig.ImGuiDataType_Float,&st.cratios,st.cols,0.01,null,null,null,0);
-    if (ip.ImPlot_BeginSubplots("My Subplots", st.rows, st.cols, .{.x=-1, .y=400}, st.flags, &st.rratios, &st.cratios)) {
-        var id:c_int = 0;
-        for (0..@intCast((st.rows * st.cols)))|i| {
-            if (ip.ImPlot_BeginPlot("", .{.x = 0, .y = 0}, ip.ImPlotFlags_NoLegend)) {
-                ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_NoDecorations);
-                 var fi = 0.01 * (@as(f32,@floatFromInt(i)) + 1);
-                if (st.rows*st.cols > 1) {
-                    const vec4 = ip.ImPlot_SampleColormap(@as(f32,@floatFromInt(i)) / @as(f32,@floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
+    _ = ig.igDragScalarN("Row Ratios", ig.ImGuiDataType_Float, &st.rratios, st.rows, 0.01, null, null, null, 0);
+    _ = ig.igDragScalarN("Col Ratios", ig.ImGuiDataType_Float, &st.cratios, st.cols, 0.01, null, null, null, 0);
+    if (ip.ImPlot_BeginSubplots("My Subplots", st.rows, st.cols, .{ .x = -1, .y = 400 }, st.flags, &st.rratios, &st.cratios)) {
+        var id: c_int = 0;
+        for (0..@intCast((st.rows * st.cols))) |i| {
+            if (ip.ImPlot_BeginPlot("", .{ .x = 0, .y = 0 }, ip.ImPlotFlags_NoLegend)) {
+                ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
+                var fi = 0.01 * (@as(f32, @floatFromInt(i)) + 1);
+                if (st.rows * st.cols > 1) {
+                    const vec4 = ip.ImPlot_SampleColormap(@as(f32, @floatFromInt(i)) / @as(f32, @floatFromInt((st.rows * st.cols - 1))), ip.ImPlotColormap_Jet);
                     ip.ImPlot_SetNextLineStyle(vec4, utils_ip.IMPLOT_AUTO);
                 }
-                var label:[16]u8 = undefined;
+                var label: [16]u8 = undefined;
                 const slLabel = try std.fmt.bufPrint(&label, "data{}", .{id});
                 id += 1;
                 ip.ImPlot_PlotLineG(slLabel.ptr, utils_ip.SineWave, &fi, 1000, 0);
@@ -153,39 +153,40 @@ fn demo_SubplotsSizing() !void {
 //-------------------------
 fn demo_SubplotItemSharing() !void {
     const st = struct {
-      var id = [_]i32{0,1,2,3,4,5};
-      var curj:c_int = -1;
-      var flags = ip.ImPlotSubplotFlags_ShareItems;
+        var id = [_]i32{ 0, 1, 2, 3, 4, 5 };
+        var curj: c_int = -1;
+        var flags = ip.ImPlotSubplotFlags_ShareItems;
     };
     _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_ShareItems", &st.flags, ip.ImPlotSubplotFlags_ShareItems);
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_ColMajor",   &st.flags, ip.ImPlotSubplotFlags_ColMajor);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_ColMajor", &st.flags, ip.ImPlotSubplotFlags_ColMajor);
     ig.igBulletText("Drag and drop items from the legend onto plots (except for 'common')");
-    const rows:c_int = 2;
-    const cols:c_int = 3;
-    if (ip.ImPlot_BeginSubplots("##ItemSharing", rows, cols, .{.x=-1, .y=400}, st.flags, null, null)) {
+    const rows: c_int = 2;
+    const cols: c_int = 3;
+    if (ip.ImPlot_BeginSubplots("##ItemSharing", rows, cols, .{ .x = -1, .y = 400 }, st.flags, null, null)) {
         ip.ImPlot_SetupLegend(ip.ImPlotLocation_South, ip.ImPlotLegendFlags_Sort | ip.ImPlotLegendFlags_Horizontal);
-        for (0..rows*cols)|i| {
+        for (0..rows * cols) |i| {
             if (ip.ImPlot_BeginPlot("", .{ .x = -1, .y = 0 }, 0)) {
-                var fc:f32 = 0.01;
-                ip.ImPlot_PlotLineG("common",utils_ip.SineWave, &fc,1000, 0);
-                for (0..6)|j| {
+                var fc: f32 = 0.01;
+                ip.ImPlot_PlotLineG("common", utils_ip.SineWave, &fc, 1000, 0);
+                for (0..6) |j| {
                     if (st.id[j] == i) {
-                        var label:[8]u8 = undefined;
-                        var fj:f32= 0.01 * (@as(f32,@floatFromInt(j))+2);
+                        var label: [8]u8 = undefined;
+                        var fj: f32 = 0.01 * (@as(f32, @floatFromInt(j)) + 2);
                         const slLabel = try std.fmt.bufPrint(&label, "data{}", .{j});
-                        ip.ImPlot_PlotLineG(slLabel.ptr,utils_ip.SineWave, &fj, 1000, 0);
+                        ip.ImPlot_PlotLineG(slLabel.ptr, utils_ip.SineWave, &fj, 1000, 0);
                         if (ip.ImPlot_BeginDragDropSourceItem(slLabel.ptr, 0)) {
                             st.curj = @intCast(j);
                             _ = ig.igSetDragDropPayload("MY_DND", null, 0, 0);
-                            const vec4 =  ip.ImPlot_GetLastItemColor();
-                            ip.ImPlot_ItemIcon_Vec4(vec4); ig.igSameLine(0, -1.0);
+                            const vec4 = ip.ImPlot_GetLastItemColor();
+                            ip.ImPlot_ItemIcon_Vec4(vec4);
+                            ig.igSameLine(0, -1.0);
                             ig.igTextUnformatted(slLabel.ptr, "\n");
                             ip.ImPlot_EndDragDropSource();
                         }
                     }
                 }
                 if (ip.ImPlot_BeginDragDropTargetPlot()) {
-                    if (null != ig.igAcceptDragDropPayload("MY_DND", 0)){
+                    if (null != ig.igAcceptDragDropPayload("MY_DND", 0)) {
                         st.id[@intCast(st.curj)] = @intCast(i);
                     }
                     ip.ImPlot_EndDragDropTarget();
@@ -201,9 +202,9 @@ fn demo_SubplotItemSharing() !void {
 // demo_SubplotAxisLinking
 //-------------------------
 fn demo_SubplotAxisLinking() !void {
-  const st = struct {
-    var flags = ip.ImPlotSubplotFlags_LinkRows | ip.ImPlotSubplotFlags_LinkCols;
-  };
+    const st = struct {
+        var flags = ip.ImPlotSubplotFlags_LinkRows | ip.ImPlotSubplotFlags_LinkCols;
+    };
     _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_LinkRows", &st.flags, ip.ImPlotSubplotFlags_LinkRows);
     _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_LinkCols", &st.flags, ip.ImPlotSubplotFlags_LinkCols);
     _ = ig.igCheckboxFlags_IntPtr("ImPlotSubplotFlags_LinkAllX", &st.flags, ip.ImPlotSubplotFlags_LinkAllX);
@@ -211,12 +212,12 @@ fn demo_SubplotAxisLinking() !void {
 
     const rows = 2;
     const cols = 2;
-    if (ip.ImPlot_BeginSubplots("##AxisLinking", rows, cols, .{.x=-1, .y=400}, st.flags, null, null)) {
-        for (0..(rows * cols))|_| {
+    if (ip.ImPlot_BeginSubplots("##AxisLinking", rows, cols, .{ .x = -1, .y = 400 }, st.flags, null, null)) {
+        for (0..(rows * cols)) |_| {
             if (ip.ImPlot_BeginPlot("", .{ .x = -1, .y = 0 }, 0)) {
                 ip.ImPlot_SetupAxesLimits(0, 1000, -1, 1, ip.ImPlotCond_Once);
-                var fc:f32 = 0.01;
-                ip.ImPlot_PlotLineG("common",utils_ip.SineWave, &fc, 1000, 0);
+                var fc: f32 = 0.01;
+                ip.ImPlot_PlotLineG("common", utils_ip.SineWave, &fc, 1000, 0);
                 ip.ImPlot_EndPlot();
             }
         }
@@ -241,10 +242,10 @@ fn demo_LogScale() !void {
     if (ip.ImPlot_BeginPlot("Log Plot", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_Log10);
         ip.ImPlot_SetupAxesLimits(0.1, 100, 0, 10, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = x",        .xs = &xs, .ys = &xs,  .count = 1001});
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = sin(x)+1", .xs = &xs, .ys = &ys1, .count = 1001});
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = log(x)",   .xs = &xs, .ys = &ys2, .count = 1001});
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = 10^x",     .xs = &xs, .ys = &ys3, .count = 21  });
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = x", .xs = &xs, .ys = &xs, .count = 1001 });
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = sin(x)+1", .xs = &xs, .ys = &ys1, .count = 1001 });
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = log(x)", .xs = &xs, .ys = &ys2, .count = 1001 });
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = 10^x", .xs = &xs, .ys = &ys3, .count = 21 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -253,46 +254,46 @@ fn demo_LogScale() !void {
 // demo_LogScale
 //---------------
 fn demo_SymmetricLogScale() !void {
-    var  xs:[1001]f64 = undefined;
-    var  ys1:[1001]f64 = undefined;
-    var  ys2:[1001]f64 = undefined;
-    for (0..1001)|i| {
-        xs[i]  = @as(f64,@floatFromInt(i)) * 0.1 - 50;
+    var xs: [1001]f64 = undefined;
+    var ys1: [1001]f64 = undefined;
+    var ys2: [1001]f64 = undefined;
+    for (0..1001) |i| {
+        xs[i] = @as(f64, @floatFromInt(i)) * 0.1 - 50;
         ys1[i] = math.sin(xs[i]);
-        ys2[i] = @as(f64,@floatFromInt(i)) * 0.002 - 1;
+        ys2[i] = @as(f64, @floatFromInt(i)) * 0.002 - 1;
     }
-    if (ip.ImPlot_BeginPlot("SymLog Plot", .{.x=-1, .y=0} ,0)) {
+    if (ip.ImPlot_BeginPlot("SymLog Plot", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_SymLog);
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = a*x+b"       , .xs = &xs, .ys = &ys2, .count = 1001});
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x)" , .xs = &xs, .ys = &ys1, .count = 1001});
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = a*x+b", .xs = &xs, .ys = &ys2, .count = 1001 });
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = math.sin(x)", .xs = &xs, .ys = &ys1, .count = 1001 });
         ip.ImPlot_EndPlot();
     }
 }
 
-fn TransformForward_Sqrt(v:f64, data: ?*anyopaque) callconv(.c) f64  {
-  _ = &data;
-  return math.sqrt(v);
+fn TransformForward_Sqrt(v: f64, data: ?*anyopaque) callconv(.c) f64 {
+    _ = &data;
+    return math.sqrt(v);
 }
 
-fn TransformInverse_Sqrt(v:f64, data: ?*anyopaque) callconv(.c) f64  {
-  _ = &data;
-  return v * v;
+fn TransformInverse_Sqrt(v: f64, data: ?*anyopaque) callconv(.c) f64 {
+    _ = &data;
+    return v * v;
 }
 
 //------------------
 // demo_CustomScale
 //------------------
 fn demo_CustomScale() !void {
-    var v:[100]f32 = undefined;
-    for (0..100)|i| {
-        v[i] = @as(f32,@floatFromInt(i)) * 0.01;
+    var v: [100]f32 = undefined;
+    for (0..100) |i| {
+        v[i] = @as(f32, @floatFromInt(i)) * 0.01;
     }
     if (ip.ImPlot_BeginPlot("Sqrt", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxis(ip.ImAxis_X1, "Linear", 0);
         ip.ImPlot_SetupAxis(ip.ImAxis_Y1, "Sqrt", 0);
         ip.ImPlot_SetupAxisScale_PlotTransform(ip.ImAxis_Y1, TransformForward_Sqrt, TransformInverse_Sqrt, null);
         ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_Y1, 0, utils_ip.INFINITY_f64);
-        ipz.ImPlot_PlotLine(.{.label = "##data" , .xs = &v, .ys = &v, .count = 100});
+        ipz.ImPlot_PlotLine(.{ .label = "##data", .xs = &v, .ys = &v, .count = 100 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -302,22 +303,22 @@ fn demo_CustomScale() !void {
 //-------------------
 fn demo_MultipleAxes() !void {
     var xs: [1001]f32 = undefined;
-    var xs2:[1001]f32 = undefined;
-    var ys1:[1001]f32 = undefined;
-    var ys2:[1001]f32 = undefined;
-    var ys3:[1001]f32 = undefined;
-    for (0..1001)|i| {
-        xs[i]  = @as(f32,@floatFromInt(i)) * 0.1;
+    var xs2: [1001]f32 = undefined;
+    var ys1: [1001]f32 = undefined;
+    var ys2: [1001]f32 = undefined;
+    var ys3: [1001]f32 = undefined;
+    for (0..1001) |i| {
+        xs[i] = @as(f32, @floatFromInt(i)) * 0.1;
         xs2[i] = xs[i] + 10.0;
         ys1[i] = math.sin(xs[i]) * 3 + 1;
         ys2[i] = math.cos(xs[i]) * 0.2 + 0.5;
-        ys3[i] = math.sin(xs[i]+0.5) * 100 + 200;
+        ys3[i] = math.sin(xs[i] + 0.5) * 100 + 200;
     }
 
     const st = struct {
-      var  x2_axis = true;
-      var  y2_axis = true;
-      var  y3_axis = true;
+        var x2_axis = true;
+        var y2_axis = true;
+        var y3_axis = true;
     };
 
     _ = ig.igCheckbox("X-Axis 2", &st.x2_axis);
@@ -329,34 +330,34 @@ fn demo_MultipleAxes() !void {
     ig.igBulletText("You can drag axes to the opposite side of the plot.");
     ig.igBulletText("Hover over legend items to see which axis they are plotted on.");
 
-    if (ip.ImPlot_BeginPlot("Multi-Axis Plot", .{.x=-1, .y=0}, 0)) {
+    if (ip.ImPlot_BeginPlot("Multi-Axis Plot", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("X-Axis 1", "Y-Axis 1", 0, 0);
         ip.ImPlot_SetupAxesLimits(0, 100, 0, 10, ip.ImPlotCond_Once);
         if (st.x2_axis) {
-            ip.ImPlot_SetupAxis(ip.ImAxis_X2, "X-Axis 2",ip.ImPlotAxisFlags_AuxDefault);
+            ip.ImPlot_SetupAxis(ip.ImAxis_X2, "X-Axis 2", ip.ImPlotAxisFlags_AuxDefault);
             ip.ImPlot_SetupAxisLimits(ip.ImAxis_X2, 0, 100, ip.ImPlotCond_Once);
         }
         if (st.y2_axis) {
-            ip.ImPlot_SetupAxis(ip.ImAxis_Y2, "Y-Axis 2",ip.ImPlotAxisFlags_AuxDefault);
+            ip.ImPlot_SetupAxis(ip.ImAxis_Y2, "Y-Axis 2", ip.ImPlotAxisFlags_AuxDefault);
             ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y2, 0, 1, ip.ImPlotCond_Once);
         }
         if (st.y3_axis) {
-            ip.ImPlot_SetupAxis(ip.ImAxis_Y3, "Y-Axis 3",ip.ImPlotAxisFlags_AuxDefault);
+            ip.ImPlot_SetupAxis(ip.ImAxis_Y3, "Y-Axis 3", ip.ImPlotAxisFlags_AuxDefault);
             ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y3, 0, 300, ip.ImPlotCond_Once);
         }
 
-        ipz.ImPlot_PlotLine(.{.label = "f(x) = x", .xs = &xs, .ys = &xs, .count = 1001});
+        ipz.ImPlot_PlotLine(.{ .label = "f(x) = x", .xs = &xs, .ys = &xs, .count = 1001 });
         if (st.x2_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y1);
-            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x)*3+1", .xs = &xs2, .ys = &ys1, .count = 1001});
+            ipz.ImPlot_PlotLine(.{ .label = "f(x) = math.sin(x)*3+1", .xs = &xs2, .ys = &ys1, .count = 1001 });
         }
         if (st.y2_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X1, ip.ImAxis_Y2);
-            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.cos(x)*.2+.5", .xs = &xs, .ys = &ys2, .count = 1001});
+            ipz.ImPlot_PlotLine(.{ .label = "f(x) = math.cos(x)*.2+.5", .xs = &xs, .ys = &ys2, .count = 1001 });
         }
         if (st.x2_axis and st.y3_axis) {
             ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y3);
-            ipz.ImPlot_PlotLine(.{.label = "f(x) = math.sin(x+.5)*100+200 ", .xs = &xs2, .ys = &ys3, .count = 1001});
+            ipz.ImPlot_PlotLine(.{ .label = "f(x) = math.sin(x+.5)*100+200 ", .xs = &xs2, .ys = &ys3, .count = 1001 });
         }
         ip.ImPlot_EndPlot();
     }
@@ -365,20 +366,20 @@ fn demo_MultipleAxes() !void {
 //------------------
 // MetricsFormatter
 //------------------
-fn MetricFormatter(value:f64, buff:[*c]u8, size:i32, data:?*anyopaque) callconv(.c) c_int {
+fn MetricFormatter(value: f64, buff: [*c]u8, size: i32, data: ?*anyopaque) callconv(.c) c_int {
     _ = &size;
-    const unit = @as([*c]u8,@ptrCast(@alignCast(data.?)));
-    const v = [_]f64{1000000000,1000000,1000,1,0.001,0.000001,0.000000001};
-    const p = [_][*c]const u8{"G","M","k","","m","u","n"};
+    const unit = @as([*c]u8, @ptrCast(@alignCast(data.?)));
+    const v = [_]f64{ 1000000000, 1000000, 1000, 1, 0.001, 0.000001, 0.000000001 };
+    const p = [_][*c]const u8{ "G", "M", "k", "", "m", "u", "n" };
     if (value == 0) {
-        return snprintf(buff ,@intCast(size), "0 %s", unit);
+        return snprintf(buff, @intCast(size), "0 %s", unit);
     }
-    for (0..7)|i| {
+    for (0..7) |i| {
         if (@abs(value) >= v[i]) {
-          return snprintf(buff ,@intCast(size), "%g %s%s", value / v[i], p[i], unit);
+            return snprintf(buff, @intCast(size), "%g %s%s", value / v[i], p[i], unit);
         }
     }
-    return snprintf(buff ,@intCast(size), "%g %s%s", value / v[6], p[6], unit);
+    return snprintf(buff, @intCast(size), "%g %s%s", value / v[6], p[6], unit);
 }
 
 //-----------------
@@ -386,9 +387,9 @@ fn MetricFormatter(value:f64, buff:[*c]u8, size:i32, data:?*anyopaque) callconv(
 //-----------------
 fn demo_TickLabels() !void {
     const st = struct {
-      var  custom_fmt    = true;
-      var  custom_ticks  = false;
-      var  custom_labels = true;
+        var custom_fmt = true;
+        var custom_ticks = false;
+        var custom_labels = true;
     };
     _ = ig.igCheckbox("Show Custom Format", &st.custom_fmt);
     ig.igSameLine(0, -1.0);
@@ -397,15 +398,15 @@ fn demo_TickLabels() !void {
         ig.igSameLine(0, -1.0);
         _ = ig.igCheckbox("Show Custom Labels", &st.custom_labels);
     }
-    const pi:f64 = 3.14;
-        //var ilabels =  [3][*c]const u8{ "Midterm Exam", "Final Exam", "Course Grade", };
+    const pi: f64 = 3.14;
+    //var ilabels =  [3][*c]const u8{ "Midterm Exam", "Final Exam", "Course Grade", };
     const pi_str = [_][*c]const u8{"PI"};
-    const yticks = [_]f64{100,300,700,900};
-    const ylabels = [_][*c]const u8{"One","Three","Seven","Nine"};
-    const yticks_aux = [_]f64{0.2,0.4,0.6};
-    const ylabels_aux = [_][*c]const u8{"A","B","C","D","E","F"};
+    const yticks = [_]f64{ 100, 300, 700, 900 };
+    const ylabels = [_][*c]const u8{ "One", "Three", "Seven", "Nine" };
+    const yticks_aux = [_]f64{ 0.2, 0.4, 0.6 };
+    const ylabels_aux = [_][*c]const u8{ "A", "B", "C", "D", "E", "F" };
     if (ip.ImPlot_BeginPlot("##Ticks", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetupAxesLimits(2.5,5,0,1000, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxesLimits(2.5, 5, 0, 1000, ip.ImPlotCond_Once);
         ip.ImPlot_SetupAxis(ip.ImAxis_Y2, null, ip.ImPlotAxisFlags_AuxDefault);
         ip.ImPlot_SetupAxis(ip.ImAxis_Y3, null, ip.ImPlotAxisFlags_AuxDefault);
         if (st.custom_fmt) {
@@ -415,10 +416,10 @@ fn demo_TickLabels() !void {
             ip.ImPlot_SetupAxisFormat_PlotFormatter(ip.ImAxis_Y3, &MetricFormatter, @ptrCast(@constCast("m")));
         }
         if (st.custom_ticks) {
-            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_X1, &pi ,1 ,         if(st.custom_labels) &pi_str      else null, true);
-            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y1, &yticks, 4 ,     if(st.custom_labels) &ylabels     else null, false);
-            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y2, &yticks_aux, 3 , if(st.custom_labels) &ylabels_aux else null, false);
-            ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y3, 0, 1, 6 ,           if(st.custom_labels) &ylabels_aux else null, false);
+            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_X1, &pi, 1, if (st.custom_labels) &pi_str else null, true);
+            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y1, &yticks, 4, if (st.custom_labels) &ylabels else null, false);
+            ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y2, &yticks_aux, 3, if (st.custom_labels) &ylabels_aux else null, false);
+            ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y3, 0, 1, 6, if (st.custom_labels) &ylabels_aux else null, false);
         }
         ip.ImPlot_EndPlot();
     }
@@ -429,28 +430,28 @@ fn demo_TickLabels() !void {
 //-----------------
 fn demo_LinkedAxes() !void {
     const st = struct {
-      var lims: ip.ImPlotRect = .{ .X = .{ .Min = 0, .Max = 1 }, .Y = .{ .Min = 0, .Max = 1 } };
-      var linkx = true;
-      var linky = true;
+        var lims: ip.ImPlotRect = .{ .X = .{ .Min = 0, .Max = 1 }, .Y = .{ .Min = 0, .Max = 1 } };
+        var linkx = true;
+        var linky = true;
     };
-    const data = [2]c_int{0,1};
+    const data = [2]c_int{ 0, 1 };
     _ = ig.igCheckbox("Link X", &st.linkx);
     ig.igSameLine(0, -1.0);
     _ = ig.igCheckbox("Link Y", &st.linky);
 
-    _ = ig.igDragScalarN("Limits", ig.ImGuiDataType_Double, &st.lims.X.Min, 4, 0.01, null, null, null, 0 );
+    _ = ig.igDragScalarN("Limits", ig.ImGuiDataType_Double, &st.lims.X.Min, 4, 0.01, null, null, null, 0);
 
     if (ip.ImPlot_BeginAlignedPlots("AlignedGroup", true)) {
         if (ip.ImPlot_BeginPlot("Plot A", .{ .x = -1, .y = 0 }, 0)) {
-            ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1 , if(st.linkx) &st.lims.X.Min else null, if(st.linkx) &st.lims.X.Max else null);
-            ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1 , if(st.linky) &st.lims.Y.Min else null, if(st.linky) &st.lims.Y.Max else null);
-            ipz.ImPlot_PlotLine(.{.label = "Line", .values = &data, .count = 2});
+            ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1, if (st.linkx) &st.lims.X.Min else null, if (st.linkx) &st.lims.X.Max else null);
+            ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1, if (st.linky) &st.lims.Y.Min else null, if (st.linky) &st.lims.Y.Max else null);
+            ipz.ImPlot_PlotLine(.{ .label = "Line", .values = &data, .count = 2 });
             ip.ImPlot_EndPlot();
         }
         if (ip.ImPlot_BeginPlot("Plot B", .{ .x = -1, .y = 0 }, 0)) {
-            ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1 , if(st.linkx) &st.lims.X.Min else null, if(st.linkx) &st.lims.X.Max else null);
-            ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1 , if(st.linky) &st.lims.Y.Min else null, if(st.linky) &st.lims.Y.Max else null);
-            ipz.ImPlot_PlotLine(.{.label = "Line", .values = &data, .count = 2});
+            ip.ImPlot_SetupAxisLinks(ip.ImAxis_X1, if (st.linkx) &st.lims.X.Min else null, if (st.linkx) &st.lims.X.Max else null);
+            ip.ImPlot_SetupAxisLinks(ip.ImAxis_Y1, if (st.linky) &st.lims.Y.Min else null, if (st.linky) &st.lims.Y.Max else null);
+            ipz.ImPlot_PlotLine(.{ .label = "Line", .values = &data, .count = 2 });
             ip.ImPlot_EndPlot();
         }
         ip.ImPlot_EndAlignedPlots();
@@ -462,19 +463,19 @@ fn demo_LinkedAxes() !void {
 //----------------------
 fn demo_AxisConstraints() !void {
     const st = struct {
-    var constraints = [4]f32{-10,10,1,20};
-    var  flags: ip.ImPlotAxisFlags = 0;
+        var constraints = [4]f32{ -10, 10, 1, 20 };
+        var flags: ip.ImPlotAxisFlags = 0;
     };
     _ = ig.igDragFloat2("Limits Constraints", &st.constraints[0], 0.01, 0, 0, "%.3f", 0);
-    _ = ig.igDragFloat2("Zoom Constraints"  , &st.constraints[2], 0.01, 0, 0, "%.3f", 0);
-    _ = ig.igCheckboxFlags_IntPtr("ip.ImPlotAxisFlags_PanStretch", &st.flags, st.flags );
-    if (ip.ImPlot_BeginPlot("##AxisConstraints", .{.x=-1, .y=0}, 0)) {
-        ip.ImPlot_SetupAxes("X","Y",st.flags,st.flags);
-        ip.ImPlot_SetupAxesLimits(-1,1,-1,1, ip.ImPlotCond_Once);
-        ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_X1,st.constraints[0], st.constraints[1]);
-        ip.ImPlot_SetupAxisZoomConstraints(ip.ImAxis_X1,  st.constraints[2], st.constraints[3]);
-        ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_Y1,st.constraints[0], st.constraints[1]);
-        ip.ImPlot_SetupAxisZoomConstraints(ip.ImAxis_Y1,  st.constraints[2], st.constraints[3]);
+    _ = ig.igDragFloat2("Zoom Constraints", &st.constraints[2], 0.01, 0, 0, "%.3f", 0);
+    _ = ig.igCheckboxFlags_IntPtr("ip.ImPlotAxisFlags_PanStretch", &st.flags, st.flags);
+    if (ip.ImPlot_BeginPlot("##AxisConstraints", .{ .x = -1, .y = 0 }, 0)) {
+        ip.ImPlot_SetupAxes("X", "Y", st.flags, st.flags);
+        ip.ImPlot_SetupAxesLimits(-1, 1, -1, 1, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_X1, st.constraints[0], st.constraints[1]);
+        ip.ImPlot_SetupAxisZoomConstraints(ip.ImAxis_X1, st.constraints[2], st.constraints[3]);
+        ip.ImPlot_SetupAxisLimitsConstraints(ip.ImAxis_Y1, st.constraints[0], st.constraints[1]);
+        ip.ImPlot_SetupAxisZoomConstraints(ip.ImAxis_Y1, st.constraints[2], st.constraints[3]);
         ip.ImPlot_EndPlot();
     }
 }
@@ -484,20 +485,21 @@ fn demo_AxisConstraints() !void {
 //----------------
 fn demo_EqualAxes() !void {
     ig.igBulletText("Equal constraint applies to axis pairs (e.g ip.ImAxis_X1/Y1, ip.ImAxis_X2/Y2)");
-    var xs1:[360]f64 = undefined;
-    var ys1:[360]f64 = undefined;
-    for (0..360)|i| {
-        const angle = @as(f64,@floatFromInt(i)) * 2 * utils_ip.PI / 359.0;
-        xs1[i] = math.cos(angle); ys1[i] = math.sin(angle);
+    var xs1: [360]f64 = undefined;
+    var ys1: [360]f64 = undefined;
+    for (0..360) |i| {
+        const angle = @as(f64, @floatFromInt(i)) * 2 * utils_ip.PI / 359.0;
+        xs1[i] = math.cos(angle);
+        ys1[i] = math.sin(angle);
     }
-    const xs2 = [_]f32{-1,0,1,0,-1};
-    const ys2 = [_]f32{0,1,0,-1,0};
-    if (ip.ImPlot_BeginPlot("##EqualAxes",.{.x=-1, .y=0},ip.ImPlotFlags_Equal)) {
+    const xs2 = [_]f32{ -1, 0, 1, 0, -1 };
+    const ys2 = [_]f32{ 0, 1, 0, -1, 0 };
+    if (ip.ImPlot_BeginPlot("##EqualAxes", .{ .x = -1, .y = 0 }, ip.ImPlotFlags_Equal)) {
         ip.ImPlot_SetupAxis(ip.ImAxis_X2, null, ip.ImPlotAxisFlags_AuxDefault);
         ip.ImPlot_SetupAxis(ip.ImAxis_Y2, null, ip.ImPlotAxisFlags_AuxDefault);
-        ipz.ImPlot_PlotLine(.{.label = "Circle", .xs = &xs1, .ys = &ys1, .count = 360});
+        ipz.ImPlot_PlotLine(.{ .label = "Circle", .xs = &xs1, .ys = &ys1, .count = 360 });
         ip.ImPlot_SetAxes(ip.ImAxis_X2, ip.ImAxis_Y2);
-        ipz.ImPlot_PlotLine(.{.label = "Diamond", .xs = &xs2, .ys = &ys2, .count = 5});
+        ipz.ImPlot_PlotLine(.{ .label = "Diamond", .xs = &xs2, .ys = &ys2, .count = 5 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -510,27 +512,31 @@ fn demo_AutoFittingData() !void {
     ig.igBulletText("Zoom and pan the X-axis. Disable Stems to see a difference in fit.");
     ig.igBulletText("If ip.ImPlotAxisFlags_RangeFit is disabled, the axis will fit ALL data.");
     const st = struct {
-      var xflags = ip.ImPlotAxisFlags_None;
-      var yflags = ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_RangeFit;
+        var xflags = ip.ImPlotAxisFlags_None;
+        var yflags = ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_RangeFit;
     };
 
-    ig.igTextUnformatted("X: ", "\n"); ig.igSameLine(0, -1.0);
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_AutoFit##X",  &st.xflags, ip.ImPlotAxisFlags_AutoFit); ig.igSameLine(0, -1.0);
+    ig.igTextUnformatted("X: ", "\n");
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_AutoFit##X", &st.xflags, ip.ImPlotAxisFlags_AutoFit);
+    ig.igSameLine(0, -1.0);
     _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_RangeFit##X", &st.xflags, ip.ImPlotAxisFlags_RangeFit);
 
-    ig.igTextUnformatted("Y: ", "\n"); ig.igSameLine(0, -1.0);
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_AutoFit##Y", &st.yflags, ip.ImPlotAxisFlags_AutoFit); ig.igSameLine(0, -1.0);
+    ig.igTextUnformatted("Y: ", "\n");
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_AutoFit##Y", &st.yflags, ip.ImPlotAxisFlags_AutoFit);
+    ig.igSameLine(0, -1.0);
     _ = ig.igCheckboxFlags_IntPtr("ImPlotAxisFlags_RangeFit##Y", &st.yflags, ip.ImPlotAxisFlags_RangeFit);
 
-    var data:[101]f64 = undefined;
+    var data: [101]f64 = undefined;
     srand(0);
-    for (0..101)|i|
-        data[i] = 1 + math.sin( @as(f64, @floatFromInt(i)) / 10.0);
+    for (0..101) |i|
+        data[i] = 1 + math.sin(@as(f64, @floatFromInt(i)) / 10.0);
 
     if (ip.ImPlot_BeginPlot("##DataFitting", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("X", "Y", st.xflags, st.yflags);
-        ipz.ImPlot_PlotLine(.{.label = "Line",  .values = &data, .count = 101});
-        ipz.ImPlot_PlotStems(.{.label = "Stems", .values = &data, .count = 101});
+        ipz.ImPlot_PlotLine(.{ .label = "Line", .values = &data, .count = 101 });
+        ipz.ImPlot_PlotStems(.{ .label = "Stems", .values = &data, .count = 101 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -539,20 +545,20 @@ fn demo_AutoFittingData() !void {
 // demo_OffsetAndStride
 //----------------------
 fn demo_OffsetAndStride() !void {
-    const k_circles    = 11;
+    const k_circles = 11;
     const k_points_per = 50;
-    const k_size       = 2 * k_points_per * k_circles;
-    var interleaved_data:[k_size]f64 = undefined;
-    for (0..k_points_per)|p| {
-        for (0..k_circles)|ci| {
-            const r = @as(f64,@floatFromInt(ci)) / (k_circles - 1) * 0.2 + 0.2;
-            interleaved_data[p * 2 * k_circles + 2 * ci + 0] = 0.5 + r * math.cos(@as(f64,@floatFromInt(p))/k_points_per * 6.28);
-            interleaved_data[p * 2 * k_circles + 2 * ci + 1] = 0.5 + r * math.sin(@as(f64,@floatFromInt(p))/k_points_per * 6.28);
+    const k_size = 2 * k_points_per * k_circles;
+    var interleaved_data: [k_size]f64 = undefined;
+    for (0..k_points_per) |p| {
+        for (0..k_circles) |ci| {
+            const r = @as(f64, @floatFromInt(ci)) / (k_circles - 1) * 0.2 + 0.2;
+            interleaved_data[p * 2 * k_circles + 2 * ci + 0] = 0.5 + r * math.cos(@as(f64, @floatFromInt(p)) / k_points_per * 6.28);
+            interleaved_data[p * 2 * k_circles + 2 * ci + 1] = 0.5 + r * math.sin(@as(f64, @floatFromInt(p)) / k_points_per * 6.28);
         }
     }
 
     const st = struct {
-      var offset:c_int = 0;
+        var offset: c_int = 0;
     };
     ig.igBulletText("Offsetting is useful for realtime plots (see above) and circular buffers.");
     ig.igBulletText("Striding is useful for interleaved data (e.g. audio) or plotting structs.");
@@ -560,19 +566,13 @@ fn demo_OffsetAndStride() !void {
     ig.igBulletText("[c0.x0 c0.y0 ... cn.x0 cn.y0 c0.x1 c0.y1 ... cn.x1 cn.y1 ... cn.xm cn.ym]");
     ig.igBulletText("The offset value indicates which circle point index is considered the first.");
     ig.igBulletText("Offsets can be negative and/or larger than the actual data count.");
-    _ = ig.igSliderInt("Offset", &st.offset, -2*k_points_per, 2*k_points_per, "%d", 0);
-    if (ip.ImPlot_BeginPlot("##strideoffset",.{.x=-1, .y=0},ip.ImPlotFlags_Equal)) {
+    _ = ig.igSliderInt("Offset", &st.offset, -2 * k_points_per, 2 * k_points_per, "%d", 0);
+    if (ip.ImPlot_BeginPlot("##strideoffset", .{ .x = -1, .y = 0 }, ip.ImPlotFlags_Equal)) {
         ip.ImPlot_PushColormap_PlotColormap(ip.ImPlotColormap_Jet);
-        var buff:[32]u8 = undefined;
-        for (0..k_circles)|ci| {
-            _= snprintf(&buff, buff.len, "Circle %d", ci);
-            ipz.ImPlot_PlotLine(.{.label = &buff
-              , .xs = interleaved_data[ci * 2 + 0..].ptr
-              , .ys = interleaved_data[ci * 2 + 1..].ptr
-              , .count = k_points_per
-              , .flags = 0
-              , .offset = st.offset
-              , .stride = 2 * k_circles * @sizeOf(@TypeOf(interleaved_data[0]))});
+        var buff: [32]u8 = undefined;
+        for (0..k_circles) |ci| {
+            _ = snprintf(&buff, buff.len, "Circle %d", ci);
+            ipz.ImPlot_PlotLine(.{ .label = &buff, .xs = interleaved_data[ci * 2 + 0 ..].ptr, .ys = interleaved_data[ci * 2 + 1 ..].ptr, .count = k_points_per, .flags = 0, .offset = st.offset, .stride = 2 * k_circles * @sizeOf(@TypeOf(interleaved_data[0])) });
         }
         ip.ImPlot_EndPlot();
         ip.ImPlot_PopColormap(1);
@@ -586,46 +586,44 @@ fn demo_OffsetAndStride() !void {
 fn demo_DragPoints() !void {
     ig.igBulletText("Click and drag each point.");
     const st = struct {
-      var flags = ip.ImPlotDragToolFlags_None;
-      var clicked = [_]bool{false, false, false, false};
-      var hovered = [_]bool{false, false, false, false};
-      var held    = [_]bool{false, false, false, false};
-      var P =  [_]ip.ImPlotPoint{ip.ImPlotPoint{.x = 0.05,.y = 0.05}
-                                ,ip.ImPlotPoint{.x = 0.2, .y = 0.4}
-                                ,ip.ImPlotPoint{.x = 0.8, .y = 0.6}
-                                ,ip.ImPlotPoint{.x = 0.95,.y = 0.95}};
+        var flags = ip.ImPlotDragToolFlags_None;
+        var clicked = [_]bool{ false, false, false, false };
+        var hovered = [_]bool{ false, false, false, false };
+        var held = [_]bool{ false, false, false, false };
+        var P = [_]ip.ImPlotPoint{ ip.ImPlotPoint{ .x = 0.05, .y = 0.05 }, ip.ImPlotPoint{ .x = 0.2, .y = 0.4 }, ip.ImPlotPoint{ .x = 0.8, .y = 0.6 }, ip.ImPlotPoint{ .x = 0.95, .y = 0.95 } };
     };
-    _ = ig.igCheckboxFlags_IntPtr("NoCursors", &st.flags, ip.ImPlotDragToolFlags_NoCursors); ig.igSameLine(0, -1.0);
-    _ = ig.igCheckboxFlags_IntPtr("NoFit",     &st.flags, ip.ImPlotDragToolFlags_NoFit); ig.igSameLine(0, -1.0);
-    _ = ig.igCheckboxFlags_IntPtr("NoInput",   &st.flags, ip.ImPlotDragToolFlags_NoInputs);
+    _ = ig.igCheckboxFlags_IntPtr("NoCursors", &st.flags, ip.ImPlotDragToolFlags_NoCursors);
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("NoFit", &st.flags, ip.ImPlotDragToolFlags_NoFit);
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckboxFlags_IntPtr("NoInput", &st.flags, ip.ImPlotDragToolFlags_NoInputs);
     const ax_flags = ip.ImPlotAxisFlags_NoTickLabels | ip.ImPlotAxisFlags_NoTickMarks;
-    if (ip.ImPlot_BeginPlot("##Bezier",.{.x=-1, .y=0},ip.ImPlotFlags_CanvasOnly)) {
-        ip.ImPlot_SetupAxes(null,null,ax_flags,ax_flags);
-        ip.ImPlot_SetupAxesLimits(0,1,0,1, ip.ImPlotCond_Once);
+    if (ip.ImPlot_BeginPlot("##Bezier", .{ .x = -1, .y = 0 }, ip.ImPlotFlags_CanvasOnly)) {
+        ip.ImPlot_SetupAxes(null, null, ax_flags, ax_flags);
+        ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
 
-        _ = ip.ImPlot_DragPoint(0, &st.P[0].x, &st.P[0].y, .{.x=0, .y=0.9, .z=0, .w=1}, 4, st.flags, &st.clicked[0], &st.hovered[0], &st.held[0]);
-        _ = ip.ImPlot_DragPoint(1, &st.P[1].x, &st.P[1].y, .{.x=1, .y=0.5, .z=1, .w=1}, 4, st.flags, &st.clicked[1], &st.hovered[1], &st.held[1]);
-        _ = ip.ImPlot_DragPoint(2, &st.P[2].x, &st.P[2].y, .{.x=0, .y=0.5, .z=1, .w=1}, 4, st.flags, &st.clicked[2], &st.hovered[2], &st.held[2]);
-        _ = ip.ImPlot_DragPoint(3, &st.P[3].x, &st.P[3].y, .{.x=0, .y=0.9, .z=0, .w=1}, 4, st.flags, &st.clicked[3], &st.hovered[3], &st.held[3]);
+        _ = ip.ImPlot_DragPoint(0, &st.P[0].x, &st.P[0].y, .{ .x = 0, .y = 0.9, .z = 0, .w = 1 }, 4, st.flags, &st.clicked[0], &st.hovered[0], &st.held[0]);
+        _ = ip.ImPlot_DragPoint(1, &st.P[1].x, &st.P[1].y, .{ .x = 1, .y = 0.5, .z = 1, .w = 1 }, 4, st.flags, &st.clicked[1], &st.hovered[1], &st.held[1]);
+        _ = ip.ImPlot_DragPoint(2, &st.P[2].x, &st.P[2].y, .{ .x = 0, .y = 0.5, .z = 1, .w = 1 }, 4, st.flags, &st.clicked[2], &st.hovered[2], &st.held[2]);
+        _ = ip.ImPlot_DragPoint(3, &st.P[3].x, &st.P[3].y, .{ .x = 0, .y = 0.9, .z = 0, .w = 1 }, 4, st.flags, &st.clicked[3], &st.hovered[3], &st.held[3]);
 
-        var B : [100]ip.ImPlotPoint = undefined ;
-        for (0..100)|i| {
-            const  t  = @as(f64,@floatFromInt(i)) / 99.0;
-            const  u  = 1 - t;
-            const  w1 = u * u * u;
-            const  w2 = 3 * u * u * t;
-            const  w3 = 3 * u * t * t;
-            const  w4 = t * t * t;
-            B[i] = ip.ImPlotPoint{.x = w1 * st.P[0].x + w2 * st.P[1].x + w3 * st.P[2].x + w4 * st.P[3].x
-                                , .y = w1 * st.P[0].y + w2 * st.P[1].y + w3 * st.P[2].y + w4 * st.P[3].y};
+        var B: [100]ip.ImPlotPoint = undefined;
+        for (0..100) |i| {
+            const t = @as(f64, @floatFromInt(i)) / 99.0;
+            const u = 1 - t;
+            const w1 = u * u * u;
+            const w2 = 3 * u * u * t;
+            const w3 = 3 * u * t * t;
+            const w4 = t * t * t;
+            B[i] = ip.ImPlotPoint{ .x = w1 * st.P[0].x + w2 * st.P[1].x + w3 * st.P[2].x + w4 * st.P[3].x, .y = w1 * st.P[0].y + w2 * st.P[1].y + w3 * st.P[2].y + w4 * st.P[3].y };
         }
 
-        ip.ImPlot_SetNextLineStyle(.{.x=1, .y=0.5, .z=1, .w=1}, if (st.hovered[1] or st.held[1]) 2.0 else 1.0);
-        ipz.ImPlot_PlotLine(.{.label = "##h1", .xs = @as([*c]f64,@ptrCast(&st.P[0].x)), .ys = @as([*c]f64,@ptrCast(&st.P[0].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
-        ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.5, .z=1, .w=1}, if (st.hovered[2] or st.held[2]) 2.0 else 1.0);
-        ipz.ImPlot_PlotLine(.{.label = "##h2", .xs = @as([*c]f64,@ptrCast(&st.P[2].x)), .ys = @as([*c]f64,@ptrCast(&st.P[2].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
-        ip.ImPlot_SetNextLineStyle(.{.x=0, .y=0.9, .z=0, .w=1}, if (st.hovered[0] or st.held[0] or st.hovered[3] or st.held[3])  3.0 else 2.0);
-        ipz.ImPlot_PlotLine(.{.label = "##bez", .xs = @as([*c]f64,@ptrCast(&B[0].x)), .ys = @as([*c]f64,@ptrCast(&B[0].y)), .count = 100, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint)});
+        ip.ImPlot_SetNextLineStyle(.{ .x = 1, .y = 0.5, .z = 1, .w = 1 }, if (st.hovered[1] or st.held[1]) 2.0 else 1.0);
+        ipz.ImPlot_PlotLine(.{ .label = "##h1", .xs = @as([*c]f64, @ptrCast(&st.P[0].x)), .ys = @as([*c]f64, @ptrCast(&st.P[0].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint) });
+        ip.ImPlot_SetNextLineStyle(.{ .x = 0, .y = 0.5, .z = 1, .w = 1 }, if (st.hovered[2] or st.held[2]) 2.0 else 1.0);
+        ipz.ImPlot_PlotLine(.{ .label = "##h2", .xs = @as([*c]f64, @ptrCast(&st.P[2].x)), .ys = @as([*c]f64, @ptrCast(&st.P[2].y)), .count = 2, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint) });
+        ip.ImPlot_SetNextLineStyle(.{ .x = 0, .y = 0.9, .z = 0, .w = 1 }, if (st.hovered[0] or st.held[0] or st.hovered[3] or st.held[3]) 3.0 else 2.0);
+        ipz.ImPlot_PlotLine(.{ .label = "##bez", .xs = @as([*c]f64, @ptrCast(&B[0].x)), .ys = @as([*c]f64, @ptrCast(&B[0].y)), .count = 100, .flags = 0, .offset = 0, .stride = @sizeOf(ip.ImPlotPoint) });
         ip.ImPlot_EndPlot();
     }
 }
@@ -642,17 +640,17 @@ fn demo_Config() !void {
     ig.igSeparator();
     _ = ig.igCheckbox("Use Local Time", &ip.ImPlot_GetStyle().*.UseLocalTime);
     _ = ig.igCheckbox("Use ISO 8601", &ip.ImPlot_GetStyle().*.UseISO8601);
-    _ = ig.  igCheckbox("Use 24 Hour Clock", &ip.ImPlot_GetStyle().*.Use24HourClock);
+    _ = ig.igCheckbox("Use 24 Hour Clock", &ip.ImPlot_GetStyle().*.Use24HourClock);
     ig.igSeparator();
-    if (ip.  ImPlot_BeginPlot("Preview", .{ .x = -1, .y = 0 }, 0)) {
-        const now:f64 = ig.igGetTime();
+    if (ip.ImPlot_BeginPlot("Preview", .{ .x = -1, .y = 0 }, 0)) {
+        const now: f64 = ig.igGetTime();
         ip.ImPlot_SetupAxisScale_PlotScale(ip.ImAxis_X1, ip.ImPlotScale_Time);
-        ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1, now, now + 24*3600, ip.ImPlotCond_Once);
-        for (0..10)|i| {
-            const x = [2]f64{now, now + 24*3600};
-            const y = [2]f64{0, @as(f64,@floatFromInt(i)) / 9.0};
+        ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1, now, now + 24 * 3600, ip.ImPlotCond_Once);
+        for (0..10) |i| {
+            const x = [2]f64{ now, now + 24 * 3600 };
+            const y = [2]f64{ 0, @as(f64, @floatFromInt(i)) / 9.0 };
             ig.igPushID_Int(@intCast(i));
-            ipz.ImPlot_PlotLine(.{.label = "##Line", .xs = &x, .ys = &y, .count = 2});
+            ipz.ImPlot_PlotLine(.{ .label = "##Line", .xs = &x, .ys = &y, .count = 2 });
             ig.igPopID();
         }
         ip.ImPlot_EndPlot();
@@ -665,8 +663,7 @@ fn demo_Config() !void {
 fn demo_Help() !void {
     ig.igText("ABOUT THIS DEMO:");
     ig.igBulletText("Sections below are demonstrating many aspects of the library.");
-    ig.igBulletText("The \"Tools\" menu above gives access to: Style Editors (ImPlot/ImGui)\n"
-                    ,"and Metrics (general purpose Dear ImGui debugging tool).");
+    ig.igBulletText("The \"Tools\" menu above gives access to: Style Editors (ImPlot/ImGui)\n", "and Metrics (general purpose Dear ImGui debugging tool).");
     ig.igSeparator();
     ig.igText("PROGRAMMER GUIDE:");
     ig.igBulletText("See the ShowDemoWindow() code in implot_demo.cpp. <- you are here!");
@@ -677,14 +674,14 @@ fn demo_Help() !void {
     ig.igBulletText("Or, enable 32-bit indices in imconfig.h.");
     ig.igBulletText("Your current configuration is:");
     ig.igIndent(0);
-    ig.igBulletText("ImDrawIdx: %d-bit", @as(c_int,@intCast(@sizeOf(ig.ImDrawIdx) * 8)));
+    ig.igBulletText("ImDrawIdx: %d-bit", @as(c_int, @intCast(@sizeOf(ig.ImDrawIdx) * 8)));
 
     // TODO: Avoided compilation error.
     const state = (0 != (ig.igGetIO_Nil().*.BackendFlags & ig.ImGuiBackendFlags_RendererHasVtxOffset));
-    if (state){
+    if (state) {
         ig.igBulletText("ImGuiBackendFlags_RendererHasVtxOffset: True");
-    }else{
-      ig.igBulletText("ImGuiBackendFlags_RendererHasVtxOffset: False");
+    } else {
+        ig.igBulletText("ImGuiBackendFlags_RendererHasVtxOffset: False");
     }
     ig.igUnindent(0);
     ig.igUnindent(0);
@@ -697,10 +694,10 @@ fn demo_Help() !void {
 // demo_BarPlots
 //---------------
 fn demo_BarPlots() !void {
-    const data = [10]ig.ImS8{1,2,3,4,5,6,7,8,9,10};
+    const data = [10]ig.ImS8{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     if (ip.ImPlot_BeginPlot("Bar Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ipz.ImPlot_PlotBars(.{.label = "Vertical",  .values = &data, .count = 10, .bar_size = 0.7, .shift = 1, .flags =  0, .offset = 0, .stride = utils_ip.stride(data[0])});
-        ipz.ImPlot_PlotBars(.{.label = "Horizontal",.values = &data, .count = 10, .bar_size = 0.4, .shift = 1, .flags = ip.ImPlotBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(data[0])});
+        ipz.ImPlot_PlotBars(.{ .label = "Vertical", .values = &data, .count = 10, .bar_size = 0.7, .shift = 1, .flags = 0, .offset = 0, .stride = utils_ip.stride(data[0]) });
+        ipz.ImPlot_PlotBars(.{ .label = "Horizontal", .values = &data, .count = 10, .bar_size = 0.4, .shift = 1, .flags = ip.ImPlotBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(data[0]) });
         ip.ImPlot_EndPlot();
     }
 }
@@ -711,13 +708,39 @@ fn demo_BarPlots() !void {
 fn demo_BarGroups() !void {
     const st = struct {
         var data = [30]ig.ImS8{
-            83, 67, 23, 89, 83, 78, 91, 82, 85, 90,  // midterm
+            83, 67, 23, 89, 83, 78, 91, 82, 85, 90, // midterm
             80, 62, 56, 99, 55, 78, 88, 78, 90, 100, // final
-            80, 69, 52, 92, 72, 78, 75, 76, 89, 95,  // course
+            80, 69, 52, 92, 72, 78, 75, 76, 89, 95, // course
         };
-        var ilabels =  [3][*c]const u8{ "Midterm Exam", "Final Exam", "Course Grade", };
-        var glabels = [10][*c]const u8{ "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", };
-        const positions = [10]f64{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, };
+        var ilabels = [3][*c]const u8{
+            "Midterm Exam",
+            "Final Exam",
+            "Course Grade",
+        };
+        var glabels = [10][*c]const u8{
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6",
+            "S7",
+            "S8",
+            "S9",
+            "S10",
+        };
+        const positions = [10]f64{
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+        };
         var items: c_int = 3;
         var groups: c_int = 10;
         var size: f32 = 0.67;
@@ -737,11 +760,11 @@ fn demo_BarGroups() !void {
         if (st.horz) {
             ip.ImPlot_SetupAxes("Score", "Student", ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
             ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_Y1, &st.positions, st.groups, &st.glabels, false);
-            ipz.ImPlot_PlotBarGroups(.{.labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags | ip.ImPlotBarGroupsFlags_Horizontal});
+            ipz.ImPlot_PlotBarGroups(.{ .labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags | ip.ImPlotBarGroupsFlags_Horizontal });
         } else {
             ip.ImPlot_SetupAxes("Student", "Score", ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
             ip.ImPlot_SetupAxisTicks_doublePtr(ip.ImAxis_X1, &st.positions, st.groups, &st.glabels, false);
-            ipz.ImPlot_PlotBarGroups(.{.labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags});
+            ipz.ImPlot_PlotBarGroups(.{ .labels = &st.ilabels, .values = &st.data, .item_count = st.items, .group_count = st.groups, .group_size = st.size, .shift = 0, .flags = st.flags });
         }
         ip.ImPlot_EndPlot();
     }
@@ -752,47 +775,49 @@ fn demo_BarGroups() !void {
 //----------------
 fn demo_BarStacks() !void {
     const st = struct {
-       var  Liars:ip.ImPlotColormap = -1;
-       var diverging = true;
+        var Liars: ip.ImPlotColormap = -1;
+        var diverging = true;
     };
     if (st.Liars == -1) {
-         const Liars_Data = [6]ig.ImU32{ 4282515870, 4282609140, 4287357182, 4294630301, 4294945280, 4294921472 };
-         st.Liars = ip.ImPlot_AddColormap_U32Ptr("Liars", &Liars_Data, 6, true);
+        const Liars_Data = [6]ig.ImU32{ 4282515870, 4282609140, 4287357182, 4294630301, 4294945280, 4294921472 };
+        st.Liars = ip.ImPlot_AddColormap_U32Ptr("Liars", &Liars_Data, 6, true);
     }
 
-    _ = ig.igCheckbox("Diverging",&st.diverging);
+    _ = ig.igCheckbox("Diverging", &st.diverging);
 
-    const politicians = [_][*c]const u8{"Trump","Bachman","Cruz","Gingrich","Palin","Santorum","Walker","Perry","Ryan","McCain","Rubio","Romney","Rand Paul","Christie","Biden","Kasich","Sanders","J Bush","H Clinton","Obama"};
-    const data_reg = [_]c_int{18,26,7,14,10,8,6,11,4,4,3,8,6,8,6,5,0,3,1,2,                // Pants on Fire
-                              43,36,30,21,30,27,25,17,11,22,15,16,16,17,12,12,14,6,13,12,  // False
-                              16,13,28,22,15,21,15,18,30,17,24,18,13,10,14,15,17,22,14,12, // Mostly False
-                              17,10,13,25,12,22,19,26,23,17,22,27,20,26,29,17,18,22,21,27, // Half True
-                              5,7,16,10,10,12,23,13,17,20,22,16,23,19,20,26,36,29,27,26,   // Mostly True
-                              1,8,6,8,23,10,12,15,15,20,14,15,22,20,19,25,15,18,24,21};    // True
-    const labels_reg = [_][*c]const u8{"Pants on Fire","False","Mostly False","Half True","Mostly True","True"};
+    const politicians = [_][*c]const u8{ "Trump", "Bachman", "Cruz", "Gingrich", "Palin", "Santorum", "Walker", "Perry", "Ryan", "McCain", "Rubio", "Romney", "Rand Paul", "Christie", "Biden", "Kasich", "Sanders", "J Bush", "H Clinton", "Obama" };
+    const data_reg = [_]c_int{
+        18, 26, 7, 14, 10, 8, 6, 11, 4, 4, 3, 8, 6, 8, 6, 5, 0, 3, 1, 2, // Pants on Fire
+        43, 36, 30, 21, 30, 27, 25, 17, 11, 22, 15, 16, 16, 17, 12, 12, 14, 6, 13, 12, // False
+        16, 13, 28, 22, 15, 21, 15, 18, 30, 17, 24, 18, 13, 10, 14, 15, 17, 22, 14, 12, // Mostly False
+        17, 10, 13, 25, 12, 22, 19, 26, 23, 17, 22, 27, 20, 26, 29, 17, 18, 22, 21, 27, // Half True
+        5, 7, 16, 10, 10, 12, 23, 13, 17, 20, 22, 16, 23, 19, 20, 26, 36, 29, 27, 26, // Mostly True
+        1, 8, 6,  8,  23, 10, 12, 15, 15, 20, 14, 15, 22, 20, 19, 25, 15, 18, 24, 21,
+    }; // True
+    const labels_reg = [_][*c]const u8{ "Pants on Fire", "False", "Mostly False", "Half True", "Mostly True", "True" };
 
-
-    const data_div = [_]c_int{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                                         // Pants on Fire (dummy, to order legend logically)
-                             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                                         // False         (dummy, to order legend logically)
-                             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                                         // Mostly False  (dummy, to order legend logically)
-                             -16,-13,-28,-22,-15,-21,-15,-18,-30,-17,-24,-18,-13,-10,-14,-15,-17,-22,-14,-12, // Mostly False
-                             -43,-36,-30,-21,-30,-27,-25,-17,-11,-22,-15,-16,-16,-17,-12,-12,-14,-6,-13,-12,  // False
-                             -18,-26,-7,-14,-10,-8,-6,-11,-4,-4,-3,-8,-6,-8,-6,-5,0,-3,-1,-2,                 // Pants on Fire
-                             17,10,13,25,12,22,19,26,23,17,22,27,20,26,29,17,18,22,21,27,                     // Half True
-                             5,7,16,10,10,12,23,13,17,20,22,16,23,19,20,26,36,29,27,26,                       // Mostly True
-                             1,8,6,8,23,10,12,15,15,20,14,15,22,20,19,25,15,18,24,21};                        // True
-    const labels_div = [_][*c]const u8{"Pants on Fire","False","Mostly False","Mostly False","False","Pants on Fire","Half True","Mostly True","True"};
+    const data_div = [_]c_int{
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Pants on Fire (dummy, to order legend logically)
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // False         (dummy, to order legend logically)
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Mostly False  (dummy, to order legend logically)
+        -16, -13, -28, -22, -15, -21, -15, -18, -30, -17, -24, -18, -13, -10, -14, -15, -17, -22, -14, -12, // Mostly False
+        -43, -36, -30, -21, -30, -27, -25, -17, -11, -22, -15, -16, -16, -17, -12, -12, -14, -6, -13, -12, // False
+        -18, -26, -7, -14, -10, -8, -6, -11, -4, -4, -3, -8, -6, -8, -6, -5, 0, -3, -1, -2, // Pants on Fire
+        17, 10, 13, 25, 12, 22, 19, 26, 23, 17, 22, 27, 20, 26, 29, 17, 18, 22, 21, 27, // Half True
+        5, 7, 16, 10, 10, 12, 23, 13, 17, 20, 22, 16, 23, 19, 20, 26, 36, 29, 27, 26, // Mostly True
+        1, 8, 6,  8,  23, 10, 12, 15, 15, 20, 14, 15, 22, 20, 19, 25, 15, 18, 24, 21,
+    }; // True
+    const labels_div = [_][*c]const u8{ "Pants on Fire", "False", "Mostly False", "Mostly False", "False", "Pants on Fire", "Half True", "Mostly True", "True" };
 
     ip.ImPlot_PushColormap_PlotColormap(st.Liars);
-    if (ip.ImPlot_BeginPlot("PolitiFact: Who Lies More?",.{.x=-1, .y=400},ip.ImPlotFlags_NoMouseText)) {
+    if (ip.ImPlot_BeginPlot("PolitiFact: Who Lies More?", .{ .x = -1, .y = 400 }, ip.ImPlotFlags_NoMouseText)) {
         ip.ImPlot_SetupLegend(ip.ImPlotLocation_South, ip.ImPlotLegendFlags_Outside | ip.ImPlotLegendFlags_Horizontal);
-        ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_NoDecorations,ip.ImPlotAxisFlags_AutoFit |  ip.ImPlotAxisFlags_Invert);
-        ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1,0,19,20, &politicians,false);
-        if (st.diverging){
-          ipz.ImPlot_PlotBarGroups(.{.labels = &labels_div, .values = &data_div, .item_count = 9, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal});
-        }
-        else{
-          ipz.ImPlot_PlotBarGroups(.{.labels = &labels_reg, .values = &data_reg, .item_count = 6, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal});
+        ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_AutoFit | ip.ImPlotAxisFlags_Invert);
+        ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1, 0, 19, 20, &politicians, false);
+        if (st.diverging) {
+            ipz.ImPlot_PlotBarGroups(.{ .labels = &labels_div, .values = &data_div, .item_count = 9, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal });
+        } else {
+            ipz.ImPlot_PlotBarGroups(.{ .labels = &labels_reg, .values = &data_reg, .item_count = 6, .group_count = 20, .group_size = 0.75, .shift = 0, .flags = ip.ImPlotBarGroupsFlags_Stacked | ip.ImPlotBarGroupsFlags_Horizontal });
         }
         ip.ImPlot_EndPlot();
     }
@@ -804,13 +829,7 @@ fn demo_BarStacks() !void {
 //---------------
 fn demo_Heatmaps() !void {
     const st = struct {
-        var values1 = [_][7]f32{ [_]f32{ 0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0 },
-                                 [_]f32{ 2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0 },
-                                 [_]f32{ 1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0 },
-                                 [_]f32{ 0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0 },
-                                 [_]f32{ 0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0 },
-                                 [_]f32{ 1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1 },
-                                 [_]f32{ 0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3 } };
+        var values1 = [_][7]f32{ [_]f32{ 0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0 }, [_]f32{ 2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0 }, [_]f32{ 1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0 }, [_]f32{ 0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0 }, [_]f32{ 0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0 }, [_]f32{ 1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1 }, [_]f32{ 0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3 } };
         var scale_min: f32 = 0;
         var scale_max: f32 = 6.3;
         const xlabels: [7][*c]const u8 = [_][*c]const u8{ "C1", "C2", "C3", "C4", "C5", "C6", "C7" };
@@ -842,7 +861,7 @@ fn demo_Heatmaps() !void {
         ip.ImPlot_SetupAxes(null, null, st2.axes_flags, st2.axes_flags);
         ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_X1, 0 + 1.0 / 14.0, 1 - 1.0 / 14.0, 7, &st.xlabels, false);
         ip.ImPlot_SetupAxisTicks_double(ip.ImAxis_Y1, 1 - 1.0 / 14.0, 0 + 1.0 / 14.0, 7, &st.ylabels, false);
-        ipz.ImPlot_PlotHeatmap(.{.label = "heat", .values = &st.values1[0], .rows = 7, .cols = 7, .scale_min = st.scale_min, .scale_max = st.scale_max, .label_fmt = "%g", .flags = st2.hm_flags});
+        ipz.ImPlot_PlotHeatmap(.{ .label = "heat", .values = &st.values1[0], .rows = 7, .cols = 7, .scale_min = st.scale_min, .scale_max = st.scale_max, .label_fmt = "%g", .flags = st2.hm_flags });
         ip.ImPlot_EndPlot();
     }
     ig.igSameLine(0, -1.0);
@@ -862,8 +881,8 @@ fn demo_Heatmaps() !void {
     if (ip.ImPlot_BeginPlot("##Heatmap2", .{ .x = 225, .y = 225 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(-1, 1, -1, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotHeatmap(.{.label= "heat1", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null});
-        ipz.ImPlot_PlotHeatmap(.{.label= "heat2", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null, .bound_min = ip.ImPlotPoint{ .x = -1, .y = -1 }});
+        ipz.ImPlot_PlotHeatmap(.{ .label = "heat1", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null });
+        ipz.ImPlot_PlotHeatmap(.{ .label = "heat2", .values = &st3.values2, .rows = size, .cols = size, .scale_min = 0, .scale_max = 1, .label_fmt = null, .bound_min = ip.ImPlotPoint{ .x = -1, .y = -1 } });
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopColormap(1);
@@ -948,17 +967,17 @@ fn demo_Histogram() !void {
 
     if (ip.ImPlot_BeginPlot("##Histograms", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_AutoFit, ip.ImPlotAxisFlags_AutoFit);
-        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.5);
+        ip.ImPlot_SetNextFillStyle(.{ .x = 0, .y = 0, .z = 0, .w = -1 }, 0.5);
         if (st.range) { // TODO
-            _ = ipz.ImPlot_PlotHistogram(.{.label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = st.rmin, .Max = rmax }, .flags = st.hist_flags});
+            _ = ipz.ImPlot_PlotHistogram(.{ .label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = st.rmin, .Max = rmax }, .flags = st.hist_flags });
         } else {
-            _ = ipz.ImPlot_PlotHistogram(.{.label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = 0, .Max = 0 }, .flags = st.hist_flags});
+            _ = ipz.ImPlot_PlotHistogram(.{ .label = "Empirical", .values = &st.dist, .count = 10000, .bins = st.bins, .bar_scale = 1.0, .range = ip.ImPlotRange{ .Min = 0, .Max = 0 }, .flags = st.hist_flags });
         }
         if ((0 != (st.hist_flags & ip.ImPlotHistogramFlags_Density)) and (0 == (st.hist_flags & ip.ImPlotHistogramFlags_NoOutliers))) {
             if ((0 != st.hist_flags & ip.ImPlotHistogramFlags_Horizontal)) {
-                ipz.ImPlot_PlotLine(.{.label = "Theoretical",  .xs = &y, .ys = &x, .count = 100});
+                ipz.ImPlot_PlotLine(.{ .label = "Theoretical", .xs = &y, .ys = &x, .count = 100 });
             } else {
-                ipz.ImPlot_PlotLine(.{.label = "Theoretical", .xs = &x, .ys = &y, .count = 100});
+                ipz.ImPlot_PlotLine(.{ .label = "Theoretical", .xs = &x, .ys = &y, .count = 100 });
             }
         }
         ip.ImPlot_EndPlot();
@@ -997,25 +1016,18 @@ fn demo_Histogram2D() !void {
     ip.ImPlot_PushColormap_Str("Hot");
     const regn = ig.igGetContentRegionAvail();
     const vec2: ig.ImVec2 = .{ .x = regn.x - 100 - ig.igGetStyle().*.ItemSpacing.x, .y = 0 };
-    if (ip.ImPlot_BeginPlot("##Hist2D", .{.x = vec2.x, .y = vec2.y}, 0)) {
+    if (ip.ImPlot_BeginPlot("##Hist2D", .{ .x = vec2.x, .y = vec2.y }, 0)) {
         ip.ImPlot_SetupAxes(null, null, flags, flags);
         ip.ImPlot_SetupAxesLimits(-6, 6, -6, 6, ip.ImPlotCond_Once);
-        max_count = ipz.ImPlot_PlotHistogram2D(.{.label = "Hist2D"
-                                              , .xs = &st.dist1
-                                              , .ys = &st.dist2
-                                              , .count = st.count
-                                              , .x_bins = st.xybins[0]
-                                              , .y_bins = st.xybins[1]
-                                              , .range = ip.ImPlotRect{ .X = .{ .Min = -6, .Max = 6 } , .Y = .{ .Min = -6, .Max = 6 } }
-                                              , .flags = st.hist_flags});
+        max_count = ipz.ImPlot_PlotHistogram2D(.{ .label = "Hist2D", .xs = &st.dist1, .ys = &st.dist2, .count = st.count, .x_bins = st.xybins[0], .y_bins = st.xybins[1], .range = ip.ImPlotRect{ .X = .{ .Min = -6, .Max = 6 }, .Y = .{ .Min = -6, .Max = 6 } }, .flags = st.hist_flags });
         ip.ImPlot_EndPlot();
     }
     ig.igSameLine(0, -1.0);
     const label =
         if ((st.hist_flags & ip.ImPlotHistogramFlags_Density) != 0)
-        "Density"
-    else
-        "Count";
+            "Density"
+        else
+            "Count";
     ip.ImPlot_ColormapScale(label, 0, max_count, .{ .x = 100, .y = 0 }, "%g", 0, utils_ip.IMPLOT_AUTO);
     ip.ImPlot_PopColormap(1);
 }
@@ -1051,17 +1063,16 @@ fn demo_Images() !void {
     //const pbmin = &st.bmin;
     _ = ig.igSliderFloat2("Min", @ptrCast(&st.bmin), -2, 2, "%.1f", 0);
     _ = ig.igSliderFloat2("Max", @ptrCast(&st.bmax), -2, 2, "%.1f", 0);
-    _ = ig.igSliderFloat2("UV0", @ptrCast(&st.uv0),  -2, 2, "%.1f", 0);
-    _ = ig.igSliderFloat2("UV1", @ptrCast(&st.uv1),  -2, 2, "%.1f", 0);
+    _ = ig.igSliderFloat2("UV0", @ptrCast(&st.uv0), -2, 2, "%.1f", 0);
+    _ = ig.igSliderFloat2("UV1", @ptrCast(&st.uv1), -2, 2, "%.1f", 0);
     _ = ig.igColorEdit4("Tint", @ptrCast(&st.tint), 0);
     if (ip.ImPlot_BeginPlot("##image", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_PlotImage("my image", .{._TexData = null, ._TexID = st.textureId}
-          , .{.x = st.bmin.x, .y = st.bmin.y} //st.bmin
-          , .{.x = st.bmax.x, .y = st.bmax.y} //st.bmin
-          , .{.x = st.uv0.x, .y = st.uv0.y}   //st.bmin
-          , .{.x = st.uv1.x, .y = st.uv1.y}   //st.bmin
-          , .{.x = st.tint.x, .y = st.tint.y, .z = st.tint.z, .w = st.tint.w}//st.tint
-          , 0);
+        ip.ImPlot_PlotImage("my image", .{ ._TexData = null, ._TexID = st.textureId }, .{ .x = st.bmin.x, .y = st.bmin.y } //st.bmin
+            , .{ .x = st.bmax.x, .y = st.bmax.y } //st.bmin
+            , .{ .x = st.uv0.x, .y = st.uv0.y } //st.bmin
+            , .{ .x = st.uv1.x, .y = st.uv1.y } //st.bmin
+            , .{ .x = st.tint.x, .y = st.tint.y, .z = st.tint.z, .w = st.tint.w } //st.tint
+            , 0);
         ip.ImPlot_EndPlot();
     }
 }
@@ -1071,47 +1082,52 @@ fn demo_Images() !void {
 //---------------------
 fn demo_MarkersAndText() !void {
     const st = struct {
-      var initReq = true;
-      var mk_size:f32 = undefined;
-      var mk_weight:f32 = undefined;
+        var initReq = true;
+        var mk_size: f32 = undefined;
+        var mk_weight: f32 = undefined;
     };
-    if (st.initReq){
+    if (st.initReq) {
         st.initReq = false;
         st.mk_size = ip.ImPlot_GetStyle().*.MarkerSize;
         st.mk_size = ip.ImPlot_GetStyle().*.MarkerWeight;
     }
-    _ = ig.igDragFloat("Marker Size"  , &st.mk_size,0.1,2.0,10.0  ,"%.2f px", 0);
-    _ = ig.igDragFloat("Marker Weight", &st.mk_weight,0.05,0.5,3.0,"%.2f px", 0);
+    _ = ig.igDragFloat("Marker Size", &st.mk_size, 0.1, 2.0, 10.0, "%.2f px", 0);
+    _ = ig.igDragFloat("Marker Weight", &st.mk_weight, 0.05, 0.5, 3.0, "%.2f px", 0);
 
-    if (ip.ImPlot_BeginPlot("##MarkerStyles", .{.x=-1, .y=0}, ip.ImPlotFlags_CanvasOnly)) {
+    if (ip.ImPlot_BeginPlot("##MarkerStyles", .{ .x = -1, .y = 0 }, ip.ImPlotFlags_CanvasOnly)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, 10, 0, 12, ip.ImPlotCond_Once);
-        var  xs = [2]ig.ImS8{1,4};
-        var  ys = [2]ig.ImS8{10,11};
+        var xs = [2]ig.ImS8{ 1, 4 };
+        var ys = [2]ig.ImS8{ 10, 11 };
         // filled markers
-        for (0..@intCast(ip.ImPlotMarker_COUNT))|m| {
+        for (0..@intCast(ip.ImPlotMarker_COUNT)) |m| {
             ig.igPushID_Int(@intCast(m));
-            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x = 0, .y = 0, .z = 0, .w = -1}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
-            ipz.ImPlot_PlotLine(.{.label = "##Filled", .xs = &xs, .ys = &ys, .count = 2});
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, st.mk_weight, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+            ipz.ImPlot_PlotLine(.{ .label = "##Filled", .xs = &xs, .ys = &ys, .count = 2 });
             ig.igPopID();
-            ys[0] -= 1; ys[1]  -= 1;
+            ys[0] -= 1;
+            ys[1] -= 1;
         }
-        xs[0] = 6; xs[1] = 9; ys[0] = 10; ys[1] = 11;
+        xs[0] = 6;
+        xs[1] = 9;
+        ys[0] = 10;
+        ys[1] = 11;
 
         // open markers
-        for (0..ip.ImPlotMarker_COUNT)|m| {
+        for (0..ip.ImPlotMarker_COUNT) |m| {
             ig.igPushID_Int(@intCast(m));
-            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{.x=0, .y=0, .z=0, .w=0}, st.mk_weight, .{.x = 0, .y = 0, .z = 0, .w = -1});
-            ipz.ImPlot_PlotLine(.{.label = "##Open", .xs = &xs, .ys = &ys, .count = 2});
+            ip.ImPlot_SetNextMarkerStyle(@intCast(m), st.mk_size, .{ .x = 0, .y = 0, .z = 0, .w = 0 }, st.mk_weight, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+            ipz.ImPlot_PlotLine(.{ .label = "##Open", .xs = &xs, .ys = &ys, .count = 2 });
             ig.igPopID();
-            ys[0] -= 1; ys[1]  -= 1;
+            ys[0] -= 1;
+            ys[1] -= 1;
         }
 
-        ip.ImPlot_PlotText("Filled Markers", 2.5, 6.0, .{.x = 0, .y = 0}, 0);
-        ip.ImPlot_PlotText("Open Markers",   7.5, 6.0, .{.x = 0, .y = 0}, 0);
+        ip.ImPlot_PlotText("Filled Markers", 2.5, 6.0, .{ .x = 0, .y = 0 }, 0);
+        ip.ImPlot_PlotText("Open Markers", 7.5, 6.0, .{ .x = 0, .y = 0 }, 0);
 
-        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_InlayText, .{.x = 1, .y = 0, .z = 1,.w = 1});
-        ip.ImPlot_PlotText("Vertical Text", 5.0, 6.0, .{.x=0, .y=0}, ip.ImPlotTextFlags_Vertical);
+        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_InlayText, .{ .x = 1, .y = 0, .z = 1, .w = 1 });
+        ip.ImPlot_PlotText("Vertical Text", 5.0, 6.0, .{ .x = 0, .y = 0 }, ip.ImPlotTextFlags_Vertical);
         ip.ImPlot_PopStyleColor(1);
 
         ip.ImPlot_EndPlot();
@@ -1123,25 +1139,25 @@ fn demo_MarkersAndText() !void {
 //----------------
 fn demo_NaNValues() !void {
     const st = struct {
-      var  include_nan = true;
-      var  flags:ip.ImPlotLineFlags = 0;
+        var include_nan = true;
+        var flags: ip.ImPlotLineFlags = 0;
     };
 
-    var data1 = [5]f32{0.0,0.25,0.5,0.75,1.0};
-    var data2 = [5]f32{0.0,0.25,0.5,0.75,1.0};
+    var data1 = [5]f32{ 0.0, 0.25, 0.5, 0.75, 1.0 };
+    var data2 = [5]f32{ 0.0, 0.25, 0.5, 0.75, 1.0 };
 
-    if (st.include_nan){
+    if (st.include_nan) {
         data1[2] = utils_ip.NaN_f32;
     }
 
-    _ = ig.igCheckbox("Include NaN",&st.include_nan);
+    _ = ig.igCheckbox("Include NaN", &st.include_nan);
     ig.igSameLine(0, -1.0);
     _ = ig.igCheckboxFlags_IntPtr("Skip NaN", &st.flags, ip.ImPlotLineFlags_SkipNaN);
 
     if (ip.ImPlot_BeginPlot("##NaNValues", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotLine(.{.label = "line", .xs = &data1, .ys = &data2, .count = 5, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(data1[0])});
-        ipz.ImPlot_PlotBars(.{.lable = "bars", .values = &data1, .count = 5});
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+        ipz.ImPlot_PlotLine(.{ .label = "line", .xs = &data1, .ys = &data2, .count = 5, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(data1[0]) });
+        ipz.ImPlot_PlotBars(.{ .lable = "bars", .values = &data1, .count = 5 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -1166,14 +1182,9 @@ fn demo_LinePlots() !void {
     }
     if (ip.ImPlot_BeginPlot("Line Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxes("x", "y", 0, 0);
-        ipz.ImPlot_PlotLine(.{.label = "f(x)", .xs = &st.xs1, .ys = &st.ys1, .count = 1001});
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle
-          , utils_ip.IMPLOT_AUTO
-         , .{.x = 0, .y = 0, .z = 0, .w = -1}
-          , utils_ip.IMPLOT_AUTO
-         , utils_ip.IMPLOT_AUTO_COL
-          );
-        ipz.ImPlot_PlotLine(.{.label = "g(x)", .xs = &st.xs2, .ys = &st.ys2, .count = 20, .flags = ip.ImPlotLineFlags_Segments, .offset = 0, .stride = utils_ip.stride((st.xs2[0]))});
+        ipz.ImPlot_PlotLine(.{ .label = "f(x)", .xs = &st.xs1, .ys = &st.ys1, .count = 1001 });
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, utils_ip.IMPLOT_AUTO_COL);
+        ipz.ImPlot_PlotLine(.{ .label = "g(x)", .xs = &st.xs2, .ys = &st.ys2, .count = 20, .flags = ip.ImPlotLineFlags_Segments, .offset = 0, .stride = utils_ip.stride((st.xs2[0])) });
         ip.ImPlot_EndPlot();
     }
 }
@@ -1182,30 +1193,30 @@ fn demo_LinePlots() !void {
 // demo_ErrorBars()
 //------------------
 fn demo_ErrorBars() !void {
-    const xs   = [5]f32{1,2,3,4,5};
-    const bar  = [5]f32{1,2,5,3,4};
-    const lin1 = [5]f32{8,8,9,7,8};
-    const lin2 = [5]f32{6,7,6,9,6};
-    const err1 = [5]f32{0.2, 0.4, 0.2, 0.6, 0.4};
-    const err2 = [5]f32{0.4, 0.2, 0.4, 0.8, 0.6};
-    const err3 = [5]f32{0.09, 0.14, 0.09, 0.12, 0.16};
-    const err4 = [5]f32{0.02, 0.08, 0.15, 0.05, 0.2};
+    const xs = [5]f32{ 1, 2, 3, 4, 5 };
+    const bar = [5]f32{ 1, 2, 5, 3, 4 };
+    const lin1 = [5]f32{ 8, 8, 9, 7, 8 };
+    const lin2 = [5]f32{ 6, 7, 6, 9, 6 };
+    const err1 = [5]f32{ 0.2, 0.4, 0.2, 0.6, 0.4 };
+    const err2 = [5]f32{ 0.4, 0.2, 0.4, 0.8, 0.6 };
+    const err3 = [5]f32{ 0.09, 0.14, 0.09, 0.12, 0.16 };
+    const err4 = [5]f32{ 0.02, 0.08, 0.15, 0.05, 0.2 };
 
     if (ip.ImPlot_BeginPlot("##ErrorBars", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_SetupAxesLimits(0, 6, 0, 10, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotBars(.{.label =  "Bar", .xs = &xs, .ys = &bar, .count = 5, .bar_size = 0.5, .flags = 1, .offset = 0, .stride = utils_ip.stride(xs[0])});
-        ipz.ImPlot_PlotErrorBars(.{.label = "Bar", .xs = &xs, .ys = &bar, .err = &err1, .count = 5});
+        ipz.ImPlot_PlotBars(.{ .label = "Bar", .xs = &xs, .ys = &bar, .count = 5, .bar_size = 0.5, .flags = 1, .offset = 0, .stride = utils_ip.stride(xs[0]) });
+        ipz.ImPlot_PlotErrorBars(.{ .label = "Bar", .xs = &xs, .ys = &bar, .err = &err1, .count = 5 });
         var vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_SetNextErrorBarStyle(vec4, 0, utils_ip.IMPLOT_AUTO);
-        ipz.ImPlot_PlotErrorBars(.{.label = "Line", .xs = &xs, .ys = &lin1, .neg = &err1, .pos = &err2, .count = 5});
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotLine(.{.label = "Line", .xs = &xs, .ys = &lin1, .count = 5});
+        ipz.ImPlot_PlotErrorBars(.{ .label = "Line", .xs = &xs, .ys = &lin1, .neg = &err1, .pos = &err2, .count = 5 });
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+        ipz.ImPlot_PlotLine(.{ .label = "Line", .xs = &xs, .ys = &lin1, .count = 5 });
         vec4 = ip.ImPlot_GetColormapColor(2, utils_ip.IMPLOT_AUTO);
         ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_ErrorBar, vec4);
-        ipz.ImPlot_PlotErrorBars(.{.label = "Scatter", .xs = &xs, .ys = &lin2, .err = &err2, .count = 5});
-        ipz.ImPlot_PlotErrorBars(.{.label = "Scatter", .xs = &xs, .ys = &lin2, .neg = &err3, .pos = &err4, .count = 5, .flags = ip.ImPlotErrorBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(xs[0])});
+        ipz.ImPlot_PlotErrorBars(.{ .label = "Scatter", .xs = &xs, .ys = &lin2, .err = &err2, .count = 5 });
+        ipz.ImPlot_PlotErrorBars(.{ .label = "Scatter", .xs = &xs, .ys = &lin2, .neg = &err3, .pos = &err4, .count = 5, .flags = ip.ImPlotErrorBarsFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(xs[0]) });
         ip.ImPlot_PopStyleColor(1);
-        ipz.ImPlot_PlotScatter(.{.lable = "Scatter", .xs = &xs, .ys = &lin2, .count = 5});
+        ipz.ImPlot_PlotScatter(.{ .lable = "Scatter", .xs = &xs, .ys = &lin2, .count = 5 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -1214,20 +1225,20 @@ fn demo_ErrorBars() !void {
 // demo_StemPlots()
 //-----------------
 fn demo_StemPlots() !void {
-    var xs :[51]f64 = undefined;
-    var ys1:[51]f64 = undefined;
-    var ys2:[51]f64 = undefined;
-    for (0..51)|i| {
-        xs[i] = @as(f64,@floatFromInt(i)) * 0.02;
-        ys1[i] = 1.0 + 0.5 * math.sin(25*xs[i])*math.cos(2*xs[i]);
-        ys2[i] = 0.5 + 0.25  * math.sin(10*xs[i]) * math.sin(xs[i]);
+    var xs: [51]f64 = undefined;
+    var ys1: [51]f64 = undefined;
+    var ys2: [51]f64 = undefined;
+    for (0..51) |i| {
+        xs[i] = @as(f64, @floatFromInt(i)) * 0.02;
+        ys1[i] = 1.0 + 0.5 * math.sin(25 * xs[i]) * math.cos(2 * xs[i]);
+        ys2[i] = 0.5 + 0.25 * math.sin(10 * xs[i]) * math.sin(xs[i]);
     }
     if (ip.ImPlot_BeginPlot("Stem Plots", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1,0,1.0, ip.ImPlotCond_Once);
-        ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y1,0,1.6, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotStems(.{.label = "Stems 1", .xs = &xs, .ys = &ys1, .count = 51});
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ipz.ImPlot_PlotStems(.{.label = "Stems 2", .xs = &xs, .ys = &ys2, .count = 51});
+        ip.ImPlot_SetupAxisLimits(ip.ImAxis_X1, 0, 1.0, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxisLimits(ip.ImAxis_Y1, 0, 1.6, ip.ImPlotCond_Once);
+        ipz.ImPlot_PlotStems(.{ .label = "Stems 1", .xs = &xs, .ys = &ys1, .count = 51 });
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+        ipz.ImPlot_PlotStems(.{ .label = "Stems 2", .xs = &xs, .ys = &ys2, .count = 51 });
         ip.ImPlot_EndPlot();
     }
 }
@@ -1236,11 +1247,11 @@ fn demo_StemPlots() !void {
 // demo_InfiniteLines()
 //----------------------
 fn demo_InfiniteLines() !void {
-    const vals = [_]f64{0.25, 0.5, 0.75};
+    const vals = [_]f64{ 0.25, 0.5, 0.75 };
     if (ip.ImPlot_BeginPlot("##Infinite", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetupAxes(null,null,ip.ImPlotAxisFlags_NoInitialFit,ip.ImPlotAxisFlags_NoInitialFit);
-        _ = ipz.ImPlot_PlotInfLines(.{.label = "Vertical",   .values = &vals, .count = 3});
-        _ = ipz.ImPlot_PlotInfLines(.{.label = "Horizontal", .values = &vals, .count = 3, .flags = ip.ImPlotInfLinesFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(vals[0])});
+        ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoInitialFit, ip.ImPlotAxisFlags_NoInitialFit);
+        _ = ipz.ImPlot_PlotInfLines(.{ .label = "Vertical", .values = &vals, .count = 3 });
+        _ = ipz.ImPlot_PlotInfLines(.{ .label = "Horizontal", .values = &vals, .count = 3, .flags = ip.ImPlotInfLinesFlags_Horizontal, .offset = 0, .stride = utils_ip.stride(vals[0]) });
         ip.ImPlot_EndPlot();
     }
 }
@@ -1249,35 +1260,35 @@ fn demo_InfiniteLines() !void {
 // demo_PieCharts
 // ---------------
 fn demo_PieCharts() !void {
-    const labels1 = [_][*c] const u8{"Frogs","Hogs","Dogs","Logs"};
+    const labels1 = [_][*c]const u8{ "Frogs", "Hogs", "Dogs", "Logs" };
 
     const st = struct {
-      var data1 = [_]f32{0.15,  0.30,  0.2, 0.05};
-      var flags:ip.ImPlotPieChartFlags  = 0;
+        var data1 = [_]f32{ 0.15, 0.30, 0.2, 0.05 };
+        var flags: ip.ImPlotPieChartFlags = 0;
     };
 
     ig.igSetNextItemWidth(250);
     _ = ig.igDragFloat4("Values", &st.data1, 0.01, 0, 1, "%3f", 0);
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotPieChartFlags_Normalize",    &st.flags, ip.ImPlotPieChartFlags_Normalize);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotPieChartFlags_Normalize", &st.flags, ip.ImPlotPieChartFlags_Normalize);
     _ = ig.igCheckboxFlags_IntPtr("ImPlotPieChartFlags_IgnoreHidden", &st.flags, ip.ImPlotPieChartFlags_IgnoreHidden);
 
-    if (ip.ImPlot_BeginPlot("##Pie1", .{.x=250, .y=250}, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
+    if (ip.ImPlot_BeginPlot("##Pie1", .{ .x = 250, .y = 250 }, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotPieChart(.{.labels = &labels1, .values = &st.data1, .count = 4, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.2f",  .angle0 = 90, .flags = st.flags});
+        ipz.ImPlot_PlotPieChart(.{ .labels = &labels1, .values = &st.data1, .count = 4, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.2f", .angle0 = 90, .flags = st.flags });
         ip.ImPlot_EndPlot();
     }
 
     ig.igSameLine(0, -1.0);
 
-    const labels2 = [_][*c] const u8{"A","B","C","D","E"};
-    const data2 =  [_]c_int{1,1,2,3,5};
+    const labels2 = [_][*c]const u8{ "A", "B", "C", "D", "E" };
+    const data2 = [_]c_int{ 1, 1, 2, 3, 5 };
 
     ip.ImPlot_PushColormap_PlotColormap(ip.ImPlotColormap_Pastel);
-    if (ip.ImPlot_BeginPlot("##Pie2", .{.x=250, .y=250}, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
+    if (ip.ImPlot_BeginPlot("##Pie2", .{ .x = 250, .y = 250 }, ip.ImPlotFlags_Equal | ip.ImPlotFlags_NoMouseText)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotPieChart(.{.labels = &labels2, .values = &data2, .count = 5, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.0f", .angle0 = 180, .flags = st.flags});
+        ipz.ImPlot_PlotPieChart(.{ .labels = &labels2, .values = &data2, .count = 5, .x = 0.5, .y = 0.5, .radius = 0.4, .label_fmt = "%.0f", .angle0 = 180, .flags = st.flags });
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopColormap(1);
@@ -1287,57 +1298,58 @@ fn demo_PieCharts() !void {
 // demo_FilledLinePlots
 //----------------------
 fn demo_FilledLinePlots() !void {
-    var xs1:[101]f64 = undefined;
-    var ys1:[101]f64 = undefined;
-    var ys2:[101]f64 = undefined;
-    var ys3:[101]f64 = undefined;
+    var xs1: [101]f64 = undefined;
+    var ys1: [101]f64 = undefined;
+    var ys2: [101]f64 = undefined;
+    var ys3: [101]f64 = undefined;
     srand(0);
-    for (0..101)|i| {
+    for (0..101) |i| {
         xs1[i] = @floatFromInt(i);
-        ys1[i] = utils_ip.RandomRange(400.0,450.0);
-        ys2[i] = utils_ip.RandomRange(275.0,350.0);
-        ys3[i] = utils_ip.RandomRange(150.0,225.0);
+        ys1[i] = utils_ip.RandomRange(400.0, 450.0);
+        ys2[i] = utils_ip.RandomRange(275.0, 350.0);
+        ys3[i] = utils_ip.RandomRange(150.0, 225.0);
     }
     const st = struct {
-      var show_lines = true;
-      var show_fills = true;
-      var fill_ref:f32 = 0;
-      var shade_mode:c_int = 0;
+        var show_lines = true;
+        var show_fills = true;
+        var fill_ref: f32 = 0;
+        var shade_mode: c_int = 0;
     };
-    const  flags:ip.ImPlotShadedFlags = 0;
-    _ = ig.igCheckbox("Lines",&st.show_lines); ig.igSameLine(0, -1.0);
-    _ = ig.igCheckbox("Fills",&st.show_fills);
+    const flags: ip.ImPlotShadedFlags = 0;
+    _ = ig.igCheckbox("Lines", &st.show_lines);
+    ig.igSameLine(0, -1.0);
+    _ = ig.igCheckbox("Fills", &st.show_fills);
     if (st.show_fills) {
         ig.igSameLine(0, -1.0);
-        if (ig.igRadioButton_Bool("To -INF",st.shade_mode == 0))
+        if (ig.igRadioButton_Bool("To -INF", st.shade_mode == 0))
             st.shade_mode = 0;
         ig.igSameLine(0, -1.0);
-        if (ig.igRadioButton_Bool("To +INF",st.shade_mode == 1))
+        if (ig.igRadioButton_Bool("To +INF", st.shade_mode == 1))
             st.shade_mode = 1;
         ig.igSameLine(0, -1.0);
-        if (ig.igRadioButton_Bool("To Ref",st.shade_mode == 2))
+        if (ig.igRadioButton_Bool("To Ref", st.shade_mode == 2))
             st.shade_mode = 2;
         if (st.shade_mode == 2) {
             ig.igSameLine(0, -1.0);
             ig.igSetNextItemWidth(100);
-            _= ig.igDragFloat("##Ref",&st.fill_ref, 1, -100, 500, "%.3f", 0);
+            _ = ig.igDragFloat("##Ref", &st.fill_ref, 1, -100, 500, "%.3f", 0);
         }
     }
 
     if (ip.ImPlot_BeginPlot("Stock Prices", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetupAxes("Days","Price", 0, 0);
-        ip.ImPlot_SetupAxesLimits(0,100,0,500, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxes("Days", "Price", 0, 0);
+        ip.ImPlot_SetupAxesLimits(0, 100, 0, 500, ip.ImPlotCond_Once);
         if (st.show_fills) {
             ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
-            ipz.ImPlot_PlotShaded(.{.lable = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
-            ipz.ImPlot_PlotShaded(.{.label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
-            ipz.ImPlot_PlotShaded(.{.label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101, .yref = if (st.shade_mode == 0 ) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1 ) utils_ip.INFINITY_f32 else st.fill_ref) , .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0])});
+            ipz.ImPlot_PlotShaded(.{ .lable = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101, .yref = if (st.shade_mode == 0) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1) utils_ip.INFINITY_f32 else st.fill_ref), .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0]) });
+            ipz.ImPlot_PlotShaded(.{ .label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101, .yref = if (st.shade_mode == 0) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1) utils_ip.INFINITY_f32 else st.fill_ref), .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0]) });
+            ipz.ImPlot_PlotShaded(.{ .label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101, .yref = if (st.shade_mode == 0) -utils_ip.INFINITY_f32 else (if (st.shade_mode == 1) utils_ip.INFINITY_f32 else st.fill_ref), .flags = flags, .offset = 0, .stride = utils_ip.stride(xs1[0]) });
             ip.ImPlot_PopStyleVar(1);
         }
         if (st.show_lines) {
-            ipz.ImPlot_PlotLine(.{.label = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101});
-            ipz.ImPlot_PlotLine(.{.label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101});
-            ipz.ImPlot_PlotLine(.{.label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101});
+            ipz.ImPlot_PlotLine(.{ .label = "Stock 1", .xs = &xs1, .ys = &ys1, .count = 101 });
+            ipz.ImPlot_PlotLine(.{ .label = "Stock 2", .xs = &xs1, .ys = &ys2, .count = 101 });
+            ipz.ImPlot_PlotLine(.{ .label = "Stock 3", .xs = &xs1, .ys = &ys3, .count = 101 });
         }
         ip.ImPlot_EndPlot();
     }
@@ -1371,11 +1383,11 @@ fn demo_ShadedPlots() !void {
 
     if (ip.ImPlot_BeginPlot("Shaded Plots", .{ .x = -1, .y = 0 }, 0)) {
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, st.alpha);
-        ipz.ImPlot_PlotShaded(.{.lable = "Uncertain Data", .xs = &xs, .ys = &ys1, .ys2 = &ys2, .count = MAX_N});
-        ipz.ImPlot_PlotLine(.{.label = "Uncertain Data",    .xs = &xs, .ys = &ys,  .count = MAX_N});
-        ipz.ImPlot_PlotShaded(.{.lable = "Overlapping",    .xs = &xs, .ys = &ys3, .ys2 = &ys4, .count = MAX_N});
-        ipz.ImPlot_PlotLine(.{.label = "Overlapping",       .xs = &xs, .ys = &ys3, .count = MAX_N});
-        ipz.ImPlot_PlotLine(.{.label = "Overlapping",       .xs = &xs, .ys = &ys4, .count = MAX_N});
+        ipz.ImPlot_PlotShaded(.{ .lable = "Uncertain Data", .xs = &xs, .ys = &ys1, .ys2 = &ys2, .count = MAX_N });
+        ipz.ImPlot_PlotLine(.{ .label = "Uncertain Data", .xs = &xs, .ys = &ys, .count = MAX_N });
+        ipz.ImPlot_PlotShaded(.{ .lable = "Overlapping", .xs = &xs, .ys = &ys3, .ys2 = &ys4, .count = MAX_N });
+        ipz.ImPlot_PlotLine(.{ .label = "Overlapping", .xs = &xs, .ys = &ys3, .count = MAX_N });
+        ipz.ImPlot_PlotLine(.{ .label = "Overlapping", .xs = &xs, .ys = &ys4, .count = MAX_N });
         ip.ImPlot_PopStyleVar(1);
         ip.ImPlot_EndPlot();
     }
@@ -1386,30 +1398,27 @@ fn demo_ShadedPlots() !void {
 //-------------------
 fn demo_ScatterPlots() !void {
     srand(0);
-    var xs1:[100]f32 = undefined;
-    var ys1:[100]f32 = undefined;
-    for (0..100)|i| {
-        xs1[i] = @as(f32,@floatFromInt(i)) * 0.01;
-        ys1[i] = xs1[i] + 0.1 *  @as(f32,@floatFromInt(rand())) / @as(f32,@floatFromInt(RAND_MAX));
+    var xs1: [100]f32 = undefined;
+    var ys1: [100]f32 = undefined;
+    for (0..100) |i| {
+        xs1[i] = @as(f32, @floatFromInt(i)) * 0.01;
+        ys1[i] = xs1[i] + 0.1 * @as(f32, @floatFromInt(rand())) / @as(f32, @floatFromInt(RAND_MAX));
         //ys1[i] = xs1[i] + 0.1 *  utils_ip.randomFloat(0.0, 1.0);
     }
-    var xs2:[50]f32 = undefined;
-    var ys2:[50]f32 = undefined;
-    for (0..50)|i| {
-        xs2[i] = 0.25 + 0.2 * @as(f32,@floatFromInt(rand())) / @as(f32,@floatFromInt(RAND_MAX));
-        ys2[i] = 0.75 + 0.2 * @as(f32,@floatFromInt(rand())) / @as(f32,@floatFromInt(RAND_MAX));
+    var xs2: [50]f32 = undefined;
+    var ys2: [50]f32 = undefined;
+    for (0..50) |i| {
+        xs2[i] = 0.25 + 0.2 * @as(f32, @floatFromInt(rand())) / @as(f32, @floatFromInt(RAND_MAX));
+        ys2[i] = 0.75 + 0.2 * @as(f32, @floatFromInt(rand())) / @as(f32, @floatFromInt(RAND_MAX));
     }
 
     if (ip.ImPlot_BeginPlot("Scatter Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ipz.ImPlot_PlotScatter(.{.label = "Data 1", .xs = &xs1, .ys = &ys1, .count = 100});
+        ipz.ImPlot_PlotScatter(.{ .label = "Data 1", .xs = &xs1, .ys = &ys1, .count = 100 });
         ip.ImPlot_PushStyleVar_Float(ip.ImPlotStyleVar_FillAlpha, 0.25);
 
         const vec4 = ip.ImPlot_GetColormapColor(1, utils_ip.IMPLOT_AUTO);
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, 6
-                                   , vec4
-                                   , utils_ip.IMPLOT_AUTO
-                                   , vec4);
-        ipz.ImPlot_PlotScatter(.{.lable = "Data 2", .xs = &xs2, .ys = &ys2, .count = 50});
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Square, 6, vec4, utils_ip.IMPLOT_AUTO, vec4);
+        ipz.ImPlot_PlotScatter(.{ .lable = "Data 2", .xs = &xs2, .ys = &ys2, .count = 50 });
         ip.ImPlot_PopStyleVar(1);
         ip.ImPlot_EndPlot();
     }
@@ -1419,31 +1428,31 @@ fn demo_ScatterPlots() !void {
 // demo_StairstepPlots
 //---------------------
 fn demo_StairstepPlots() !void {
-    var ys1:[21]f32 = undefined;
-    var ys2:[21]f32 = undefined;
-    for (0..21)|i| {
-        ys1[i] = 0.75 + 0.2 * math.sin(10 * @as(f32,@floatFromInt(i)) * 0.05);
-        ys2[i] = 0.25 + 0.2 * math.sin(10 * @as(f32,@floatFromInt(i)) * 0.05);
+    var ys1: [21]f32 = undefined;
+    var ys2: [21]f32 = undefined;
+    for (0..21) |i| {
+        ys1[i] = 0.75 + 0.2 * math.sin(10 * @as(f32, @floatFromInt(i)) * 0.05);
+        ys2[i] = 0.25 + 0.2 * math.sin(10 * @as(f32, @floatFromInt(i)) * 0.05);
     }
     const st = struct {
-      var flags:ip.ImPlotStairsFlags  = 0;
+        var flags: ip.ImPlotStairsFlags = 0;
     };
-    _ = ig.igCheckboxFlags_IntPtr("ImPlotStairsFlags" , &st.flags, ip.ImPlotStairsFlags_Shaded);
+    _ = ig.igCheckboxFlags_IntPtr("ImPlotStairsFlags", &st.flags, ip.ImPlotStairsFlags_Shaded);
     if (ip.ImPlot_BeginPlot("Stairstep Plot", .{ .x = -1, .y = 0 }, 0)) {
-        ip.ImPlot_SetupAxes("x","f(x)", 0, 0);
-        ip.ImPlot_SetupAxesLimits(0,1,0,1, ip.ImPlotCond_Once);
+        ip.ImPlot_SetupAxes("x", "f(x)", 0, 0);
+        ip.ImPlot_SetupAxesLimits(0, 1, 0, 1, ip.ImPlotCond_Once);
 
-        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_Line, .{.x = 0.5,.y = 0.5,.z = 0.5, .w = 1.0});
-        ipz.ImPlot_PlotLine(.{.label = "##1", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys1[0])});
-        ipz.ImPlot_PlotLine(.{.label = "##2", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys2[0])});
+        ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_Line, .{ .x = 0.5, .y = 0.5, .z = 0.5, .w = 1.0 });
+        ipz.ImPlot_PlotLine(.{ .label = "##1", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys1[0]) });
+        ipz.ImPlot_PlotLine(.{ .label = "##2", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = 0, .offset = 0, .stride = utils_ip.stride(ys2[0]) });
         ip.ImPlot_PopStyleColor(1);
 
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
-        ipz.ImPlot_PlotStairs(.{.label = "Post Step (default)", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(ys1[0])});
-        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1}, utils_ip.IMPLOT_AUTO, .{.x = 0, .y = 0, .z = 0, .w = -1});
-        ip.ImPlot_SetNextFillStyle(.{.x = 0, .y = 0, .z = 0, .w = -1}, 0.25);
-        ipz.ImPlot_PlotStairs(.{.label = "Pre Step", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags | ip.ImPlotStairsFlags_PreStep, .offset = 0, .stride = utils_ip.stride(ys1[0])});
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+        ip.ImPlot_SetNextFillStyle(.{ .x = 0, .y = 0, .z = 0, .w = -1 }, 0.25);
+        ipz.ImPlot_PlotStairs(.{ .label = "Post Step (default)", .values = &ys1, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags, .offset = 0, .stride = utils_ip.stride(ys1[0]) });
+        ip.ImPlot_SetNextMarkerStyle(ip.ImPlotMarker_Circle, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 }, utils_ip.IMPLOT_AUTO, .{ .x = 0, .y = 0, .z = 0, .w = -1 });
+        ip.ImPlot_SetNextFillStyle(.{ .x = 0, .y = 0, .z = 0, .w = -1 }, 0.25);
+        ipz.ImPlot_PlotStairs(.{ .label = "Pre Step", .values = &ys2, .count = 21, .xscale = 0.05, .xstart = 0, .flags = st.flags | ip.ImPlotStairsFlags_PreStep, .offset = 0, .stride = utils_ip.stride(ys1[0]) });
 
         ip.ImPlot_EndPlot();
     }
@@ -1457,11 +1466,7 @@ fn demo_Tables() !void {
         var anim = true;
         var offset: usize = 0;
         var data: [100]f32 = undefined;
-        var flags: ig.ImGuiTableFlags = ig.ImGuiTableFlags_BordersOuter
-                                      | ig.ImGuiTableFlags_BordersV
-                                      | ig.ImGuiTableFlags_RowBg
-                                      | ig.ImGuiTableFlags_Resizable
-                                      | ig.ImGuiTableFlags_Reorderable;
+        var flags: ig.ImGuiTableFlags = ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable;
     };
     const dtSize = st.data.len;
     ig.igBulletText("Plots can be used inside of ImGui tables as another means of creating subplots.");
@@ -1477,7 +1482,7 @@ fn demo_Tables() !void {
         ip.ImPlot_PushColormap_PlotColormap(ip.ImPlotColormap_Cool);
         for (0..10) |row| {
             ig.igTableNextRow(0, 0);
-            srand(@as(c_uint,@intCast(row)));
+            srand(@as(c_uint, @intCast(row)));
             for (0..dtSize) |i| {
                 st.data[i] = utils_ip.RandomRange(0.0, 10.0);
             }
@@ -1488,9 +1493,7 @@ fn demo_Tables() !void {
             _ = ig.igTableSetColumnIndex(2);
             ig.igPushID_Int(@intCast(row));
             const vec4 = ip.ImPlot_GetColormapColor(@intCast(row), utils_ip.IMPLOT_AUTO);
-            utils_ip.Sparkline("##spark", &st.data, dtSize, 0, 11.0, @intCast(st.offset)
-              , .{.x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w}
-              , .{ .x = -1, .y = 35 });
+            utils_ip.Sparkline("##spark", &st.data, dtSize, 0, 11.0, @intCast(st.offset), .{ .x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w }, .{ .x = -1, .y = 35 });
             ig.igPopID();
         }
         ip.ImPlot_PopColormap(1);
@@ -1535,9 +1538,9 @@ fn demo_DragRects() !void {
     if (ip.ImPlot_BeginPlot("##Main", .{ .x = -1, .y = 150 }, 0)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoTickLabels, ip.ImPlotAxisFlags_NoTickLabels);
         ip.ImPlot_SetupAxesLimits(0, 0.01, -1, 1, ip.ImPlotCond_Once);
-        ipz.ImPlot_PlotLine(.{.label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512});
-        ipz.ImPlot_PlotLine(.{.label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512});
-        ipz.ImPlot_PlotLine(.{.label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512});
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512 });
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512 });
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512 });
         _ = ip.ImPlot_DragRect(0, &st.rect.X.Min, &st.rect.Y.Min, &st.rect.X.Max, &st.rect.Y.Max, .{ .x = 1, .y = 0, .z = 1, .w = 1 }, st.flags, &st.clicked, &st.hovered, &st.held);
         ip.ImPlot_EndPlot();
     }
@@ -1546,16 +1549,14 @@ fn demo_DragRects() !void {
     const colors_ptr = ip.ImPlot_GetStyle().*.Colors;
     const vec4 = colors_ptr[ip.ImPlotCol_PlotBg];
     const bg_col: ip.ImVec4 =
-      if (st.held) .{ .x = 0.5, .y = 0, .z = 0.5, .w = 1 }
-      else if (st.hovered) .{ .x = 0.25, .y = 0, .z = 0.25, .w = 1 }
-      else vec4;
+        if (st.held) .{ .x = 0.5, .y = 0, .z = 0.5, .w = 1 } else if (st.hovered) .{ .x = 0.25, .y = 0, .z = 0.25, .w = 1 } else vec4;
     ip.ImPlot_PushStyleColor_Vec4(ip.ImPlotCol_PlotBg, bg_col);
     if (ip.ImPlot_BeginPlot("##rect", .{ .x = -1, .y = 150 }, ip.ImPlotFlags_CanvasOnly)) {
         ip.ImPlot_SetupAxes(null, null, ip.ImPlotAxisFlags_NoDecorations, ip.ImPlotAxisFlags_NoDecorations);
         ip.ImPlot_SetupAxesLimits(st.rect.X.Min, st.rect.X.Max, st.rect.Y.Min, st.rect.Y.Max, ig.ImGuiCond_Always);
-        ipz.ImPlot_PlotLine(.{.label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512});
-        ipz.ImPlot_PlotLine(.{.label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512});
-        ipz.ImPlot_PlotLine(.{.label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512});
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 1", .xs = &x_data, .ys = &y_data1, .count = 512 });
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 2", .xs = &x_data, .ys = &y_data2, .count = 512 });
+        ipz.ImPlot_PlotLine(.{ .label = "Signal 3", .xs = &x_data, .ys = &y_data3, .count = 512 });
         ip.ImPlot_EndPlot();
     }
     ip.ImPlot_PopStyleColor(1);

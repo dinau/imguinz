@@ -1,13 +1,13 @@
 const ip = @import("implot");
-const demo = @import ("demoAll.zig");
+const demo = @import("demoAll.zig");
 const app = @import("appimgui");
 const ig = app.ig;
 const ifa = app.ifa;
 
-const IMGUI_HAS_DOCK = false;    // Docking feature
+const IMGUI_HAS_DOCK = false; // Docking feature
 
-const MainWinWidth :i32 = 1200;
-const MainWinHeight:i32 = 800;
+const MainWinWidth: i32 = 1200;
+const MainWinHeight: i32 = 800;
 
 //-----------
 // gui_main()
@@ -15,32 +15,32 @@ const MainWinHeight:i32 = 800;
 pub fn gui_main(window: *app.Window) !void {
     _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
 
-  const imPlotContext = ip.ImPlot_CreateContext();
-  defer  ip.ImPlot_DestroyContext(imPlotContext);
+    const imPlotContext = ip.ImPlot_CreateContext();
+    defer ip.ImPlot_DestroyContext(imPlotContext);
 
-  //-------------
-  // Global vars
-  //-------------
-  var showDemoWindow = true;
-  var showImPlotDemoWindow = true;
+    //-------------
+    // Global vars
+    //-------------
+    var showDemoWindow = true;
+    var showImPlotDemoWindow = true;
 
-  //------------------------
-  // Select Dear ImGui style
-  //------------------------
-  ig.igStyleColorsClassic(null);
-  //ig.igStyleColorsDark (null);
-  //ig.igStyleColorsLight (null);
+    //------------------------
+    // Select Dear ImGui style
+    //------------------------
+    ig.igStyleColorsClassic(null);
+    //ig.igStyleColorsDark (null);
+    //ig.igStyleColorsLight (null);
 
-  //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
-  //---------------
-  // main loop GUI
-  //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    //---------------
+    // main loop GUI
+    //---------------
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -50,9 +50,9 @@ pub fn gui_main(window: *app.Window) !void {
         //------------------
         // Show demo window
         //------------------
-        ig.igShowDemoWindow (&showDemoWindow);
+        ig.igShowDemoWindow(&showDemoWindow);
         if (showImPlotDemoWindow) {
-            ip.ImPlot_ShowDemoWindow (&showImPlotDemoWindow);
+            ip.ImPlot_ShowDemoWindow(&showImPlotDemoWindow);
         }
         window.showInfoWindow();
 
@@ -65,16 +65,15 @@ pub fn gui_main(window: *app.Window) !void {
     } // while end
 } // main end
 
-
 //------------------
 // imPlotDemoWindow
 //-------------------
 fn imPlotDemoWindow() !void {
-  {
-    _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
-    defer ig.igEnd();
-    try demo.imPlotDemoTabs();
-  }
+    {
+        _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
+        defer ig.igEnd();
+        try demo.imPlotDemoTabs();
+    }
 }
 
 //--------

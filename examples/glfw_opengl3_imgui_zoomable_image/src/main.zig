@@ -4,7 +4,6 @@ const zmi = @import("imguizoomableimage");
 
 // gui_main()
 pub fn gui_main(win: *app.Window) void {
-
     win.eventLoadStandard(); // See ../../../src/libzig/appimgui/src/appImGui.zig
 
     var zoomState: zmi.ImGuiImageState = undefined;

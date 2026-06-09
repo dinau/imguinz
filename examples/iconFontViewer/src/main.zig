@@ -1,6 +1,6 @@
 const std = @import("std");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const ift = @import("./iconFontsTblDef.zig");
@@ -19,7 +19,7 @@ pub fn gui_main(window: *app.Window) !void {
     var item_current: usize = 0;
     var showIconFontsViewerWindow = true;
     const DefaultButtonSize = app.utils.vec2(0, 0);
-    var wsZoom:f32 = 45;
+    var wsZoom: f32 = 45;
 
     var listBoxTextureID: app.glfw.GLuint = 0; //# Must be == 0 at first
     defer app.glfw.glDeleteTextures(1, &listBoxTextureID);
@@ -29,11 +29,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -58,7 +58,7 @@ pub fn gui_main(window: *app.Window) !void {
             ig.igText("No.[%4d]", item_current);
             ig.igSameLine(0, -1.0);
 
-            var sBuf:[100:0]u8 = std.mem.zeroes([100:0]u8);
+            var sBuf: [100:0]u8 = std.mem.zeroes([100:0]u8);
 
             _ = try std.fmt.bufPrint(&sBuf, "{s}", .{ift.iconFontsTbl[item_current]});
             if (ig.igButton(ifa.ICON_FA_COPY ++ " Copy to", DefaultButtonSize)) {
@@ -97,7 +97,7 @@ pub fn gui_main(window: *app.Window) !void {
             _ = ig.igSliderFloat("##Zoom1", &wsZoom, 30, 90, "%.1f", 0);
             ig.igSeparator();
 
-            _ = ig.igBeginChild_Str("child2", .{.x = 0, .y = 0}, 0, 0);
+            _ = ig.igBeginChild_Str("child2", .{ .x = 0, .y = 0 }, 0, 0);
             defer ig.igEndChild();
 
             const flags = ig.ImGuiTableFlags_RowBg | ig.ImGuiTableFlags_BordersOuter | ig.ImGuiTableFlags_BordersV | ig.ImGuiTableFlags_Resizable | ig.ImGuiTableFlags_Reorderable | ig.ImGuiTableFlags_Hideable;
@@ -142,7 +142,7 @@ pub fn gui_main(window: *app.Window) !void {
         { // -- Text filter window
             _ = ig.igBegin("Icon Font filter", null, 0);
             defer ig.igEnd();
-            ig.igText("%s","(Copy)");
+            ig.igText("%s", "(Copy)");
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
                 //filterAry[1]:match(".+(ICON.+)");
                 //if (std.mem.containsAtLeast(u8, filterAry[0],"ICON")){

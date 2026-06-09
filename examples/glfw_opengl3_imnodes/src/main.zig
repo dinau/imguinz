@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 const is_devel_api = builtin.zig_version.minor >= 16;
 const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
@@ -36,8 +36,8 @@ pub fn gui_main(window: *app.Window) !void {
     //-- ImNode: Initialize NodeEditor
     var obj: recObj = undefined;
     obj.current_id = 0;
-    obj.nodes = try std.ArrayList(Node).initCapacity(allocator,1024);
-    obj.links = try std.ArrayList(Link).initCapacity(allocator,1024);
+    obj.nodes = try std.ArrayList(Node).initCapacity(allocator, 1024);
+    obj.links = try std.ArrayList(Link).initCapacity(allocator, 1024);
     defer obj.nodes.deinit(allocator);
     defer obj.links.deinit(allocator);
 
@@ -56,11 +56,11 @@ pub fn gui_main(window: *app.Window) !void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
         // Start the Dear ImGui frame
@@ -88,7 +88,7 @@ pub fn gui_main(window: *app.Window) !void {
                     obj.current_id += 1;
                     const node_id = obj.current_id;
                     const pos = ig.igGetMousePos();
-                    imnodes.imnodes_SetNodeScreenSpacePos(node_id, .{.x = pos.x, .y = pos.y});
+                    imnodes.imnodes_SetNodeScreenSpacePos(node_id, .{ .x = pos.x, .y = pos.y });
                     try obj.nodes.append(allocator, .{ .id = node_id, .value = 0 });
                 }
                 for (obj.nodes.items, 0..) |*node, nodeN| {
@@ -228,7 +228,6 @@ fn saveObj(alloc: std.mem.Allocator, this: *recObj) !void {
         try fout.writeAll(std.mem.asBytes(&this.current_id));
     }
 }
-
 
 //---------
 // loadObj

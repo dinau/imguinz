@@ -61,9 +61,9 @@ pub fn main() !void {
         if (sdl.SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", MainWinWidth, MainWinHeight, window_flags)) |pointer| {
             window = pointer;
 
-            if (builtin.zig_version.minor >= 17){
+            if (builtin.zig_version.minor >= 17) {
                 glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
-            }else{
+            } else {
                 glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
             }
             std.debug.print("{s} \n", .{glsl_version});
@@ -221,7 +221,7 @@ pub fn main() !void {
             const size = ig.ImVec2{ .x = @floatFromInt(textureWidth), .y = @floatFromInt(textureHeight) };
             const uv0 = ig.ImVec2{ .x = 0, .y = 0 };
             const uv1 = ig.ImVec2{ .x = 1, .y = 1 };
-            const imageBoxPosTop  = ig.igGetCursorScreenPos(); // # Get absolute pos.
+            const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
             ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size, uv0, uv1);
             const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
             if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {

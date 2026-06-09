@@ -3,7 +3,7 @@ const ip = @import("implot");
 const ipz = @import("zimplot.zig");
 const ip3 = @import("implot3d");
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const IMGUI_HAS_DOCK = false; // Docking feature
@@ -117,7 +117,7 @@ pub fn gui_main(window: *app.Window) !void {
             }
 
             // Choose fill color
-            ig.igText("%s","Fill color");
+            ig.igText("%s", "Fill color");
             ig.igIndent(0);
             // Choose solid color
             _ = ig.igRadioButton_IntPtr("Solid", &st.selected_fill, 0);

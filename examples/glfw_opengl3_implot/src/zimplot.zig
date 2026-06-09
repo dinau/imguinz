@@ -111,20 +111,18 @@ fn convToUSType(comptime T: type) []const u8 {
 // argNameCheck
 //--------------
 fn argNameCheck(comptime T: type, comptime allowed: anytype) void {
-    const fields = @typeInfo(T).@"struct".fields;
-    inline for (fields) |field| {
-        // コンパイル時に true か false かを確定させる
+    const names = comptime std.meta.fieldNames(T);
+    inline for (names) |name| {
         const is_ok = comptime blk: {
             for (allowed) |allowed_name| {
-                if (std.mem.eql(u8, field.name, allowed_name)) {
+                if (std.mem.eql(u8, name, allowed_name)) {
                     break :blk true;
                 }
             }
             break :blk false;
         };
-
         if (!is_ok) {
-            @compileError("Invalid field: " ++ "\""  ++ field.name ++ "\"");
+            @compileError("Invalid field: " ++ "\"" ++ name ++ "\"");
         }
     }
 }

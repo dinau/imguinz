@@ -17,7 +17,7 @@ pub fn main() anyerror!void {
     const screenWidth = 800;
     const screenHeight = 600;
 
-    rl.setConfigFlags(.{.vsync_hint = true, .window_resizable = true, .window_hidden = true});              //  Enable VSYNC
+    rl.setConfigFlags(.{ .vsync_hint = true, .window_resizable = true, .window_hidden = true }); //  Enable VSYNC
     rl.initWindow(screenWidth, screenHeight, "Raylib Zig CJK Font");
     defer rl.closeWindow();
 
@@ -131,7 +131,7 @@ pub fn main() anyerror!void {
         rl.drawTextEx(font, "Wheel:ズーム 1-5:倍率 SPACE:投影", rl.Vector2{ .x = 10, .y = 70 }, 20, 2, .white);
 
         if (texture) |tex| {
-            rl.drawText(rl.textFormat("Texture OK: %dx%d", .{tex.width, tex.height}), 10, 100, 20, .dark_green);
+            rl.drawText(rl.textFormat("Texture OK: %dx%d", .{ tex.width, tex.height }), 10, 100, 20, .dark_green);
         } else {
             rl.drawTextEx(font, "images/mario.png なし", rl.Vector2{ .x = 10, .y = 100 }, 20, 2, .orange);
         }
@@ -139,7 +139,7 @@ pub fn main() anyerror!void {
         rl.drawFPS(10, screenHeight - 30);
 
         if (delayShowWindow == 0) {
-            rl.clearWindowState(rl.ConfigFlags { .window_hidden = true });
+            rl.clearWindowState(rl.ConfigFlags{ .window_hidden = true });
         }
         if (delayShowWindow >= 0) {
             delayShowWindow -= 1;

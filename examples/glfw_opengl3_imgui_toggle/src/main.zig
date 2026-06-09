@@ -1,5 +1,5 @@
 const app = @import("appimgui");
-const ig  = app.ig;
+const ig = app.ig;
 const ifa = app.ifa;
 
 const toggle = @import("imtoggle");
@@ -15,11 +15,11 @@ pub fn gui_main(window: *app.Window) void {
     //---------------
     // main loop GUI
     //---------------
-    while (!window.shouldClose ()) {
-        window.pollEvents ();
+    while (!window.shouldClose()) {
+        window.pollEvents();
 
         // Iconify sleep
-        if( window.isIconified()){
+        if (window.isIconified()) {
             continue;
         }
 
@@ -92,7 +92,7 @@ pub fn gui_main(window: *app.Window) void {
             ig.igPushStyleColor_Vec4(ig.ImGuiCol_BorderShadow, green_shadow);
             _ = toggle.ToggleAnim("Shadowed Knob", &st.values[value_index], toggle.ImGuiToggleFlags_Shadowed, 1.0, sz);
             value_index += 1;
-                //
+            //
             //--------------------------
             // Bordered + Shadowed Knob
             //--------------------------
