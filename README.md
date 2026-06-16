@@ -289,6 +289,12 @@ Additional examples
 
 ---
 
+First fetch raylib,
+
+```sh
+zig fetch --save git+https://github.com/raysan5/raylib
+```
+
 [raylib_basic](examples/raylib_basic/src/main.zig)  
 
 ![alt](img/raylib_basic.gif)
@@ -300,6 +306,12 @@ Additional examples
 #### Raylib + ImGui + rlImGui 
 
 ---
+
+First fetch raylib,
+
+```sh
+zig fetch --save git+https://github.com/raysan5/raylib
+```
 
 [main.zig](examples/rlimgui_basic/src/main.zig)  
 
