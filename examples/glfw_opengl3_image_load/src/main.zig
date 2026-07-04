@@ -38,7 +38,7 @@ pub fn gui_main(window: *app.Window) !void {
     var textureHeight: c_int = 0;
     _ = app.utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     const sz = app.utils.vec2(0, 0);
 

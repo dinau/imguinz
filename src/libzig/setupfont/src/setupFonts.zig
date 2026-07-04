@@ -106,23 +106,44 @@ fn point2px(point: f32) f32 {
 var config: *ig.ImFontConfig = undefined;
 
 /// Setup fonts for ImGui
-pub export fn setupFonts() ?*ig.ImFont {
+/// theFontPath: a null-terminated string specifying the font path.
+///              Pass null to fall back to the default behavior
+///              (auto-detect Windows/Linux fonts).
+pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
     const pio = ig.igGetIO_Nil();
     var font: ?*ig.ImFont = null;
     config = ig.ImFontConfig_ImFontConfig() orelse return null;
+
+    // First check "theFontPath"
+    if (theFontPath) |fp| {
+        const fp_slice = std.mem.span(fp);
+        if (existsFile(fp_slice)) {
+            font = ig.ImFontAtlas_AddFontFromFileTTF(
+                pio.*.Fonts,
+                fp,
+                point2px(14.5),
+                config,
+                null,
+            );
+            std.debug.print("\n==== Found FontPath(priority): [{s}]\n", .{fp_slice});
+        }
+    }
+
     // Try Windows fonts
-    for (WinFontNameTbl) |fontName| {
-        if (getWinFontPath(&sBufFontPath, fontName)) |fontPath| {
-            if (existsFile(fontPath)) {
-                font = ig.ImFontAtlas_AddFontFromFileTTF(
-                    pio.*.Fonts,
-                    fontPath.ptr,
-                    point2px(14.5),
-                    config,
-                    null,
-                );
-                std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
-                break;
+    if (font == null) {
+        for (WinFontNameTbl) |fontName| {
+            if (getWinFontPath(&sBufFontPath, fontName)) |fontPath| {
+                if (existsFile(fontPath)) {
+                    font = ig.ImFontAtlas_AddFontFromFileTTF(
+                        pio.*.Fonts,
+                        fontPath.ptr,
+                        point2px(14.5),
+                        config,
+                        null,
+                    );
+                    std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
+                    break;
+                }
             }
         }
     }

@@ -6,9 +6,9 @@ EXAMPLE_DIRS += \
 							examples/glfw_opengl3_image_load \
 							examples/glfw_opengl3_imfileopendialog \
 							examples/glfw_opengl3_imgui_toggle \
+							examples/glfw_opengl3_imgui_zoomable_image \
 							examples/glfw_opengl3_imguicolortextedit \
 							examples/glfw_opengl3_imguizmo \
-							examples/glfw_opengl3_imgui_zoomable_image \
 							examples/glfw_opengl3_imknobs \
 							examples/glfw_opengl3_imnodes \
 							examples/glfw_opengl3_implot \

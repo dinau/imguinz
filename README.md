@@ -3,7 +3,7 @@
 
 - [ImGuinz](#imguinz)
   - [Zig fetch](#zig-fetch)
-    - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
+  - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
   - [Prerequisites](#prerequisites)
   - [Build and run](#build-and-run)
   - [Available libraries list at this moment](#available-libraries-list-at-this-moment)
@@ -50,7 +50,7 @@
 
 This project aims to simply and easily build [Dear ImGui](https://github.com/ocornut/imgui) 
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
-Raylib, rlImGui and many other libaries and examples in [Zig](https://ziglang.org/) with less external dependencies.
+Raylib, rlImGui and many other libaries and examples with less external dependencies in [Zig](https://ziglang.org/).
 
 - ImGui / CImGui version **1.92.8 dock** (2026/06)
 - OS: Windows11 and Linux
@@ -66,10 +66,10 @@ Raylib, rlImGui and many other libaries and examples in [Zig](https://ziglang.or
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
    - Included GLFW 3.4.0 static library (for Windows)
-   - Included SDL3.4.x libraries (for Windows)
+   - Included SDL3.4.xx libraries (for Windows)
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) / ImPlot3D with `ImDrawIdx="unsigned int"`
-   - Enabled Input method \(IME\) flag with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
+   - Enabled Input method \(IME\) flag for CJK fotns with `IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS`
 
 ### Zig fetch 
 
@@ -181,7 +181,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
    
    ![alt](img/myapp.gif)
 
-#### Try Wasm demo in your browser
+### Try Wasm demo in your browser
 
 ---
 
@@ -198,10 +198,8 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
    - [x] zig-0.16.0  
       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] zig-0.17.0-dev.813 (2026/06)[^except_raylib] 
-   - [x] \(zig-0.15.2\): Deprecated 
-- WindowsOS
-   - Windows11
+   - [x] zig-0.17.0-dev.1158+1d1193aa7 (2026/06/30) [^except_raylib] 
+- Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 
       ```sh

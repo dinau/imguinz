@@ -107,7 +107,7 @@ pub fn main() !void {
     var sTextInputBuf: [200:0]u8 = std.mem.zeroes([200:0]u8);
     var showWindowDelay: i32 = 2; // TODO: Avoid flickering of window at startup.
 
-    _ = stf.setupFonts();
+    _ = stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     var done = false;
     while (!done) {

@@ -8,7 +8,7 @@ const ifa = app.ifa;
 // gui_main()
 //-----------
 pub fn gui_main(window: *app.Window) void {
-    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
     const pio = ig.igGetIO_Nil();
     var showDemoWindow = true;

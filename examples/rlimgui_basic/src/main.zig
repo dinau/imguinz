@@ -66,7 +66,7 @@ pub fn gui_main() !void {
 
     rl.setTargetFPS(60); // Set our game to run at 60 frames-per-second
     rlig.rlImGuiSetup(true);
-    const font = stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    const font = stf.setupFonts(null); // Setup CJK fonts and Icon fonts
 
     var mapColor = [_]f32{ (255.0 - 73.0) / 255.0, (255.0 - 113.0) / 255.0, (255.0 - 166.0) / 255.0 };
     const pio = ig.igGetIO_Nil();

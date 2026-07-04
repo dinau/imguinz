@@ -65,7 +65,6 @@ pub const Window = struct {
     //-------------
     // createImGui
     //-------------
-
     pub fn createImGui(w: i32, h: i32, title: [*c]const u8) !Window {
         _ = w;
         _ = h;

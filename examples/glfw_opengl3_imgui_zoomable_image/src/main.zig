@@ -94,7 +94,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
     defer window.destroyImGui();
 
-    _ = app.stf.setupFonts(); // Setup CJK fonts and Icon fonts
+    _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
 
     // GUI main proc
