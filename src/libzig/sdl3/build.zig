@@ -17,6 +17,7 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
     });
     step.defineCMacro("SDL_ENABLE_OLD_NAMES", "");
+    step.defineCMacro("__INTRIN_H_",null);
     step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
     step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
 
