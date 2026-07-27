@@ -5,7 +5,6 @@
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
         .appimgui           = .{ .path = "src/libzig/appimgui" },
-        .clib               = .{ .path = "src/libzig/clib" },
         .cimgui             = .{ .path = "src/libzig/cimgui" },
         .fonticon           = .{ .path = "src/libzig/fonticon" },
         .glfw               = .{ .path = "src/libzig/glfw" },

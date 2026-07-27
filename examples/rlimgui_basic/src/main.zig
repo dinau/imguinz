@@ -127,7 +127,7 @@ pub fn gui_main() !void {
             const str = rl.textFormat("%i FPS\n", .{rl.getFPS()});
             rl.drawText(str, 10, 10, 20, .gray);
 
-            rl.drawText("ImGui + Raylib + rlImGui", 50, 250, 20, .ray_white);
+            rl.drawText("Dear ImGui + Raylib + rlImGui", 50, 250, 20, .ray_white);
         }
 
         if (delayShowWindow == 0) {

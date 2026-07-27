@@ -91,7 +91,12 @@ const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
 
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts

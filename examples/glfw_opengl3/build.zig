@@ -35,7 +35,8 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 
@@ -78,4 +79,13 @@ pub fn build(b: *std.Build) void {
     }
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
+
+    const install_docs = b.addInstallDirectory(.{
+        .source_dir = exe.getEmittedDocs(),
+        .install_dir = .prefix,
+        .install_subdir = "docs",
+    });
+
+    const docs_step = b.step("docs", "Generate documentation");
+    docs_step.dependOn(&install_docs.step);
 }

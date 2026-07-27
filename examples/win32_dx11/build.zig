@@ -67,7 +67,8 @@ pub fn build(b: *std.Build) void {
         exe.root_module.linkSystemLibrary(lib, .{});
     }
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
     exe.root_module.link_libc = true;
     b.installArtifact(exe);
 

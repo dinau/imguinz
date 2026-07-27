@@ -11,7 +11,7 @@ const impl_sdlgpu3 = @import("impl_sdlgpu3");
 const img_load = @import("loadimage_sdlgpu3");
 const zmg = @import("./zoomGlass.zig");
 
-const IMGUI_HAS_DOCK = false; // Docking feature
+const IMGUI_HAS_DOCK = true; // Docking feature
 
 const MainWinWidth: c_int = 1024;
 const MainWinHeight: c_int = 900;
@@ -236,9 +236,9 @@ pub fn main() !void {
             // Update and Render additional Platform Windows
 
             if (IMGUI_HAS_DOCK) {
-                if (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable) {
+                if (0 != pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable) {
                     ig.igUpdatePlatformWindows();
-                    ig.igRenderPlatformWindowsDefault();
+                    ig.igRenderPlatformWindowsDefault(null, null);
                 }
             }
             // Submit the command buffer

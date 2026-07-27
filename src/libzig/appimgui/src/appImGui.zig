@@ -19,7 +19,7 @@ fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void 
     std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
-pub const Theme = enum {
+const Theme = enum {
     light,
     dark,
     classic,
@@ -41,17 +41,24 @@ const TWindow = struct {
     theme: i32,
 };
 
-pub const TIni = struct {
+const TIni = struct {
     window: TWindow,
     image: TImage,
 };
 
-//--------------
-// Window class
-//--------------
+/// Main window options
+const Opts = struct {
+    /// Docking feature
+    docking: bool = true,
+    /// Title bar Icon name of Main window
+    title_bar_icon_name: []const u8  = "./resources/z.png",
+};
+
+///--------------
+/// Window class
+///--------------
 pub const Window = struct {
     const Self = @This();
-    const IMGUI_HAS_DOCK = false; // Docking feature
     pub const eventLoad = enum {
         low,
         standard,
@@ -61,14 +68,14 @@ pub const Window = struct {
     showWindowDelay: i32, // TODO: Avoid flickering of window at startup
     ini: TIni,
     clearColor: [4]f32,
+    docking: bool = true,
 
     //-------------
     // createImGui
     //-------------
-    pub fn createImGui(w: i32, h: i32, title: [*c]const u8) !Window {
-        _ = w;
-        _ = h;
+    pub fn createImGui(width: i32, height: i32, title: [*c]const u8, opts: Opts) !Window {
         var win: Window = undefined;
+        win.docking = opts.docking;
 
         //-------------------
         // GLFW initializing
@@ -113,7 +120,7 @@ pub const Window = struct {
             //---------------------------------------------
             // Create GLFW window and activate OpenGL libs
             //---------------------------------------------
-            if (glfw.glfwCreateWindow(800, 600, title, null, null)) |pointer| {
+            if (glfw.glfwCreateWindow(width, height, title, null, null)) |pointer| {
                 win.handle = pointer;
                 if (builtin.zig_version.minor >= 17){
                     glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
@@ -143,8 +150,7 @@ pub const Window = struct {
         //---------------------
         // Load title bar icon
         //---------------------
-        const TitleBarIconName = "./resources/z.png";
-        if (utils.existsFile(TitleBarIconName.ptr)) {
+        if (utils.existsFile(opts.title_bar_icon_name.ptr)) {
             //--------------
             // Get exe path  Refered to: https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
             //--------------
@@ -169,7 +175,7 @@ pub const Window = struct {
 
             const option_exe_dir = std.fs.path.dirname(exe_path);
             if (option_exe_dir) |exe_dir| {
-                var paths = [_][]const u8{ exe_dir, TitleBarIconName };
+                var paths = [_][]const u8{ exe_dir, opts.title_bar_icon_name };
                 const icon_path = try std.fs.path.join(allocator, &paths);
                 defer allocator.free(icon_path);
                 // Load icon
@@ -190,7 +196,7 @@ pub const Window = struct {
         pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
         // pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
         // Setup doncking feature --- can't compile well at this moment.
-        if (IMGUI_HAS_DOCK) {
+        if (win.docking) {
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_DockingEnable; // Enable Docking
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
         }
@@ -221,7 +227,7 @@ pub const Window = struct {
         glfw.glClear(glfw.GL_COLOR_BUFFER_BIT);
         impl_gl.ImGui_ImplOpenGL3_RenderDrawData(@ptrCast(ig.igGetDrawData()));
         // Docking featrue --- N/A
-        if (IMGUI_HAS_DOCK) {
+        if (win.docking) {
             if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
                 const backup_current_window = glfw.glfwGetCurrentContext();
                 ig.igUpdatePlatformWindows();
@@ -438,8 +444,6 @@ pub fn loadIni(win: *Window) !void {
             }
         }
 
-        //std.debug.print("Read ini: {s}\n", .{iniFilename});
-
         const file_size = if (is_devel_api)
             try file.length(io)
         else
@@ -457,18 +461,10 @@ pub fn loadIni(win: *Window) !void {
         const parsed_data = try std.json.parseFromSlice(TIni, allocator, buffer, .{});
         defer parsed_data.deinit();
         data = parsed_data.value;
-        //} else |_| {
-        //    std.debug.print("*.ini file not found: set \"DefaultIni\" values\n", .{});
-        //    const parsed_data = try std.json.parseFromSlice(TIni, allocator, DefaultIni, .{});
-        //    defer parsed_data.deinit();
-        //    data = parsed_data.value;
-        //}
 
         // Window pos
         win.ini.window.startupPosX = data.window.startupPosX;
         win.ini.window.startupPosY = data.window.startupPosY;
-        //std.debug.print("data.window.startupPosX = {d}\n", .{data.window.startupPosX});
-        //std.debug.print("data.window.startupPosY = {d}\n", .{data.window.startupPosY});
         if (10 > win.ini.window.startupPosX) {
             win.ini.window.startupPosX = 50;
         }
@@ -574,7 +570,7 @@ pub fn saveIni(win: *Window) !void {
 export fn createImGui_c(w: i32, h: i32, title: [*c]const u8) ?*Window {
     const allocator = std.heap.c_allocator;
     const win_ptr = allocator.create(Window) catch return null;
-    win_ptr.* = Window.createImGui(w, h, title) catch {
+    win_ptr.* = Window.createImGui(w, h, title, .{}) catch {
         allocator.destroy(win_ptr);
         return null;
     };

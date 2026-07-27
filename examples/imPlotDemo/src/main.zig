@@ -9,9 +9,9 @@ const IMGUI_HAS_DOCK = false; // Docking feature
 const MainWinWidth: i32 = 1200;
 const MainWinHeight: i32 = 800;
 
-//-----------
-// gui_main()
-//-----------
+//----------
+// gui_main
+//----------
 pub fn gui_main(window: *app.Window) !void {
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
@@ -23,13 +23,6 @@ pub fn gui_main(window: *app.Window) !void {
     //-------------
     var showDemoWindow = true;
     var showImPlotDemoWindow = true;
-
-    //------------------------
-    // Select Dear ImGui style
-    //------------------------
-    ig.igStyleColorsClassic(null);
-    //ig.igStyleColorsDark (null);
-    //ig.igStyleColorsLight (null);
 
     //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
@@ -67,20 +60,23 @@ pub fn gui_main(window: *app.Window) !void {
 
 //------------------
 // imPlotDemoWindow
-//-------------------
+//------------------
 fn imPlotDemoWindow() !void {
-    {
-        _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
-        defer ig.igEnd();
-        try demo.imPlotDemoTabs();
-    }
+    _ = ig.igBegin(ifa.ICON_FA_SIGNAL ++ " ImPlot demo: All demos have been written in Zig", null, 0);
+    defer ig.igEnd();
+    try demo.imPlotDemoTabs();
 }
 
-//--------
-// main()
-//--------
+//------
+// main
+//------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft

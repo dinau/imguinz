@@ -10,7 +10,7 @@ const impl_sdl3 = @import("impl_sdl3");
 const impl_opengl3 = @import("impl_opengl3");
 const img_load = @import("loadimage");
 
-const IMGUI_HAS_DOCK = false; // Docking feature
+const IMGUI_HAS_DOCK = true; // Docking feature
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
@@ -161,7 +161,7 @@ pub fn main() !void {
         // Show main window
         //------------------
         {
-            _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " ImGui: Dear Bindings", null, 0);
+            _ = ig.igBegin(ifa.ICON_FA_THUMBS_UP ++ " Dear ImGui: Dear Bindings", null, 0);
             defer ig.igEnd();
             ig.igText(ifa.ICON_FA_COMMENT ++ " SDL3 v");
             ig.igSameLine(0, -1.0);

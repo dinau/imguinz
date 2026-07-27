@@ -3,18 +3,12 @@
 # Use zig-0.12.0
 # by dinau (2024/06)
 
-#
-#OPT += --release=fast
-#OPT += --release=small
-# Fail compilation
-#OPT += --release=safe
-
 all:
 	@echo zig-$(shell zig version)
 	zig build $(OPT)
 	@-$(AFTER_BUILD_CMD)
 
-.PHONY: run gen cleanall cleanexe cleancache trans clean
+.PHONY: run gen cleanall cleanexe cleancache trans clean fmt pretty doc
 
 run: all
 	(cd $(ZIG_BIN_DIR) && $(LOCAL_LIB_PATH) ./$(TARGET)$(EXE))
@@ -66,3 +60,6 @@ fmt:
 	zig fmt build.zig build.zig.zon
 
 pretty: fmt
+
+doc:
+	zig build docs && cd zig-out/docs && python  -m http.server 8000

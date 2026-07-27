@@ -88,7 +88,12 @@ pub fn gui_main(window: *app.Window) void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "Dear ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{},
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft

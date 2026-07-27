@@ -106,7 +106,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
        });
        exe.root_module.addImport(dep_name, dep.module(dep_name));
    }
-   exe.subsystem = .Windows; // Hide console window
+   //exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
    ```
 
    You can set `dependencies` (additional libraries), see [imguinz/build.zig.zon](https://github.com/dinau/imguinz/blob/main/build.zig.zon)
@@ -161,7 +161,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
    }
    
    pub fn main() !void {
-       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig");
+       var window = try app.Window.createImGui(1024, 900, "ImGui window in Zig", .{});
        defer window.destroyImGui();
    
        _ = app.setTheme(.dark); // Theme: dark, classic, light, microsoft
@@ -198,7 +198,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
    - [x] zig-0.16.0  
       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] zig-0.17.0-dev.1158+1d1193aa7 (2026/06/30) [^except_raylib] 
+   - [x] zig-0.17.0-dev.1465+8b2d0ce21 (2026/07/25) [^except_raylib] 
 - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 

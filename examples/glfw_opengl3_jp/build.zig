@@ -36,8 +36,8 @@ pub fn build(b: *std.Build) void {
 
     // std.Build: Deprecate Step.Compile APIs that mutate the root module #22587
     // See. https://github.com/ziglang/zig/pull/22587
-
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 

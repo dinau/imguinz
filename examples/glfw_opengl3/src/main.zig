@@ -2,7 +2,7 @@ const app = @import("appimgui");
 const ig = app.ig;
 const zmi = @import("imguizoomableimage");
 
-// gui_main()
+/// GUI main
 pub fn gui_main(window: *app.Window) void {
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
@@ -31,15 +31,25 @@ pub fn gui_main(window: *app.Window) void {
     } // end while loop
 }
 
-// main()
+/// Global constant
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
 
+/// Main
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{
+            .docking = true,
+            .title_bar_icon_name = "./resources/z.png",
+        },
+    );
     defer window.destroyImGui();
 
-    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
+    // Theme: dark, classic, light, microsoft
+    //_ = app.setTheme(.light);
 
     // GUI main proc
     gui_main(&window);

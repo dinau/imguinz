@@ -144,7 +144,12 @@ fn imPlotWindow2(fshow: *bool) void {
 // main()
 //--------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{ .docking = false, },
+    );
     defer window.destroyImGui();
 
     _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft

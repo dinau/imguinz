@@ -34,7 +34,8 @@ pub fn build(b: *std.Build) void {
     // Load Icon
     exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
-    exe.subsystem = .Windows; // Hide console window
+    // Hide console window
+    exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
     b.installArtifact(exe);
 

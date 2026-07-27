@@ -7,9 +7,9 @@ const imguizmo = @import("imguizmo");
 const MainWinWidth: i32 = 1200;
 const MainWinHeight: i32 = 800;
 
-//-----------
-// gui_main()
-//-----------
+//----------
+// gui_main
+//----------
 pub fn gui_main(window: *app.Window) !void {
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
 
@@ -95,11 +95,16 @@ pub fn gui_main(window: *app.Window) !void {
     } // end while loop
 }
 
-//--------
-// main()
-//--------
+//------
+// main
+//------
 pub fn main() !void {
-    var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "ImGui window in Zig");
+    var window = try app.Window.createImGui(
+        MainWinWidth,
+        MainWinHeight,
+        "Dear ImGui window in Zig",
+        .{ .docking = false, },
+    );
     defer window.destroyImGui();
 
     //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft

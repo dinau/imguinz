@@ -72,7 +72,7 @@ int main(int argc, char** argv)
         .hCursor = NULL,
         .hbrBackground = NULL,
         .lpszMenuName = NULL,
-        .lpszClassName = L"ImGui Example",
+        .lpszClassName = L"Dear ImGui Example",
         .hIconSm = NULL
     };
     wc.hIcon = (HICON)LoadImage(NULL, "./resources/z.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
