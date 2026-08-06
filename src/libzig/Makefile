@@ -47,3 +47,12 @@ define def_make
 endef
 
 MAKEFLAGS += --no-print-directory
+
+gen:
+	$(MAKE) -C cimgui                 $@
+	$(MAKE) -C imfileopendialog       $@
+	$(MAKE) -C imnodes                $@
+	$(MAKE) -C impl_opengl3           $@
+	$(MAKE) -C impl_sdlgpu3           $@
+	$(MAKE) -C implot                 $@
+	$(MAKE) -C implot3d               $@

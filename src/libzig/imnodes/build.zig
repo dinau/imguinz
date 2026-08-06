@@ -21,19 +21,20 @@ pub fn build(b: *std.Build) void {
         });
     }else{
         const step = b.addTranslateC(.{
-            .root_source_file = b.path("../../libc/cimnodes/cimnodes.h"),
+            .root_source_file = b.path("src/impl_imnodes.h"),
             .target = target,
             .optimize = optimize,
         });
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
-        step.addIncludePath(b.path("../../libc/cimnodes/cimnodes"));
+        step.addIncludePath(b.path("../../libc/cimnodes"));
 
         mod = step.addModule(mod_name);
     }
     mod.addCMacro("IMNODES_NAMESPACE", "imnodes"); // for imnodes
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
+    mod.link_libcpp = true;
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimnodes/cimnodes.cpp",

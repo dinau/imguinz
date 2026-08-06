@@ -52,7 +52,7 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
 Raylib, rlImGui and many other libaries and examples with less external dependencies in [Zig](https://ziglang.org/).
 
-- ImGui / CImGui version **1.92.8 dock** (2026/06)
+- ImGui / CImGui version **1.92.9 dock** (2026/07)
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
@@ -198,7 +198,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
    - [x] zig-0.16.0  
       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] zig-0.17.0-dev.1465+8b2d0ce21 (2026/07/25) [^except_raylib] 
+   - [x] zig-0.17.0-dev.1564+97ced1272 [^except_raylib] (2026/08/04)
 - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 

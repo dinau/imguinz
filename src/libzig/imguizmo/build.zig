@@ -38,11 +38,11 @@ pub fn build(b: *std.Build) void {
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimguizmo/cimguizmo.cpp",
-            "../../libc/cimguizmo/ImGuizmo/GraphEditor.cpp",
-            "../../libc/cimguizmo/ImGuizmo/ImCurveEdit.cpp",
-            "../../libc/cimguizmo/ImGuizmo/ImGradient.cpp",
-            "../../libc/cimguizmo/ImGuizmo/ImGuizmo.cpp",
-            "../../libc/cimguizmo/ImGuizmo/ImSequencer.cpp",
+            "../../libc/cimguizmo/ImGuizmo/src/GraphEditor.cpp",
+            "../../libc/cimguizmo/ImGuizmo/src/ImCurveEdit.cpp",
+            "../../libc/cimguizmo/ImGuizmo/src/ImGradient.cpp",
+            "../../libc/cimguizmo/ImGuizmo/src/ImGuizmo.cpp",
+            "../../libc/cimguizmo/ImGuizmo/src/ImSequencer.cpp",
         },
     });
 

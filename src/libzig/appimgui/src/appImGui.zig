@@ -6,7 +6,7 @@ pub const impl_gl = @import("impl_opengl3");
 pub const impl_glfw = @import("impl_glfw");
 pub const ifa = @import("fonticon");
 pub const img_ld = @import("loadimage");
-pub const icon = @import("loadicon");
+pub const icon_ld = @import("loadicon");
 pub const stf = @import("setupfont");
 pub const utils = @import("utils");
 const is_devel_api = builtin.zig_version.minor >= 16;
@@ -179,7 +179,7 @@ pub const Window = struct {
                 const icon_path = try std.fs.path.join(allocator, &paths);
                 defer allocator.free(icon_path);
                 // Load icon
-                icon.LoadTitleBarIcon(win.handle, icon_path.ptr);
+                icon_ld.LoadTitleBarIcon(win.handle, icon_path.ptr);
             }
         }
 

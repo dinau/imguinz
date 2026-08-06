@@ -1,9 +1,6 @@
 
 OPT += --release=fast
 
+CACHE_ZIG = impl_$(notdir $(CURDIR)).zig
+
 include ../makefile.common.mk
-
-
-gen:
-	@zig version
-	zig build $(OPT) -Dgen

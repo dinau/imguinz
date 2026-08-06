@@ -1,3 +1,7 @@
+// This demo has been converted from
+//     https://github.com/Nelarius/imnodes/blob/master/example/save_load.cpp
+//        See ../imnodes-LICENSE.md
+//
 const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");

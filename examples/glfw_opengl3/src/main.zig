@@ -48,8 +48,8 @@ pub fn main() !void {
     );
     defer window.destroyImGui();
 
-    // Theme: dark, classic, light, microsoft
-    //_ = app.setTheme(.light);
+    // Theme: .dark, .classic, .light, .microsoft
+    _ = app.setTheme(.dark);
 
     // GUI main proc
     gui_main(&window);

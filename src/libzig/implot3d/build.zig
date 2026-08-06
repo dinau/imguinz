@@ -21,13 +21,13 @@ pub fn build(b: *std.Build) void {
         });
     }else{
         const step = b.addTranslateC(.{
-            .root_source_file = b.path("../../libc/cimplot3d/cimplot3d.h"),
+            .root_source_file = b.path("src/impl_implot3d.h"),
             .target = target,
             .optimize = optimize,
         });
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
-        step.addIncludePath(b.path("../../libc/cimplot3d/cimplot3d"));
+        step.addIncludePath(b.path("../../libc/cimplot3d"));
 
         mod = step.addModule(mod_name);
     }

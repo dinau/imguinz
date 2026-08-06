@@ -158,8 +158,7 @@ pub fn gui_main(window: *app.Window) !void {
                 if (st.selected_fill == 0) {
                     ip3.ImPlot3D_SetNextFillStyle(.{ .x = st.solid_color.x, .y = st.solid_color.y, .z = st.solid_color.z, .w = st.solid_color.w }, IMPLOT3D_AUTO);
                 }
-                var vec4: ig.ImVec4 = undefined;
-                ip3.ImPlot3D_GetColormapColor(@ptrCast(&vec4), 1, IMPLOT3D_AUTO);
+                const vec4 = ip3.ImPlot3D_GetColormapColor(1, IMPLOT3D_AUTO);
                 ip3.ImPlot3D_SetNextLineStyle(.{ .x = vec4.x, .y = vec4.y, .z = vec4.z, .w = vec4.w }, IMPLOT3D_AUTO);
 
                 // Plot the surface
