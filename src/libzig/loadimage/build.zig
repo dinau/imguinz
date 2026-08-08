@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -30,7 +29,7 @@ pub fn build(b: *std.Build) void {
         mod = step.addModule(mod_name);
     }
     mod.addIncludePath(b.path("../../libc/stb"));
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},

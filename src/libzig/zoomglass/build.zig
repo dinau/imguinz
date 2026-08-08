@@ -26,7 +26,10 @@ pub fn build(b: *std.Build) void {
         if (mod.import_table.get(module)) |_| {
             continue;
         }
-        const mod_dep = b.dependency(module, .{});
+        const mod_dep = b.dependency(module, .{
+            .target = target,
+            .optimize = optimize,
+        });
         mod.addImport(module, mod_dep.module(module));
     }
 

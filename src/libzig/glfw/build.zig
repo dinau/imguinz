@@ -1,6 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -18,6 +16,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
+    if (b.sysroot) |es| {                          
+        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }                                                
     const mod = step.addModule(mod_name);
 
     const lib = b.addLibrary(.{
@@ -27,9 +28,10 @@ pub fn build(b: *std.Build) void {
     });
 
     // Static link
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => lib.root_module.addObjectFile(b.path(b.pathJoin(&.{ glfw_path, "lib-mingw-w64", "libglfw3.a" }))),
         // .linux =>   mod.addIncludePath(.{.cwd_relative = "/usr/include"}),
+        .emscripten => {},
         else => {},
     }
 

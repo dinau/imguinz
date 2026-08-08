@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -26,7 +25,7 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     mod.addCMacro("ImDrawIdx", "unsigned int");
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
