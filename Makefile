@@ -15,6 +15,7 @@ EXAMPLE_DIRS += \
 							examples/glfw_opengl3_implot3d \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
+							examples/glfw_webgl_wasm \
 							examples/iconFontViewer \
 							examples/imPlotDemo
 
