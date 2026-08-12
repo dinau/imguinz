@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
 
     const mod_name = "imspinner";
 
@@ -18,11 +19,17 @@ pub fn build(b: *std.Build) void {
     step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     step.addIncludePath(b.path("../../libc/cimgui"));
     step.addIncludePath(b.path("../../libc/imspinner"));
-
+    if (emscripten_sysroot) |es| {
+        step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     const mod = step.addModule(mod_name);
+    mod.link_libcpp = true;
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
 
+    if (emscripten_sysroot) |es| {
+        mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     mod.addCMacro("IMSPINNER_DEMO", "");
     mod.addCMacro("SPINNER_RAINBOW", "");
     mod.addCMacro("SPINNER_RAINBOWMIX", "");

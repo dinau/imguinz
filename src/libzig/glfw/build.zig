@@ -16,11 +16,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-    if (b.sysroot) |es| {                          
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
+    if (emscripten_sysroot) |es| {
         step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
     }                                                
     const mod = step.addModule(mod_name);
-
+    //mod.addImport(mod_name, mod);
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = mod_name,

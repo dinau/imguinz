@@ -23,6 +23,7 @@ all:
 	@emcc --version
 	zig build -Dtarget=wasm32-emscripten      \
   -Demscripten_sysroot=$(EMSCRIPTEN_DIR)    \
+	--sysroot $(EMSCRIPTEN_DIR) \
   $(OPT)
 
 .PHONY: clean run fmt app
