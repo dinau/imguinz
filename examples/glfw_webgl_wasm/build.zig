@@ -4,7 +4,7 @@ const builtin = @import("builtin");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
-    const is_emscripten = target.result.os.tag == .emscripten;
+    const is_emscripten = (target.result.os.tag == .emscripten);
     const exe_name = "glfw_webgl_wasm";
 
     const main_mod = b.createModule(.{
@@ -91,6 +91,12 @@ pub fn build(b: *std.Build) void {
             .install_subdir = "web",
         });
         b.getInstallStep().dependOn(&install_web.step);
+
+        const resWeb = [_][]const u8{"favicon.ico"};
+        inline for (resWeb) |file| {
+            const res = b.addInstallFile(b.path(file), "web/" ++ file);
+            b.getInstallStep().dependOn(&res.step);
+        }
     } else {
         //------------------
         // for native build
@@ -99,7 +105,6 @@ pub fn build(b: *std.Build) void {
             .name = exe_name,
             .root_module = main_mod,
         });
-
         exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
 
         exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
@@ -118,15 +123,6 @@ pub fn build(b: *std.Build) void {
             const res = b.addInstallFile(b.path(file), "bin/" ++ file);
             b.getInstallStep().dependOn(&res.step);
         }
-
-        if (is_emscripten) {
-            const resWeb = [_][]const u8{"favicon.ico"};
-            inline for (resWeb) |file| {
-                const res = b.addInstallFile(b.path(file), "web/" ++ file);
-                b.getInstallStep().dependOn(&res.step);
-            }
-        }
-
         const fonticon_dir = "../../src/libc/fonticon/fa6/";
         const res_fonticon = [_][]const u8{
             "fa-solid-900.ttf",

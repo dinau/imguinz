@@ -2,7 +2,6 @@ const std = @import("std");
 const builtin = @import("builtin");
 const app = @import("appimgui");
 const ig = app.ig;
-const ifa = app.ifa;
 const stf = app.stf;
 const glfw = app.glfw;
 const utils = app.utils;
@@ -45,7 +44,7 @@ var showLicenseNotices = false;
 // Load image
 //------------
 const ImageName = "resources/dinosaurs_paradise-480.jpg";
-var textureId: glfw.GLuint = undefined;
+var textureId: c_uint = undefined;
 var textureWidth: c_int = 0;
 var textureHeight: c_int = 0;
 
@@ -72,8 +71,8 @@ fn loopBody() callconv(.c) void {
     win.frame();
 
     const mh = 0;
+    const sz = utils.vec2(0, 0);
 
-    const sz = ig.ImVec2{ .x = 0, .y = 0 };
     //--------------------
     // Show Licenses menu
     //--------------------
@@ -94,7 +93,7 @@ fn loopBody() callconv(.c) void {
     //-----------------------
     if (showLicenseNotices) {
         const themeSave = win.getTheme();
-            win.setTheme(.light);
+        win.setTheme(.light);
         ig.igSetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
         if (is_emscripten) {
             ig.igPushFont(null, stf.point2px(8.4)); // for WASM
@@ -149,7 +148,7 @@ fn loopBody() callconv(.c) void {
     //------------------------
     // Show image load window
     //------------------------
-    ig.igSetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver,sz);
+    ig.igSetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver, sz);
     {
         _ = ig.igBegin("Image load test", null, 0);
         defer ig.igEnd();

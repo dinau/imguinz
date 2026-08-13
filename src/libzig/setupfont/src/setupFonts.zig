@@ -29,7 +29,7 @@ const INVALID_FILE_ATTRIBUTES: u32 = 0xFFFFFFFF;
 extern "kernel32" fn GetFileAttributesA(lpFileName: [*:0]const u8) callconv(.c) u32;
 
 extern "c" fn write(fd: c_int, buf: [*]const u8, count: usize) isize;
-pub fn dbgPrint(comptime fmt: []const u8, args: anytype) void {
+fn dbgPrint(comptime fmt: []const u8, args: anytype) void {
     if (builtin.target.os.tag == .emscripten) {
         var buf: [512]u8 = undefined;
         const msg = std.fmt.bufPrint(&buf, fmt, args) catch return;
@@ -185,7 +185,7 @@ pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
     if (font == null) {
         dbgPrint("\n==== Error!: Font loading failed\n", .{});
         dbgPrint("\n==== Default has been set.\n", .{});
-        _ = ig.ImFontAtlas_AddFontDefault(pio.*.Fonts, config);
+        _ = ig.ImFontAtlas_AddFontDefaultVector(pio.*.Fonts, null);
     }
 
     // Merge IconFont
