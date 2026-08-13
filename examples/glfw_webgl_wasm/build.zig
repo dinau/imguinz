@@ -72,8 +72,8 @@ pub fn build(b: *std.Build) void {
             "--shell-file",
             "shell_minimal.html",
             // below for debug
-            //"-fsanitize=undefined",
-            //"-g",
+            "-fsanitize=undefined",
+            "-g",
         });
 
         const embed_resources = b.option(bool, "resources", "Embed ./resources into wasm virtual FS") orelse true;

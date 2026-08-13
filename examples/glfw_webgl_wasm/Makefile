@@ -6,8 +6,8 @@
 
 TARGET = $(notdir $(CURDIR))
 
-OPT +=  -Doptimize=ReleaseSmall
-#OPT +=  -Doptimize=Debug
+#OPT +=  -Doptimize=ReleaseSmall
+OPT +=  -Doptimize=Debug
 
 # Ensure EMSDK environment variable is set
 ifneq ($(EMSDK),)

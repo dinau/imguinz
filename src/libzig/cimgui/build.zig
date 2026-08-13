@@ -8,6 +8,7 @@ pub fn build(b: *std.Build) void {
     const mod_name = "cimgui";
     var mod: *std.Build.Module = undefined;
 
+    //const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse (target.result.os.tag == .emscripten);
     const gen_option = b.option(bool, "gen", "Generate I/O definition file from C header") orelse false;
 
     // -------
@@ -28,6 +29,9 @@ pub fn build(b: *std.Build) void {
 
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
+        if (emscripten_sysroot) |es| {
+            step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        }
         mod = step.addModule(mod_name);
     }
     mod.link_libcpp = true;

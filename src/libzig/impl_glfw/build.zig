@@ -50,6 +50,7 @@ pub fn build(b: *std.Build) void {
     switch (target.result.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        .emscripten => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
     }
     mod.addCMacro("CIMGUI_USE_GLFW", "");
