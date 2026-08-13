@@ -9,7 +9,7 @@ pub fn imspinner(pio: *ig.ImGuiIO) void {
     // Show CImSpinner window
     //------------------------
     {
-        _ = ig.igBegin("CImSpinner with Zig lang " ++ ifa.ICON_FA_CAT, null, 0);
+        _ = ig.igBegin("CImSpinner in Zig" ++ ifa.ICON_FA_CAT, null, 0);
         defer ig.igEnd();
         const red: spinner.ImColor = .{ .Value = .{ .x = 1.0, .y = 0.0, .z = 0.0, .w = 1.0 } };
         const cyan: spinner.ImColor = .{ .Value = .{ .x = 0.0, .y = 1.0, .z = 1.0, .w = 1.0 } };

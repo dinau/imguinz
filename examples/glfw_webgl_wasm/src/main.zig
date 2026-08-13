@@ -132,14 +132,12 @@ fn loopBody() callconv(.c) void {
     //---------------------
     // ImSpinner full demo
     //---------------------
-    {
-        ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
-        ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
-        if (ig.igBegin("ImSpinner full demo", null, 0)) {
-            spn.demoSpinners();
-        }
-        ig.igEnd();
+    ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
+    if (ig.igBegin("ImSpinner full demo", null, 0)) {
+        spn.demoSpinners();
     }
+    ig.igEnd();
 
     //----------------------
     // ImPlot3D demo window
@@ -179,14 +177,14 @@ pub fn gui_main(window: *app.Window) void {
     //------------
     // setup font
     //------------
-    //var font_name: [*c]const u8 = null;
-    //if (is_emscripten) {
-    //    font_name = "./resources/fonts/ProggyClean.ttf";
-    //}
+    var font_name: [*c]const u8 = null;
+    if (is_emscripten) {
+        font_name = "./resources/fonts/ProggyClean.ttf";
+    }
 
-    //_ = stf.setupFonts(font_name);
-    //const style = ig.igGetStyle();
-    //style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
+    _ = stf.setupFonts(font_name);
+    const style = ig.igGetStyle();
+    style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
 
     // ImPlot/ImPlot3D context
     const imPlotContext = ip.ImPlot_CreateContext();
