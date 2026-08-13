@@ -152,7 +152,7 @@ pub fn main() !void {
     );
     defer window.destroyImGui();
 
-    _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
+    _ = window.setTheme(.classic); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

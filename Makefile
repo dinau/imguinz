@@ -70,9 +70,8 @@ ver:
 
 #
 define def_make
-	@echo ==== $(1) ====
+	@echo ==== $(1)
 	@-$(MAKE) -C  $(1) $(2)
-	@echo ""
 	@#$(MAKE) -C  $(1) cleancache
 
 endef

@@ -49,7 +49,7 @@ pub fn main() !void {
     defer window.destroyImGui();
 
     // Theme: .dark, .classic, .light, .microsoft
-    _ = app.setTheme(.dark);
+    _ = window.setTheme(.dark);
 
     // GUI main proc
     gui_main(&window);

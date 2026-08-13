@@ -213,7 +213,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "Dear ImGui window in Zig", .{});
     defer window.destroyImGui();
 
-    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
+    //_ = window.setTheme(.light); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc
