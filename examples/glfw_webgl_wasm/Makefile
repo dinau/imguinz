@@ -13,8 +13,8 @@ OPT +=  -Doptimize=ReleaseSmall
 ifneq ($(EMSDK),)
     EMSCRIPTEN_DIR := $(subst \,/,$(EMSDK))/upstream/emscripten
 else
-    $(error [ERROR] EMSDK environment variable is not set. \
-			Please run 'emsdk_env.bat' (Windows) or 'source emsdk_env.sh' (Linux/macOS) first)
+    $(warning [WARNING] EMSDK environment variable is not set. \
+		Please run 'emsdk_env.bat' (Windows) or 'source emsdk_env.sh' (Linux/macOS) first)
 endif
 
 all:
@@ -23,7 +23,6 @@ all:
 	@emcc --version
 	zig build -Dtarget=wasm32-emscripten      \
   -Demscripten_sysroot=$(EMSCRIPTEN_DIR)    \
-	--sysroot $(EMSCRIPTEN_DIR) \
   $(OPT)
 
 .PHONY: clean run fmt app

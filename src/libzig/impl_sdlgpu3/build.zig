@@ -65,7 +65,7 @@ pub fn build(b: *std.Build) void {
         .files = &.{
             "../../libc/cimgui/imgui/backends/imgui_impl_sdlgpu3.cpp",
         },
-        });
+    });
 
     const lib = b.addLibrary(.{
         .linkage = .static,

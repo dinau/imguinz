@@ -7,13 +7,13 @@ const stf = app.stf;
 const glfw = app.glfw;
 const utils = app.utils;
 
-const ip = @import("implot");
-const ip3 = @import("implot3d");
-
-const spn = @import("imspinner");
-const demos = @import("./demo/demos.zig");
+//const ip = @import("implot");
+//const ip3 = @import("implot3d");
+//const spn = @import("imspinner");
+//const demos = @import("./demo/demos.zig");
 
 const is_emscripten = builtin.target.os.tag == .emscripten;
+
 //--- for only zig-0.16.0 ---
 pub const std_options_debug_io = if (is_emscripten) std.Io.failing else std.Io.Threaded.global_single_threaded.io();
 pub const panic = std.debug.FullPanic(emscriptenPanicBody);
@@ -71,99 +71,104 @@ fn loopBody() callconv(.c) void {
 
     win.frame();
 
-    const mh = 0; //ig.ImGui_GetFrameHeight();
+    //const mh = 0;
+
+    //const sz = .{.x = 0, .y=0};
     //--------------------
     // Show Licenses menu
     //--------------------
-    if( ig.ImGui_BeginMainMenuBar()){
-      defer ig.ImGui_EndMainMenuBar();
-      if (ig.ImGui_BeginMenu("Licenses")){
-        defer ig.ImGui_EndMenu();
-        if(ig.ImGui_MenuItem("Show")){
-          if( !showLicenseNotices){
-            showLicenseNotices = true;
-          }
+    if (ig.igBeginMainMenuBar()) {
+        defer ig.igEndMainMenuBar();
+        if (ig.igBeginMenu("Licenses",true)) {
+            defer ig.igEndMenu();
+            if (ig.igMenuItem_Bool("Show","short-cut", false, true)) {
+                if (!showLicenseNotices) {
+                    showLicenseNotices = true;
+                }
+            }
         }
-      }
     }
 
     //-----------------------
     // Show Licenses window
     //-----------------------
-    if (showLicenseNotices){
-        const themeSave = win.getTheme();
-        win.setTheme(.light);
-        ig.ImGui_SetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
+    if (showLicenseNotices) {
+        //const themeSave = win.getTheme();
+    //    win.setTheme(.light);
+        ig.igSetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
         if (is_emscripten) {
-            ig.ImGui_PushFontFloat(null, stf.point2px(8.4)); // for WASM
+            ig.igPushFont(null, stf.point2px(8.4)); // for WASM
         }
-        demos.license_notices(&showLicenseNotices, 0);
+    //    demos.license_notices(&showLicenseNotices, 0);
         if (is_emscripten) {
-            ig.ImGui_PopFont(); // for WASM
+            ig.igPopFont(); // for WASM
         }
-        win.setTheme(themeSave);
+        //win.setTheme(themeSave);
     }
 
     // Dear ImGui full demo
-    ig.ImGui_ShowDemoWindow(null);
+    ig.igShowDemoWindow(null);
 
-    // ImPlot/ImPlot3D full demo
-    ip.ImPlot_ShowDemoWindow(null);
-    ip3.ImPlot3D_ShowDemoWindow(null);
+    //// ImPlot/ImPlot3D full demo
+    //ip.ImPlot_ShowDemoWindow(null);
+    //ip3.ImPlot3D_ShowDemoWindow(null);
 
     //-----------------
     // ImSpinner demo
     //-----------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver);
-    demos.imspinner(pio);
+    //ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver);
+    //demos.imspinner(pio);
 
-    // Info window
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver);
-    win.showInfoWindow();
+    //// Info window
+    //ig.igSetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver);
+    //win.showInfoWindow();
 
-    //---------------
-    // ImKnobs demo
-    //---------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver);
-    demos.imknobs(&win);
+    ////---------------
+    //// ImKnobs demo
+    ////---------------
+    //ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver);
+    //demos.imknobs(&win);
 
-    //---------------------
-    // ImSpinner full demo
-    //---------------------
-    {
-        ig.ImGui_SetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver);
-        ig.ImGui_SetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
-        if (ig.ImGui_Begin("ImSpinner full demo", null, 0)) {
-            spn.demoSpinners();
-        }
-        ig.ImGui_End();
-    }
+    ////---------------------
+    //// ImSpinner full demo
+    ////---------------------
+    //{
+    //    ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver);
+    //    ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
+    //    if (ig.igBegin("ImSpinner full demo", null, 0)) {
+    //        spn.demoSpinners();
+    //    }
+    //    ig.igEnd();
+    //}
 
-    //----------------------
-    // ImPlot3D demo window
-    //----------------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver);
-    ig.ImGui_SetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
-    demos.implot3d(pio);
+    ////----------------------
+    //// ImPlot3D demo window
+    ////----------------------
+    //ig.igSetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver);
+    //ig.igSetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
+    //demos.implot3d(pio);
 
-    //------------------------
-    // Show image load window
-    //------------------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver);
-    {
-        _ = ig.ImGui_Begin("Image load test", null, 0);
-        defer ig.ImGui_End();
-        // Load image
-        const size = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
-        const imageBoxPosTop = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
+    ////------------------------
+    //// Show image load window
+    ////------------------------
+    //ig.igSetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver);
+    //{
+    //    _ = ig.igBegin("Image load test", null, 0);
+    //    defer ig.igEnd();
+    //    // Load image
+    //    const size = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
+    //    const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
 
-        ig.ImGui_Image(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size);
-        const imageBoxPosEnd = ig.ImGui_GetCursorScreenPos(); // # Get absolute pos.
-        if (ig.ImGui_IsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-            utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
-        }
-    }
+    //    ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size);
+    //    const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
+    //    if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
+    //        utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
+    //    }
+    //}
+
+    //--------
     // render
+    //--------
     win.render();
 }
 
@@ -174,27 +179,22 @@ pub fn gui_main(window: *app.Window) void {
     //------------
     var font_name: [*c]const u8 = null;
     if (is_emscripten) {
-        font_name = "fonts/ProggyClean.ttf";
+        font_name = "./resources/fonts/ProggyClean.ttf";
     }
+
     _ = stf.setupFonts(font_name);
-    if (is_emscripten) {
-        ig.ImGui_PushFontFloat(null, stf.point2px(11)); // for WASM
-    } else {
-        ig.ImGui_PushFontFloat(null, stf.point2px(14)); // for native application
-    }
-    defer ig.ImGui_PopFont();
+    //const style = ig.igGetStyle();
+    //style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
 
     // ImPlot/ImPlot3D context
-    const imPlotContext = ip.ImPlot_CreateContext();
-    defer ip.ImPlot_DestroyContext(imPlotContext);
-    const imPlot3dContext = ip3.ImPlot3D_CreateContext();
-    defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
+    //const imPlotContext = ip.ImPlot_CreateContext();
+    //defer ip.ImPlot_DestroyContext(imPlotContext);
+    //const imPlot3dContext = ip3.ImPlot3D_CreateContext();
+    //defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
 
-    var zoomTextureID: glfw.GLuint = 0; // Must be == 0 at first
     _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
-    defer glfw.glDeleteTextures(1, &zoomTextureID);
 
-    pio = ig.ImGui_GetIO();
+    pio = ig.igGetIO_Nil();
     win = window.*;
 
     // main loop
@@ -207,6 +207,7 @@ pub fn gui_main(window: *app.Window) void {
 
 const MainWinWidth: i32 = 1024;
 const MainWinHeight: i32 = 900;
+
 /// main
 pub fn main() !void {
     var window = try app.Window.createImGui(
@@ -220,8 +221,7 @@ pub fn main() !void {
     );
     defer window.destroyImGui();
 
-    window.setTheme(.classic);
-    ig.ImGui_GetStyle().*.Colors[ig.ImGuiCol_WindowBg].w = 1.0;
+    //window.setTheme(.classic);
 
     gui_main(&window);
 }

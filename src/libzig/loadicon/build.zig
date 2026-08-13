@@ -3,6 +3,7 @@ const std = @import("std");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
 
     const mod_name = "loadicon";
     var mod: *std.Build.Module = undefined;
@@ -19,15 +20,22 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .link_libc = true,
         });
-    }else{
+    } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/loadicon.h"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
         });
+        if (emscripten_sysroot) |es| {
+            step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        }
         mod = step.addModule(mod_name);
     }
+    if (emscripten_sysroot) |es| {
+        mod.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
+
     mod.addIncludePath(b.path("../../libc/stb"));
     switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),

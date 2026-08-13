@@ -71,14 +71,6 @@ pub fn build(b: *std.Build) void {
             "-sDEFAULT_TO_CXX",
             "--shell-file",
             "shell_minimal.html",
-            "--preload-file",
-            "./resources/fonticon/fa6/fa-solid-900.ttf@./resources/fonticon/fa6/fa-solid-900.ttf",
-            "--preload-file",
-            "./resources/z.png@./resources/z.png",
-            "--preload-file",
-            "./resources/dinosaurs_paradise-480.jpg@./resources/dinosaurs_paradise-480.jpg",
-            "--preload-file",
-            "./fonts/ProggyClean.ttf@./fonts/ProggyClean.ttf",
             // below for debug
             //"-fsanitize=undefined",
             //"-g",
@@ -86,7 +78,10 @@ pub fn build(b: *std.Build) void {
 
         const embed_resources = b.option(bool, "resources", "Embed ./resources into wasm virtual FS") orelse true;
         if (embed_resources) {
-            link_step.addArgs(&.{ "--preload-file", "resources@/resources", });
+            link_step.addArgs(&.{
+                "--preload-file",
+                "resources@/resources",
+            });
         }
 
         const html_out = link_step.addPrefixedOutputFileArg("-o", "index" ++ ".html");
@@ -106,7 +101,9 @@ pub fn build(b: *std.Build) void {
         });
 
         exe.root_module.addWin32ResourceFile(.{ .file = b.path("src/res/res.rc") });
+
         exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
+
         b.installArtifact(exe);
 
         const install_resources = b.addInstallDirectory(.{
@@ -120,6 +117,14 @@ pub fn build(b: *std.Build) void {
         inline for (resBin) |file| {
             const res = b.addInstallFile(b.path(file), "bin/" ++ file);
             b.getInstallStep().dependOn(&res.step);
+        }
+
+        if (is_emscripten){
+            const resWeb = [_][]const u8{"favicon.ico"};
+            inline for (resWeb) |file| {
+                const res = b.addInstallFile(b.path(file), "web/" ++ file);
+                b.getInstallStep().dependOn(&res.step);
+            }
         }
 
         const fonticon_dir = "../../src/libc/fonticon/fa6/";

@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
         });
-    }else{
+    } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/impl_imnodes.h"),
             .target = target,

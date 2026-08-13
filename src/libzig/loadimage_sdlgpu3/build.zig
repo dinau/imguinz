@@ -21,7 +21,7 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .link_libc = true,
         });
-    }else{
+    } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/loadImage_sdlgpu3.h"),
             .target = target,
@@ -29,7 +29,7 @@ pub fn build(b: *std.Build) void {
             .link_libc = true,
         });
         step.addIncludePath(b.path("./src"));
-    switch (target.result.os.tag) {
+        switch (target.result.os.tag) {
             .windows => {
                 step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
                 step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
@@ -58,7 +58,7 @@ pub fn build(b: *std.Build) void {
         .files = &.{
             "src/loadImage_sdlgpu3.c",
         },
-        });
+    });
 
     const lib = b.addLibrary(.{
         .linkage = .static,

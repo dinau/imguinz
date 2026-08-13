@@ -51,7 +51,7 @@ const Opts = struct {
     /// Docking feature
     docking: bool = true,
     /// Title bar Icon name of Main window
-    title_bar_icon_name: []const u8  = "./resources/z.png",
+    title_bar_icon_name: []const u8 = "./resources/z.png",
 };
 
 ///--------------
@@ -122,9 +122,9 @@ pub const Window = struct {
             //---------------------------------------------
             if (glfw.glfwCreateWindow(width, height, title, null, null)) |pointer| {
                 win.handle = pointer;
-                if (builtin.zig_version.minor >= 17){
+                if (builtin.zig_version.minor >= 17) {
                     glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
-                }else{
+                } else {
                     glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 }
                 std.debug.print("{s} \n", .{glsl_version});
@@ -450,7 +450,7 @@ pub fn loadIni(win: *Window) !void {
             try file.getEndPos();
 
         const allocator = std.heap.page_allocator;
-        const buffer = try allocator.alloc(u8, file_size);
+        const buffer = try allocator.alloc(u8, @intCast(file_size));
         defer allocator.free(buffer);
         if (is_devel_api) {
             _ = try file.readStreaming(io, &.{buffer});

@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
         });
-    }else{
+    } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/impl_imcolortextedit.h"),
             .target = target,
@@ -44,8 +44,8 @@ pub fn build(b: *std.Build) void {
     mod.addCSourceFiles(.{
         .files = &.{
             "../../libc/cimCTE/cimCTE.cpp",
-          //  "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
-          //  "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
+            //  "../../libc/cimCTE/ImGuiColorTextEdit/ImGuiDebugPanel.cpp",
+            //  "../../libc/cimCTE/ImGuiColorTextEdit/LanguageDefinitions.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/TextEditor.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/TextDiff.cpp",
             "../../libc/cimCTE/ImGuiColorTextEdit/extras/TrieAutoComplete.cpp",

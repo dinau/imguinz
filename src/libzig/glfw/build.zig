@@ -6,22 +6,32 @@ pub fn build(b: *std.Build) void {
     const mod_name = "glfw";
 
     const glfw_path = b.fmt("{s}", .{"../../libc/glfw/glfw-3.4.bin.WIN64"});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
+    const contrib_glfw3_include: ?[]const u8 = if (emscripten_sysroot) |es|
+        b.pathJoin(&.{ es, "cache/ports/contrib.glfw3/external" })
+    else
+        null;
+
+    const glfw3_h_path: std.Build.LazyPath = if (target.result.os.tag == .emscripten and contrib_glfw3_include != null)
+        .{ .cwd_relative = b.pathJoin(&.{ contrib_glfw3_include.?, "GLFW/glfw3.h" }) }
+    else
+        b.path(b.pathJoin(&.{ glfw_path, "include/GLFW/glfw3.h" }));
 
     // ------------
     // glfw module
     // ------------
     const step = b.addTranslateC(.{
-        .root_source_file = b.path(b.pathJoin(&.{ glfw_path, "include/GLFW/glfw3.h" })),
+        .root_source_file = glfw3_h_path,
         .target = target,
         .optimize = optimize,
-        .link_libc = true,
     });
-    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     if (emscripten_sysroot) |es| {
         step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
-    }                                                
+    }
+    if (contrib_glfw3_include) |cgi| {
+        step.addIncludePath(.{ .cwd_relative = cgi });
+    }
     const mod = step.addModule(mod_name);
-    //mod.addImport(mod_name, mod);
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = mod_name,

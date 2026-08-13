@@ -55,8 +55,8 @@ fn existsFile(path: []const u8) bool {
         const cwd_dir = std.fs.cwd();
         const file = cwd_dir.openFile(path, .{}) catch return false;
         defer file.close();
-    return true;
-}
+        return true;
+    }
 }
 
 /// Get Windows font path
@@ -91,7 +91,7 @@ fn getWinFontPath(buf: []u8, font_name: []const u8) ?[]const u8 {
             .{ win_dir, font_name },
         ) catch return null;
 
-    return result;
+        return result;
     } else {
         // For Zig 0.15.2, result is already created
         return win_dir;
@@ -99,7 +99,7 @@ fn getWinFontPath(buf: []u8, font_name: []const u8) ?[]const u8 {
 }
 
 /// Convert point to pixel
-fn point2px(point: f32) f32 {
+pub fn point2px(point: f32) f32 {
     return (point * 96.0) / 72.0;
 }
 
