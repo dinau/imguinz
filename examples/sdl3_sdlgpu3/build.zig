@@ -34,7 +34,6 @@ pub fn build(b: *std.Build) void {
         const dep = imguinz.builder.dependency(dep_name, .{
             .target = target,
             .optimize = optimize,
-
         });
         exe.root_module.addImport(dep_name, dep.module(dep_name));
     }

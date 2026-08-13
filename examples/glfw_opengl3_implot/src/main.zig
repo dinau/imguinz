@@ -148,7 +148,9 @@ pub fn main() !void {
         MainWinWidth,
         MainWinHeight,
         "Dear ImGui window in Zig",
-        .{ .docking = false, },
+        .{
+            .docking = false,
+        },
     );
     defer window.destroyImGui();
 
