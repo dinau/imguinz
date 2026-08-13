@@ -10,7 +10,7 @@ const utils = app.utils;
 //const ip = @import("implot");
 //const ip3 = @import("implot3d");
 //const spn = @import("imspinner");
-//const demos = @import("./demo/demos.zig");
+const demos = @import("./demo/demos.zig");
 
 const is_emscripten = builtin.target.os.tag == .emscripten;
 
@@ -44,10 +44,10 @@ var showLicenseNotices = false;
 //------------
 // Load image
 //------------
-const ImageName = "resources/dinosaurs_paradise-480.jpg";
-var textureId: glfw.GLuint = undefined;
-var textureWidth: c_int = 0;
-var textureHeight: c_int = 0;
+//const ImageName = "resources/dinosaurs_paradise-480.jpg";
+//var textureId: glfw.GLuint = undefined;
+//var textureWidth: c_int = 0;
+//var textureHeight: c_int = 0;
 
 /// loopBody for emscripten
 fn loopBody() callconv(.c) void {
@@ -99,7 +99,7 @@ fn loopBody() callconv(.c) void {
         if (is_emscripten) {
             ig.igPushFont(null, stf.point2px(8.4)); // for WASM
         }
-    //    demos.license_notices(&showLicenseNotices, 0);
+        demos.license_notices(&showLicenseNotices, 0);
         if (is_emscripten) {
             ig.igPopFont(); // for WASM
         }
@@ -177,12 +177,12 @@ pub fn gui_main(window: *app.Window) void {
     //------------
     // setup font
     //------------
-    var font_name: [*c]const u8 = null;
-    if (is_emscripten) {
-        font_name = "./resources/fonts/ProggyClean.ttf";
-    }
+    //var font_name: [*c]const u8 = null;
+    //if (is_emscripten) {
+    //    font_name = "./resources/fonts/ProggyClean.ttf";
+    //}
 
-    _ = stf.setupFonts(font_name);
+    //_ = stf.setupFonts(font_name);
     //const style = ig.igGetStyle();
     //style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
 
@@ -192,7 +192,7 @@ pub fn gui_main(window: *app.Window) void {
     //const imPlot3dContext = ip3.ImPlot3D_CreateContext();
     //defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
 
-    _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
+    //_ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
     pio = ig.igGetIO_Nil();
     win = window.*;
@@ -221,7 +221,7 @@ pub fn main() !void {
     );
     defer window.destroyImGui();
 
-    //window.setTheme(.classic);
+    window.setTheme(.classic);
 
     gui_main(&window);
 }

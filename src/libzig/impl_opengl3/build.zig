@@ -18,14 +18,12 @@ pub fn build(b: *std.Build) void {
             .root_source_file = b.path("src/impl_opengl3.zig"),
             .target = target,
             .optimize = optimize,
-            .link_libc = true,
         });
     } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/impl_opengl3.h"),
             .target = target,
             .optimize = optimize,
-            .link_libc = true,
         });
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.defineCMacro("CIMGUI_USE_OPENGL3", "");

@@ -48,18 +48,18 @@ const licenses = [_]LicenseEntry{
 pub fn license_notices(show_licenses_window: *bool, flags: ig.ImGuiWindowFlags) void {
     if (!show_licenses_window.*) return;
 
-    _ = ig.ImGui_Begin("License Notices (Random order)", show_licenses_window, flags);
-    defer ig.ImGui_End();
+    _ = ig.igBegin("License Notices (Random order)", show_licenses_window, flags);
+    defer ig.igEnd();
 
     for (licenses) |lc| {
         if (!lc.enabled) continue;
-        if (ig.ImGui_CollapsingHeader(lc.name.ptr, 0)) {
-            _ = ig.ImGui_TextLinkOpenURLEx(lc.url.ptr, lc.url.ptr);
-            ig.ImGui_Separator();
-            ig.ImGui_TextUnformatted(lc.text.ptr);
+        if (ig.igCollapsingHeader_TreeNodeFlags(lc.name.ptr, 0)) {
+            _ = ig.igTextLinkOpenURL(lc.url.ptr, lc.url.ptr);
+            ig.igSeparator();
+            ig.igTextUnformatted(lc.text.ptr,null);
         }
     }
-    ig.ImGui_Separator();
-    ig.ImGui_TextUnformatted("If there are any errors or omissions in the license descriptions above, please contact us at");
-    _ = ig.ImGui_TextLinkOpenURLEx("https://github.com/dinau/imguinz2/issues", "https://github.com/dinau/imguinz2/issues");
+    ig.igSeparator();
+    ig.igTextUnformatted("If there are any errors or omissions in the license descriptions above, please contact us at",null);
+    _ = ig.igTextLinkOpenURL("https://github.com/dinau/imguinz2/issues", "https://github.com/dinau/imguinz2/issues");
 }
