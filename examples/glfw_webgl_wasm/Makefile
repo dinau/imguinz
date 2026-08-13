@@ -35,6 +35,7 @@ run: all
 	(cd zig-out && python -m http.server 8000)
 
 app:
+	@echo zig-$(shell zig version)
 	zig build $(OPT)
 	(cd zig-out/bin && ./$(TARGET))
 	cp zig-out/bin/*.ini .

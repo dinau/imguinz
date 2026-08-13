@@ -119,7 +119,7 @@ pub fn build(b: *std.Build) void {
             b.getInstallStep().dependOn(&res.step);
         }
 
-        if (is_emscripten){
+        if (is_emscripten) {
             const resWeb = [_][]const u8{"favicon.ico"};
             inline for (resWeb) |file| {
                 const res = b.addInstallFile(b.path(file), "web/" ++ file);

@@ -56,10 +56,10 @@ pub fn license_notices(show_licenses_window: *bool, flags: ig.ImGuiWindowFlags) 
         if (ig.igCollapsingHeader_TreeNodeFlags(lc.name.ptr, 0)) {
             _ = ig.igTextLinkOpenURL(lc.url.ptr, lc.url.ptr);
             ig.igSeparator();
-            ig.igTextUnformatted(lc.text.ptr,null);
+            ig.igTextUnformatted(lc.text.ptr, null);
         }
     }
     ig.igSeparator();
-    ig.igTextUnformatted("If there are any errors or omissions in the license descriptions above, please contact us at",null);
+    ig.igTextUnformatted("If there are any errors or omissions in the license descriptions above, please contact us at", null);
     _ = ig.igTextLinkOpenURL("https://github.com/dinau/imguinz2/issues", "https://github.com/dinau/imguinz2/issues");
 }

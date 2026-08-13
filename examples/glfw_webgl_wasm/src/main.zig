@@ -7,9 +7,9 @@ const stf = app.stf;
 const glfw = app.glfw;
 const utils = app.utils;
 
-//const ip = @import("implot");
-//const ip3 = @import("implot3d");
-//const spn = @import("imspinner");
+const ip = @import("implot");
+const ip3 = @import("implot3d");
+const spn = @import("imspinner");
 const demos = @import("./demo/demos.zig");
 
 const is_emscripten = builtin.target.os.tag == .emscripten;
@@ -71,17 +71,17 @@ fn loopBody() callconv(.c) void {
 
     win.frame();
 
-    //const mh = 0;
+    const mh = 0;
 
-    //const sz = .{.x = 0, .y=0};
+    const sz = ig.ImVec2{ .x = 0, .y = 0 };
     //--------------------
     // Show Licenses menu
     //--------------------
     if (ig.igBeginMainMenuBar()) {
         defer ig.igEndMainMenuBar();
-        if (ig.igBeginMenu("Licenses",true)) {
+        if (ig.igBeginMenu("Licenses", true)) {
             defer ig.igEndMenu();
-            if (ig.igMenuItem_Bool("Show","short-cut", false, true)) {
+            if (ig.igMenuItem_Bool("Show", "short-cut", false, true)) {
                 if (!showLicenseNotices) {
                     showLicenseNotices = true;
                 }
@@ -94,7 +94,7 @@ fn loopBody() callconv(.c) void {
     //-----------------------
     if (showLicenseNotices) {
         //const themeSave = win.getTheme();
-    //    win.setTheme(.light);
+        //    win.setTheme(.light);
         ig.igSetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
         if (is_emscripten) {
             ig.igPushFont(null, stf.point2px(8.4)); // for WASM
@@ -109,37 +109,37 @@ fn loopBody() callconv(.c) void {
     // Dear ImGui full demo
     ig.igShowDemoWindow(null);
 
-    //// ImPlot/ImPlot3D full demo
-    //ip.ImPlot_ShowDemoWindow(null);
-    //ip3.ImPlot3D_ShowDemoWindow(null);
+    // ImPlot/ImPlot3D full demo
+    ip.ImPlot_ShowDemoWindow(null);
+    ip3.ImPlot3D_ShowDemoWindow(null);
 
     //-----------------
     // ImSpinner demo
     //-----------------
-    //ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver);
-    //demos.imspinner(pio);
+    ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    demos.imspinner(pio);
 
-    //// Info window
-    //ig.igSetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver);
-    //win.showInfoWindow();
+    // Info window
+    ig.igSetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    win.showInfoWindow();
 
-    ////---------------
-    //// ImKnobs demo
-    ////---------------
-    //ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver);
-    //demos.imknobs(&win);
+    //---------------
+    // ImKnobs demo
+    //---------------
+    ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    demos.imknobs(&win);
 
-    ////---------------------
-    //// ImSpinner full demo
-    ////---------------------
-    //{
-    //    ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver);
-    //    ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
-    //    if (ig.igBegin("ImSpinner full demo", null, 0)) {
-    //        spn.demoSpinners();
-    //    }
-    //    ig.igEnd();
-    //}
+    //---------------------
+    // ImSpinner full demo
+    //---------------------
+    {
+        ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
+        ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
+        if (ig.igBegin("ImSpinner full demo", null, 0)) {
+            spn.demoSpinners();
+        }
+        ig.igEnd();
+    }
 
     ////----------------------
     //// ImPlot3D demo window
@@ -187,10 +187,10 @@ pub fn gui_main(window: *app.Window) void {
     //style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
 
     // ImPlot/ImPlot3D context
-    //const imPlotContext = ip.ImPlot_CreateContext();
-    //defer ip.ImPlot_DestroyContext(imPlotContext);
-    //const imPlot3dContext = ip3.ImPlot3D_CreateContext();
-    //defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
+    const imPlotContext = ip.ImPlot_CreateContext();
+    defer ip.ImPlot_DestroyContext(imPlotContext);
+    const imPlot3dContext = ip3.ImPlot3D_CreateContext();
+    defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
 
     //_ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
