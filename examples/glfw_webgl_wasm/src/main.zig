@@ -44,10 +44,10 @@ var showLicenseNotices = false;
 //------------
 // Load image
 //------------
-//const ImageName = "resources/dinosaurs_paradise-480.jpg";
-//var textureId: glfw.GLuint = undefined;
-//var textureWidth: c_int = 0;
-//var textureHeight: c_int = 0;
+const ImageName = "resources/dinosaurs_paradise-480.jpg";
+var textureId: glfw.GLuint = undefined;
+var textureWidth: c_int = 0;
+var textureHeight: c_int = 0;
 
 /// loopBody for emscripten
 fn loopBody() callconv(.c) void {
@@ -81,7 +81,7 @@ fn loopBody() callconv(.c) void {
         defer ig.igEndMainMenuBar();
         if (ig.igBeginMenu("Licenses", true)) {
             defer ig.igEndMenu();
-            if (ig.igMenuItem_Bool("Show", "short-cut", false, true)) {
+            if (ig.igMenuItem_Bool("Show", "", false, true)) {
                 if (!showLicenseNotices) {
                     showLicenseNotices = true;
                 }
@@ -93,8 +93,8 @@ fn loopBody() callconv(.c) void {
     // Show Licenses window
     //-----------------------
     if (showLicenseNotices) {
-        //const themeSave = win.getTheme();
-        //    win.setTheme(.light);
+        const themeSave = win.getTheme();
+            win.setTheme(.light);
         ig.igSetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
         if (is_emscripten) {
             ig.igPushFont(null, stf.point2px(8.4)); // for WASM
@@ -103,7 +103,7 @@ fn loopBody() callconv(.c) void {
         if (is_emscripten) {
             ig.igPopFont(); // for WASM
         }
-        //win.setTheme(themeSave);
+        win.setTheme(themeSave);
     }
 
     // Dear ImGui full demo
@@ -141,30 +141,32 @@ fn loopBody() callconv(.c) void {
         ig.igEnd();
     }
 
-    ////----------------------
-    //// ImPlot3D demo window
-    ////----------------------
-    //ig.igSetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver);
-    //ig.igSetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
-    //demos.implot3d(pio);
+    //----------------------
+    // ImPlot3D demo window
+    //----------------------
+    ig.igSetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    ig.igSetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
+    demos.implot3d(pio);
 
-    ////------------------------
-    //// Show image load window
-    ////------------------------
-    //ig.igSetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver);
-    //{
-    //    _ = ig.igBegin("Image load test", null, 0);
-    //    defer ig.igEnd();
-    //    // Load image
-    //    const size = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
-    //    const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
+    //------------------------
+    // Show image load window
+    //------------------------
+    ig.igSetNextWindowPos(utils.vec2(600, 300 + mh), ig.ImGuiCond_FirstUseEver,sz);
+    {
+        _ = ig.igBegin("Image load test", null, 0);
+        defer ig.igEnd();
+        // Load image
+        const size = utils.vec2(@floatFromInt(textureWidth), @floatFromInt(textureHeight));
+        const imageBoxPosTop = ig.igGetCursorScreenPos(); // # Get absolute pos.
 
-    //    ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size);
-    //    const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
-    //    if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
-    //        utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
-    //    }
-    //}
+        const uv0 = app.utils.vec2(0, 0);
+        const uv1 = app.utils.vec2(1, 1);
+        ig.igImage(ig.ImTextureRef{ ._TexData = null, ._TexID = textureId }, size, uv0, uv1);
+        const imageBoxPosEnd = ig.igGetCursorScreenPos(); // # Get absolute pos.
+        if (ig.igIsItemHovered(ig.ImGuiHoveredFlags_DelayNone)) {
+            utils.zoomGlass(&textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd, false);
+        }
+    }
 
     //--------
     // render
@@ -192,7 +194,8 @@ pub fn gui_main(window: *app.Window) void {
     const imPlot3dContext = ip3.ImPlot3D_CreateContext();
     defer ip3.ImPlot3D_DestroyContext(imPlot3dContext);
 
-    //_ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
+    // Load image
+    _ = utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
     pio = ig.igGetIO_Nil();
     win = window.*;
