@@ -1,5 +1,5 @@
-// emscripten_set_main_loop / emscripten_cancel_main_loop の手動extern宣言
-// (translate-cがemscripten.h経由でpromise.hのC23属性構文をパースできないため回避)
+// Manual extern declarations for emscripten_set_main_loop / emscripten_cancel_main_loop
+// (Bypassing because translate-c fails to parse the C23 attribute syntax in promise.h via emscripten.h)
 //
 pub extern "c" fn emscripten_set_main_loop(
     func: *const fn () callconv(.c) void,

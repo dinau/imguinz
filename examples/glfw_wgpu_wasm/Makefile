@@ -17,7 +17,7 @@ else
 			Please run 'emsdk_env.bat' (Windows) or 'source emsdk_env.sh' (Linux/macOS) first)
 endif
 
-all:
+all: license
 	echo $(EMSCRIPTEN_DIR)
 	@echo zig-$(shell zig version)
 	@emcc --version
@@ -34,7 +34,7 @@ clean:
 run: all
 	(cd zig-out && python -m http.server 8000)
 
-#app:
+#app: licesne
 #	zig build $(OPT)
 #	(cd zig-out/bin && ./$(TARGET))
 #	cp zig-out/bin/*.ini .
@@ -42,3 +42,7 @@ run: all
 
 fmt:
 	zig fmt .
+
+license:
+	@-mkdir src/licenses
+	cp -nr ../glfw_webgl_wasm/src/licenses/* src/licenses/

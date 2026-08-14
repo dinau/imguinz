@@ -9,11 +9,12 @@ const LicenseEntry = struct {
     url: [:0]const u8,
 };
 
-const lc_root = "../licenses"; // 実際のパスに合わせて調整してください
+const lc_root = "../licenses";
 
 const licenses = [_]LicenseEntry{
     .{ .enabled = true, .name = "Dear ImGui", .text = @embedFile(lc_root ++ "/cimgui/imgui/LICENSE.txt"), .url = "https://github.com/ocornut/imgui" },
     .{ .enabled = true, .name = "CImGui", .text = @embedFile(lc_root ++ "/cimgui/LICENSE"), .url = "https://github.com/cimgui/cimgui" },
+    //.{ .enabled = true, .name = "Dear Bindings", .text = @embedFile(lc_root ++ "/dcimgui/LICENSE.txt"), .url = "https://github.com/dearimgui/dear_bindings" },
     //  .{ .enabled = true, .name = "ImAnim", .text = @embedFile(lc_root ++ "/cimanim/ImAnim/LICENSE"), .url = "https://github.com/soufianekhiat/ImAnim" },
     //  .{ .enabled = true, .name = "cimanim", .text = @embedFile(lc_root ++ "/cimanim/LICENSE"), .url = "https://github.com/dinau/cimanim" },
     //  .{ .enabled = true, .name = "cimCTE", .text = @embedFile(lc_root ++ "/cimCTE/dummy.txt"), .url = "https://github.com/cimgui/cimCTE" },

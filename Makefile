@@ -110,3 +110,10 @@ cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
 cimgui_zoomable_image:
 	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@
+
+
+
+
+
+cjk:
+	rg -l '[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff\uff00-\uffef]' -g '*.{zig,nim,c,h,cpp}'
