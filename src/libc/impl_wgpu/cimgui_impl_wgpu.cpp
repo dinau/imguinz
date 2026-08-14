@@ -18,7 +18,7 @@ CIMGUI_API bool ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(WGPUSurfaceGetCurrentTe
     return ::ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(status);
 }
 
-CIMGUI_API void ImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter)
+CIMGUI_API void xImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter)
 {
     ::ImGui_ImplWGPU_DebugPrintAdapterInfo(adapter);
 }

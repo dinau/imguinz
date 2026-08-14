@@ -9,7 +9,7 @@ const utils = app.utils;
 const wgpu = @import("impl_wgpu");
 const em = @import("emscripten");
 
-const spn = @import("imspinner");
+//const spn = @import("imspinner");
 const ip = @import("implot");
 const ip3 = @import("implot3d");
 const demos = @import("./demo/demos.zig");
@@ -70,9 +70,9 @@ fn loopBody() callconv(.c) void {
     }
 
     // Start the Dear ImGui frame
-    wgpu.cImGui_ImplWGPU_NewFrame();
-    impl_glfw.cImGui_ImplGlfw_NewFrame();
-    ig.ImGui_NewFrame();
+    wgpu.ImGui_ImplWGPU_NewFrame();
+    impl_glfw.ImGui_ImplGlfw_NewFrame();
+    ig.igNewFrame();
 
     const mh = 0;
     const sz = utils.vec2(0, 0);
@@ -116,11 +116,11 @@ fn loopBody() callconv(.c) void {
     ip.ImPlot_ShowDemoWindow(null);
     ip3.ImPlot3D_ShowDemoWindow(null);
 
-    //-----------------
-    // ImSpinner demo
-    //-----------------
-    ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver, sz);
-    demos.imspinner(pio);
+    ////-----------------
+    //// ImSpinner demo
+    ////-----------------
+    //ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    //demos.imspinner(pio);
 
     // Info window
     ig.igSetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver, sz);
@@ -130,17 +130,21 @@ fn loopBody() callconv(.c) void {
     // ImKnobs demo
     //---------------
     ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver, sz);
-    demos.imknobs(&win);
+    var col = utils.vec4(win.ini.window.colBGx, win.ini.window.colBGy, win.ini.window.colBGz, 1.0);
+    demos.imknobs(&col);
+    win.ini.window.colBGx = col.x;
+    win.ini.window.colBGy = col.y;
+    win.ini.window.colBGz = 1.0;
 
-    //---------------------
-    // ImSpinner full demo
-    //---------------------
-    ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
-    ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
-    if (ig.igBegin("ImSpinner full demo", null, 0)) {
-        spn.demoSpinners();
-    }
-    ig.igEnd();
+    ////---------------------
+    //// ImSpinner full demo
+    ////---------------------
+    //ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    //ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
+    //if (ig.igBegin("ImSpinner full demo", null, 0)) {
+    //    spn.demoSpinners();
+    //}
+    //ig.igEnd();
 
     //----------------------
     // ImPlot3D demo window
@@ -195,7 +199,7 @@ pub fn main() !void {
 
     const font_name = "./resources/fonts/ProggyClean.ttf";
     _ = stf.setupFonts(font_name);
-    const style = ig.ImGui_GetStyle();
+    const style = ig.igGetStyle();
     style.*.FontSizeBase = if (is_emscripten) stf.point2px(11) else stf.point2px(14);
     //
     // ImPlot/ImPlot3D context
@@ -206,7 +210,7 @@ pub fn main() !void {
 
     //utils.LoadTextureFromFile(ImageName, &textureId, &textureWidth, &textureHeight);
 
-    pio = ig.ImGui_GetIO();
+    pio = ig.igGetIO_Nil();
 
     em.emscripten_set_main_loop(loopBody, 0, 1);
 }

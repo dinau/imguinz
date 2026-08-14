@@ -5,3 +5,4 @@
 #include "stdbool.h" // for bool type
 
 #include "cimgui_impl.h"
+void     ImGui_ImplGlfw_InstallEmscriptenCallbacks(GLFWwindow* window, const char* canvas_selector);

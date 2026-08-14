@@ -52,7 +52,6 @@ pub fn build(b: *std.Build) void {
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         .emscripten => {
             mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  ");
-            mod.addCMacro("__EMSCRIPTEN__", "");
         },
         else => {},
     }

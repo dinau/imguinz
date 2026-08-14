@@ -30,6 +30,8 @@ pub fn build(b: *std.Build) void {
         "implot",
         "implot3d",
         "imspinner",
+        "cimgui",
+        "fonticon",
     };
     inline for (dependencies) |dep_name| {
         const dep = imguinz.builder.dependency(dep_name, .{
