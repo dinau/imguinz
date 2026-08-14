@@ -16,8 +16,10 @@ const demos = @import("./demo/demos.zig");
 
 const is_emscripten = builtin.target.os.tag == .emscripten;
 
+//--- for only zig-0.16.0 ---
 pub const std_options_debug_io = if (is_emscripten) std.Io.failing else std.Io.Threaded.global_single_threaded.io();
 pub const panic = std.debug.FullPanic(emscriptenPanicBody);
+//---------------------------
 
 extern "c" fn write(fd: c_int, buf: [*]const u8, count: usize) isize;
 
@@ -72,19 +74,17 @@ fn loopBody() callconv(.c) void {
     impl_glfw.cImGui_ImplGlfw_NewFrame();
     ig.ImGui_NewFrame();
 
-    //------------------
-    // Start GUI Window
-    //------------------
-    const mh = 0; //ig.ImGui_GetFrameHeight();
+    const mh = 0;
+    const sz = utils.vec2(0, 0);
 
     //--------------------
     // Show Licenses menu
     //--------------------
-    if (ig.ImGui_BeginMainMenuBar()) {
-        defer ig.ImGui_EndMainMenuBar();
-        if (ig.ImGui_BeginMenu("Licenses")) {
-            defer ig.ImGui_EndMenu();
-            if (ig.ImGui_MenuItem("Show")) {
+    if (ig.igBeginMainMenuBar()) {
+        defer ig.igEndMainMenuBar();
+        if (ig.igBeginMenu("Licenses", true)) {
+            defer ig.igEndMenu();
+            if (ig.igMenuItem_Bool("Show", "", false, true)) {
                 if (!showLicenseNotices) {
                     showLicenseNotices = true;
                 }
@@ -98,21 +98,19 @@ fn loopBody() callconv(.c) void {
     if (showLicenseNotices) {
         const themeSave = win.getTheme();
         win.setTheme(.light);
-        //ig.ImGui_StyleColorsLight(null);
-        ig.ImGui_SetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
+        ig.igSetNextWindowSize(utils.vec2(600, 800), ig.ImGuiCond_FirstUseEver);
         if (is_emscripten) {
-            ig.ImGui_PushFontFloat(null, stf.point2px(8.4)); // for WASM
+            ig.igPushFont(null, stf.point2px(8.4)); // for WASM
         }
         demos.license_notices(&showLicenseNotices, 0);
         if (is_emscripten) {
-            ig.ImGui_PopFont(); // for WASM
+            ig.igPopFont(); // for WASM
         }
-        //ig.ImGui_StyleColorsDark(null);
         win.setTheme(themeSave);
     }
 
     // Dear ImGui full demo
-    ig.ImGui_ShowDemoWindow(null);
+    ig.igShowDemoWindow(null);
 
     // ImPlot/ImPlot3D full demo
     ip.ImPlot_ShowDemoWindow(null);
@@ -121,37 +119,34 @@ fn loopBody() callconv(.c) void {
     //-----------------
     // ImSpinner demo
     //-----------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver);
+    ig.igSetNextWindowPos(utils.vec2(10, 31 + mh), ig.ImGuiCond_FirstUseEver, sz);
     demos.imspinner(pio);
 
     // Info window
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 160 + mh), ig.ImGuiCond_FirstUseEver);
-    ig.ImGui_SetNextWindowSize(utils.vec2(410, 170), ig.ImGuiCond_FirstUseEver);
+    ig.igSetNextWindowPos(utils.vec2(10, 150 + mh), ig.ImGuiCond_FirstUseEver, sz);
     win.showInfoWindow();
 
     //---------------
     // ImKnobs demo
     //---------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver);
+    ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver, sz);
     demos.imknobs(&win);
 
     //---------------------
     // ImSpinner full demo
     //---------------------
-    {
-        ig.ImGui_SetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver);
-        ig.ImGui_SetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
-        if (ig.ImGui_Begin("ImSpinner full demo", null, 0)) {
-            spn.demoSpinners();
-        }
-        ig.ImGui_End();
+    ig.igSetNextWindowPos(utils.vec2(10, 485 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    ig.igSetNextWindowSize(utils.vec2(900, 300), ig.ImGuiCond_FirstUseEver);
+    if (ig.igBegin("ImSpinner full demo", null, 0)) {
+        spn.demoSpinners();
     }
+    ig.igEnd();
 
     //----------------------
     // ImPlot3D demo window
     //----------------------
-    ig.ImGui_SetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver);
-    ig.ImGui_SetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
+    ig.igSetNextWindowPos(utils.vec2(880, 260 + mh), ig.ImGuiCond_FirstUseEver, sz);
+    ig.igSetNextWindowSize(utils.vec2(460, 750), ig.ImGuiCond_FirstUseEver);
     demos.implot3d(pio);
 
     ////------------------------

@@ -1,0 +1,22 @@
+.{
+    .name = .appimguiwgpu,
+    .version = "0.0.1",
+    .fingerprint = 0x4e9bf1169d0168d4, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.1",
+    .dependencies = .{
+        .dcimgui = .{ .path = "../dcimgui" },
+        .fonticon = .{ .path = "../fonticon" },
+        .glfw = .{ .path = "../glfw" },
+        .impl_glfw = .{ .path = "../impl_glfw" },
+        .impl_wgpu = .{ .path = "../impl_wgpu" },
+        //.loadicon = .{ .path = "../loadicon" },
+        //.loadimage = .{ .path = "../loadimage" },
+        .setupfont = .{ .path = "../setupfont" },
+        .utils = .{ .path = "../utils" },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
