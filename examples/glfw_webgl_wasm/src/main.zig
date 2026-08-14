@@ -126,7 +126,11 @@ fn loopBody() callconv(.c) void {
     // ImKnobs demo
     //---------------
     ig.igSetNextWindowPos(utils.vec2(10, 335 + mh), ig.ImGuiCond_FirstUseEver, sz);
-    demos.imknobs(&win);
+    var col = utils.vec4(win.ini.window.colBGx, win.ini.window.colBGy, win.ini.window.colBGz, 1.0);
+    demos.imknobs(&col);
+    win.ini.window.colBGx = col.x;
+    win.ini.window.colBGy = col.y;
+    win.ini.window.colBGz = 1.0;
 
     //---------------------
     // ImSpinner full demo

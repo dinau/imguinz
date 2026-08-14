@@ -1,6 +1,5 @@
 const std = @import("std");
-const app = @import("appimgui");
-const ig = app.ig;
+const ig = @import("cimgui");
 
 const LicenseEntry = struct {
     enabled: bool,

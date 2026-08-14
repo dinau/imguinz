@@ -1,3 +1,7 @@
+examples/glfw_wgpu_wasm/src/licenses/
+examples/glfw_wgpu_wasm/src/demo/
+examples/zig_wgpu_wasm/src/licenses/
+examples/zig_wgpu_wasm/src/demo/
 clear_cache_browser.md
 *.org
 *.org.cpp

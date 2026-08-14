@@ -1,6 +1,5 @@
-const app = @import("appimgui");
-const ig = app.ig;
-const ifa = app.ifa;
+const ig = @import("cimgui");
+const ifa = @import("fonticon");
 
 const spinner = @import("imspinner");
 

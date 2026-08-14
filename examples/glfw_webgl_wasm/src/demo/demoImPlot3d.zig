@@ -2,9 +2,8 @@ const std = @import("std");
 const ip = @import("implot");
 const ipz = @import("zimplot.zig");
 const ip3 = @import("implot3d");
-const app = @import("appimgui");
-const ig = app.ig;
-const ifa = app.ifa;
+const ig = @import("cimgui");
+const ifa = @import("fonticon");
 
 pub fn implot3d(pio: *ig.ImGuiIO) void {
     //----------------------------
