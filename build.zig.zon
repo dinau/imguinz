@@ -5,6 +5,7 @@
     .minimum_zig_version = "0.15.2",
     .dependencies = .{
         .appimgui           = .{ .path = "src/libzig/appimgui" },
+        .appimguiwgpu       = .{ .path = "src/libzig/appimguiwgpu" },
         .cimgui             = .{ .path = "src/libzig/cimgui" },
         .fonticon           = .{ .path = "src/libzig/fonticon" },
         .glfw               = .{ .path = "src/libzig/glfw" },
@@ -19,6 +20,7 @@
         .impl_sdl3          = .{ .path = "src/libzig/impl_sdl3" },
         .impl_sdlgpu3       = .{ .path = "src/libzig/impl_sdlgpu3" },
         .impl_win32         = .{ .path = "src/libzig/impl_win32" },
+        .impl_wgpu          = .{ .path = "src/libzig/impl_wgpu" },
         .implot             = .{ .path = "src/libzig/implot" },
         .implot3d           = .{ .path = "src/libzig/implot3d" },
         .imspinner          = .{ .path = "src/libzig/imspinner" },

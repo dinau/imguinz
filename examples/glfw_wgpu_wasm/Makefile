@@ -45,4 +45,6 @@ fmt:
 
 license:
 	@-mkdir src/licenses
+	@-mkdir src/demo
 	cp -nr ../glfw_webgl_wasm/src/licenses/* src/licenses/
+	cp -nr ../glfw_webgl_wasm/src/demo/* src/demo/

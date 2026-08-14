@@ -32,12 +32,15 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .link_libc = true,
         });
+        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+        step.defineCMacro("CIMGUI_USE_WGPU","");
+        step.defineCMacro("CIMGUI_API","");
         step.defineCMacro("IMGUI_DISABLE_SSE", "");
         step.defineCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
-        step.addIncludePath(b.path("../../libc/imgui"));
-        step.addIncludePath(b.path("../../libc/imgui/backends"));
-        step.addIncludePath(b.path("../../libc/dcimgui"));
-        step.addIncludePath(b.path("../../libc/dcimgui/backends"));
+        step.addIncludePath(b.path("../../libc/cimgui"));
+        step.addIncludePath(b.path("../../libc/cimgui/imgui"));
+        step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
+        step.addIncludePath(b.path("../../libc/impl_wgpu"));
         step.addIncludePath(b.path("src"));
         if (webgpu_include) |wi| step.addIncludePath(.{ .cwd_relative = wi });
         if (webgpu_cpp_include) |wi| step.addIncludePath(.{ .cwd_relative = wi });
@@ -46,12 +49,12 @@ pub fn build(b: *std.Build) void {
     }
 
     mod.link_libcpp = true;
-    mod.addIncludePath(b.path("../../libc/dcimgui"));
-    mod.addIncludePath(b.path("../../libc/dcimgui/backends"));
-    mod.addIncludePath(b.path("../../libc/dcimgui/imgui"));
-    mod.addIncludePath(b.path("../../libc/dcimgui/imgui/backends"));
+    mod.addIncludePath(b.path("../../libc/cimgui"));
+    mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
+    mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     mod.addIncludePath(b.path("../../libc/imgui"));
     mod.addIncludePath(b.path("../../libc/imgui/backends"));
+    mod.addIncludePath(b.path("../../libc/impl_wgpu"));
     mod.addIncludePath(b.path("src"));
     switch (target.result.os.tag) {
         .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
@@ -62,18 +65,22 @@ pub fn build(b: *std.Build) void {
     if (webgpu_cpp_include) |wi| mod.addIncludePath(.{ .cwd_relative = wi });
     if (emscripten_sysroot) |es| mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
 
+    //mod.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
+    mod.addCMacro("CIMGUI_USE_WGPU","");
+    mod.addCMacro("CIMGUI_API","");
     mod.addCMacro("ImDrawIdx", "unsigned int");
     mod.addCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
     switch (target.result.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
+        .emscripten => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
     }
 
     mod.addCSourceFiles(.{
         .files = &.{
-            "../../libc/dcimgui/backends/dcimgui_impl_wgpu.cpp",
-            "../../libc/imgui/backends/imgui_impl_wgpu.cpp",
+            "../../libc/impl_wgpu/cimgui_impl_wgpu.cpp",
+            "../../libc/cimgui/imgui/backends/imgui_impl_wgpu.cpp",
             "src/wgpu_init.cpp",
         },
     });

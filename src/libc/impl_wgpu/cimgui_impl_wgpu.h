@@ -11,6 +11,9 @@
 #include <webgpu/wgpu.h>
 #endif
 
+#include <stdbool.h>
+#include "cimgui.h"
+
 #ifdef CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 
 typedef struct ImGui_ImplWGPU_InitInfo ImGui_ImplWGPU_InitInfo;

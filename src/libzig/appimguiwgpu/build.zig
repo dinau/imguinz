@@ -23,7 +23,7 @@ pub fn build(b: *std.Build) void {
         "Path to <emsdk>/upstream/emscripten",
     );
     const modules = [_][]const u8{
-        "dcimgui",
+        "cimgui",
         "fonticon",
      //   "loadicon",
      //  "loadimage",

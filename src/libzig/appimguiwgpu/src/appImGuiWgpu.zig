@@ -1,6 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
-pub const ig = @import("dcimgui");
+pub const ig = @import("cimgui");
 pub const glfw = @import("glfw");
 pub const impl_gl = @import("impl_opengl3");
 pub const impl_glfw = @import("impl_glfw");
@@ -115,7 +115,7 @@ pub const Window = struct {
         }
         glfw.glfwWindowHint(glfw.GLFW_CLIENT_API, glfw.GLFW_NO_API);
 
-        const main_scale = impl_glfw.cImGui_ImplGlfw_GetContentScaleForMonitor(@ptrCast(glfw.glfwGetPrimaryMonitor()));
+        const main_scale = impl_glfw.ImGui_ImplGlfw_GetContentScaleForMonitor(@ptrCast(glfw.glfwGetPrimaryMonitor()));
         win.g_width = @intFromFloat(@as(f32, @floatFromInt(width)) * main_scale);
         win.g_height = @intFromFloat(@as(f32, @floatFromInt(height)) * main_scale);
 
@@ -204,11 +204,11 @@ pub const Window = struct {
         glfw.glfwShowWindow(window);
 
         // Setup Dear ImGui context
-        if (ig.ImGui_CreateContext(null) == null) {
+        if (ig.igCreateContext(null) == null) {
             return error.ImGuiCreateContextFailure;
         }
 
-        const pio = ig.ImGui_GetIO();
+        const pio = ig.igGetIO_Nil();
         pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
         // pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
         // Setup doncking feature --- can't compile well at this moment.
@@ -222,8 +222,8 @@ pub const Window = struct {
         //-------------------------------------
         // ImGui GLFW backend interface
         //-------------------------------------
-        _ = impl_glfw.cImGui_ImplGlfw_InitForOther(@ptrCast(window), true);
-        impl_glfw.cImGui_ImplGlfw_InstallEmscriptenCallbacks(@ptrCast(window), "#canvas");
+        _ = impl_glfw.ImGui_ImplGlfw_InitForOther(@ptrCast(window), true);
+        impl_glfw.ImGui_ImplGlfw_InstallEmscriptenCallbacks(@ptrCast(window), "#canvas");
 
         var init_info = std.mem.zeroes(wgpu.ImGui_ImplWGPU_InitInfo);
         init_info.Device = win.g_wr.device;
@@ -232,7 +232,7 @@ pub const Window = struct {
         init_info.DepthStencilFormat = wgpu.WGPUTextureFormat_Undefined;
         init_info.PipelineMultisampleState.count = 1;
         init_info.PipelineMultisampleState.mask = 0xFFFFFFFF;
-        _ = wgpu.cImGui_ImplWGPU_Init(&init_info);
+        _ = wgpu.ImGui_ImplWGPU_Init(&init_info);
 
         return win;
     }
@@ -260,11 +260,11 @@ pub const Window = struct {
 
         // Check surface status for error. If texture is not optimal, try to reconfigure the surface.
         wgpu.wgpuSurfaceGetCurrentTexture(res_wgpu.surface, &win.surface_texture);
-        if (wgpu.cImGui_ImplWGPU_IsSurfaceStatusError(win.surface_texture.status)) {
+        if (wgpu.ImGui_ImplWGPU_IsSurfaceStatusError(win.surface_texture.status)) {
             dbgPrint("Unrecoverable Surface Texture status={x}\n", .{win.surface_texture.status});
             @panic("Unrecoverable Surface Texture status");
         }
-        if (wgpu.cImGui_ImplWGPU_IsSurfaceStatusSubOptimal(win.surface_texture.status)) {
+        if (wgpu.ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(win.surface_texture.status)) {
             if (win.surface_texture.texture != null) {
                 wgpu.wgpuTextureRelease(win.surface_texture.texture);
             }
@@ -284,8 +284,8 @@ pub const Window = struct {
         //-----------
         // Rendering
         //-----------
-        ig.ImGui_Render();
-        ig.ImGui_Render();
+        ig.igRender();
+        ig.igRender();
 
         var view_desc = std.mem.zeroes(wgpu.WGPUTextureViewDescriptor);
         view_desc.format = win.g_wr.format;
@@ -310,7 +310,7 @@ pub const Window = struct {
         const encoder = wgpu.wgpuDeviceCreateCommandEncoder(win.g_wr.device, &enc_desc);
 
         const pass = wgpu.wgpuCommandEncoderBeginRenderPass(encoder, &render_pass_desc);
-        wgpu.cImGui_ImplWGPU_RenderDrawData(@ptrCast(ig.ImGui_GetDrawData()), pass);
+        wgpu.ImGui_ImplWGPU_RenderDrawData(@ptrCast(ig.igGetDrawData()), pass);
         wgpu.wgpuRenderPassEncoderEnd(pass);
 
         var cmd_buffer_desc = std.mem.zeroes(wgpu.WGPUCommandBufferDescriptor);
@@ -337,9 +337,9 @@ pub const Window = struct {
     pub fn frame(win: Window) void {
         // Start the Dear ImGui frame
         _ = win;
-        wgpu.cImGui_ImplWGPU_NewFrame();
-        impl_glfw.cImGui_ImplGlfw_NewFrame();
-        ig.ImGui_NewFrame();
+        wgpu.ImGui_ImplWGPU_NewFrame();
+        impl_glfw.ImGui_ImplGlfw_NewFrame();
+        ig.igNewFrame();
     }
 
     //--------------
@@ -349,8 +349,8 @@ pub const Window = struct {
         if (builtin.target.os.tag != .emscripten) {
             saveIni(win) catch unreachable;
         }
-        impl_glfw.cImGui_ImplGlfw_Shutdown();
-        ig.ImGui_DestroyContext(null);
+        impl_glfw.ImGui_ImplGlfw_Shutdown();
+        ig.igDestroyContext(null);
         glfw.glfwDestroyWindow(win.handle);
         glfw.glfwTerminate();
     }
@@ -360,7 +360,7 @@ pub const Window = struct {
     //-------------
     pub fn isIconified(win: *Window) bool {
         if (0 != glfw.glfwGetWindowAttrib(win.handle, glfw.GLFW_ICONIFIED)) {
-            impl_glfw.cImGui_ImplGlfw_Sleep(10);
+            impl_glfw.ImGui_ImplGlfw_Sleep(10);
             return true;
         } else {
             return false;
@@ -403,31 +403,31 @@ pub const Window = struct {
         const st = struct {
             var fval: f32 = 0;
         };
-        const pio = ig.ImGui_GetIO();
-        _ = ig.ImGui_Begin("Info window", null, 0);
-        defer ig.ImGui_End();
-        ig.ImGui_Text(ifa.ICON_FA_COMMENT ++ " GLFW v");
-        ig.ImGui_SameLine();
-        ig.ImGui_Text(glfw.glfwGetVersionString());
-        ig.ImGui_Text(ifa.ICON_FA_COMMENT ++ " OpenGL v");
-        ig.ImGui_SameLine();
-        //ig.ImGui_Text(glfw.glGetString(glfw.GL_VERSION));
-        ig.ImGui_Text(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
-        ig.ImGui_SameLine();
-        ig.ImGui_Text(ig.ImGui_GetVersion());
-        ig.ImGui_Text(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
-        ig.ImGui_SameLine();
-        ig.ImGui_Text(builtin.zig_version_string);
-        _ = ig.ImGui_SliderFloat("Float", &st.fval, 0.0, 1.0);
+        const pio = ig.igGetIO_Nil();
+        _ = ig.igBegin("Info window", null, 0);
+        defer ig.igEnd();
+        ig.igText(ifa.ICON_FA_COMMENT ++ " GLFW v");
+        ig.igSameLine();
+        ig.igText(glfw.glfwGetVersionString());
+        ig.igText(ifa.ICON_FA_COMMENT ++ " OpenGL v");
+        ig.igSameLine();
+        //ig.igText(glfw.glGetString(glfw.GL_VERSION));
+        ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
+        ig.igSameLine();
+        ig.igText(ig.igGetVersion());
+        ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
+        ig.igSameLine();
+        ig.igText(builtin.zig_version_string);
+        _ = ig.igSliderFloat("Float", &st.fval, 0.0, 1.0);
         win.clearColor[0] = win.ini.window.colBGx;
         win.clearColor[1] = win.ini.window.colBGy;
         win.clearColor[2] = win.ini.window.colBGz;
-        _ = ig.ImGui_ColorEdit3("Background color", &win.clearColor, 0);
+        _ = ig.igColorEdit3("Background color", &win.clearColor, 0);
         win.ini.window.colBGx = win.clearColor[0];
         win.ini.window.colBGy = win.clearColor[1];
         win.ini.window.colBGz = win.clearColor[2];
 
-        ig.ImGui_Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
+        ig.igText("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
     }
 
     pub fn setTheme(win: *Window, themeName: Theme) void {
@@ -443,10 +443,10 @@ pub const Window = struct {
 //----------
 pub fn setThemePub(themeName: Theme) Theme {
     switch (themeName) {
-        Theme.light => ig.ImGui_StyleColorsLight(null),
-        Theme.dark => ig.ImGui_StyleColorsDark(null),
-        Theme.classic => ig.ImGui_StyleColorsClassic(null),
-        Theme.microsoft => ig.ImGui_StyleColorsLight(null), //themeMicrosoft(),
+        Theme.light => ig.igStyleColorsLight(null),
+        Theme.dark => ig.igStyleColorsDark(null),
+        Theme.classic => ig.igStyleColorsClassic(null),
+        Theme.microsoft => ig.igStyleColorsLight(null), //themeMicrosoft(),
     }
     return themeName;
 }
@@ -622,7 +622,7 @@ pub fn saveIni(win: *Window) !void {
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
     // Window size
-    const ws = ig.ImGui_GetMainViewport().*.WorkSize;
+    const ws = ig.igGetMainViewport().*.WorkSize;
     win.ini.window.viewportWidth = @intFromFloat(ws.x);
     win.ini.window.viewportHeight = @intFromFloat(ws.y);
     //dbgPrint("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
