@@ -15,6 +15,7 @@
         .imguizoomableimage = .{ .path = "src/libzig/imguizoomableimage" },
         .imknobs            = .{ .path = "src/libzig/imknobs" },
         .imnodes            = .{ .path = "src/libzig/imnodes" },
+        .impl_dx11=           .{ .path = "src/libzig/impl_dx11" },
         .impl_glfw          = .{ .path = "src/libzig/impl_glfw" },
         .impl_opengl3       = .{ .path = "src/libzig/impl_opengl3" },
         .impl_sdl3          = .{ .path = "src/libzig/impl_sdl3" },
