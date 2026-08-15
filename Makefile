@@ -16,6 +16,7 @@ EXAMPLE_DIRS += \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
 							examples/glfw_webgl_wasm \
+							examples/glfw_wgpu_wasm \
 							examples/iconFontViewer \
 							examples/imPlotDemo
 
@@ -69,9 +70,10 @@ ver:
 	@echo $(shell zig version)
 
 #
+CALL_COUNT := 0
 define def_make
-	@echo ==== $(1)
-	@-$(MAKE) -C  $(1) $(2)
+$(eval CALL_COUNT := $(shell expr $(CALL_COUNT) + 1))
+	@echo [$(CALL_COUNT)]: $(1) $(2)
 	@#$(MAKE) -C  $(1) cleancache
 
 endef
