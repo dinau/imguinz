@@ -260,11 +260,11 @@ pub const Window = struct {
 
         // Check surface status for error. If texture is not optimal, try to reconfigure the surface.
         wgpu.wgpuSurfaceGetCurrentTexture(res_wgpu.surface, &win.surface_texture);
-        if (wgpu.ImGui_ImplWGPU_IsSurfaceStatusError(win.surface_texture.status)) {
+        if (wgpu.cImGui_ImplWGPU_IsSurfaceStatusError(win.surface_texture.status)) {
             dbgPrint("Unrecoverable Surface Texture status={x}\n", .{win.surface_texture.status});
             @panic("Unrecoverable Surface Texture status");
         }
-        if (wgpu.ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(win.surface_texture.status)) {
+        if (wgpu.cImGui_ImplWGPU_IsSurfaceStatusSubOptimal(win.surface_texture.status)) {
             if (win.surface_texture.texture != null) {
                 wgpu.wgpuTextureRelease(win.surface_texture.texture);
             }

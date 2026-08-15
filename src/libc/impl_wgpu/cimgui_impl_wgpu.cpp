@@ -5,52 +5,55 @@
 
 
 #ifdef CIMGUI_USE_WGPU
+#include "./imgui/imgui.h"
+#include "./imgui/imgui_internal.h"
+#include "cimgui.h"
 #include "cimgui_impl.h"
 #include "imgui_impl_wgpu.h"
 
-CIMGUI_API bool ImGui_ImplWGPU_IsSurfaceStatusError(WGPUSurfaceGetCurrentTextureStatus status)
+CIMGUI_API bool cImGui_ImplWGPU_IsSurfaceStatusError(WGPUSurfaceGetCurrentTextureStatus status)
 {
     return ::ImGui_ImplWGPU_IsSurfaceStatusError(status);
 }
 
-CIMGUI_API bool ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(WGPUSurfaceGetCurrentTextureStatus status)
+CIMGUI_API bool cImGui_ImplWGPU_IsSurfaceStatusSubOptimal(WGPUSurfaceGetCurrentTextureStatus status)
 {
     return ::ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(status);
 }
 
-CIMGUI_API void xImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter)
+CIMGUI_API void cImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter)
 {
     ::ImGui_ImplWGPU_DebugPrintAdapterInfo(adapter);
 }
 
-CIMGUI_API const char* ImGui_ImplWGPU_GetBackendTypeName(WGPUBackendType type)
+CIMGUI_API const char* cImGui_ImplWGPU_GetBackendTypeName(WGPUBackendType type)
 {
     return ::ImGui_ImplWGPU_GetBackendTypeName(type);
 }
 
-CIMGUI_API const char* ImGui_ImplWGPU_GetAdapterTypeName(WGPUAdapterType type)
+CIMGUI_API const char* cImGui_ImplWGPU_GetAdapterTypeName(WGPUAdapterType type)
 {
     return ::ImGui_ImplWGPU_GetAdapterTypeName(type);
 }
 
 #if defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
-CIMGUI_API const char* ImGui_ImplWGPU_GetDeviceLostReasonName(WGPUDeviceLostReason type)
+CIMGUI_API const char* cImGui_ImplWGPU_GetDeviceLostReasonName(WGPUDeviceLostReason type)
 {
     return ::ImGui_ImplWGPU_GetDeviceLostReasonName(type);
 }
-CIMGUI_API const char* ImGui_ImplWGPU_GetErrorTypeName(WGPUErrorType type)
+CIMGUI_API const char* cImGui_ImplWGPU_GetErrorTypeName(WGPUErrorType type)
 {
     return ::ImGui_ImplWGPU_GetErrorTypeName(type);
 }
 #elif defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU)
-CIMGUI_API const char* ImGui_ImplWGPU_GetLogLevelName(WGPULogLevel level)
+CIMGUI_API const char* cImGui_ImplWGPU_GetLogLevelName(WGPULogLevel level)
 {
     return ::ImGui_ImplWGPU_GetLogLevelName(level);
 }
 #endif
 
 #ifndef __EMSCRIPTEN__
-CIMGUI_API WGPUSurface ImGui_ImplWGPU_CreateWGPUSurfaceHelper(ImGui_ImplWGPU_CreateSurfaceInfo* info)
+CIMGUI_API WGPUSurface cImGui_ImplWGPU_CreateWGPUSurfaceHelper(ImGui_ImplWGPU_CreateSurfaceInfo* info)
 {
     return ::ImGui_ImplWGPU_CreateWGPUSurfaceHelper(info);
 }

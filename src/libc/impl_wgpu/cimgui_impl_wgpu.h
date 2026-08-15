@@ -56,20 +56,20 @@ CIMGUI_API bool ImGui_ImplWGPU_CreateDeviceObjects(void);
 CIMGUI_API void ImGui_ImplWGPU_InvalidateDeviceObjects(void);
 CIMGUI_API void ImGui_ImplWGPU_UpdateTexture(ImTextureData* tex);
 
-CIMGUI_API bool ImGui_ImplWGPU_IsSurfaceStatusError(WGPUSurfaceGetCurrentTextureStatus status);
-CIMGUI_API bool ImGui_ImplWGPU_IsSurfaceStatusSubOptimal(WGPUSurfaceGetCurrentTextureStatus status);
-CIMGUI_API void ImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter);
-CIMGUI_API const char* ImGui_ImplWGPU_GetBackendTypeName(WGPUBackendType type);
-CIMGUI_API const char* ImGui_ImplWGPU_GetAdapterTypeName(WGPUAdapterType type);
+CIMGUI_API bool        cImGui_ImplWGPU_IsSurfaceStatusError(WGPUSurfaceGetCurrentTextureStatus status);
+CIMGUI_API bool        cImGui_ImplWGPU_IsSurfaceStatusSubOptimal(WGPUSurfaceGetCurrentTextureStatus status);
+CIMGUI_API void        cImGui_ImplWGPU_DebugPrintAdapterInfo(WGPUAdapter adapter);
+CIMGUI_API const char* cImGui_ImplWGPU_GetBackendTypeName(WGPUBackendType type);
+CIMGUI_API const char* cImGui_ImplWGPU_GetAdapterTypeName(WGPUAdapterType type);
 #if defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
-CIMGUI_API const char* ImGui_ImplWGPU_GetDeviceLostReasonName(WGPUDeviceLostReason type);
-CIMGUI_API const char* ImGui_ImplWGPU_GetErrorTypeName(WGPUErrorType type);
+CIMGUI_API const char* cImGui_ImplWGPU_GetDeviceLostReasonName(WGPUDeviceLostReason type);
+CIMGUI_API const char* cImGui_ImplWGPU_GetErrorTypeName(WGPUErrorType type);
 #elif defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU)
-CIMGUI_API const char* ImGui_ImplWGPU_GetLogLevelName(WGPULogLevel level);
+CIMGUI_API const char* cImGui_ImplWGPU_GetLogLevelName(WGPULogLevel level);
 #endif
 
 #ifndef __EMSCRIPTEN__
-CIMGUI_API WGPUSurface ImGui_ImplWGPU_CreateWGPUSurfaceHelper(ImGui_ImplWGPU_CreateSurfaceInfo* info);
+CIMGUI_API WGPUSurface cImGui_ImplWGPU_CreateWGPUSurfaceHelper(ImGui_ImplWGPU_CreateSurfaceInfo* info);
 #endif
 
 #endif //CIMGUI_USE_WGPU

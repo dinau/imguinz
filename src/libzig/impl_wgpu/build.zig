@@ -34,7 +34,6 @@ pub fn build(b: *std.Build) void {
         });
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
         step.defineCMacro("CIMGUI_USE_WGPU","");
-        step.defineCMacro("CIMGUI_API","");
         step.defineCMacro("IMGUI_DISABLE_SSE", "");
         step.defineCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
@@ -67,7 +66,6 @@ pub fn build(b: *std.Build) void {
 
     //mod.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
     mod.addCMacro("CIMGUI_USE_WGPU","");
-    mod.addCMacro("CIMGUI_API","");
     mod.addCMacro("ImDrawIdx", "unsigned int");
     mod.addCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
     switch (target.result.os.tag) {
