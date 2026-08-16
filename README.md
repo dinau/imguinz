@@ -190,7 +190,7 @@ Please insert the following lines above `b.installArtifact(exe);`.
 Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
-See [glfw_webgl_wasm](examples/glfw_webgl_wasm)  /  [glfw_wgpu_wasm](examples/glfw_wgpu_wasm) example 
+See [glfw_webgl_wasm](#glfw_webgl_wasm)  /  [glfw_wgpu_wasm](#glfw_wgpu_wasm) example 
 
 
 [^except_raylib]:Except Raylib examples
