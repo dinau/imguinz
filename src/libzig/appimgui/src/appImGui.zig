@@ -6,20 +6,37 @@ pub const impl_gl = @import("impl_opengl3");
 pub const impl_glfw = @import("impl_glfw");
 pub const ifa = @import("fonticon");
 pub const img_ld = @import("loadimage");
-pub const icon_ld = @import("loadicon");
+pub const icon = @import("loadicon");
 pub const stf = @import("setupfont");
 pub const utils = @import("utils");
-const is_devel_api = builtin.zig_version.minor >= 16;
+const is_devel_api = builtin.zig_version.minor >= 16 and builtin.target.os.tag != .emscripten;
 const io = if (is_devel_api) std.Io.Threaded.global_single_threaded.io() else undefined;
+
+extern "c" fn write(fd: c_int, buf: [*]const u8, count: usize) isize;
+
+pub fn dbgPrint(comptime fmt: []const u8, args: anytype) void {
+    if (builtin.target.os.tag == .emscripten) {
+        var buf: [512]u8 = undefined;
+        const msg = std.fmt.bufPrint(&buf, fmt, args) catch return;
+        var written: usize = 0;
+        while (written < msg.len) {
+            const n = write(2, msg.ptr + written, msg.len - written);
+            if (n <= 0) break;
+            written += @intCast(n);
+        }
+    } else {
+        std.debug.print(fmt, args);
+    }
+}
 
 //---------------------
 // glfw_error_callback
 //---------------------
 fn glfw_error_callback(err: c_int, description: [*c]const u8) callconv(.c) void {
-    std.debug.print("GLFW Error {d}: {s}\n", .{ err, description });
+    dbgPrint("GLFW Error {d}: {s}\n", .{ err, description });
 }
 
-const Theme = enum {
+pub const Theme = enum {
     light,
     dark,
     classic,
@@ -41,17 +58,18 @@ const TWindow = struct {
     theme: i32,
 };
 
-const TIni = struct {
+pub const TIni = struct {
     window: TWindow,
     image: TImage,
 };
 
 /// Main window options
-const Opts = struct {
+pub const Opts = struct {
     /// Docking feature
     docking: bool = true,
+    viewport: bool = false,
     /// Title bar Icon name of Main window
-    title_bar_icon_name: []const u8  = "./resources/z.png",
+    title_bar_icon_name: []const u8 = "./resources/z.png",
 };
 
 ///--------------
@@ -68,21 +86,21 @@ pub const Window = struct {
     showWindowDelay: i32, // TODO: Avoid flickering of window at startup
     ini: TIni,
     clearColor: [4]f32,
-    docking: bool = true,
+    opts: Opts = .{ .docking = true },
 
     //-------------
     // createImGui
     //-------------
     pub fn createImGui(width: i32, height: i32, title: [*c]const u8, opts: Opts) !Window {
-        var win: Window = undefined;
-        win.docking = opts.docking;
+        var win: Self = undefined;
+        win.opts = opts;
 
         //-------------------
         // GLFW initializing
         //-------------------
         _ = glfw.glfwSetErrorCallback(glfw_error_callback);
         if (glfw.glfwInit() == 0) {
-            std.debug.print("Failed to initialize GLFW: [main.zig]: \n", .{});
+            dbgPrint("Failed to initialize GLFW: [main.zig]: \n", .{});
             return error.glfwInitFailure;
         }
 
@@ -106,6 +124,10 @@ pub const Window = struct {
                 versions[0][0] = 3;
                 versions[0][1] = 3;
             },
+            .emscripten => {
+                versions[0][0] = 3;
+                versions[0][1] = 0; // WebGL2/GLES3.0
+            },
             else => {},
         }
         for (versions) |ver| {
@@ -116,30 +138,55 @@ pub const Window = struct {
             //
             glfw.glfwWindowHint(glfw.GLFW_RESIZABLE, glfw.GLFW_TRUE); // Resizable window
             glfw.glfwWindowHint(glfw.GLFW_VISIBLE, glfw.GLFW_FALSE); // Needs this if OpenGL is not initialized !.
+            //
+            glfw.glfwWindowHint(glfw.GLFW_DOUBLEBUFFER, glfw.GL_TRUE);
 
             //---------------------------------------------
             // Create GLFW window and activate OpenGL libs
             //---------------------------------------------
             if (glfw.glfwCreateWindow(width, height, title, null, null)) |pointer| {
                 win.handle = pointer;
-                if (builtin.zig_version.minor >= 17){
+                if (builtin.target.os.tag == .emscripten) {
+                if (builtin.zig_version.minor >= 17) {
+                        glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version 300 es", .{}, 0);
+                    } else {
+                        glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version 300 es", .{});
+                    }
+                } else if (builtin.zig_version.minor >= 17) {
                     glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10}, 0);
-                }else{
+                } else {
                     glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version {d}", .{ver[0] * 100 + ver[1] * 10});
                 }
-                std.debug.print("{s} \n", .{glsl_version});
+                dbgPrint("{s} \n", .{glsl_version});
                 break;
             } else {
-                std.debug.print("Error!: Failed: glfwCrateWindow() \n", .{});
+                dbgPrint("Error!: Failed: glfwCrateWindow() \n", .{});
                 return error.glfwCreateWindowFailure1;
             }
         } else {
             glfw.glfwTerminate();
             return error.glfwCreateWindowFailure2;
         }
-
+        if (builtin.target.os.tag != .emscripten) {
         try loadIni(&win);
-        std.debug.print("w = {d}, h = {d} \n", .{ win.ini.window.viewportWidth, win.ini.window.viewportHeight });
+        } else {
+            win.ini = .{
+                .window = .{
+                    .startupPosX = 100,
+                    .startupPosY = 100,
+                    .viewportWidth = width,
+                    .viewportHeight = height,
+                    .colBGx = 62.0 / 255.0,
+                    .colBGy = 165.0 / 255.0,
+                    .colBGz = 150.0 / 255.0,
+                    .theme = 1, // dark
+                },
+                .image = .{
+                    .imageSaveFormatIndex = 0,
+                },
+            };
+        }
+        dbgPrint("w = {d}, h = {d} \n", .{ win.ini.window.viewportWidth, win.ini.window.viewportHeight });
         glfw.glfwSetWindowSize(win.handle, win.ini.window.viewportWidth, win.ini.window.viewportHeight);
         win.eventLoadVar = eventLoad.low;
         win.showWindowDelay = 1;
@@ -150,10 +197,12 @@ pub const Window = struct {
         //---------------------
         // Load title bar icon
         //---------------------
+        if (builtin.target.os.tag != .emscripten) {
         if (utils.existsFile(opts.title_bar_icon_name.ptr)) {
             //--------------
             // Get exe path  Refered to: https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
             //--------------
+                // For zig-0.16.0-dev.2905 (2026/03/13)
             var gpa = std.heap.DebugAllocator(.{}){};
             defer _ = gpa.deinit();
             const allocator = gpa.allocator();
@@ -179,8 +228,9 @@ pub const Window = struct {
                 const icon_path = try std.fs.path.join(allocator, &paths);
                 defer allocator.free(icon_path);
                 // Load icon
-                icon_ld.LoadTitleBarIcon(win.handle, icon_path.ptr);
+                    icon.LoadTitleBarIcon(win.handle, icon_path.ptr);
             }
+        }
         }
 
         glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
@@ -196,7 +246,7 @@ pub const Window = struct {
         pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
         // pio.*.ConfigFlags |= ig.ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
         // Setup doncking feature --- can't compile well at this moment.
-        if (win.docking) {
+        if (win.opts.docking) {
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_DockingEnable; // Enable Docking
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
         }
@@ -207,7 +257,7 @@ pub const Window = struct {
         _ = impl_glfw.ImGui_ImplGlfw_InitForOpenGL(@ptrCast(win.handle), true);
         _ = impl_gl.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
 
-        _ = setTheme(@enumFromInt(win.ini.window.theme));
+        win.setTheme(@enumFromInt(win.ini.window.theme));
 
         return win;
     }
@@ -227,7 +277,7 @@ pub const Window = struct {
         glfw.glClear(glfw.GL_COLOR_BUFFER_BIT);
         impl_gl.ImGui_ImplOpenGL3_RenderDrawData(@ptrCast(ig.igGetDrawData()));
         // Docking featrue --- N/A
-        if (win.docking) {
+        if (win.opts.docking) {
             if (0 != (pio.*.ConfigFlags & ig.ImGuiConfigFlags_ViewportsEnable)) {
                 const backup_current_window = glfw.glfwGetCurrentContext();
                 ig.igUpdatePlatformWindows();
@@ -260,7 +310,9 @@ pub const Window = struct {
     // destroyImGui
     //--------------
     pub fn destroyImGui(win: *Window) void {
+        if (builtin.target.os.tag != .emscripten) {
         saveIni(win) catch unreachable;
+        }
         impl_gl.ImGui_ImplOpenGL3_Shutdown();
         impl_glfw.ImGui_ImplGlfw_Shutdown();
         ig.igDestroyContext(null);
@@ -342,12 +394,19 @@ pub const Window = struct {
 
         ig.igText("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / pio.*.Framerate, pio.*.Framerate);
     }
+
+    pub fn setTheme(win: *Window, themeName: Theme) void {
+        win.ini.window.theme = @intFromEnum(setThemePub(themeName));
+    }
+    pub fn getTheme(win: *Window) Theme {
+        return @enumFromInt(win.ini.window.theme);
+    }
 };
 
 //----------
 // setTheme
 //----------
-pub fn setTheme(themeName: Theme) Theme {
+pub fn setThemePub(themeName: Theme) Theme {
     switch (themeName) {
         Theme.light => ig.igStyleColorsLight(null),
         Theme.dark => ig.igStyleColorsDark(null),
@@ -399,7 +458,7 @@ fn changeExtension(filename: []const u8, new_ext: []const u8) ![]const u8 {
 // loadIni
 //---------
 pub fn loadIni(win: *Window) !void {
-    std.debug.print("loadIni():\n", .{});
+    dbgPrint("loadIni():\n", .{});
 
     var sBuf: [std.fs.max_path_bytes]u8 = undefined;
     const exe_path: []u8 = if (is_devel_api) blk: {
@@ -411,8 +470,8 @@ pub fn loadIni(win: *Window) !void {
 
     const iniFilename = try changeExtension(exe_path, "ini");
     if (!utils.existsFile(iniFilename.ptr)) {
-        std.debug.print("Error!: File not found: {s}\n", .{iniFilename});
-        std.debug.print("Do set default *.ini values\n", .{});
+        dbgPrint("Error!: File not found: {s}\n", .{iniFilename});
+        dbgPrint("Do set default *.ini values\n", .{});
 
         // Window pos
         win.ini.window.startupPosX = 50;
@@ -444,13 +503,15 @@ pub fn loadIni(win: *Window) !void {
             }
         }
 
+        //dbgPrint("Read ini: {s}\n", .{iniFilename});
+
         const file_size = if (is_devel_api)
             try file.length(io)
         else
             try file.getEndPos();
 
         const allocator = std.heap.page_allocator;
-        const buffer = try allocator.alloc(u8, file_size);
+        const buffer = try allocator.alloc(u8, @intCast(file_size));
         defer allocator.free(buffer);
         if (is_devel_api) {
             _ = try file.readStreaming(io, &.{buffer});
@@ -465,6 +526,8 @@ pub fn loadIni(win: *Window) !void {
         // Window pos
         win.ini.window.startupPosX = data.window.startupPosX;
         win.ini.window.startupPosY = data.window.startupPosY;
+        //dbgPrint("data.window.startupPosX = {d}\n", .{data.window.startupPosX});
+        //dbgPrint("data.window.startupPosY = {d}\n", .{data.window.startupPosY});
         if (10 > win.ini.window.startupPosX) {
             win.ini.window.startupPosX = 50;
         }
@@ -481,8 +544,8 @@ pub fn loadIni(win: *Window) !void {
         // Window size
         win.ini.window.viewportWidth = data.window.viewportWidth;
         win.ini.window.viewportHeight = data.window.viewportHeight;
-        //std.debug.print("data.window.viewportWidth = {d}\n", .{data.window.viewportWidth});
-        //std.debug.print("data.window.viewportHeight = {d}\n", .{data.window.viewportHeight});
+        //dbgPrint("data.window.viewportWidth = {d}\n", .{data.window.viewportWidth});
+        //dbgPrint("data.window.viewportHeight = {d}\n", .{data.window.viewportHeight});
         if (win.ini.window.viewportWidth < 100) {
             win.ini.window.viewportWidth = 100;
         }
@@ -513,7 +576,7 @@ pub fn loadIni(win: *Window) !void {
 // saveIni
 //---------
 pub fn saveIni(win: *Window) !void {
-    std.debug.print("saveIni():\n", .{});
+    dbgPrint("saveIni():\n", .{});
     // Window pos
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
@@ -521,8 +584,8 @@ pub fn saveIni(win: *Window) !void {
     const ws = ig.igGetMainViewport().*.WorkSize;
     win.ini.window.viewportWidth = @intFromFloat(ws.x);
     win.ini.window.viewportHeight = @intFromFloat(ws.y);
-    //std.debug.print("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
-    //std.debug.print("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
+    //dbgPrint("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
+    //dbgPrint("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
 
     // Save to ini file
     const allocator = std.heap.page_allocator;
@@ -536,7 +599,7 @@ pub fn saveIni(win: *Window) !void {
     }
 
     const filename = try changeExtension(exe_path, "ini");
-    std.debug.print("Write ini: {s}\n", .{filename});
+    dbgPrint("Write ini: {s}\n", .{filename});
 
     const file = if (is_devel_api) blk: {
         break :blk try std.Io.Dir.cwd().createFile(io, filename, .{});
@@ -567,10 +630,22 @@ pub fn saveIni(win: *Window) !void {
 //==============================================
 // C Export Functions
 //==============================================
-export fn createImGui_c(w: i32, h: i32, title: [*c]const u8) ?*Window {
+pub const COpts = extern struct {
+    /// Docking feature
+    docking: bool,
+    viewport: bool,
+    title_bar_icon_name: [*c]const u8,
+};
+
+export fn createImGui_c(width: i32, height: i32, title: [*c]const u8, copts: *COpts) ?*Window {
     const allocator = std.heap.c_allocator;
     const win_ptr = allocator.create(Window) catch return null;
-    win_ptr.* = Window.createImGui(w, h, title, .{}) catch {
+    const opts: Opts = .{
+        .docking = copts.docking,
+        .viewport = copts.viewport,
+        .title_bar_icon_name = std.mem.span(copts.title_bar_icon_name),
+    };
+    win_ptr.* = Window.createImGui(width, height, title, opts) catch {
         allocator.destroy(win_ptr);
         return null;
     };
@@ -624,6 +699,6 @@ export fn showInfoWindow_c(win: ?*Window) void {
 
 export fn setTheme_c(theme: i32) i32 {
     const theme_enum: Theme = @enumFromInt(theme);
-    const result = setTheme(theme_enum);
+    const result = setThemePub(theme_enum);
     return @intFromEnum(result);
 }

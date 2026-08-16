@@ -189,8 +189,7 @@ pub fn gui_main(window: *app.Window) !void {
             if (cte.TextEditor_CanUndo(editor)) {
                 copyStringToCstr(&str2, "*");
             }
-            ig.igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, cte.TextEditor_GetLineCount(editor),
-                &str1, &str2, cte.TextEditor_GetLanguageName(editor), fileName);
+            ig.igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, cte.TextEditor_GetLineCount(editor), &str1, &str2, cte.TextEditor_GetLanguageName(editor), fileName);
 
             ig.igPushFont(textFont, 0.0);
             _ = cte.TextEditor_Render(editor, "texteditor", .{ .x = 0, .y = 0 }, 0, cte.ImGuiWindowFlags_NoMove | cte.ImGuiWindowFlags_HorizontalScrollbar);
@@ -213,7 +212,7 @@ pub fn main() !void {
     var window = try app.Window.createImGui(MainWinWidth, MainWinHeight, "Dear ImGui window in Zig", .{});
     defer window.destroyImGui();
 
-    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
+    //_ = window.setTheme(.light); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

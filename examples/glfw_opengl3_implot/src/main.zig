@@ -148,11 +148,13 @@ pub fn main() !void {
         MainWinWidth,
         MainWinHeight,
         "Dear ImGui window in Zig",
-        .{ .docking = false, },
+        .{
+            .docking = false,
+        },
     );
     defer window.destroyImGui();
 
-    _ = app.setTheme(.classic); // Theme: dark, classic, light, microsoft
+    _ = window.setTheme(.classic); // Theme: dark, classic, light, microsoft
 
     //---------------
     // GUI main proc

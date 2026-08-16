@@ -1129,7 +1129,7 @@ pub const struct_ImVector_ImFontGlyph = extern struct {
 };
 pub const ImVector_ImFontGlyph = struct_ImVector_ImFontGlyph;
 // C:\imguinz\examples\glfw_opengl3_implot\../../src/libzig/implot\..\..\libc\cimgui/cimgui.h:1652:18: warning: struct demoted to opaque type - has bitfield
-pub const struct_ImFontBaked =  struct{};
+pub const struct_ImFontBaked = struct {};
 pub const ImFontBaked = struct_ImFontBaked;
 pub const ImFontFlags = c_int;
 pub const ImGuiID = c_uint;

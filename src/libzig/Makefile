@@ -1,5 +1,6 @@
 DIRS = \
 	appimgui \
+	appimguiwgpu \
 	cimgui \
 	fonticon \
 	glfw \
@@ -15,6 +16,7 @@ DIRS = \
 	impl_sdl3 \
 	impl_sdlgpu3 \
 	impl_win32 \
+	impl_wgpu \
 	implot \
 	implot3d \
 	imspinner \
@@ -41,7 +43,7 @@ fmt:
 
 #
 define def_make
-	@echo ==== Enter: $(1) ====
+	@echo ==== Enter: $(1)
 	@$(MAKE) -C  $(1) $(2)
 
 endef

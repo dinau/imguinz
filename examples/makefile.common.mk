@@ -29,6 +29,11 @@ clean: cleanall
 cleanall:
 	@-rm -fr zig-out .zig-cache zig-pkg
 
+cleanpdb:
+ifeq ($(OS),Windows_NT)
+	@-rm  zig-out/bin/$(TARGET).pdb
+endif
+
 cleanexe:
 	@-rm -fr zig-out
 
@@ -37,7 +42,6 @@ cleancache:
 ifeq ($(OS),Windows_NT)
 	@-rm  zig-out/bin/$(TARGET).pdb
 endif
-
 
 INCS +=	-I../../libs/cimplot/implot/ -I../../libs/cimgui/imgui/
 #INCS += -I"C:/Program Files/Windows Kits/10/Include/10.0.19041.0/ucrt"

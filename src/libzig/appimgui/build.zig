@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
     });
 
     // import modules
+    const emscripten_sysroot = b.option( []const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     const modules = [_][]const u8{
         "cimgui",
         "fonticon",
@@ -31,7 +32,11 @@ pub fn build(b: *std.Build) void {
         if (mod.import_table.get(module)) |_| {
             continue;
         }
-        const mod_dep = b.dependency(module, .{});
+        const mod_dep = b.dependency(module, .{
+            .target = target,
+            .optimize = optimize,
+            .emscripten_sysroot = emscripten_sysroot,
+        });
         mod.addImport(module, mod_dep.module(module));
     }
 

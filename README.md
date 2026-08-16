@@ -25,6 +25,8 @@
     - [Image load / save](#image-load--save)
     - [ImPlot](#implot)
     - [imgui_zoomable_image](#imgui_zoomable_image)
+    - [glfw_webgl_wasm](#glfw_webgl_wasm)
+    - [glfw_wgpu_wasm](#glfw_wgpu_wasm)
   - [ImPlot Demo written in Zig lang.](#implot-demo-written-in-zig-lang)
     - [Build and run](#build-and-run-1)
     - [ImPlot demo source in Zig lang.](#implot-demo-source-in-zig-lang)
@@ -52,15 +54,15 @@ This project aims to simply and easily build [Dear ImGui](https://github.com/oco
 [(CImGui)](https://github.com/cimgui/cimgui) / [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot),
 Raylib, rlImGui and many other libaries and examples with less external dependencies in [Zig](https://ziglang.org/).
 
-- ImGui / CImGui version **1.92.9 dock** (2026/07)
+- ImGui / CImGui version **1.92.9b dock** (2026/08)
 - OS: Windows11 and Linux
 - Frontends and Backends 
 
-   |                       | GLFW   | SDL3                                                                                 | Win32  |
-   | ---                   | :----: | :----:                                                                               | :----:
-   | OpenGL3<br>backend    | YES    | YES                                                                                  | -
-   | SDLGPU3<br>backend    | -      | [YES](https://github.com/dinau/imguinz/blob/main/examples/sdl3_sdlgpu3/src/main.zig) | -
-   | DirectX 11<br>backend | -      | -                                                                                    | YES
+   | Frontends |            Backends            |
+   |-----------|:------------------------------:|
+   | GLFW3     | OpenGL3 / WASM(WebGL / WebGPU) |
+   | SDL3      |        OpenGL3, SDL3GPU        |
+   | Win32     |        DirectX 11(D3D11)       |
 
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
@@ -187,7 +189,10 @@ Please insert the following lines above `b.installArtifact(exe);`.
 
 Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
- 
+
+See [glfw_webgl_wasm](examples/glfw_webgl_wasm)  /  [glfw_wgpu_wasm](examples/glfw_wgpu_wasm) example 
+
+
 [^except_raylib]:Except Raylib examples
 
 ### Prerequisites
@@ -198,7 +203,7 @@ Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/
    - [x] zig-0.16.0  
       Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
       Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] zig-0.17.0-dev.1564+97ced1272 [^except_raylib] (2026/08/04)
+   - [x] zig-0.17.0-dev.1767 [^except_raylib] (2026/08/14)
 - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 
@@ -428,8 +433,6 @@ Image can be saved as `JPEG / PNG / BMP / TGA` file.
 
 ![alt](https://github.com/dinau/imguinz/raw/main/img/glfw_opengl3_implot.png)
 
-
-
 #### imgui_zoomable_image
 
 ---
@@ -438,6 +441,74 @@ Try Wasm live demo in your browser
 Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_image/wasm/)  
 
 ![alt](https://github.com/dinau/cimgui_zoomable_image/raw/main/img/snapshot.png)
+
+[^emsdk_list]: `$ emsdk list`
+
+#### glfw_webgl_wasm
+
+---
+
+- [Install emscripten](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
+   -  Spicefy emsdk **6.0.6**[^emsdk_list]
+   
+      ```sh
+      emsdk install  6.0.6 
+      emsdk activate 6.0.6
+      ```
+   
+      for WebGL
+   
+      ```sh
+      embuilder build contrib.glfw3
+      ```
+   
+1. Go to `examples/glfw_webgl_wasm` folder
+1. Run `emsdk_env.bat`(Windows) or `emsdk_env.sh`(Linux) in your console
+   > [!IMPORTANT]
+
+   ```sh
+   emsdk_env.bat     # Run this once in every new console
+   ```
+
+1.  Build **WebGL/Wsam** example
+
+    ```sh
+    make run
+    ```
+    
+    See ./Makefile
+
+1. Open your brwoser at [http://localhost:8000](http://localhost:8000) and click **web** folder
+1. You can build native application too
+
+    ```sh
+    make app
+    ```
+
+#### glfw_wgpu_wasm
+
+---
+
+WebGPU wasm example
+
+Basically same as WebGL example
+
+for WebGPU
+
+```sh
+embuilder build emdawnwebgpu
+```
+
+```sh
+emsdk_env.bat  # Run this once in every new console
+
+```
+
+```
+make run
+```
+
+This example can't build native applicaton.
 
 ### ImPlot Demo written in Zig lang.
 

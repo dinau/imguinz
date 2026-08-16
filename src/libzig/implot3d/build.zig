@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
 
     const mod_name = "implot3d";
     var mod: *std.Build.Module = undefined;
@@ -19,7 +20,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
         });
-    }else{
+    } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("src/impl_implot3d.h"),
             .target = target,
@@ -28,12 +29,19 @@ pub fn build(b: *std.Build) void {
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
         step.addIncludePath(b.path("../../libc/cimplot3d"));
+        if (emscripten_sysroot) |es| {
+            step.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+        }
 
         mod = step.addModule(mod_name);
     }
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui"));
     mod.addIncludePath(b.path("../../libc/cimplot3d/implot3d"));
+    mod.addIncludePath(b.path("./src"));
+    if (emscripten_sysroot) |es| {
+        mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
+    }
     mod.addCMacro("ImDrawIdx", "unsigned int");
     mod.addCSourceFiles(.{
         .files = &.{

@@ -17,7 +17,7 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
     });
     step.addIncludePath(b.path("../../libc/rlimgui"));
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         step.addIncludePath(b.path("../../libc/raylib/windows/include"));
     } else {
         step.addIncludePath(b.path("../../libc/raylib/linux/include"));
@@ -27,7 +27,7 @@ pub fn build(b: *std.Build) void {
 
     const mod = step.addModule(mod_name);
     mod.addIncludePath(b.path("../../libc/rlimgui"));
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         mod.addIncludePath(b.path("../../libc/raylib/windows/include"));
     } else {
         mod.addIncludePath(b.path("../../libc/raylib/linux/include"));

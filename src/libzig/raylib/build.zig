@@ -7,7 +7,7 @@ pub fn build(b: *std.Build) void {
 
     const mod_name = "raylib";
 
-    const platform = @tagName(builtin.target.os.tag);
+    const platform = @tagName(target.result.os.tag);
     const raylib_path = "../../libc/raylib";
 
     // -------
@@ -35,7 +35,7 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         //.windows => mod.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.a" }))),
         .windows => mod.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylibdll.a" }))),
         .linux => mod.addObjectFile(b.path(b.pathJoin(&.{ raylib_path, platform, "lib", "libraylib.so.550" }))),

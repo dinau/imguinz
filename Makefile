@@ -15,6 +15,8 @@ EXAMPLE_DIRS += \
 							examples/glfw_opengl3_implot3d \
 							examples/glfw_opengl3_imspinner \
 							examples/glfw_opengl3_jp \
+							examples/glfw_webgl_wasm \
+							examples/glfw_wgpu_wasm \
 							examples/iconFontViewer \
 							examples/imPlotDemo
 
@@ -48,6 +50,7 @@ clean:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),cleanall ))
 	$(foreach exdir,$(EXAMPLE_DIRS_RAYLIB), $(call def_make,$(exdir),cleanall ))
 	$(MAKE) -C src/libzig $@
+	@-rm -fr .zig-cache
 
 cleanall: clean cleanexe
 cleanexe:
@@ -68,11 +71,12 @@ ver:
 	@echo $(shell zig version)
 
 #
+CALL_COUNT := 0
 define def_make
-	@echo ==== $(1) ====
+$(eval CALL_COUNT := $(shell expr $(CALL_COUNT) + 1))
+	@echo [$(CALL_COUNT)]: $(1) $(2)
 	@-$(MAKE) -C  $(1) $(2)
-	@echo ""
-	@#$(MAKE) -C  $(1) cleancache
+	@echo
 
 endef
 
@@ -110,3 +114,10 @@ cimgui-knobs:
 	git clone --recurse-submodules https://github.com/dinau/cimgui-knobs/$@ /../libs/$@
 cimgui_zoomable_image:
 	git clone --recurse-submodules https://github.com/dinau/$@  ../libs/$@
+
+
+
+
+
+cjk:
+	rg -l '[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff\uff00-\uffef]' -g '*.{zig,nim,c,h,cpp}'

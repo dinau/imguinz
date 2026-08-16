@@ -48,7 +48,7 @@ pub fn build(b: *std.Build) void {
     const raylib_dep = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
-        .linkage = .dynamic, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
+        .linkage = .static, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
     });
     const raylib = raylib_dep.module("raylib"); // main raylib module
     //const raygui = raylib_dep.module("raygui"); // raygui module
@@ -58,12 +58,12 @@ pub fn build(b: *std.Build) void {
     //exe.root_module.addImport("raygui", raygui);
 
     // Copy DLL to bin/ folder
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         const dllPath = "../../src/libc/raylib/windows/lib/raylib.dll";
         const basename = std.fs.path.basename(dllPath);
         const resDll = b.addInstallFile(b.path(dllPath), b.pathJoin(&.{ "bin", basename }));
         b.getInstallStep().dependOn(&resDll.step);
-    } else if (builtin.target.os.tag == .linux) {}
+    } else if (target.result.os.tag == .linux) {}
 
     // save [Executable name].ini
     const sExeIni = b.fmt("{s}.ini", .{exe_name});

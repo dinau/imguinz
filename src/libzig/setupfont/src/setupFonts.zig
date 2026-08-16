@@ -28,6 +28,22 @@ const LinuxFontNameTbl = [_][]const u8{
 const INVALID_FILE_ATTRIBUTES: u32 = 0xFFFFFFFF;
 extern "kernel32" fn GetFileAttributesA(lpFileName: [*:0]const u8) callconv(.c) u32;
 
+extern "c" fn write(fd: c_int, buf: [*]const u8, count: usize) isize;
+fn dbgPrint(comptime fmt: []const u8, args: anytype) void {
+    if (builtin.target.os.tag == .emscripten) {
+        var buf: [512]u8 = undefined;
+        const msg = std.fmt.bufPrint(&buf, fmt, args) catch return;
+        var written: usize = 0;
+        while (written < msg.len) {
+            const n = write(2, msg.ptr + written, msg.len - written);
+            if (n <= 0) break;
+            written += @intCast(n);
+        }
+    } else {
+        std.debug.print(fmt, args);
+    }
+}
+
 /// Check if file exists
 fn existsFile(path: []const u8) bool {
     if (is_devel_api) {
@@ -55,8 +71,8 @@ fn existsFile(path: []const u8) bool {
         const cwd_dir = std.fs.cwd();
         const file = cwd_dir.openFile(path, .{}) catch return false;
         defer file.close();
-    return true;
-}
+        return true;
+    }
 }
 
 /// Get Windows font path
@@ -91,7 +107,7 @@ fn getWinFontPath(buf: []u8, font_name: []const u8) ?[]const u8 {
             .{ win_dir, font_name },
         ) catch return null;
 
-    return result;
+        return result;
     } else {
         // For Zig 0.15.2, result is already created
         return win_dir;
@@ -99,7 +115,7 @@ fn getWinFontPath(buf: []u8, font_name: []const u8) ?[]const u8 {
 }
 
 /// Convert point to pixel
-fn point2px(point: f32) f32 {
+pub fn point2px(point: f32) f32 {
     return (point * 96.0) / 72.0;
 }
 
@@ -125,7 +141,7 @@ pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
                 config,
                 null,
             );
-            std.debug.print("\n==== Found FontPath(priority): [{s}]\n", .{fp_slice});
+            dbgPrint("\n==== Found FontPath(priority): [{s}]\n", .{fp_slice});
         }
     }
 
@@ -141,7 +157,7 @@ pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
                         config,
                         null,
                     );
-                    std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
+                    dbgPrint("\n==== Found FontPath: [{s}]\n", .{fontPath});
                     break;
                 }
             }
@@ -159,7 +175,7 @@ pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
                     config,
                     null,
                 );
-                std.debug.print("\n==== Found FontPath: [{s}]\n", .{fontPath});
+                dbgPrint("\n==== Found FontPath: [{s}]\n", .{fontPath});
                 break;
             }
         }
@@ -167,9 +183,9 @@ pub export fn setupFonts(theFontPath: ?[*:0]const u8) ?*ig.ImFont {
 
     // If still not found, use default
     if (font == null) {
-        std.debug.print("\n==== Error!: Font loading failed\n", .{});
-        std.debug.print("\n==== Default has been set.\n", .{});
-        _ = ig.ImFontAtlas_AddFontDefault(pio.*.Fonts, config);
+        dbgPrint("\n==== Error!: Font loading failed\n", .{});
+        dbgPrint("\n==== Default has been set.\n", .{});
+        _ = ig.ImFontAtlas_AddFontDefaultVector(pio.*.Fonts, null);
     }
 
     // Merge IconFont

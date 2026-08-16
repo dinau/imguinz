@@ -31,7 +31,10 @@ pub fn build(b: *std.Build) void {
         // "another_lib",
     };
     inline for (dependencies) |dep_name| {
-        const dep = imguinz.builder.dependency(dep_name, .{});
+        const dep = imguinz.builder.dependency(dep_name, .{
+            .target = target,
+            .optimize = optimize,
+        });
         exe.root_module.addImport(dep_name, dep.module(dep_name));
     }
 
@@ -49,7 +52,7 @@ pub fn build(b: *std.Build) void {
     //------
     // Libs
     //------
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         exe.root_module.linkSystemLibrary("gdi32", .{});
         exe.root_module.linkSystemLibrary("imm32", .{});
         exe.root_module.linkSystemLibrary("advapi32", .{});
@@ -75,7 +78,7 @@ pub fn build(b: *std.Build) void {
         exe.root_module.linkSystemLibrary("user32", .{});
         // Static link
         exe.root_module.addObjectFile(b.path(b.pathJoin(&.{ sdlPath, "lib", "libSDL3.dll.a" })));
-    } else if (builtin.target.os.tag == .linux) {
+    } else if (target.result.os.tag == .linux) {
         exe.root_module.linkSystemLibrary("GL", .{});
         exe.root_module.linkSystemLibrary("SDL3", .{});
     }

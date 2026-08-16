@@ -45,7 +45,7 @@ pub fn build(b: *std.Build) void {
         .files = &.{
             "../../libc/CImGuiFileDialog/libs/ImGuiFileDialog/ImGuiFileDialog.cpp",
         },
-        });
+    });
 
     const lib = b.addLibrary(.{
         .linkage = .static,

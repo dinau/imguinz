@@ -100,7 +100,7 @@ pub fn main() !void {
     defer window.destroyImGui();
 
     _ = app.stf.setupFonts(null); // null: Setup default CJK fonts and Icon fonts
-    //_ = app.setTheme(.light); // Theme: dark, classic, light, microsoft
+    //_ = window.setTheme(.light); // Theme: dark, classic, light, microsoft
 
     // GUI main proc
     gui_main(&window);

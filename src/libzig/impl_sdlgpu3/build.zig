@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -32,7 +31,7 @@ pub fn build(b: *std.Build) void {
         step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
         step.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
-        switch (builtin.target.os.tag) {
+        switch (target.result.os.tag) {
             .windows => {
                 step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
                 step.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
@@ -43,7 +42,7 @@ pub fn build(b: *std.Build) void {
 
         mod = step.addModule(mod_name);
     }
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => {
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include/SDL3" })));
             mod.addIncludePath(b.path(b.pathJoin(&.{ sdl_path, "include" })));
@@ -56,7 +55,7 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/cimgui/imgui"));
     mod.addIncludePath(b.path("../../libc/cimgui/imgui/backends"));
     mod.addCMacro("ImDrawIdx", "unsigned int");
-    switch (builtin.target.os.tag) {
+    switch (target.result.os.tag) {
         .windows => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\" __declspec(dllexport)"),
         .linux => mod.addCMacro("IMGUI_IMPL_API", "extern \"C\"  "),
         else => {},
@@ -66,7 +65,7 @@ pub fn build(b: *std.Build) void {
         .files = &.{
             "../../libc/cimgui/imgui/backends/imgui_impl_sdlgpu3.cpp",
         },
-        });
+    });
 
     const lib = b.addLibrary(.{
         .linkage = .static,

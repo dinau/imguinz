@@ -6,12 +6,12 @@
     .dependencies = .{
         .imguinz = .{ .path = "../../" },
         .raylib_zig = .{
-            .url = "git+https://github.com/raylib-zig/raylib-zig?ref=devel#97be2c7ae646a2f09856604b138c427c0af1b952",
-            .hash = "raylib_zig-6.0.0-KE8REDJ4BQBu7lKwYNt6R4j5ywPeS37zqW6zrtjCcRwH",
+            .url = "git+https://github.com/raylib-zig/raylib-zig?ref=devel#8758f4cd3a5ae0df6941c4715257223d34c5ad3e",
+            .hash = "raylib_zig-6.0.0-KE8RECZ8BQDm-txuospkpZHbJ6DNpacUF7D88RWQ_qAe",
         },
         .raylib = .{
-            .url = "git+https://github.com/raysan5/raylib#3ea8b9298f75513388cde1aef7bb7af614cd3ec4",
-            .hash = "raylib-6.0.0-whq8uMl2OwX-rkAX2_7mSvJFYFHRb_fiUCU_cd5XsOrb",
+            .url = "git+https://github.com/raysan5/raylib#4f4b3aef45bfa5ff213b840ab8670b6076844948",
+            .hash = "raylib-6.0.0-whq8uIPTKwX698j3b7tZ34VTOKOsydiViQRD3hEL_Qwo",
         },
     },
     .paths = .{

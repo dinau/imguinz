@@ -40,10 +40,11 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
+    const link_mode: std.builtin.LinkMode = if (target.result.os.tag == .windows) .dynamic else .static;
     const raylib_dep = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
-        .linkage = .dynamic, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
+        .linkage = link_mode, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
     });
     const raylib = raylib_dep.module("raylib"); // main raylib module
     //const raygui = raylib_dep.module("raygui"); // raygui module
@@ -76,12 +77,12 @@ pub fn build(b: *std.Build) void {
     }
 
     // Copy DLL to bin/ folder
-    if (builtin.target.os.tag == .windows) {
+    if (target.result.os.tag == .windows) {
         const dllPath = "../../src/libc/raylib/windows/lib/raylib.dll";
         const basename = std.fs.path.basename(b.path(dllPath).getPath(b));
         const resDll = b.addInstallFile(b.path(dllPath), b.pathJoin(&.{ "bin", basename }));
         b.getInstallStep().dependOn(&resDll.step);
-    } else if (builtin.target.os.tag == .linux) {}
+    } else if (target.result.os.tag == .linux) {}
 
     // save [Executable name].ini
     const sExeIni = b.fmt("{s}.ini", .{exe_name});
