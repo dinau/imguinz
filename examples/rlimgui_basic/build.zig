@@ -40,11 +40,10 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
-    const link_mode: std.builtin.LinkMode = if (target.result.os.tag == .windows) .dynamic else .static;
     const raylib_dep = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
-        .linkage = link_mode, // Build raylib as a shared library.linkage = .dynamic, // Build raylib as a shared library
+        .linkage = .dynamic,  // Set .dynamic to avoid conflict with STB library
     });
     const raylib = raylib_dep.module("raylib"); // main raylib module
     //const raygui = raylib_dep.module("raygui"); // raygui module

@@ -36,6 +36,11 @@ pub fn build(b: *std.Build) void {
     // Hide console window
     exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
+    switch (target.result.os.tag){
+        .windows => {},
+        else => exe.root_module.linkSystemLibrary("glfw3", .{}), // Linux
+    }
+
     b.installArtifact(exe);
 
     const install_resources = b.addInstallDirectory(.{
@@ -48,7 +53,7 @@ pub fn build(b: *std.Build) void {
     const raylib_dep = b.dependency("raylib_zig", .{
         .target = target,
         .optimize = optimize,
-        .linkage = .static,
+        .linkage = .static, // .dynamic
 
     });
     const raylib = raylib_dep.module("raylib"); // main raylib module
