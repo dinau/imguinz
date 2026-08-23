@@ -449,7 +449,7 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
 ---
 
 - [Install emscripten](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
-   -  Spicefy emsdk **6.0.6**[^emsdk_list]
+   -  Specify emsdk **6.0.6**[^emsdk_list]
    
       ```sh
       emsdk install  6.0.6 
