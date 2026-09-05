@@ -459,7 +459,7 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
       for WebGL
    
       ```sh
-      embuilder build contrib.glfw3
+      embuilder build contrib.glfw3    # Rerun after emsdk updated 
       ```
    
 1. Go to `examples/glfw_webgl_wasm` folder
@@ -496,7 +496,7 @@ Basically same as WebGL example
 for WebGPU
 
 ```sh
-embuilder build emdawnwebgpu
+embuilder build emdawnwebgpu    # Rerun after emsdk updated 
 ```
 
 ```sh
