@@ -24,7 +24,7 @@ pub fn gui_main(window: *app.Window) !void {
     var showDemoWindow = true;
     var showImPlotDemoWindow = true;
 
-    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+    window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
     //---------------
     // main loop GUI

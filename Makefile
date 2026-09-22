@@ -32,7 +32,7 @@ ifeq ($(OS),Windows_NT)
 							  examples/win32_dx11
 endif
 
-all: std raylib
+all: std  sdl # raylib
 
 std:
 	$(foreach exdir,$(EXAMPLE_DIRS), $(call def_make,$(exdir),all ))
