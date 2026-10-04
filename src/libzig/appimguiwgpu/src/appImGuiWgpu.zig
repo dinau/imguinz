@@ -87,8 +87,8 @@ pub const Window = struct {
     handle: ?*glfw.GLFWwindow,
     showWindowDelay: i32, // TODO: Avoid flickering of window at startup
     ini: TIni,
-    clearColor: [4]f32 ,
-    opts: Opts = .{.docking = true},
+    clearColor: [4]f32,
+    opts: Opts = .{ .docking = true },
 
     g_wr: wgpu.WgpuInitResult = undefined,
     g_width: c_int = 1024,
@@ -217,7 +217,7 @@ pub const Window = struct {
             pio.*.ConfigFlags |= ig.ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
         }
 
-        win.setTheme(@enumFromInt(win.ini.window.theme));
+        win.setTheme(@fromBackingInt(@intCast(win.ini.window.theme)));
 
         //-------------------------------------
         // ImGui GLFW backend interface
@@ -236,14 +236,14 @@ pub const Window = struct {
 
         return win;
     }
-    pub fn getWgpuInitResult(win: *Window) wgpu.WgpuInitResult{
-               return win.g_wr;
+    pub fn getWgpuInitResult(win: *Window) wgpu.WgpuInitResult {
+        return win.g_wr;
     }
     pub fn getWindowSize(win: *Window) ig.ImVec2 {
-          return .{.x = @floatFromInt(win.g_width), .y = @floatFromInt(win.g_height)};
+        return .{ .x = @floatFromInt(win.g_width), .y = @floatFromInt(win.g_height) };
     }
 
-    pub fn wgpu_isSurfaceStatusSubOptimal(win: *Window) bool{
+    pub fn wgpu_isSurfaceStatusSubOptimal(win: *Window) bool {
         var res = false;
         var width: c_int = 0;
         var height: c_int = 0;
@@ -269,10 +269,10 @@ pub const Window = struct {
                 wgpu.wgpuTextureRelease(win.surface_texture.texture);
             }
             if (g_height > 0) {
-                wgpu.AppResizeSurface(res_wgpu.surface, res_wgpu.device, res_wgpu.format,g_width, g_height);
+                wgpu.AppResizeSurface(res_wgpu.surface, res_wgpu.device, res_wgpu.format, g_width, g_height);
             }
             res = true;
-            return res ;
+            return res;
         }
         return res;
     }
@@ -321,7 +321,6 @@ pub const Window = struct {
         wgpu.wgpuRenderPassEncoderRelease(pass);
         wgpu.wgpuCommandEncoderRelease(encoder);
         wgpu.wgpuCommandBufferRelease(cmd_buffer);
-
 
         if (win.showWindowDelay >= 0) {
             win.showWindowDelay -= 1;
@@ -407,16 +406,16 @@ pub const Window = struct {
         _ = ig.igBegin("Info window", null, 0);
         defer ig.igEnd();
         ig.igText(ifa.ICON_FA_COMMENT ++ " GLFW v");
-        ig.igSameLine(0.0,-0.1);
+        ig.igSameLine(0.0, -0.1);
         ig.igText(glfw.glfwGetVersionString());
         ig.igText(ifa.ICON_FA_COMMENT ++ " OpenGL v");
-        ig.igSameLine(0.0,-0.1);
+        ig.igSameLine(0.0, -0.1);
         //ig.igText(glfw.glGetString(glfw.GL_VERSION));
         ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Dear ImGui v");
-        ig.igSameLine(0.0,-0.1);
+        ig.igSameLine(0.0, -0.1);
         ig.igText(ig.igGetVersion());
         ig.igText(ifa.ICON_FA_CIRCLE_INFO ++ " Zig v");
-        ig.igSameLine(0.0,-0.1);
+        ig.igSameLine(0.0, -0.1);
         ig.igText(builtin.zig_version_string);
         _ = ig.igSliderFloat("Float", &st.fval, 0.0, 1.0, "%.3f", 0);
         win.clearColor[0] = win.ini.window.colBGx;
@@ -431,10 +430,10 @@ pub const Window = struct {
     }
 
     pub fn setTheme(win: *Window, themeName: Theme) void {
-       win.ini.window.theme = @intFromEnum(setThemePub(themeName));
+        win.ini.window.theme = @backingInt(setThemePub(themeName));
     }
     pub fn getTheme(win: *Window) Theme {
-        return @enumFromInt(win.ini.window.theme);
+        return @fromBackingInt(@intCast(win.ini.window.theme));
     }
 };
 
@@ -519,7 +518,7 @@ pub fn loadIni(win: *Window) !void {
         win.ini.window.colBGy = 0.45;
         win.ini.window.colBGz = 0.65;
         // Theme
-        win.ini.window.theme = @intFromEnum(Theme.classic);
+        win.ini.window.theme = @backingInt(Theme.classic);
         // Image index
         win.ini.image.imageSaveFormatIndex = 1;
     } else {
@@ -622,9 +621,7 @@ pub fn saveIni(win: *Window) !void {
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
     // Window size
-    const ws = ig.igGetMainViewport().*.WorkSize;
-    win.ini.window.viewportWidth = @intFromFloat(ws.x);
-    win.ini.window.viewportHeight = @intFromFloat(ws.y);
+    glfw.glfwGetWindowSize(win.handle, &win.ini.window.viewportWidth, &win.ini.window.viewportHeight);
     //dbgPrint("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
     //dbgPrint("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
 
@@ -678,12 +675,12 @@ pub const COpts = extern struct {
     title_bar_icon_name: [*c]const u8,
 };
 
-export fn createImGui_c(width: i32, height: i32, title: [*c]const u8, copts: *COpts ) ?*Window {
+export fn createImGui_c(width: i32, height: i32, title: [*c]const u8, copts: *COpts) ?*Window {
     const allocator = std.heap.c_allocator;
     const win_ptr = allocator.create(Window) catch return null;
     const opts: Opts = .{
         .docking = copts.docking,
-        .viewport= copts.viewport,
+        .viewport = copts.viewport,
         .title_bar_icon_name = std.mem.span(copts.title_bar_icon_name),
     };
     win_ptr.* = Window.createImGui(width, height, title, opts) catch {
@@ -739,7 +736,7 @@ export fn showInfoWindow_c(win: ?*Window) void {
 }
 
 export fn setTheme_c(theme: i32) i32 {
-    const theme_enum: Theme = @enumFromInt(theme);
+    const theme_enum: Theme = @fromBackingInt(@intCast(theme));
     const result = setThemePub(theme_enum);
-    return @intFromEnum(result);
+    return @backingInt(result);
 }

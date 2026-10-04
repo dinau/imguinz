@@ -36,7 +36,7 @@ pub fn build(b: *std.Build) void {
     // Hide console window
     exe.subsystem = if (builtin.zig_version.minor >= 17) .windows else .windows;
 
-    switch (target.result.os.tag){
+    switch (target.result.os.tag) {
         .windows => {},
         else => exe.root_module.linkSystemLibrary("glfw3", .{}), // Linux
     }

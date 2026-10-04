@@ -9242,7 +9242,7 @@ pub inline fn _mm_cvtpi32_ps(arg___a: __m128, arg___b: __m64) __m128 {
     var __b = arg___b;
     _ = &__b;
     return @shuffle(@typeInfo(@TypeOf(__a)).vector.child, __a, blk: {
-        const tmp = @as(__v4si, @bitCast(@as(__m128i, @bitCast(@shuffle(@typeInfo(@TypeOf(@as(__v2si, @bitCast(__b)))).vector.child, @as(__v2si, @bitCast(__b)), @as(__v2si, [1]c_int{0}**2), @Vector(4, i32){
+        const tmp = @as(__v4si, @bitCast(@as(__m128i, @bitCast(@shuffle(@typeInfo(@TypeOf(@as(__v2si, @bitCast(__b)))).vector.child, @as(__v2si, @bitCast(__b)), @as(__v2si, [1]c_int{0} * *2), @Vector(4, i32){
             __helpers.shuffleVectorIndex(0, @typeInfo(@TypeOf(@as(__v2si, @bitCast(__b)))).vector.len),
             __helpers.shuffleVectorIndex(1, @typeInfo(@TypeOf(@as(__v2si, @bitCast(__b)))).vector.len),
             __helpers.shuffleVectorIndex(2, @typeInfo(@TypeOf(@as(__v2si, @bitCast(__b)))).vector.len),
@@ -9659,7 +9659,7 @@ pub inline fn _mm_cvtpi8_ps(arg___a: __m64) __m128 {
     var __a = arg___a;
     _ = &__a;
     return blk: {
-        const tmp = @shuffle(@typeInfo(@TypeOf(@as(__v8qs, @bitCast(__a)))).vector.child, @as(__v8qs, @bitCast(__a)), @as(__v8qs, [1]i8{0}**8), @Vector(4, i32){
+        const tmp = @shuffle(@typeInfo(@TypeOf(@as(__v8qs, @bitCast(__a)))).vector.child, @as(__v8qs, @bitCast(__a)), @as(__v8qs, [1]i8{0} * *8), @Vector(4, i32){
             __helpers.shuffleVectorIndex(0, @typeInfo(@TypeOf(@as(__v8qs, @bitCast(__a)))).vector.len),
             __helpers.shuffleVectorIndex(1, @typeInfo(@TypeOf(@as(__v8qs, @bitCast(__a)))).vector.len),
             __helpers.shuffleVectorIndex(2, @typeInfo(@TypeOf(@as(__v8qs, @bitCast(__a)))).vector.len),
@@ -9677,7 +9677,7 @@ pub inline fn _mm_cvtpu8_ps(arg___a: __m64) __m128 {
     var __a = arg___a;
     _ = &__a;
     return blk: {
-        const tmp = @shuffle(@typeInfo(@TypeOf(@as(__v8qu, @bitCast(__a)))).vector.child, @as(__v8qu, @bitCast(__a)), @as(__v8qu, [1]u8{0}**8), @Vector(4, i32){
+        const tmp = @shuffle(@typeInfo(@TypeOf(@as(__v8qu, @bitCast(__a)))).vector.child, @as(__v8qu, @bitCast(__a)), @as(__v8qu, [1]u8{0} * *8), @Vector(4, i32){
             __helpers.shuffleVectorIndex(0, @typeInfo(@TypeOf(@as(__v8qu, @bitCast(__a)))).vector.len),
             __helpers.shuffleVectorIndex(1, @typeInfo(@TypeOf(@as(__v8qu, @bitCast(__a)))).vector.len),
             __helpers.shuffleVectorIndex(2, @typeInfo(@TypeOf(@as(__v8qu, @bitCast(__a)))).vector.len),

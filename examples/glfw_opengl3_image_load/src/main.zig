@@ -10,7 +10,7 @@ const TImgFormat = struct {
 const enKind = enum { jpg, png, bmp, tga };
 const ImgFormatTbl = [_]TImgFormat{ TImgFormat{ .kind = "JPEG 90%", .ext = ".jpg" }, TImgFormat{ .kind = "PNG     ", .ext = ".png" }, TImgFormat{ .kind = "BMP     ", .ext = ".bmp" }, TImgFormat{ .kind = "TGA     ", .ext = ".tga" } };
 
-var cbItemIndex: usize = @intFromEnum(enKind.jpg);
+var cbItemIndex: usize = @backingInt(enKind.jpg);
 
 // Constants
 const SaveImageName = "ImageSaved";

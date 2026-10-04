@@ -125,10 +125,12 @@ pub fn build(b: *std.Build) void {
     const resExeIni = b.addInstallFile(b.path(sExeIni), b.pathJoin(&.{ "bin", sExeIni }));
     b.getInstallStep().dependOn(&resExeIni.step);
 
-    if (true) { // Enable if use SDL3.dll with dynamic linking.
-        const resSdlDll = b.pathJoin(&.{ sdlPath, "bin", "SDL3.dll" });
-        const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
-        b.getInstallStep().dependOn(&resSdl.step);
+    if (target.result.os.tag == .windows) {
+        if (false) { // copy SDL3.dll
+            const resSdlDll = b.pathJoin(&.{ sdlPath, "bin", "SDL3.dll" });
+            const resSdl = b.addInstallFile(b.path(resSdlDll), "bin/SDL3.dll");
+            b.getInstallStep().dependOn(&resSdl.step);
+        }
     }
 
     const run_cmd = b.addRunArtifact(exe);

@@ -37,7 +37,7 @@ pub fn gui_main(window: *app.Window) !void {
 
     const pio = ig.igGetIO_Nil();
 
-    //window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
+    window.eventLoadStandard(); // See ../src/libzig/appimgui/src/appImGui.zig
 
     //---------------
     // main loop GUI

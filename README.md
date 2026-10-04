@@ -67,7 +67,7 @@ Raylib, rlImGui and many other libaries and examples with less external dependen
 - Features 
    - Included [Font Awesome](https://fontawesome.com/search?m=free&o=r) Icon fonts.  
       ![alt](img/icon_font.png)
-   - Included GLFW 3.4.0 static library (for Windows)
+   - Included GLFW 3.5.1 static library (for Windows)
    - Included SDL3.4.xx libraries (for Windows)
    - Included STB libraries (only stb_image) for Load / Save images
    - Available [ImPlot](https://github.com/epezent/implot) [(CImPlot)](https://github.com/cimgui/cimplot) / ImPlot3D with `ImDrawIdx="unsigned int"`
@@ -78,7 +78,7 @@ Raylib, rlImGui and many other libaries and examples with less external dependen
 
 ---
 
-Click link for live demo: [Click here](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
+Click link for live demo: [Click here](https://dinau.github.io/imguinz2/examples/wasm/demo/web)  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/wasm_demo_small.gif)
 
 See [glfw_webgl_wasm](#glfw_webgl_wasm)  /  [glfw_wgpu_wasm](#glfw_wgpu_wasm) example 
@@ -90,11 +90,12 @@ See [glfw_webgl_wasm](#glfw_webgl_wasm)  /  [glfw_wgpu_wasm](#glfw_wgpu_wasm) ex
 
 ---
 
-- Zig compiler version confirmed
-   - [x] zig-0.16.0  
-      Windows: [zig-x86_64-windows-0.16.0.zip](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)  
-      Linux:   [  zig-x86_64-linux-0.16.0.tar.xz](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
-   - [x] 0.17.0-dev.2251  [^except_raylib] (2026/09/20)
+- Zig Compiler 
+    - [x] [zig-0.17.0: Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip)  [^except_raylib] (2026/10/01)
+    - [x] [zig-x86_64-linux-0.17.0.tar.xz](https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz)
+    - [x] [zig-0.18.0-dev.1+a6c6412a8: Windows](https://ziglang.org/builds/zig-x86_64-windows-0.18.0-dev.1+a6c6412a8.zip)
+    - [x] zig-0.16.0 for Raylib examples
+
 - Windows11
    - MSys2/MinGW basic commands (make, rm, cp, strip ...)
 
@@ -341,11 +342,11 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
 ---
 
 - [Install emscripten](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended)
-   -  Specify emsdk **6.0.6**[^emsdk_list]
+   -  Specify emsdk **6.0.9**[^emsdk_list]
    
       ```sh
-      emsdk install  6.0.6 
-      emsdk activate 6.0.6
+      emsdk install  6.0.9 
+      emsdk activate 6.0.9
       ```
    
       for WebGL
@@ -370,8 +371,7 @@ Click link for live demo: [Click here](https://dinau.github.io/cimgui_zoomable_i
     
     See ./Makefile
 
-1. Open your brwoser at [http://localhost:8000](http://localhost:8000) and click **web** folder
-1. You can build native application too
+1. You can also build native application 
 
     ```sh
     make app

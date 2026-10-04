@@ -42,7 +42,7 @@ pub fn build(b: *std.Build) void {
         mod = step.addModule(mod_name);
     }
     switch (target.result.os.tag) {
-        .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
+        .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
     }

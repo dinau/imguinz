@@ -73,8 +73,8 @@ fn glfwErrorCallback(err: c_int, description: [*c]const u8) callconv(.c) void {
 fn loopBody() callconv(.c) void {
     glfw.glfwPollEvents();
 
-    if(win.wgpu_isSurfaceStatusSubOptimal()){
-       return;
+    if (win.wgpu_isSurfaceStatusSubOptimal()) {
+        return;
     }
 
     // Start the Dear ImGui frame

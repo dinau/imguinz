@@ -32,8 +32,8 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .link_libc = true,
         });
-        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
-        step.defineCMacro("CIMGUI_USE_WGPU","");
+        step.defineCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+        step.defineCMacro("CIMGUI_USE_WGPU", "");
         step.defineCMacro("IMGUI_DISABLE_SSE", "");
         step.defineCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
         step.addIncludePath(b.path("../../libc/cimgui"));
@@ -56,7 +56,7 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(b.path("../../libc/impl_wgpu"));
     mod.addIncludePath(b.path("src"));
     switch (target.result.os.tag) {
-        .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw-3.4.bin.WIN64/include")),
+        .windows => mod.addIncludePath(b.path("../../libc/glfw/glfw.bin.WIN64/include")),
         .linux => mod.addIncludePath(.{ .cwd_relative = "/usr/include" }),
         else => {},
     }
@@ -65,7 +65,7 @@ pub fn build(b: *std.Build) void {
     if (emscripten_sysroot) |es| mod.addSystemIncludePath(.{ .cwd_relative = b.pathJoin(&.{ es, "cache/sysroot/include" }) });
 
     //mod.addCMacro("CIMGUI_DEFINE_ENUMS_AND_STRUCTS","");
-    mod.addCMacro("CIMGUI_USE_WGPU","");
+    mod.addCMacro("CIMGUI_USE_WGPU", "");
     mod.addCMacro("ImDrawIdx", "unsigned int");
     mod.addCMacro("IMGUI_IMPL_WEBGPU_BACKEND_DAWN", "");
     switch (target.result.os.tag) {

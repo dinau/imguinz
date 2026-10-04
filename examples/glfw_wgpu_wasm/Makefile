@@ -25,7 +25,7 @@ all: demo
   -Demscripten_sysroot=$(EMSCRIPTEN_DIR)    \
   $(OPT)
 
-.PHONY: clean run fmt app demo
+.PHONY: clean run fmt app demo server
 
 clean:
 	@rm -fr .zig-cache zig-out zig-pkg
@@ -33,6 +33,9 @@ clean:
 cleanall: clean
 
 run: all
+	emrun zig-out/web
+
+server:
 	(cd zig-out && python -m http.server 8000)
 
 #app: demo

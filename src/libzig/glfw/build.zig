@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
 
     const mod_name = "glfw";
 
-    const glfw_path = b.fmt("{s}", .{"../../libc/glfw/glfw-3.4.bin.WIN64"});
+    const glfw_path = b.fmt("{s}", .{"../../libc/glfw/glfw.bin.WIN64"});
     const emscripten_sysroot = b.option([]const u8, "emscripten_sysroot", "Path to <emsdk>/upstream/emscripten");
     const contrib_glfw3_include: ?[]const u8 = if (emscripten_sysroot) |es|
         b.pathJoin(&.{ es, "cache/ports/contrib.glfw3/external" })

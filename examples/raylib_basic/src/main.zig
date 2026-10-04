@@ -58,7 +58,7 @@ pub fn main() !void {
     const model = try rl.loadModelFromMesh(mesh); // Load model from generated mesh
     defer rl.unloadModel(model); // Unload model
 
-    model.materials[0].maps[@intFromEnum(rl.MATERIAL_MAP_DIFFUSE)].texture = texture;
+    model.materials[0].maps[@backingInt(rl.MATERIAL_MAP_DIFFUSE)].texture = texture;
 
     const mapPosition = rl.Vector3{ .x = -8, .y = 0, .z = -8 }; // Define model position
 

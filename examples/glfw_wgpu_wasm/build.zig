@@ -69,9 +69,8 @@ pub fn build(b: *std.Build) void {
         "-sDEFAULT_TO_CXX",
         "--shell-file",
         "shell_minimal.html",
-
-        "-sASYNCIFY_IGNORE_INDIRECT=1",        // Decrease binary size from 6.5M to 2.3MB
-        "-sASYNCIFY_ADD=[AppInitWGPU]",        // Decrease binary size from 6.5M to 2.3MB
+        "-sASYNCIFY_IGNORE_INDIRECT=1", // Decrease binary size from 6.5M to 2.3MB
+        "-sASYNCIFY_ADD=[AppInitWGPU]", // Decrease binary size from 6.5M to 2.3MB
 
         // for debug
         //    "-fsanitize=undefined",
@@ -83,7 +82,7 @@ pub fn build(b: *std.Build) void {
         link_step.addArgs(&.{ "--preload-file", "resources@/resources" });
     }
 
-    if (is_emscripten){
+    if (is_emscripten) {
         const resWeb = [_][]const u8{"favicon.ico"};
         inline for (resWeb) |file| {
             const res = b.addInstallFile(b.path(file), "web/" ++ file);

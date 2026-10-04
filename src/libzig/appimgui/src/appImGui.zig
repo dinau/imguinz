@@ -147,7 +147,7 @@ pub const Window = struct {
             if (glfw.glfwCreateWindow(width, height, title, null, null)) |pointer| {
                 win.handle = pointer;
                 if (builtin.target.os.tag == .emscripten) {
-                if (builtin.zig_version.minor >= 17) {
+                    if (builtin.zig_version.minor >= 17) {
                         glsl_version = try std.fmt.bufPrintSentinel(&glsl_version_buf, "#version 300 es", .{}, 0);
                     } else {
                         glsl_version = try std.fmt.bufPrintZ(&glsl_version_buf, "#version 300 es", .{});
@@ -168,7 +168,7 @@ pub const Window = struct {
             return error.glfwCreateWindowFailure2;
         }
         if (builtin.target.os.tag != .emscripten) {
-        try loadIni(&win);
+            try loadIni(&win);
         } else {
             win.ini = .{
                 .window = .{
@@ -198,39 +198,39 @@ pub const Window = struct {
         // Load title bar icon
         //---------------------
         if (builtin.target.os.tag != .emscripten) {
-        if (utils.existsFile(opts.title_bar_icon_name.ptr)) {
-            //--------------
-            // Get exe path  Refered to: https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
-            //--------------
+            if (utils.existsFile(opts.title_bar_icon_name.ptr)) {
+                //--------------
+                // Get exe path  Refered to: https://stackoverflow.com/questions/77718355/how-do-i-build-a-path-relative-to-the-exe-in-zig
+                //--------------
                 // For zig-0.16.0-dev.2905 (2026/03/13)
-            var gpa = std.heap.DebugAllocator(.{}){};
-            defer _ = gpa.deinit();
-            const allocator = gpa.allocator();
+                var gpa = std.heap.DebugAllocator(.{}){};
+                defer _ = gpa.deinit();
+                const allocator = gpa.allocator();
 
-            var sBuf: [std.fs.max_path_bytes]u8 = undefined;
-            const exe_path: []u8 = if (is_devel_api) blk: {
-                const exe_len = try std.process.executablePath(io, &sBuf);
-                break :blk sBuf[0..exe_len];
-            } else blk: {
-                break :blk try std.fs.selfExePathAlloc(allocator);
-            };
-            defer {
-                if (is_devel_api) {
-                    // NA
-                } else {
-                    allocator.free(exe_path);
+                var sBuf: [std.fs.max_path_bytes]u8 = undefined;
+                const exe_path: []u8 = if (is_devel_api) blk: {
+                    const exe_len = try std.process.executablePath(io, &sBuf);
+                    break :blk sBuf[0..exe_len];
+                } else blk: {
+                    break :blk try std.fs.selfExePathAlloc(allocator);
+                };
+                defer {
+                    if (is_devel_api) {
+                        // NA
+                    } else {
+                        allocator.free(exe_path);
+                    }
+                }
+
+                const option_exe_dir = std.fs.path.dirname(exe_path);
+                if (option_exe_dir) |exe_dir| {
+                    var paths = [_][]const u8{ exe_dir, opts.title_bar_icon_name };
+                    const icon_path = try std.fs.path.join(allocator, &paths);
+                    defer allocator.free(icon_path);
+                    // Load icon
+                    icon.LoadTitleBarIcon(win.handle, icon_path.ptr);
                 }
             }
-
-            const option_exe_dir = std.fs.path.dirname(exe_path);
-            if (option_exe_dir) |exe_dir| {
-                var paths = [_][]const u8{ exe_dir, opts.title_bar_icon_name };
-                const icon_path = try std.fs.path.join(allocator, &paths);
-                defer allocator.free(icon_path);
-                // Load icon
-                    icon.LoadTitleBarIcon(win.handle, icon_path.ptr);
-            }
-        }
         }
 
         glfw.glfwSwapInterval(1); // Enable VSync --- Lower CPU load
@@ -257,7 +257,7 @@ pub const Window = struct {
         _ = impl_glfw.ImGui_ImplGlfw_InitForOpenGL(@ptrCast(win.handle), true);
         _ = impl_gl.ImGui_ImplOpenGL3_Init(glsl_version.ptr);
 
-        win.setTheme(@enumFromInt(win.ini.window.theme));
+        win.setTheme(@fromBackingInt(@intCast(win.ini.window.theme)));
 
         return win;
     }
@@ -311,7 +311,7 @@ pub const Window = struct {
     //--------------
     pub fn destroyImGui(win: *Window) void {
         if (builtin.target.os.tag != .emscripten) {
-        saveIni(win) catch unreachable;
+            saveIni(win) catch unreachable;
         }
         impl_gl.ImGui_ImplOpenGL3_Shutdown();
         impl_glfw.ImGui_ImplGlfw_Shutdown();
@@ -396,10 +396,10 @@ pub const Window = struct {
     }
 
     pub fn setTheme(win: *Window, themeName: Theme) void {
-        win.ini.window.theme = @intFromEnum(setThemePub(themeName));
+        win.ini.window.theme = @backingInt(setThemePub(themeName));
     }
     pub fn getTheme(win: *Window) Theme {
-        return @enumFromInt(win.ini.window.theme);
+        return @fromBackingInt(@intCast(win.ini.window.theme));
     }
 };
 
@@ -484,7 +484,7 @@ pub fn loadIni(win: *Window) !void {
         win.ini.window.colBGy = 0.45;
         win.ini.window.colBGz = 0.65;
         // Theme
-        win.ini.window.theme = @intFromEnum(Theme.classic);
+        win.ini.window.theme = @backingInt(Theme.classic);
         // Image index
         win.ini.image.imageSaveFormatIndex = 1;
     } else {
@@ -581,9 +581,7 @@ pub fn saveIni(win: *Window) !void {
     glfw.glfwGetWindowPos(win.handle, &win.ini.window.startupPosX, &win.ini.window.startupPosY);
 
     // Window size
-    const ws = ig.igGetMainViewport().*.WorkSize;
-    win.ini.window.viewportWidth = @intFromFloat(ws.x);
-    win.ini.window.viewportHeight = @intFromFloat(ws.y);
+    glfw.glfwGetWindowSize(win.handle, &win.ini.window.viewportWidth, &win.ini.window.viewportHeight);
     //dbgPrint("win.ini.window.viewportWidth = {d}\n", .{win.ini.window.viewportWidth});
     //dbgPrint("win.ini.window.viewportHeight = {d}\n", .{win.ini.window.viewportHeight});
 
@@ -698,7 +696,7 @@ export fn showInfoWindow_c(win: ?*Window) void {
 }
 
 export fn setTheme_c(theme: i32) i32 {
-    const theme_enum: Theme = @enumFromInt(theme);
+    const theme_enum: Theme = @fromBackingInt(@intCast(theme));
     const result = setThemePub(theme_enum);
-    return @intFromEnum(result);
+    return @backingInt(result);
 }

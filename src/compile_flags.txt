@@ -1,8 +1,8 @@
 -DCIMGUI_DEFINE_ENUMS_AND_STRUCTS
 -DIMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS
 -DImDrawIdx=unsigned int
--Ilibc/glfw/glfw-3.4.bin.WIN64/include
--Ilibc/glfw/glfw-3.4.bin.WIN64/include/GLFW
+-Ilibc/glfw/glfw.bin.WIN64/include
+-Ilibc/glfw/glfw.bin.WIN64/include/GLFW
 -Ilibc/cimgui
 -Ilibc/cimgui/imgui
 -Ilibc/cimgui/imgui/backends

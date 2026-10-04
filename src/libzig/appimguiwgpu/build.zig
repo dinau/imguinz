@@ -25,8 +25,8 @@ pub fn build(b: *std.Build) void {
     const modules = [_][]const u8{
         "cimgui",
         "fonticon",
-     //   "loadicon",
-     //  "loadimage",
+        //   "loadicon",
+        //  "loadimage",
         "glfw",
         "impl_glfw",
         "impl_wgpu",

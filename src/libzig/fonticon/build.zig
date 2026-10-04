@@ -19,14 +19,12 @@ pub fn build(b: *std.Build) void {
             .root_source_file = b.path("src/IconsFontAwesome6.zig"),
             .target = target,
             .optimize = optimize,
-            
         });
     } else {
         const step = b.addTranslateC(.{
             .root_source_file = b.path("../../libc/fonticon/IconsFontAwesome6.h"),
             .target = target,
             .optimize = optimize,
-           
         });
         mod = step.addModule(mod_name);
     }
